@@ -13,17 +13,20 @@ require_once __DIR__ . '/db_connect.php';
 
  
 // check for post data
-//if (isset($_GET["parkingLotID"])) {
-//    $parkinglotid = $_GET['parkingLotID'];
+if (isset($_GET["phoneNumber"])) {
+    $phoneNumber = $_GET['phoneNumber'];
 
 try {
-    $stmt = $conn->prepare("SELECT *FROM parkinglot "); 
+    $stmt = $conn->prepare("SELECT *FROM ownerinfor where phoneNumber = :phoneNumber"); 
+	$stmt->bindValue(':phoneNumber',$phoneNumber);
     $stmt->execute();
 	while($row=$stmt->fetch(PDO::FETCH_ASSOC)){
-  
-      $response['allparkinglot'][] = $row;
+	 
+      $response['ownerinfor'][] = $row;
  
 	}
+	
+	
 	echo json_encode($response);
 
 }
@@ -31,12 +34,12 @@ catch(PDOException $e) {
     echo "Error: " . $e->getMessage();
 }
  
-//} else {
+} else {
     // required field is missing
- //   $response["success"] = 0;
- //   $response["message"] = "Required field(s) is missing";
+    $response["success"] = 0;
+    $response["message"] = "Required field(s) is missing";
  
     // echoing JSON response
- //   echo json_encode($response);
-//}
+    echo json_encode($response);
+}
 ?>

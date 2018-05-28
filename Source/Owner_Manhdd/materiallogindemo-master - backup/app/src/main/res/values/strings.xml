@@ -1,0 +1,17 @@
+<resources>
+    <string-array name="teams">
+        <item>Bãi A</item>
+        <item>Bãi B</item>
+        <item>Bãi C</item>
+        <item>Bãi D</item>
+
+    </string-array>
+    <string name="app_name">Fparking</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_noti">Notification</string>
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
+
