@@ -75,6 +75,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         mapFragment.getMapAsync(this);
         sendRequest();
 
+        // create and button listener Stop Direction
         btnStopDirection = (Button) findViewById(R.id.stopDirection);
         btnStopDirection.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -86,6 +87,9 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    /**
+     * excute interface DirectionFinder
+     */
     private void sendRequest() {
 
         GPSTracker gps = new GPSTracker(this);
@@ -109,6 +113,9 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    /**
+     * @param googleMap
+     */
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
@@ -141,6 +148,9 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         return positionParking;
     }
 
+    /**
+     * override interface onDirectionFinderStart
+     */
     @Override
     public void onDirectionFinderStart() {
         progressDialog = ProgressDialog.show(this, "Please wait.",
@@ -165,6 +175,9 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
     }
 
+    /**
+     * override interface onDirectionFinderStart
+     */
     @Override
     public void onDirectionFinderSuccess(List<Route> routes) {
         progressDialog.dismiss();
@@ -197,6 +210,10 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             polylinePaths.add(mMap.addPolyline(polylineOptions));
 
         }
+
+        // Move camera đến mylocation
+        GPSTracker gps = new GPSTracker(this);
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 18.0f));
 
         //location moving
 
@@ -248,8 +265,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 //                    Log.e(TAG, "bearing: " + location.hasBearing());
 
                     mLastLocation.set(location);
-
-                    mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("My place").icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)));
+//                    mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("My place").icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)));
 
                     CameraPosition cameraPosition = new CameraPosition.Builder()
                             .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
@@ -259,7 +275,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
                             .build();                   // Creates a CameraPosition from the builder
                     mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
 
-//                    map.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(location.getLatitude(), location.getLongitude()), 18.0f));
                     handler.postDelayed(this, 1000);
                 }
             };
