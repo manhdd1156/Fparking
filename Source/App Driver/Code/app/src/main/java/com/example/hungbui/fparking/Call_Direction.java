@@ -30,10 +30,14 @@ public class Call_Direction extends Fragment {
             }
         });
 
-        imageViewCall.setOnClickListener(new View.OnClickListener() {
+        imageViewDirection.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                
+                String postionPaking = getArguments().getString("PositionParking");
+
+                Intent intent = new Intent(getActivity(),Direction_Activity.class);
+                intent.putExtra("PositionParking",postionPaking);
+                startActivity(intent);
             }
         });
         return view;
