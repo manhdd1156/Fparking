@@ -9,6 +9,8 @@ import android.content.DialogInterface;
 import android.os.Bundle;
 
 public class Confirm_Order extends DialogFragment {
+    public FragmentManager fragmentManager;
+
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 

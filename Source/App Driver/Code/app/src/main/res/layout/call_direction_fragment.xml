@@ -8,8 +8,8 @@
     <ImageView
         android:id="@+id/imageViewParking"
         android:layout_width="match_parent"
-        android:layout_height="178dp"
-        android:background="#009dff"/>
+        android:layout_height="210dp"
+        android:background="#009dff" />
 
     <TextView
         android:id="@+id/textViewSpace"

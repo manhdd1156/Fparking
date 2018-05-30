@@ -27,7 +27,7 @@ public class Order_Fragment extends Fragment {
         textViewTime = view.findViewById(R.id.textViewTime);
         textViewSpace = view.findViewById(R.id.textViewSpace);
         textViewEmpty = view.findViewById(R.id.textViewEmpty);
-        textViewAdress = view.findViewById(R.id.textViewAddress);
+
         textViewPrice = view.findViewById(R.id.textViewPrice);
 
         show_Information_Prking();

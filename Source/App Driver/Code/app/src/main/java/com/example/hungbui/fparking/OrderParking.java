@@ -14,7 +14,7 @@ public class OrderParking extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oder_parking);
-
+         getSupportActionBar().hide();
         Intent intent = getIntent();
         Bundle bundlPosition = intent.getBundleExtra("BundlePosition");
         Order_Fragment(bundlPosition);

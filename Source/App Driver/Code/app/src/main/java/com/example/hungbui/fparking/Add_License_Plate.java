@@ -1,5 +1,6 @@
 package com.example.hungbui.fparking;
 
+import android.annotation.SuppressLint;
 import android.app.DialogFragment;
 import android.app.Fragment;
 import android.app.FragmentManager;
@@ -10,6 +11,8 @@ import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -25,6 +28,7 @@ public class Add_License_Plate extends DialogFragment {
         buttonOrder = view.findViewById(R.id.buttonOrderAddLicensePlate);
 
         buttonOrder.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
 
@@ -36,9 +40,12 @@ public class Add_License_Plate extends DialogFragment {
                 confirm_order.setArguments(bundlePositionpParking);
 
                 confirm_order.show(getFragmentManager(), "dialog");
+
             }
         });
+
         return view;
+
     }
 
 
