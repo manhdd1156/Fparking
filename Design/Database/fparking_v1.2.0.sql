@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 28, 2018 at 05:01 PM
+-- Generation Time: May 30, 2018 at 02:54 PM
 -- Server version: 10.1.26-MariaDB
 -- PHP Version: 7.1.9
 
@@ -40,8 +40,11 @@ CREATE TABLE `bookinginfor` (
 --
 
 INSERT INTO `bookinginfor` (`bookingID`, `carID`, `parkingID`, `status`) VALUES
-(1, 1, 1, 3),
-(2, 1, 1, 0);
+(3, 1, 3, 1),
+(4, 2, 4, 2),
+(5, 3, 3, 3),
+(14, 2, 3, 1),
+(15, 3, 3, 2);
 
 -- --------------------------------------------------------
 
@@ -61,7 +64,9 @@ CREATE TABLE `carofdriver` (
 --
 
 INSERT INTO `carofdriver` (`carID`, `driverID`, `typeCarID`, `licensePlate`) VALUES
-(1, 1, 1, '33L6-3318');
+(1, 1, 1, '33L6-3318'),
+(2, 2, 2, '34X2-32242'),
+(3, 3, 1, '13L6-6546');
 
 -- --------------------------------------------------------
 
@@ -71,9 +76,9 @@ INSERT INTO `carofdriver` (`carID`, `driverID`, `typeCarID`, `licensePlate`) VAL
 
 CREATE TABLE `driver` (
   `driverID` int(11) NOT NULL,
+  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `phoneNumber` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
   `date` date NOT NULL,
   `status` varchar(255) COLLATE utf8mb4_unicode_ci DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci COMMENT='Bảng của lái xe';
@@ -82,8 +87,10 @@ CREATE TABLE `driver` (
 -- Dumping data for table `driver`
 --
 
-INSERT INTO `driver` (`driverID`, `phoneNumber`, `password`, `name`, `date`, `status`) VALUES
-(1, '096885456', '123456', 'Đinh Duy Mạnh', '1996-05-06', NULL);
+INSERT INTO `driver` (`driverID`, `name`, `phoneNumber`, `password`, `date`, `status`) VALUES
+(1, 'Đinh Duy Mạnh', '096885456', '123456', '1996-05-06', NULL),
+(2, 'Đinh Duy A', '0968821012', '123456', '1996-05-15', NULL),
+(3, 'Đinh Duy B', '0968821545', '123456', '1998-05-19', NULL);
 
 -- --------------------------------------------------------
 
@@ -111,7 +118,7 @@ CREATE TABLE `ownerinfor` (
   `email` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `peopleID` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `imgID` int(11) DEFAULT NULL,
-  `deposits` double NOT NULL
+  `deposits` double NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
@@ -119,7 +126,8 @@ CREATE TABLE `ownerinfor` (
 --
 
 INSERT INTO `ownerinfor` (`ownerID`, `name`, `phoneNumber`, `password`, `email`, `peopleID`, `imgID`, `deposits`) VALUES
-(1, 'nguyen van A', '0968949064', '123456', NULL, '9958593282', NULL, 0);
+(1, 'nguyen van A', '0968949064', '123456', NULL, '9958593282', NULL, 0),
+(2, 'Nguyễn Văn B', '0968949065', '123456', 'manhholong2@gmail.com', '15165196165', NULL, 1000000);
 
 -- --------------------------------------------------------
 
@@ -129,15 +137,12 @@ INSERT INTO `ownerinfor` (`ownerID`, `name`, `phoneNumber`, `password`, `email`,
 
 CREATE TABLE `parkinginfor` (
   `parkingID` int(11) NOT NULL,
-  `phoneNumber` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `address` varchar(100) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `phoneNumber` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `longitude` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `latitude` varchar(15) COLLATE utf8mb4_unicode_ci NOT NULL,
   `space` int(11) NOT NULL,
-  `parkingPriceID` int(11) NOT NULL,
   `ownerID` int(11) NOT NULL,
-  `parkingLotID` int(11) NOT NULL,
-  `reportID` int(11) DEFAULT NULL,
   `status` varchar(100) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `flag_del` tinyint(1) NOT NULL DEFAULT '0'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
@@ -146,28 +151,9 @@ CREATE TABLE `parkinginfor` (
 -- Dumping data for table `parkinginfor`
 --
 
-INSERT INTO `parkinginfor` (`parkingID`, `phoneNumber`, `address`, `longitude`, `latitude`, `space`, `parkingPriceID`, `ownerID`, `parkingLotID`, `reportID`, `status`, `flag_del`) VALUES
-(1, '096894906', 'Khâm thiên - Hà nội', '4231412412', '12421421', 30, 1, 1, 1, 0, '', 0),
-(2, '0968949066', 'Khâm Thiên- Hà Nội', '423423', '432423', 30, 1, 1, 1, NULL, NULL, 0);
-
--- --------------------------------------------------------
-
---
--- Table structure for table `parkinglot`
---
-
-CREATE TABLE `parkinglot` (
-  `parkingLotID` int(11) NOT NULL,
-  `spaceNumber` int(11) NOT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
-
---
--- Dumping data for table `parkinglot`
---
-
-INSERT INTO `parkinglot` (`parkingLotID`, `spaceNumber`) VALUES
-(1, 24),
-(4, 32);
+INSERT INTO `parkinginfor` (`parkingID`, `address`, `phoneNumber`, `longitude`, `latitude`, `space`, `ownerID`, `status`, `flag_del`) VALUES
+(3, 'Khâm Thiên - Hà Nội', '0968949065', '48441165', '15616541654', 30, 1, NULL, 0),
+(4, 'Nhà thờ - Hà Nội', '0968949066', '4894132', '1654984', 25, 2, NULL, 0);
 
 -- --------------------------------------------------------
 
@@ -182,6 +168,15 @@ CREATE TABLE `parkingprice` (
   `price` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
+--
+-- Dumping data for table `parkingprice`
+--
+
+INSERT INTO `parkingprice` (`parkingPriceID`, `parkingID`, `typeCarID`, `price`) VALUES
+(1, 3, 1, 50000),
+(2, 3, 2, 60000),
+(3, 4, 1, 20000);
+
 -- --------------------------------------------------------
 
 --
@@ -194,6 +189,13 @@ CREATE TABLE `report` (
   `bookingID` int(11) NOT NULL,
   `content` varchar(300) COLLATE utf8mb4_unicode_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `report`
+--
+
+INSERT INTO `report` (`reportID`, `parkingID`, `bookingID`, `content`) VALUES
+(1, 3, 3, 'Hơi khó chịu');
 
 -- --------------------------------------------------------
 
@@ -234,6 +236,7 @@ ALTER TABLE `bookinginfor`
 --
 ALTER TABLE `carofdriver`
   ADD PRIMARY KEY (`carID`),
+  ADD UNIQUE KEY `licensePlate` (`licensePlate`),
   ADD KEY `typeCarID` (`typeCarID`),
   ADD KEY `driverID` (`driverID`) USING BTREE;
 
@@ -262,22 +265,15 @@ ALTER TABLE `ownerinfor`
 --
 ALTER TABLE `parkinginfor`
   ADD PRIMARY KEY (`parkingID`),
-  ADD KEY `ownerID` (`ownerID`),
-  ADD KEY `parkingLotID` (`parkingLotID`);
-
---
--- Indexes for table `parkinglot`
---
-ALTER TABLE `parkinglot`
-  ADD PRIMARY KEY (`parkingLotID`);
+  ADD KEY `ownerID` (`ownerID`);
 
 --
 -- Indexes for table `parkingprice`
 --
 ALTER TABLE `parkingprice`
   ADD PRIMARY KEY (`parkingPriceID`),
-  ADD KEY `parkingID` (`parkingID`),
-  ADD KEY `typeCarID` (`typeCarID`);
+  ADD KEY `typeCarID` (`typeCarID`),
+  ADD KEY `FK_ParkingPrice_ParkingInfor` (`parkingID`);
 
 --
 -- Indexes for table `report`
@@ -301,19 +297,19 @@ ALTER TABLE `typecar`
 -- AUTO_INCREMENT for table `bookinginfor`
 --
 ALTER TABLE `bookinginfor`
-  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `bookingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `carofdriver`
 --
 ALTER TABLE `carofdriver`
-  MODIFY `carID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `carID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `driver`
 --
 ALTER TABLE `driver`
-  MODIFY `driverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `driverID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `image`
@@ -325,31 +321,25 @@ ALTER TABLE `image`
 -- AUTO_INCREMENT for table `ownerinfor`
 --
 ALTER TABLE `ownerinfor`
-  MODIFY `ownerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `ownerID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `parkinginfor`
 --
 ALTER TABLE `parkinginfor`
-  MODIFY `parkingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
-
---
--- AUTO_INCREMENT for table `parkinglot`
---
-ALTER TABLE `parkinglot`
-  MODIFY `parkingLotID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `parkingID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `parkingprice`
 --
 ALTER TABLE `parkingprice`
-  MODIFY `parkingPriceID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `parkingPriceID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `report`
 --
 ALTER TABLE `report`
-  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `reportID` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `typecar`
@@ -391,14 +381,13 @@ ALTER TABLE `ownerinfor`
 -- Constraints for table `parkinginfor`
 --
 ALTER TABLE `parkinginfor`
-  ADD CONSTRAINT `FK_ParkingInfor_OwnerInfor` FOREIGN KEY (`ownerID`) REFERENCES `ownerinfor` (`ownerID`) ON DELETE NO ACTION ON UPDATE CASCADE,
-  ADD CONSTRAINT `FK_ParkingInfor_ParkingLot` FOREIGN KEY (`parkingLotID`) REFERENCES `parkinglot` (`parkingLotID`) ON DELETE NO ACTION ON UPDATE CASCADE;
+  ADD CONSTRAINT `FK_ParkingInfor_OwnerInfor` FOREIGN KEY (`ownerID`) REFERENCES `ownerinfor` (`ownerID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
 -- Constraints for table `parkingprice`
 --
 ALTER TABLE `parkingprice`
-  ADD CONSTRAINT `FK_ParkingPrice_ParkingInfor` FOREIGN KEY (`parkingID`) REFERENCES `parkinginfor` (`parkingID`) ON DELETE NO ACTION ON UPDATE CASCADE,
+  ADD CONSTRAINT `FK_ParkingPrice_ParkingInfor` FOREIGN KEY (`parkingID`) REFERENCES `parkinginfor` (`parkingID`),
   ADD CONSTRAINT `FK_ParkingPrice_TypeCar` FOREIGN KEY (`typeCarID`) REFERENCES `typecar` (`typeCarID`) ON DELETE NO ACTION ON UPDATE CASCADE;
 
 --
