@@ -12,12 +12,14 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 public class Order_Fragment extends Fragment {
     @Nullable
     Button buttonOrderFragment;
     TextView textViewPrice, textViewAdress, textViewEmpty, textViewSpace, textViewTime;
+    private static View view;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
