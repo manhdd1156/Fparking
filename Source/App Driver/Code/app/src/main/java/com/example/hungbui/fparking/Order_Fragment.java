@@ -24,11 +24,7 @@ public class Order_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.order_fragment, container, false);
 
         buttonOrderFragment = view.findViewById(R.id.buttonOrderFragment);
-        textViewTime = view.findViewById(R.id.textViewTime);
-        textViewSpace = view.findViewById(R.id.textViewSpace);
-        textViewEmpty = view.findViewById(R.id.textViewEmpty);
 
-        textViewPrice = view.findViewById(R.id.textViewPrice);
 
         show_Information_Prking();
 
@@ -63,10 +59,6 @@ public class Order_Fragment extends Fragment {
     //add thong tin vao fragment
     private void show_Information_Prking() {
 
-        textViewTime.setText("Thới gian hoạt động: ");
-        textViewSpace.setText("Sức chứa: ");
-        textViewEmpty.setText("Số chõ trống: ");
-        textViewAdress.setText("Địa chỉ: ");
-        textViewPrice.setText("Giá: ");
+
     }
 }
