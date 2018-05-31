@@ -50,13 +50,13 @@ public class Order_Fragment extends Fragment {
     }
 
     //get thong tin position tu getArguments
-//    public String[] get_Position_Parking() {
-//        String position = getArguments().getString("Position");
-//        String[] positionParking = position.substring(position.indexOf("(") + 1, position.indexOf(")")).split(",");
-////        String lat = positionParking[0];
-////        String log = positionParking[1];
-//        return positionParking;
-//    }
+    public String[] get_Position_Parking() {
+        String position = getArguments().getString("Position");
+        String[] positionParking = position.substring(position.indexOf("(") + 1, position.indexOf(")")).split(",");
+//        String lat = positionParking[0];
+//        String log = positionParking[1];
+        return positionParking;
+    }
 
     //add thong tin vao fragment
     private void show_Information_Prking() {

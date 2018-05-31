@@ -4,13 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/n"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/background">
 
 
     <ImageView
         android:id="@+id/imageViewParking"
         android:layout_width="match_parent"
-        android:layout_height="218dp"
+        android:layout_height="192dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:background="#009dff"
@@ -19,11 +20,11 @@
 
     <Button
         android:id="@+id/buttonOrderFragment"
-        android:layout_width="339dp"
+        android:layout_width="332dp"
         android:layout_height="51dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="34dp"
+        android:layout_marginBottom="11dp"
         android:background="@drawable/button_selector"
         android:text="ĐẶT CHỖ NGAY"
         android:textColor="#FFFFFF" />
@@ -34,10 +35,52 @@
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="13dp"
-        android:layout_marginTop="189dp"
+        android:layout_marginEnd="11dp"
+        android:layout_marginTop="157dp"
         android:text="Trường đại học FPT "
         android:textColor="@color/whitetext" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageViewParking"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/slot" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageViewParking"
+        android:layout_marginStart="29dp"
+        android:text="24"
+        android:textColor="@color/white_greyish"
+        android:textSize="45sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/textView4"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="87dp"
+        android:text="/25 chỗ"
+        android:textStyle="bold" />
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="39dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="263dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/info" />
 
 
 </RelativeLayout>
