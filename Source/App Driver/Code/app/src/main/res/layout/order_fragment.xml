@@ -30,14 +30,13 @@
         android:textColor="#FFFFFF" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/diachi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
+        android:layout_alignEnd="@+id/buttonOrderFragment"
         android:layout_alignParentTop="true"
-        android:layout_marginEnd="11dp"
-        android:layout_marginTop="157dp"
-        android:text="Trường đại học FPT "
+        android:layout_marginTop="165dp"
+        android:text="234 Trần Duy Hưng"
         android:textColor="@color/whitetext" />
 
     <ImageView
@@ -50,7 +49,7 @@
         app:srcCompat="@drawable/slot" />
 
     <TextView
-        android:id="@+id/textView4"
+        android:id="@+id/chotrong"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -62,10 +61,10 @@
         android:textStyle="bold" />
 
     <TextView
-        android:id="@+id/textView5"
+        android:id="@+id/tatcacho"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@+id/textView4"
+        android:layout_alignBaseline="@+id/chotrong"
         android:layout_alignParentStart="true"
         android:layout_marginStart="87dp"
         android:text="/25 chỗ"
@@ -82,5 +81,55 @@
         android:scaleType="fitXY"
         app:srcCompat="@drawable/info" />
 
+    <TextView
+        android:id="@+id/textView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/chotrong"
+        android:layout_centerHorizontal="true"
+        android:paddingTop="20dp"
+        android:text="Thông tin chi tiết" />
+
+    <ImageView
+        android:id="@+id/imageView3"
+        android:layout_width="wrap_content"
+        android:layout_height="60dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView4"
+        android:layout_marginTop="3dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/info" />
+
+    <TextView
+        android:id="@+id/idbaixe"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView4"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="10dp"
+        android:text="TAT001"
+        android:textColor="@color/black"
+        android:textSize="16dp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/idbaixe"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="5dp"
+        android:text="Bãi xe Trần Duy Hưng" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="match_parent"
+        android:layout_height="74dp"
+        android:layout_alignStart="@+id/chotrong"
+        android:layout_below="@+id/imageView3"
+        android:layout_marginStart="-29dp"
+        android:layout_marginTop="3dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/info" />
 
 </RelativeLayout>
