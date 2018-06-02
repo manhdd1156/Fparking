@@ -138,7 +138,6 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/chotrong"
         android:layout_alignTop="@+id/imageView5"
-        android:layout_marginRight="20dp"
         android:layout_marginTop="10dp"
         app:srcCompat="@drawable/ic_action_money" />
 
@@ -147,25 +146,27 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/imageView3"
-        android:layout_marginRight="-4dp"
         android:layout_marginTop="20dp"
-        android:layout_toStartOf="@+id/textView"
+        android:layout_toEndOf="@+id/chotrong"
         android:text="25.000/h" />
 
     <ImageView
         android:id="@+id/imageView7"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignEnd="@+id/textView6"
-        android:layout_alignTop="@+id/imageView6"
+        android:layout_alignTop="@+id/imageView5"
+        android:layout_marginLeft="-3dp"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/idbaixe"
         app:srcCompat="@drawable/ic_action_time" />
 
     <TextView
         android:id="@+id/textView5"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/diachi"
+        android:layout_alignEnd="@+id/buttonOrderFragment"
         android:layout_below="@+id/imageView3"
+        android:layout_marginRight="28dp"
         android:layout_marginTop="20dp"
         android:text="00:00 - 24:00" />
 
