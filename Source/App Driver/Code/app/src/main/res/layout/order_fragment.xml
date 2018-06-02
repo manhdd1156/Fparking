@@ -124,12 +124,49 @@
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="match_parent"
-        android:layout_height="74dp"
+        android:layout_height="52dp"
         android:layout_alignStart="@+id/chotrong"
         android:layout_below="@+id/imageView3"
         android:layout_marginStart="-29dp"
         android:layout_marginTop="3dp"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/info" />
+
+    <ImageView
+        android:id="@+id/imageView6"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/chotrong"
+        android:layout_alignTop="@+id/imageView5"
+        android:layout_marginRight="20dp"
+        android:layout_marginTop="10dp"
+        app:srcCompat="@drawable/ic_action_money" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/imageView3"
+        android:layout_marginRight="-4dp"
+        android:layout_marginTop="20dp"
+        android:layout_toStartOf="@+id/textView"
+        android:text="25.000/h" />
+
+    <ImageView
+        android:id="@+id/imageView7"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignEnd="@+id/textView6"
+        android:layout_alignTop="@+id/imageView6"
+        app:srcCompat="@drawable/ic_action_time" />
+
+    <TextView
+        android:id="@+id/textView5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/diachi"
+        android:layout_below="@+id/imageView3"
+        android:layout_marginTop="20dp"
+        android:text="00:00 - 24:00" />
 
 </RelativeLayout>
