@@ -196,7 +196,7 @@
         android:layout_below="@+id/imageView5"
         android:layout_marginTop="23dp"
         android:text="Chỉ Đường"
-        android:textColor="#9e949393" />
+        android:textColor="@color/black" />
 
     <TextView
         android:id="@+id/textViewCallGray"

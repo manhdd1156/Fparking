@@ -34,7 +34,7 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
-                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/device/ic_access_time_black_24dp.xml" />
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/editor/ic_monetization_on_black_24dp.xml" />
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -55,9 +55,8 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\get_directions_button_orange.png" />
-                                      <entry key="outputName" value="ic_action_direction_orange" />
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\get_directions_button_grey.png" />
+                                      <entry key="outputName" value="ic_action_money" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="fe6621" />
                                     </map>
