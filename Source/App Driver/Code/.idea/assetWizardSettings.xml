@@ -55,8 +55,9 @@
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\get_directions_button_grey.png" />
-                                      <entry key="outputName" value="ic_action_money" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\phone_receiver_orange.png" />
+                                      <entry key="outputName" value="ic_action_call_orange" />
                                       <entry key="theme" value="CUSTOM" />
                                       <entry key="themeColor" value="fe6621" />
                                     </map>
