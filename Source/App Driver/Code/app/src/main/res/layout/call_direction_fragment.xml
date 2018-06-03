@@ -44,7 +44,7 @@
         android:text="Địa chỉ: 29 Thái Hà" />
 
     <TextView
-        android:id="@+id/textViewEmpty"
+        android:id="@+id/textViewEmptySpace"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
@@ -53,7 +53,7 @@
         android:text="Số chõ trống: 5" />
 
     <TextView
-        android:id="@+id/textViewPrice"
+        android:id="@+id/textViewName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"

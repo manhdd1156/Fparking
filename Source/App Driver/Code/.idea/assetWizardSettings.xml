@@ -40,11 +40,26 @@
                                           </PersistentState>
                                         </value>
                                       </entry>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="15" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
                                     </map>
                                   </option>
                                   <option name="values">
                                     <map>
-                                      <entry key="outputName" value="ic_action_time" />
+                                      <entry key="assetType" value="IMAGE" />
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\get_directions_button_orange.png" />
+                                      <entry key="outputName" value="ic_action_direction_orange" />
+                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="themeColor" value="fe6621" />
                                     </map>
                                   </option>
                                 </PersistentState>

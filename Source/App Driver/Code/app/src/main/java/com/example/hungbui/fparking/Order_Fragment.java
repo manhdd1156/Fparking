@@ -1,11 +1,7 @@
 package com.example.hungbui.fparking;
 
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
-import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -18,7 +14,8 @@ import android.widget.TextView;
 public class Order_Fragment extends Fragment {
     @Nullable
     Button buttonOrderFragment;
-    TextView textViewPrice, textViewAdress, textViewEmpty, textViewSpace, textViewTime;
+    TextView textViewPrice, textViewAdress, textViewEmpty, textViewSpace, textViewTime, directionText;
+    ImageView direction;
     private static View view;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -26,8 +23,7 @@ public class Order_Fragment extends Fragment {
         View view = inflater.inflate(R.layout.order_fragment, container, false);
 
         buttonOrderFragment = view.findViewById(R.id.buttonOrderFragment);
-
-
+         directionText = view.findViewById(R.id.textViewDirectionGrey);
         show_Information_Prking();
 
         //bat su kien onclick button "dat cho"
@@ -46,6 +42,7 @@ public class Order_Fragment extends Fragment {
                 add_license_plate.show(getFragmentManager(), "Add licens plate fragment");
             }
         });
+
         return view;
     }
 

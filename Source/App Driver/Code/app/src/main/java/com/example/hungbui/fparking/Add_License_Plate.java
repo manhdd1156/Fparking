@@ -22,6 +22,15 @@ import java.util.List;
 import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class Add_License_Plate extends DialogFragment {
+public String temp;
+
+    public Add_License_Plate() {
+
+    }
+
+    public void setTemp(String temp) {
+        this.temp = temp;
+    }
 
     Button buttonOrder;
     CarouselPicker abc;
