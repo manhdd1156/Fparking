@@ -1,0 +1,25 @@
+﻿v1.0.0 : 
+Tạo database Fparking
+
+v1.2.0 :
+- Thêm :
+	+ diver.password
+	+ bookingInfor.status
+	+ ownwerInfor.password
+- Đổi :
+	+ driver.name lên column thứ 2,driver.phoneNumber xuống column thứ 4
+	+ ownerInfor.name len column thuws 2,ownerInfor.phoneNumber xuống column thứ 3
+- Xóa :
+	+ ParkingLot ( table )
+	+ parkingInfor.parkingPriceID
+	+ parkingInfor.parkingLotID
+	+ parkingInfor.reportID
+v1.2.1 :
+- Thêm :
+	+ bookingInfor.checkinTime
+	+ bookingInfor.checkoutTime
+- Đổi :
+	+ driver.status từ String => int
+	+ parkinginfor.status từ String => int
+- Xóa :
+	
