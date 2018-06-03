@@ -14,3 +14,12 @@ v1.2.0 :
 	+ parkingInfor.parkingPriceID
 	+ parkingInfor.parkingLotID
 	+ parkingInfor.reportID
+v1.2.1 :
+- Thêm :
+	+ bookingInfor.checkinTime
+	+ bookingInfor.checkoutTime
+- Đổi :
+	+ driver.status từ String => int
+	+ parkinginfor.status từ String => int
+- Xóa :
+	
