@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
@@ -42,7 +43,7 @@ import Models.DirectionFinderListener;
 import Models.GPSTracker;
 import Models.Route;
 
-public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener {
+public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener {
 
 
     private GoogleMap mMap;
@@ -56,12 +57,14 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
     private Handler handler;
     private Runnable runnable;
-    float bearing = 0.0f;
+    float degreesBearing = 0.0f;
+    CameraPosition moveCameratoLocation;
 
     private static final String TAG = "MyLocationService";
     private static final int LOCATION_INTERVAL = 1000;
     private static final float LOCATION_DISTANCE = 10f;
     private LocationManager mLocationManager = null;
+    boolean userGesture = false;
 
     Button btnStopDirection;
 
@@ -138,6 +141,18 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
         mMap.setMyLocationEnabled(true);
 
+        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
+            @Override
+            public boolean onMyLocationButtonClick() {
+                userGesture = false;
+                callChangedLocationListener();
+                Log.e(TAG, "Location Button Action: User gestture = " + userGesture);
+                return false;
+            }
+        });
+
+        callChangedLocationListener();
+
     }
 
     //get thong tin position tu getArguments
@@ -212,96 +227,160 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
 
         // Move camera đến mylocation
-        GPSTracker gps = new GPSTracker(this);
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 18.0f));
+//        GPSTracker gps = new GPSTracker(this);
+//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 18.0f));
 
         //location moving
 
-        initializeLocationManager();
+//        initializeLocationManager();
 
 
-        try {
-            mLocationManager.requestLocationUpdates(
-                    LocationManager.PASSIVE_PROVIDER,
-                    LOCATION_INTERVAL,
-                    LOCATION_DISTANCE,
-                    mLocationListeners[0]
-            );
-        } catch (java.lang.SecurityException ex) {
-            Log.i(TAG, "fail to request location update, ignore", ex);
-        } catch (IllegalArgumentException ex) {
-            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+//        try {
+//            mLocationManager.requestLocationUpdates(
+//                    LocationManager.PASSIVE_PROVIDER,
+//                    LOCATION_INTERVAL,
+//                    LOCATION_DISTANCE,
+//                    mLocationListeners[0]
+//            );
+//        } catch (java.lang.SecurityException ex) {
+//            Log.i(TAG, "fail to request location update, ignore", ex);
+//        } catch (IllegalArgumentException ex) {
+//            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
+//        }
+    }
+
+//    private void initializeLocationManager() {
+//        Log.e(TAG, "initializeLocationManager - LOCATION_INTERVAL: " + LOCATION_INTERVAL + " LOCATION_DISTANCE: " + LOCATION_DISTANCE);
+//        if (mLocationManager == null) {
+//            mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+//        }
+//    }
+
+    public void callChangedLocationListener() {
+
+        // call listener khi thay đổi vị trí
+        mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
+
+        mLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
+
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+
+        degreesBearing = location.getBearing();
+        Toast.makeText(this, "Bearing: " + location.getBearing(),
+                Toast.LENGTH_SHORT).show();
+        moveCameratoLocation = new CameraPosition.Builder()
+                .target(new LatLng(location.getLatitude(),location.getLongitude()))
+                .zoom(18.0f)
+                .bearing(degreesBearing)
+                .tilt(0)
+                .build();
+        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(moveCameratoLocation));
+
+    }
+
+    @Override
+    public void onCameraMoveStarted(int reason) {
+        if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
+            Toast.makeText(this, "The user gestured on the map.",
+                    Toast.LENGTH_SHORT).show();
+            userGesture = true;
+//            handleStatus = false;
+            handler.removeCallbacks(runnable);
+        } else if (reason == GoogleMap.OnCameraMoveStartedListener
+                .REASON_API_ANIMATION) {
+            Toast.makeText(this, "The user tapped something on the map.",
+                    Toast.LENGTH_SHORT).show();
+        } else if (reason == GoogleMap.OnCameraMoveStartedListener
+                .REASON_DEVELOPER_ANIMATION) {
+            Toast.makeText(this, "The app moved the camera.",
+                    Toast.LENGTH_SHORT).show();
         }
     }
 
-    private void initializeLocationManager() {
-        Log.e(TAG, "initializeLocationManager - LOCATION_INTERVAL: " + LOCATION_INTERVAL + " LOCATION_DISTANCE: " + LOCATION_DISTANCE);
-        if (mLocationManager == null) {
-            mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-        }
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
     }
 
-    private class LocationListener implements android.location.LocationListener {
-        Location mLastLocation;
+    @Override
+    public void onProviderEnabled(String provider) {
 
-
-        public LocationListener(String provider) {
-            Log.e(TAG, "LocationListener " + provider);
-            mLastLocation = new Location(provider);
-        }
-
-        @Override
-        public void onLocationChanged(final Location location) {
-            Log.e(TAG, "onLocationChanged: " + location);
-
-            handler = new Handler();
-            runnable = new Runnable() {
-                @Override
-                public void run() {
-
-                    if (location.hasBearing()) {
-                        bearing = location.getBearing();
-                    }
-//                    Log.e(TAG, "bearing: " + location.hasBearing());
-
-                    mLastLocation.set(location);
-//                    mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("My place").icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)));
-
-                    CameraPosition cameraPosition = new CameraPosition.Builder()
-                            .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
-                            .zoom(18.0f)                   // Sets the zoom
-                            .bearing(bearing) // Sets the orientation of the camera to east
-                            .tilt(0)                   // Sets the tilt of the camera to 0 degrees
-                            .build();                   // Creates a CameraPosition from the builder
-                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-
-                    handler.postDelayed(this, 1000);
-                }
-            };
-
-
-            handler.postDelayed(runnable, 1000);
-        }
-
-        @Override
-        public void onProviderDisabled(String provider) {
-            Log.e(TAG, "onProviderDisabled: " + provider);
-        }
-
-        @Override
-        public void onProviderEnabled(String provider) {
-            Log.e(TAG, "onProviderEnabled: " + provider);
-        }
-
-        @Override
-        public void onStatusChanged(String provider, int status, Bundle extras) {
-            Log.e(TAG, "onStatusChanged: " + provider);
-        }
     }
 
-    LocationListener[] mLocationListeners = new LocationListener[]{
-            new LocationListener(LocationManager.PASSIVE_PROVIDER)
-    };
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
+
+    @Override
+    public void onCameraMove() {
+
+    }
+
+//    private class LocationListener implements android.location.LocationListener {
+//        Location mLastLocation;
+//
+//
+//        public LocationListener(String provider) {
+//            Log.e(TAG, "LocationListener " + provider);
+//            mLastLocation = new Location(provider);
+//        }
+//
+//        @Override
+//        public void onLocationChanged(final Location location) {
+//            Log.e(TAG, "onLocationChanged: " + location);
+//
+//            handler = new Handler();
+//            runnable = new Runnable() {
+//                @Override
+//                public void run() {
+//
+//                    if (location.hasBearing()) {
+//                        bearing = location.getBearing();
+//                    }
+////                    Log.e(TAG, "bearing: " + location.hasBearing());
+//
+//                    mLastLocation.set(location);
+////                    mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("My place").icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)));
+//
+//                    CameraPosition cameraPosition = new CameraPosition.Builder()
+//                            .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
+//                            .zoom(18.0f)                   // Sets the zoom
+//                            .bearing(bearing) // Sets the orientation of the camera to east
+//                            .tilt(0)                   // Sets the tilt of the camera to 0 degrees
+//                            .build();                   // Creates a CameraPosition from the builder
+//                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+//
+//                    handler.postDelayed(this, 1000);
+//                }
+//            };
+//
+//
+//            handler.postDelayed(runnable, 1000);
+//        }
+//
+//        @Override
+//        public void onProviderDisabled(String provider) {
+//            Log.e(TAG, "onProviderDisabled: " + provider);
+//        }
+//
+//        @Override
+//        public void onProviderEnabled(String provider) {
+//            Log.e(TAG, "onProviderEnabled: " + provider);
+//        }
+//
+//        @Override
+//        public void onStatusChanged(String provider, int status, Bundle extras) {
+//            Log.e(TAG, "onStatusChanged: " + provider);
+//        }
+//    }
+
+//    LocationListener[] mLocationListeners = new LocationListener[]{
+//            new LocationListener(LocationManager.PASSIVE_PROVIDER)
+//    };
 
 
 }
