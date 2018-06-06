@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class Add_License_Plate extends DialogFragment {
 
     Button buttonOrder;
     CarouselPicker abc;
+    Button buttonDemo;
 
     @Nullable
     @Override
@@ -58,7 +60,13 @@ public class Add_License_Plate extends DialogFragment {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
+
                 getDialog().dismiss();
+//                CheckAccount("1", "1");
+//                Intent intent = new Intent(getActivity(), OrderParking.class);
+//                intent.putExtra("Status", "1");
+//                startActivity(intent);
+
             }
         });
 
@@ -66,6 +74,7 @@ public class Add_License_Plate extends DialogFragment {
     }
 
     public void CheckAccount(String username, String password) {
+        Log.e("CheckAcount chay", "vl that");
         boolean check = false;
         try {
 
