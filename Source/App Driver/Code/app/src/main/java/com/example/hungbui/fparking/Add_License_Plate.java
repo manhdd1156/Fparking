@@ -79,8 +79,6 @@ public class Add_License_Plate extends DialogFragment {
                         // sleep the thread, whatever time you want.
                         sleep(5000);
 
-
-
                     } catch (Exception e) {
                     }
                     progDailog.dismiss();

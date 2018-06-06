@@ -119,25 +119,30 @@ public class OrderParking extends AppCompatActivity {
             if (jSonStr != null) {
                 try {
 
-                    JSONObject jsonObject = new JSONObject(jSonStr);
-                    // Getting JSON Array node
-                    JSONArray contacts = jsonObject.getJSONArray("detail_parking");
-                    // looping through All Contacts
-                    for (int i = 0; i < contacts.length(); i++) {
-                        JSONObject c = contacts.getJSONObject(i);
+                jSonStr = httpHandler.makeServiceCall("https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
+                Log.e("SQL", "https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
+                if (jSonStr != null) {
+                    try {
 
-                        address = c.getString("address");
-                        phoneNumber = c.getString("phoneNumber");
-                        price = c.getDouble("price");
-                        timeoc = c.getString("timeoc");
-                        space = c.getInt("space");
-                        parking = c.getInt("currentSpace");
-                        urlImage = c.getString("url");
-                        longitude = Double.parseDouble(c.getString("longitude"));
-                        latitude = Double.parseDouble(c.getString("latitude"));
-                    }
+                        JSONObject jsonObject = new JSONObject(jSonStr);
+                        // Getting JSON Array node
+                        JSONArray contacts = jsonObject.getJSONArray("detail_parking");
+                        // looping through All Contacts
+                        for (int i = 0; i < contacts.length(); i++) {
+                            JSONObject c = contacts.getJSONObject(i);
 
-                } catch (final JSONException e) {
+                            address = c.getString("address");
+                            //phoneNumber = c.getString("phoneNumber");
+                            price = c.getDouble("price");
+                            timeoc = c.getString("timeoc");
+                            space = c.getInt("space");
+                            parking = c.getInt("currentSpace");
+//                            urlImage = c.getString("url");
+                            longitude = Double.parseDouble(c.getString("longitude"));
+                            latitude = Double.parseDouble(c.getString("latitude"));
+                        }
+
+                    } catch (final JSONException e) {
 //                    runOnUiThread(new Runnable() {
 //                        @Override
 //                        public void run() {
@@ -147,19 +152,19 @@ public class OrderParking extends AppCompatActivity {
 //                                    .show();
 //                        }
 //                    });
-                }
-            } else {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
+                    }
+                } else {
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
 //                        Toast.makeText(getApplicationContext(),
 //                                "Couldn't get json from server. Check LogCat for possible errors!",
 //                                Toast.LENGTH_LONG)
 //                                .show();
-                    }
-                });
+                        }
+                    });
+                }
             }
-
             return null;
         }
 
