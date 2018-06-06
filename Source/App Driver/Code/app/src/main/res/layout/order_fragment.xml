@@ -215,7 +215,7 @@
         android:layout_below="@+id/imageView5"
         android:layout_marginStart="16dp"
         android:layout_marginTop="7dp"
-        app:srcCompat="@drawable/ic_action_direction" />
+        />
 
     <ImageView
         android:id="@+id/imageViewCallIconGrey"
@@ -224,7 +224,7 @@
         android:layout_alignStart="@+id/imageView7"
         android:layout_below="@+id/imageView5"
         android:layout_marginTop="12dp"
-        app:srcCompat="@drawable/ic_action_call" />
+         />
 
 
 </RelativeLayout>

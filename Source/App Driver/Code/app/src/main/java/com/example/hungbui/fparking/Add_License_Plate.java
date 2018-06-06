@@ -8,6 +8,7 @@ import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -22,7 +23,7 @@ import java.util.List;
 import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class Add_License_Plate extends DialogFragment {
-public String temp;
+    public String temp;
 
     public Add_License_Plate() {
 
@@ -34,6 +35,7 @@ public String temp;
 
     Button buttonOrder;
     CarouselPicker abc;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -41,7 +43,7 @@ public String temp;
 
         buttonOrder = view.findViewById(R.id.buttonOrderAddLicensePlate);
         abc = view.findViewById(R.id.demo1);
-        //Carousel with all text
+//        Carousel with all text
         List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
         textItems.add(new CarouselPicker.TextItem("2 chỗ",10));
         textItems.add(new CarouselPicker.TextItem("5 chỗ",10));
@@ -56,21 +58,45 @@ public String temp;
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-
-                String position = getArguments().getString("PositionParking");
-                Bundle bundlePositionpParking = new Bundle();
-                bundlePositionpParking.putString("PositionParking", position);
-
-                Confirm_Order confirm_order = new Confirm_Order();
-                confirm_order.setArguments(bundlePositionpParking);
-
-                confirm_order.show(getFragmentManager(), "dialog");
-
+                getDialog().dismiss();
             }
         });
 
         return view;
+    }
 
+    public void CheckAccount(String username, String password) {
+        Log.e("CheckAcount chay","vl that");
+        boolean check = false;
+        try {
+
+            final ProgressDialog progDailog = ProgressDialog.show(getActivity(),
+                    "Chờ bãi gửi xe xác nhận",
+                    "....vui lòng chờ trong giây lát....", true);
+            new Thread() {
+                public void run() {
+                    try {
+                        // sleep the thread, whatever time you want.
+                        sleep(5000);
+
+
+
+                    } catch (Exception e) {
+                    }
+                    progDailog.dismiss();
+                }
+            }.start();
+
+            //getting data code here
+            //getting data code here
+            //getting data code here
+            //getting data code here
+            //getting data code here
+
+        } catch (Exception e) {
+//            Log.e(LOG_TAG, e.getMessage());
+//            PopIt("CheckAccountError", e.getMessage(), "Denied");
+        }
 
     }
 

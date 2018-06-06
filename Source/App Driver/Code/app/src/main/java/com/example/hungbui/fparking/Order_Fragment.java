@@ -11,12 +11,17 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import Entity.DetailInformationParking;
+
 public class Order_Fragment extends Fragment {
     @Nullable
+
     Button buttonOrderFragment;
     TextView textViewPrice, textViewAdress, textViewEmpty, textViewSpace, textViewTime, directionText;
     ImageView direction;
     private static View view;
+
+    DetailInformationParking detailInformationParking;
 
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
 
@@ -24,19 +29,18 @@ public class Order_Fragment extends Fragment {
 
         buttonOrderFragment = view.findViewById(R.id.buttonOrderFragment);
          directionText = view.findViewById(R.id.textViewDirectionGrey);
-        show_Information_Prking();
 
         //bat su kien onclick button "dat cho"
         buttonOrderFragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
-                String position = getArguments().getString("Position");
-                Bundle bundlePositionpParking = new Bundle();
-                bundlePositionpParking.putString("PositionParking", position);
-
+//                String position = getArguments().getString("Position");
+//                Bundle bundlePositionpParking = new Bundle();
+//                bundlePositionpParking.putString("PositionParking", position);
+//
                 Add_License_Plate add_license_plate = new Add_License_Plate();
-                add_license_plate.setArguments(bundlePositionpParking);
+//                add_license_plate.setArguments(bundlePositionpParking);
 
                 //goi dialog add bien so xe
                 add_license_plate.show(getFragmentManager(), "Add licens plate fragment");
@@ -60,4 +64,6 @@ public class Order_Fragment extends Fragment {
 
 
     }
+
+
 }
