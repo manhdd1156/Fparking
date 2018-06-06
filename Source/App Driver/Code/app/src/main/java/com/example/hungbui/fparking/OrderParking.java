@@ -34,7 +34,7 @@ import com.pusher.client.channel.SubscriptionEventListener;
 
 
 public class OrderParking extends AppCompatActivity {
-
+    Button test;
     DetailInformationParking detailInformationParkings;
     Button buttonDt_Cho;
     TextView textViewEmptySpace, textViewAdress, textViewSlots, textViewSpace, textViewTime, textViewPrice, textViewIDParking, textViewName, textViewDirection, textViewCall;
@@ -58,7 +58,7 @@ public class OrderParking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oder_parking);
         getSupportActionBar().hide();
-
+        test = findViewById(R.id.testtest);
         textViewAdress = findViewById(R.id.textViewAddress);
         textViewEmptySpace = findViewById(R.id.textViewEmptySpace);
         textViewSlots = findViewById(R.id.textViewSlots);
@@ -70,6 +70,13 @@ public class OrderParking extends AppCompatActivity {
         imageViewcall = findViewById(R.id.imageViewCallIconGrey);
         imageViewdirection = findViewById(R.id.imageViewDirectionIconGrey);
         buttonDt_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
+        test.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrderParking.this, CheckOut.class);
+                startActivity(intent);
+            }
+        });
 
         imageViewcall.setEnabled(false);
         imageViewdirection.setEnabled(false);
@@ -198,7 +205,6 @@ public class OrderParking extends AppCompatActivity {
             textViewAdress.setText(address);
             textViewEmptySpace.setText(parking + "");
             textViewSlots.setText("/" + space + " chỗ");
-            textViewIDParking.setText(parkingID + "");
             textViewPrice.setText(price + "/h");
             textViewTime.setText(timeoc);
         }

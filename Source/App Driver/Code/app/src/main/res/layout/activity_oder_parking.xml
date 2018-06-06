@@ -11,11 +11,12 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="16dp">
+        tools:layout_editor_absoluteY="189dp">
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:background="@color/background">
 
 
             <ImageView
@@ -34,7 +35,7 @@
                 android:layout_height="51dp"
                 android:layout_alignParentBottom="true"
                 android:layout_centerHorizontal="true"
-                android:layout_marginBottom="11dp"
+                android:layout_marginBottom="20dp"
                 android:background="@drawable/button_selector"
                 android:text="ĐẶT CHỖ NGAY"
                 android:textColor="#FFFFFF" />
@@ -101,43 +102,11 @@
                 android:text="Thông tin chi tiết" />
 
             <ImageView
-                android:id="@+id/imageView3"
-                android:layout_width="wrap_content"
-                android:layout_height="60dp"
-                android:layout_alignParentStart="true"
-                android:layout_below="@+id/imageView4"
-                android:layout_marginTop="3dp"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/info" />
-
-            <TextView
-                android:id="@+id/textViewIDParking"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView4"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="10dp"
-                android:text="TAT001"
-                android:textColor="#c8949393"
-                android:textSize="16dp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/textViewName"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/textViewIDParking"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="5dp"
-                android:text="Bãi xe Trần Duy Hưng" />
-
-            <ImageView
                 android:id="@+id/imageView5"
                 android:layout_width="match_parent"
                 android:layout_height="52dp"
-                android:layout_alignStart="@+id/textViewEmptySpace"
-                android:layout_below="@+id/imageView3"
-                android:layout_marginStart="-29dp"
+                android:layout_alignParentStart="true"
+                android:layout_below="@+id/imageView4"
                 android:layout_marginTop="3dp"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/info" />
@@ -146,15 +115,16 @@
                 android:id="@+id/imageView6"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/textViewPrice"
-                android:layout_alignStart="@+id/buttonDat_Cho_Ngay"
+                android:layout_alignEnd="@+id/textViewEmptySpace"
+                android:layout_below="@+id/imageView4"
+                android:layout_marginTop="13dp"
                 app:srcCompat="@drawable/ic_action_money" />
 
             <TextView
                 android:id="@+id/textViewPrice"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/imageView3"
+                android:layout_below="@+id/imageView4"
                 android:layout_marginTop="20dp"
                 android:layout_toEndOf="@+id/textViewEmptySpace"
                 android:text="25.000/h" />
@@ -163,19 +133,18 @@
                 android:id="@+id/imageView7"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignTop="@+id/imageView5"
-                android:layout_marginLeft="-3dp"
-                android:layout_marginTop="10dp"
-                android:layout_toEndOf="@+id/textViewIDParking"
+                android:layout_alignEnd="@+id/textView6"
+                android:layout_below="@+id/imageView4"
+                android:layout_marginTop="13dp"
                 app:srcCompat="@drawable/ic_action_time" />
 
             <TextView
                 android:id="@+id/textViewTime"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignBottom="@+id/imageView6"
-                android:layout_alignParentEnd="true"
-                android:layout_marginEnd="35dp"
+                android:layout_below="@+id/imageView4"
+                android:layout_marginTop="20dp"
+                android:layout_toEndOf="@+id/textView6"
                 android:text="00:00 - 24:00" />
 
             <ImageView
@@ -185,54 +154,25 @@
                 android:layout_alignParentStart="true"
                 android:layout_below="@+id/imageView5"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/chiduongandcall" />
+                app:srcCompat="@drawable/direction" />
 
             <ImageView
                 android:id="@+id/imageViewCall"
                 android:layout_width="176dp"
                 android:layout_height="66dp"
                 android:layout_alignParentEnd="true"
-                android:layout_below="@+id/imageView5"
+                android:layout_alignTop="@+id/imageViewDirection"
                 android:scaleType="fitXY"
-                app:srcCompat="@drawable/chiduongandcall" />
+                app:srcCompat="@drawable/call" />
 
-            <TextView
-                android:id="@+id/textViewDirectionGrey"
+            <Button
+                android:id="@+id/testtest"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/textViewSlots"
-                android:layout_below="@+id/imageView5"
-                android:layout_marginTop="23dp"
-                android:text="Chỉ Đường"
-                android:textColor="@color/black" />
-
-            <TextView
-                android:id="@+id/textViewCallGray"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/textViewTime"
-                android:layout_alignTop="@+id/textViewDirectionGrey"
-                android:text="Liên Hệ"
-                android:textColor="@color/black" />
-
-            <ImageView
-                android:id="@+id/imageViewDirectionIconGrey"
-                android:layout_width="44dp"
-                android:layout_height="52dp"
+                android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/imageView5"
-                android:layout_marginStart="16dp"
-                android:layout_marginTop="7dp"
-                app:srcCompat="@drawable/ic_action_direction" />
-
-            <ImageView
-                android:id="@+id/imageViewCallIconGrey"
-                android:layout_width="39dp"
-                android:layout_height="40dp"
-                android:layout_alignStart="@+id/imageView7"
-                android:layout_below="@+id/imageView5"
-                android:layout_marginTop="12dp"
-                app:srcCompat="@drawable/ic_action_call" />
+                android:layout_marginBottom="110dp"
+                android:text="Button" />
         </RelativeLayout>
 
     </FrameLayout>

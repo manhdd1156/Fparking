@@ -15,6 +15,7 @@ import Entity.DetailInformationParking;
 
 public class Order_Fragment extends Fragment {
     @Nullable
+
     Button buttonOrderFragment;
     TextView textViewPrice, textViewAdress, textViewEmpty, textViewSpace, textViewTime, directionText;
     ImageView direction;
@@ -28,7 +29,6 @@ public class Order_Fragment extends Fragment {
 
         buttonOrderFragment = view.findViewById(R.id.buttonOrderFragment);
          directionText = view.findViewById(R.id.textViewDirectionGrey);
-
 
         //bat su kien onclick button "dat cho"
         buttonOrderFragment.setOnClickListener(new View.OnClickListener() {
