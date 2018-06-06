@@ -48,7 +48,6 @@ import Models.DirectionFinderListener;
 import Models.GPSTracker;
 import Models.Route;
 
-public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveStartedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,  GoogleMap.OnCameraMoveListener {
 public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveStartedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnCameraMoveListener {
 
 
@@ -112,6 +111,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
         try {
             // new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), destination[0] + "," + destination[1]).execute();
+            new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), 21.010782 + "," + 105.51865).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -236,7 +236,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
         // call listener khi thay đổi vị trí
         mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-
         mLocationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
 
     }
@@ -269,14 +268,16 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         float distance = location.distanceTo(desLocation);
         Toast.makeText(this, "Distance: " + distance,
                 Toast.LENGTH_SHORT).show();
+<<<<<<< HEAD
         if(distance <=30 && !notificationStatus){
+=======
         if (distance <= 15) {
+>>>>>>> f8f443e5a4d963da06750e22d538884a890d7225
             Intent intent = new Intent(this, HomeActivity.class);
             PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 //
 //        // Build notification
 //        // Actions are just fake
-            Notification noti  = new Notification.Builder(this)
             Notification noti = new Notification.Builder(this)
                     .setContentTitle("New mail from " + "test@gmail.com")
                     .setContentText("Subject").setSmallIcon(R.drawable.android)
