@@ -165,14 +165,6 @@
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/call" />
 
-            <Button
-                android:id="@+id/testtest"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="110dp"
-                android:text="Button" />
         </RelativeLayout>
 
     </FrameLayout>

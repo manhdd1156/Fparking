@@ -6,6 +6,7 @@ import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -35,6 +36,7 @@ public class Add_License_Plate extends DialogFragment {
 
     Button buttonOrder;
     CarouselPicker abc;
+    Button buttonDemo;
 
     @Nullable
     @Override
@@ -42,23 +44,29 @@ public class Add_License_Plate extends DialogFragment {
         final View view = inflater.inflate(R.layout.license_plate_fragment, container, false);
 
         buttonOrder = view.findViewById(R.id.buttonOrderAddLicensePlate);
-        abc = view.findViewById(R.id.demo1);
-//        Carousel with all text
-        List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
-        textItems.add(new CarouselPicker.TextItem("2 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("5 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("7 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("9 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("16 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("29 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("45 chỗ",10));
-        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(getActivity(),textItems,0);
-        abc.setAdapter(textAdapter);
+//        abc = view.findViewById(R.id.demo1);
+////        Carousel with all text
+//        List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
+//        textItems.add(new CarouselPicker.TextItem("2 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("5 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("7 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("9 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("16 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("29 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("45 chỗ",10));
+//        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(getActivity(),textItems,0);
+//        abc.setAdapter(textAdapter);
         buttonOrder.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
+
                 getDialog().dismiss();
+//                CheckAccount("1", "1");
+//                Intent intent = new Intent(getActivity(), OrderParking.class);
+//                intent.putExtra("Status", "1");
+//                startActivity(intent);
+
             }
         });
 
@@ -66,7 +74,7 @@ public class Add_License_Plate extends DialogFragment {
     }
 
     public void CheckAccount(String username, String password) {
-        Log.e("CheckAcount chay","vl that");
+        Log.e("CheckAcount chay", "vl that");
         boolean check = false;
         try {
 
@@ -78,8 +86,6 @@ public class Add_License_Plate extends DialogFragment {
                     try {
                         // sleep the thread, whatever time you want.
                         sleep(5000);
-
-
 
                     } catch (Exception e) {
                     }

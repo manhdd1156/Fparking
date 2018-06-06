@@ -45,6 +45,8 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Locale;
 import java.util.logging.Logger;
@@ -337,6 +339,7 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
             super.onPostExecute(aVoid);
             for (int i = 0; i < nearParkingInfor_List.size(); i++) {
                 LatLng m = new LatLng(nearParkingInfor_List.get(i).getLatitude(), nearParkingInfor_List.get(i).getLongitude());
+                System.out.println(nearParkingInfor_List.get(i).getLatitude() + "----" + nearParkingInfor_List.get(i).getLongitude());
                 googleMap.addMarker(new MarkerOptions().position(m).icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_AZURE)));
             }
             Log.e("Bat dau doinbackground", " Poset end execute");
