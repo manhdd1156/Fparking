@@ -8,6 +8,7 @@ import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Color;
 import android.location.Location;
@@ -48,6 +49,7 @@ import Models.GPSTracker;
 import Models.Route;
 
 public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveStartedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,  GoogleMap.OnCameraMoveListener {
+public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveStartedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnCameraMoveListener {
 
 
     private GoogleMap mMap;
@@ -71,6 +73,8 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
     boolean notificationStatus = false;
 
     Button btnStopDirection;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +111,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             return;
         }
         try {
-            new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), destination[0] + "," + destination[1]).execute();
+            // new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), destination[0] + "," + destination[1]).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -154,8 +158,8 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
     //get thong tin position tu getArguments
     public String[] get_Position_Parking() {
-        Intent intentPositionParking = getIntent();
-        String postionPakring = intentPositionParking.getStringExtra("PositionParking");
+        pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+        String postionPakring = pref.getString("positionParking", "null");
         String[] positionParking = postionPakring.substring(postionPakring.indexOf("(") + 1, postionPakring.indexOf(")")).split(",");
         return positionParking;
     }
@@ -266,12 +270,14 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         Toast.makeText(this, "Distance: " + distance,
                 Toast.LENGTH_SHORT).show();
         if(distance <=30 && !notificationStatus){
+        if (distance <= 15) {
             Intent intent = new Intent(this, HomeActivity.class);
             PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 //
 //        // Build notification
 //        // Actions are just fake
             Notification noti  = new Notification.Builder(this)
+            Notification noti = new Notification.Builder(this)
                     .setContentTitle("New mail from " + "test@gmail.com")
                     .setContentText("Subject").setSmallIcon(R.drawable.android)
                     .setAutoCancel(true)

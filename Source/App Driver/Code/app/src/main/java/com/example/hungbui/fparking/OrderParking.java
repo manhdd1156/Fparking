@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
@@ -23,6 +24,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 import Entity.DetailInformationParking;
 import Entity.NearParking;
@@ -41,7 +43,9 @@ public class OrderParking extends AppCompatActivity {
     TextView textViewEmptySpace, textViewAdress, textViewSlots, textViewSpace, textViewTime, textViewPrice, textViewIDParking, textViewName, textViewDirection, textViewCall;
     ImageView imageViewdirection, imageViewcall;
 
-    private ProgressDialog progressDialog;
+
+
+
     String address = "N/A";
     int parkingID = 0;
     String phoneNumber;
@@ -52,7 +56,8 @@ public class OrderParking extends AppCompatActivity {
     String urlImage = "";
     double latitude = 0;
     double longitude = 0;
-
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
     String check = null;
 
 
@@ -67,6 +72,7 @@ public class OrderParking extends AppCompatActivity {
         textViewPrice = findViewById(R.id.textViewPrice);
         textViewIDParking = findViewById(R.id.textViewIDParking);
         textViewName = findViewById(R.id.textViewName);
+        pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
 
         imageViewcall = findViewById(R.id.imageViewCall);
         imageViewdirection = findViewById(R.id.imageViewDirection);
@@ -74,19 +80,14 @@ public class OrderParking extends AppCompatActivity {
 
         imageViewcall.setEnabled(false);
         imageViewdirection.setEnabled(false);
+
+
         buttonDt_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Add_License_Plate add_license_plate = new Add_License_Plate();
-//                add_license_plate.show(getFragmentManager(), "Day la fragment");
-                progressDialog = ProgressDialog.show(OrderParking.this, "Chờ bãi đậu xe xác nhận",
-                        "Vui lòng chờ trong giây lát...!", true);
-//                buttonDt_Cho.setEnabled(false);
-//                imageViewcall.setEnabled(true);
-//                imageViewdirection.setEnabled(true);
-//                buttonDt_Cho.setBackgroundColor(Color.GRAY);
-//                imageViewcall.setImageResource(R.drawable.call_orange);
-//                imageViewdirection.setImageResource(R.drawable.direction_orange);
+
+                Add_License_Plate add_license_plate = new Add_License_Plate();
+                add_license_plate.show(getFragmentManager(), "Day la fragment");
 
             }
         });
@@ -126,9 +127,12 @@ public class OrderParking extends AppCompatActivity {
 
             Log.e("Bat dau doinbackground du lieu", "vl that");
 
-            Intent intent = getIntent();
-            Bundle bundlPosition = intent.getBundleExtra("BundlePosition");
-            String location = bundlPosition.getString("Position");
+//            Intent intent = getIntent();
+//            Bundle bundlPosition = intent.getBundleExtra("BundlePosition");
+//            String location = bundlPosition.getString("Position");
+
+            String location = pref.getString("positionParking","null");
+
             if (location == null || location.isEmpty()) {
                 buttonDt_Cho.setEnabled(false);
             } else {
@@ -213,7 +217,4 @@ public class OrderParking extends AppCompatActivity {
         return lat_lng;
     }
 
-public void  CountTime(){
-        Thread thread = new Thread()
-}
 }
