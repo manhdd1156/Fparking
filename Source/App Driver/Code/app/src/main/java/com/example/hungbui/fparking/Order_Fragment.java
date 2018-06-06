@@ -35,13 +35,7 @@ public class Order_Fragment extends Fragment {
             @Override
             public void onClick(View v) {
 
-//                String position = getArguments().getString("Position");
-//                Bundle bundlePositionpParking = new Bundle();
-//                bundlePositionpParking.putString("PositionParking", position);
-//
                 Add_License_Plate add_license_plate = new Add_License_Plate();
-//                add_license_plate.setArguments(bundlePositionpParking);
-
                 //goi dialog add bien so xe
                 add_license_plate.show(getFragmentManager(), "Add licens plate fragment");
             }

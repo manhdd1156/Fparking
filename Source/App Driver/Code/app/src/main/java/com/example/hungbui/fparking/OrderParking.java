@@ -6,6 +6,7 @@ import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.graphics.Bitmap;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -36,8 +37,8 @@ public class OrderParking extends AppCompatActivity {
 
     DetailInformationParking detailInformationParkings;
     Button buttonDt_Cho;
-    TextView textViewEmptySpace, textViewAdress, textViewSlots, textViewSpace, textViewTime, textViewPrice, textViewIDParking, textViewName;
-    ImageView direction;
+    TextView textViewEmptySpace, textViewAdress, textViewSlots, textViewSpace, textViewTime, textViewPrice, textViewIDParking, textViewName, textViewDirection, textViewCall;
+    ImageView imageViewdirection, imageViewcall;
 
     String address = "N/A";
     int parkingID = 0;
@@ -49,6 +50,8 @@ public class OrderParking extends AppCompatActivity {
     String urlImage = "";
     double latitude = 0;
     double longitude = 0;
+
+    String check = null;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,15 +67,39 @@ public class OrderParking extends AppCompatActivity {
         textViewIDParking = findViewById(R.id.textViewIDParking);
         textViewName = findViewById(R.id.textViewName);
 
+        imageViewcall = findViewById(R.id.imageViewCallIconGrey);
+        imageViewdirection = findViewById(R.id.imageViewDirectionIconGrey);
         buttonDt_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
 
+        imageViewcall.setEnabled(false);
+        imageViewdirection.setEnabled(false);
         buttonDt_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Add_License_Plate add_license_plate = new Add_License_Plate();
                 add_license_plate.show(getFragmentManager(), "Day la fragment");
+
             }
         });
+
+        imageViewcall.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(OrderParking.this, "Goi dien ne", Toast.LENGTH_LONG).show();
+            }
+        });
+
+        Intent intent = getIntent();
+        String check = intent.getStringExtra("Status");
+        if (check != null) {
+            buttonDt_Cho.setEnabled(false);
+            imageViewcall.setEnabled(true);
+            imageViewdirection.setEnabled(true);
+            buttonDt_Cho.setBackgroundColor(Color.GRAY);
+            imageViewcall.setImageResource(R.drawable.ic_action_call_orange);
+            imageViewdirection.setImageResource(R.drawable.ic_action_direction_orange);
+
+        }
 
         new GetDetailParking().execute();
 
@@ -105,19 +132,16 @@ public class OrderParking extends AppCompatActivity {
             Intent intent = getIntent();
             Bundle bundlPosition = intent.getBundleExtra("BundlePosition");
             String location = bundlPosition.getString("Position");
+            if (location == null || location.isEmpty()) {
+                buttonDt_Cho.setEnabled(false);
+            } else {
+                String[] latLng = getLatLng(location);
 
-            String[] latLng = getLatLng(location);
-
-            HttpHandler httpHandler = new HttpHandler();
+                HttpHandler httpHandler = new HttpHandler();
 
 //            jSonStr = httpHandler.makeServiceCall("http://192.168.119.226:8005/Fpraking/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
 //            Log.e("SQL", "http://192.168.119.226:8005/Fpraking/get_Detail_Parking.php.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
 
-
-            jSonStr = httpHandler.makeServiceCall("https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
-            Log.e("SQL", "https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
-            if (jSonStr != null) {
-                try {
 
                 jSonStr = httpHandler.makeServiceCall("https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
                 Log.e("SQL", "https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);

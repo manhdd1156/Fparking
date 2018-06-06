@@ -66,7 +66,6 @@ public class Add_License_Plate extends DialogFragment {
     }
 
     public void CheckAccount(String username, String password) {
-        Log.e("CheckAcount chay","vl that");
         boolean check = false;
         try {
 
