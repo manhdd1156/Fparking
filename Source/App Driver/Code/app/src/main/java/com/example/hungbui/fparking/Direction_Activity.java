@@ -68,6 +68,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
     private static final float LOCATION_DISTANCE = 10f;
     private LocationManager mLocationManager = null;
     boolean userGesture = false;
+    boolean notificationStatus = false;
 
     Button btnStopDirection;
 
@@ -264,7 +265,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         float distance = location.distanceTo(desLocation);
         Toast.makeText(this, "Distance: " + distance,
                 Toast.LENGTH_SHORT).show();
-        if(distance <=15){
+        if(distance <=30 && !notificationStatus){
             Intent intent = new Intent(this, HomeActivity.class);
             PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 //
