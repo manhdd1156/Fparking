@@ -4,6 +4,7 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationManager;
@@ -40,6 +41,10 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.Task;
 import com.google.android.gms.tasks.Tasks;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -73,7 +78,8 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
     Location myLocation;
 
     LocationManager mLocationManager;
-
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
     View mMapView;
 
 
@@ -133,6 +139,7 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
 
             }
         });
+
     }
 
     //add vi tri tren ban do tu data
@@ -146,11 +153,12 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
         googleMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
             @Override
             public boolean onMarkerClick(Marker marker) {
-                String position = marker.getPosition().toString();
+                pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+                editor = pref.edit();
+                editor.putString("positionParking", marker.getPosition().toString());
+                editor.commit();
+
                 Intent intent = new Intent(HomeActivity.this, OrderParking.class);
-                Bundle bundlePosition = new Bundle();
-                bundlePosition.putString("Position", position);
-                intent.putExtra("BundlePosition", bundlePosition);
                 startActivity(intent);
                 return false;
             }

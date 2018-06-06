@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.AsyncTask;
@@ -14,12 +15,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
 import com.pusher.client.channel.SubscriptionEventListener;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import Models.GPSTracker;
@@ -31,6 +34,8 @@ public class LoadFirstTime extends AppCompatActivity {
     double myLocationLat = 0;
     double myLocationLng = 0;
     Button button;
+    private SharedPreferences pref;
+    private SharedPreferences.Editor editor;
 
     public Context mContext;
 
@@ -57,6 +62,46 @@ public class LoadFirstTime extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_first_time);
 
+        pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+
+        PusherOptions options = new PusherOptions();
+        options.setCluster("ap1");
+        Pusher pusher = new Pusher("d8e15d0b0ecad0c93a5e", options);
+
+        Channel channel = pusher.subscribe("Fparking");
+
+        channel.bind("BOOKING_MANAGER", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                JSONObject jsonObjectData = null;
+
+                System.out.println(data);
+                try {
+                    jsonObjectData = new JSONObject(data);
+                    String carID = jsonObjectData.getString("carID");
+                    String message = jsonObjectData.getString("message");
+                    if (message.contains("OK")) {
+
+                        Intent intent = new Intent(LoadFirstTime.this, Direction_Activity.class);
+                        startActivity(intent);
+
+                        //Toast.makeText(LoadFirstTime.this, "dm met vl nhe. nhan duoc roi", Toast.LENGTH_LONG).show();
+                    } else if (message.contains("CANCEL")) {
+
+                    }
+
+                } catch (JSONException e) {
+//            Log.e(TAG, "Json Exception: " + e.getMessage());
+                    System.out.println("Json Exception: " + e.getMessage());
+                } catch (Exception e) {
+//            Log.e(TAG, "Exception: " + e.getMessage());
+                    System.out.println("Json Exception: " + e.getMessage());
+                }
+
+            }
+        });
+        pusher.connect();
+
 //        PusherOptions options = new PusherOptions();
 //        options.setCluster("ap1");
 //        Pusher pusher = new Pusher("d8e15d0b0ecad0c93a5e", options);
@@ -70,6 +115,8 @@ public class LoadFirstTime extends AppCompatActivity {
 //
 //            }
 //        });
+
+
 ////
 //        button = findViewById(R.id.buttonSend);
 //        button.setOnClickListener(new View.OnClickListener() {
@@ -79,7 +126,6 @@ public class LoadFirstTime extends AppCompatActivity {
 //            }
 //        });
 //        pusher.connect();
-
 
 
         GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
@@ -97,36 +143,35 @@ public class LoadFirstTime extends AppCompatActivity {
 
 
     }
-}
 
-class UpdateBookingTask extends AsyncTask<Void, Void, Boolean> {
+    class UpdateBookingTask extends AsyncTask<Void, Void, Boolean> {
 
-    boolean success = false;
+        boolean success = false;
 
-    public UpdateBookingTask() {
-    }
-
-    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    @Override
-    protected Boolean doInBackground(Void... voids) {
-        HttpHandler httpHandler = new HttpHandler();
-        try {
-            JSONObject formData = new JSONObject();
-            System.out.println(formData.toString());
-            String json = httpHandler.post("https://fparking.net/realtimeTest/driver/update_BookingInfor.php", formData.toString());
-            System.out.println(json);
-            JSONObject jsonObj = new JSONObject(json);
-
-
-        } catch (Exception ex) {
-            Log.e("Error:", ex.getMessage());
+        public UpdateBookingTask() {
         }
-        return null;
-    }
 
-    @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            HttpHandler httpHandler = new HttpHandler();
+            try {
+                JSONObject formData = new JSONObject();
+                System.out.println(formData.toString());
+                String json = httpHandler.post("https://fparking.net/realtimeTest/driver/update_BookingInfor.php", formData.toString());
+                System.out.println(json);
+                JSONObject jsonObj = new JSONObject(json);
+
+
+            } catch (Exception ex) {
+                Log.e("Error:", ex.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
 //        Intent intent = new Intent();
 //        if (success)
 //            intent.putExtra("result", "success!");
@@ -134,7 +179,6 @@ class UpdateBookingTask extends AsyncTask<Void, Void, Boolean> {
 //            intent.putExtra("result", "failed");
 //        this.activity.setResult(RESULT_OK, intent);
 //        this.activity.finish();
+        }
     }
-
-
 }

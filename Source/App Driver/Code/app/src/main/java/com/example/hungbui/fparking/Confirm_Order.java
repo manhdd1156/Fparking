@@ -14,8 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class Confirm_Order extends DialogFragment {
-    public FragmentManager fragmentManager;
-    private EditText chiduongdemo;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
