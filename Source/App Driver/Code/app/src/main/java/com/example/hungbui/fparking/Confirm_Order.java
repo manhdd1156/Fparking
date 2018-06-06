@@ -26,7 +26,7 @@ public class Confirm_Order extends DialogFragment {
         dialogConfirmOrder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                addCall_Direction_Fragmaent();
+                addCall_Direction_Fragmaent();
             }
         });
 

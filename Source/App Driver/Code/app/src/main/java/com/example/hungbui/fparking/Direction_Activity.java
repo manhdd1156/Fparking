@@ -1,7 +1,10 @@
 package com.example.hungbui.fparking;
 
 import android.Manifest;
-import android.app.Application;
+
+import android.app.Notification;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,18 +13,19 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
-import android.os.Handler;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -43,22 +47,21 @@ import Models.DirectionFinderListener;
 import Models.GPSTracker;
 import Models.Route;
 
-public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveListener, GoogleMap.OnCameraMoveStartedListener {
+public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveStartedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener,  GoogleMap.OnCameraMoveListener {
 
 
     private GoogleMap mMap;
-    private Button btnFindPath;
-    private EditText etOrigin;
-    private EditText etDestination;
+    GoogleApiClient googleApiClient;
+
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
     private ProgressDialog progressDialog;
 
-    private Handler handler;
-    private Runnable runnable;
     float degreesBearing = 0.0f;
     CameraPosition moveCameratoLocation;
+
+    Location myLocation = null;
 
     private static final String TAG = "MyLocationService";
     private static final int LOCATION_INTERVAL = 1000;
@@ -76,7 +79,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
-        sendRequest();
 
         // create and button listener Stop Direction
         btnStopDirection = (Button) findViewById(R.id.stopDirection);
@@ -87,7 +89,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
                 startActivity(intent);
             }
         });
-
+        sendRequest();
     }
 
     /**
@@ -99,16 +101,10 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
         String[] destination = get_Position_Parking();
 //        Toast.makeText(Direction_Activity.this, positionParking[0] + "----" + positionParking[1], Toast.LENGTH_LONG).show();
-
-        if (destination == null) {
-            Toast.makeText(this, "Please enter origin address!", Toast.LENGTH_SHORT).show();
-            return;
-        }
         if (destination == null) {
             Toast.makeText(this, "Please enter destination address!", Toast.LENGTH_SHORT).show();
             return;
         }
-
         try {
             new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), destination[0] + "," + destination[1]).execute();
         } catch (UnsupportedEncodingException e) {
@@ -141,6 +137,8 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
         mMap.setMyLocationEnabled(true);
 
+        mMap.setOnCameraMoveStartedListener(this);
+
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
@@ -150,8 +148,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
                 return false;
             }
         });
-
-        callChangedLocationListener();
 
     }
 
@@ -226,36 +222,11 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
         }
 
-        // Move camera đến mylocation
-//        GPSTracker gps = new GPSTracker(this);
-//        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 18.0f));
-
-        //location moving
-
-//        initializeLocationManager();
-
-
-//        try {
-//            mLocationManager.requestLocationUpdates(
-//                    LocationManager.PASSIVE_PROVIDER,
-//                    LOCATION_INTERVAL,
-//                    LOCATION_DISTANCE,
-//                    mLocationListeners[0]
-//            );
-//        } catch (java.lang.SecurityException ex) {
-//            Log.i(TAG, "fail to request location update, ignore", ex);
-//        } catch (IllegalArgumentException ex) {
-//            Log.d(TAG, "network provider does not exist, " + ex.getMessage());
-//        }
     }
 
-//    private void initializeLocationManager() {
-//        Log.e(TAG, "initializeLocationManager - LOCATION_INTERVAL: " + LOCATION_INTERVAL + " LOCATION_DISTANCE: " + LOCATION_DISTANCE);
-//        if (mLocationManager == null) {
-//            mLocationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-//        }
-//    }
-
+    /*
+    Khởi tạo Location Manager
+     */
     public void callChangedLocationListener() {
 
         // call listener khi thay đổi vị trí
@@ -265,21 +236,57 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+    /*
+    Bắt sự kiện Location của người dùng thay đổi
+     */
     @Override
     public void onLocationChanged(Location location) {
 
         degreesBearing = location.getBearing();
-        Toast.makeText(this, "Bearing: " + location.getBearing(),
-                Toast.LENGTH_SHORT).show();
-        moveCameratoLocation = new CameraPosition.Builder()
-                .target(new LatLng(location.getLatitude(),location.getLongitude()))
-                .zoom(18.0f)
-                .bearing(degreesBearing)
-                .tilt(0)
-                .build();
-        mMap.animateCamera(CameraUpdateFactory.newCameraPosition(moveCameratoLocation));
+//        Toast.makeText(this, "Bearing: " + location.getBearing(),
+//                Toast.LENGTH_SHORT).show();
+        if (!userGesture) {
+            moveCameratoLocation = new CameraPosition.Builder()
+                    .target(new LatLng(location.getLatitude(), location.getLongitude()))
+                    .zoom(18.0f)
+                    .bearing(degreesBearing)
+                    .tilt(0)
+                    .build();
+            mMap.animateCamera(CameraUpdateFactory.newCameraPosition(moveCameratoLocation));
+        }
 
+        String[] destination = get_Position_Parking();
+        Location desLocation = new Location("Điểm đến");
+
+        desLocation.setLatitude(Double.parseDouble(destination[0]));
+        desLocation.setLongitude(Double.parseDouble(destination[1]));
+
+        float distance = location.distanceTo(desLocation);
+        Toast.makeText(this, "Distance: " + distance,
+                Toast.LENGTH_SHORT).show();
+        if(distance <=15){
+            Intent intent = new Intent(this, HomeActivity.class);
+            PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
+//
+//        // Build notification
+//        // Actions are just fake
+            Notification noti  = new Notification.Builder(this)
+                    .setContentTitle("New mail from " + "test@gmail.com")
+                    .setContentText("Subject").setSmallIcon(R.drawable.android)
+                    .setAutoCancel(true)
+                    .setContentIntent(pIntent)
+                    .addAction(R.drawable.android, "Đồng ý", pIntent)
+                    .addAction(R.drawable.android, "Hủy", pIntent).build();
+            NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
+
+            notificationManager.notify(0, noti);
+        }
     }
+
+
+    /*
+    Bắt sự kiện người dùng bắt đầu di chuyển map
+     */
 
     @Override
     public void onCameraMoveStarted(int reason) {
@@ -287,8 +294,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             Toast.makeText(this, "The user gestured on the map.",
                     Toast.LENGTH_SHORT).show();
             userGesture = true;
-//            handleStatus = false;
-            handler.removeCallbacks(runnable);
         } else if (reason == GoogleMap.OnCameraMoveStartedListener
                 .REASON_API_ANIMATION) {
             Toast.makeText(this, "The user tapped something on the map.",
@@ -298,6 +303,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             Toast.makeText(this, "The app moved the camera.",
                     Toast.LENGTH_SHORT).show();
         }
+
     }
 
     @Override
@@ -315,72 +321,24 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
     }
 
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+    }
+
     @Override
     public void onCameraMove() {
 
     }
-
-//    private class LocationListener implements android.location.LocationListener {
-//        Location mLastLocation;
-//
-//
-//        public LocationListener(String provider) {
-//            Log.e(TAG, "LocationListener " + provider);
-//            mLastLocation = new Location(provider);
-//        }
-//
-//        @Override
-//        public void onLocationChanged(final Location location) {
-//            Log.e(TAG, "onLocationChanged: " + location);
-//
-//            handler = new Handler();
-//            runnable = new Runnable() {
-//                @Override
-//                public void run() {
-//
-//                    if (location.hasBearing()) {
-//                        bearing = location.getBearing();
-//                    }
-////                    Log.e(TAG, "bearing: " + location.hasBearing());
-//
-//                    mLastLocation.set(location);
-////                    mMap.addMarker(new MarkerOptions().position(new LatLng(location.getLatitude(), location.getLongitude())).title("My place").icon(BitmapDescriptorFactory.fromResource(R.drawable.my_location_icon)));
-//
-//                    CameraPosition cameraPosition = new CameraPosition.Builder()
-//                            .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
-//                            .zoom(18.0f)                   // Sets the zoom
-//                            .bearing(bearing) // Sets the orientation of the camera to east
-//                            .tilt(0)                   // Sets the tilt of the camera to 0 degrees
-//                            .build();                   // Creates a CameraPosition from the builder
-//                    mMap.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
-//
-//                    handler.postDelayed(this, 1000);
-//                }
-//            };
-//
-//
-//            handler.postDelayed(runnable, 1000);
-//        }
-//
-//        @Override
-//        public void onProviderDisabled(String provider) {
-//            Log.e(TAG, "onProviderDisabled: " + provider);
-//        }
-//
-//        @Override
-//        public void onProviderEnabled(String provider) {
-//            Log.e(TAG, "onProviderEnabled: " + provider);
-//        }
-//
-//        @Override
-//        public void onStatusChanged(String provider, int status, Bundle extras) {
-//            Log.e(TAG, "onStatusChanged: " + provider);
-//        }
-//    }
-
-//    LocationListener[] mLocationListeners = new LocationListener[]{
-//            new LocationListener(LocationManager.PASSIVE_PROVIDER)
-//    };
-
-
 }
