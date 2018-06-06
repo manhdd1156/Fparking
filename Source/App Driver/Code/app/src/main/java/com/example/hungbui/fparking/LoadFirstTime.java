@@ -37,6 +37,7 @@ public class LoadFirstTime extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
+
     public Context mContext;
 
     protected LocationManager locationManager;
@@ -61,8 +62,8 @@ public class LoadFirstTime extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_load_first_time);
-
         pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+
 
         PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
@@ -79,17 +80,19 @@ public class LoadFirstTime extends AppCompatActivity {
                 try {
                     jsonObjectData = new JSONObject(data);
                     String carID = jsonObjectData.getString("carID");
+                    String bookingID = jsonObjectData.getString("bookingID");
                     String message = jsonObjectData.getString("message");
-                    if (message.contains("OK")) {
+                    if (carID.equals("2")) {
+                        if (message.contains("OK")) {
+                            editor.putString("bookingID", bookingID);
+                            Intent intent = new Intent(LoadFirstTime.this, Direction_Activity.class);
+                            startActivity(intent);
 
-                        Intent intent = new Intent(LoadFirstTime.this, Direction_Activity.class);
-                        startActivity(intent);
+                            //Toast.makeText(LoadFirstTime.this, "dm met vl nhe. nhan duoc roi", Toast.LENGTH_LONG).show();
+                        } else if (message.contains("CANCEL")) {
 
-                        //Toast.makeText(LoadFirstTime.this, "dm met vl nhe. nhan duoc roi", Toast.LENGTH_LONG).show();
-                    } else if (message.contains("CANCEL")) {
-
+                        }
                     }
-
                 } catch (JSONException e) {
 //            Log.e(TAG, "Json Exception: " + e.getMessage());
                     System.out.println("Json Exception: " + e.getMessage());
