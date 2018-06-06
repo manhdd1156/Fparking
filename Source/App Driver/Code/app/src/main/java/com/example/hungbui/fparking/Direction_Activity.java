@@ -268,11 +268,9 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         float distance = location.distanceTo(desLocation);
         Toast.makeText(this, "Distance: " + distance,
                 Toast.LENGTH_SHORT).show();
-<<<<<<< HEAD
-        if(distance <=30 && !notificationStatus){
-=======
-        if (distance <= 15) {
->>>>>>> f8f443e5a4d963da06750e22d538884a890d7225
+
+        if (distance <= 30 && !notificationStatus) {
+            notificationStatus = true;
             Intent intent = new Intent(this, HomeActivity.class);
             PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 //
@@ -286,8 +284,9 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
                     .addAction(R.drawable.android, "Đồng ý", pIntent)
                     .addAction(R.drawable.android, "Hủy", pIntent).build();
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
-
             notificationManager.notify(0, noti);
+
+            
         }
     }
 

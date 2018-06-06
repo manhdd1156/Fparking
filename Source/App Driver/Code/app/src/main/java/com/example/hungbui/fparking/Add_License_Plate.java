@@ -120,10 +120,6 @@ public class Add_License_Plate extends DialogFragment {
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
             progressDialog.dismiss();
-                //                    public void run() {
-//                        GetData();
-//                    }
-//                });
 
         }
     }
