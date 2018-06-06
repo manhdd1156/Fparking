@@ -111,7 +111,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         }
         try {
             // new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), destination[0] + "," + destination[1]).execute();
-            new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), 21.010782 + "," + 105.51865).execute();
+            new DirectionFinder(this, +gps.getLatitude() + "," + gps.getLongitude(), destination[0] + "," + destination[1]).execute();
         } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
         }
