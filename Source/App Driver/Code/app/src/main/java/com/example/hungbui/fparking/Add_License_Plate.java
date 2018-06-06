@@ -44,18 +44,18 @@ public class Add_License_Plate extends DialogFragment {
         final View view = inflater.inflate(R.layout.license_plate_fragment, container, false);
 
         buttonOrder = view.findViewById(R.id.buttonOrderAddLicensePlate);
-        abc = view.findViewById(R.id.demo1);
-//        Carousel with all text
-        List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
-        textItems.add(new CarouselPicker.TextItem("2 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("5 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("7 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("9 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("16 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("29 chỗ",10));
-        textItems.add(new CarouselPicker.TextItem("45 chỗ",10));
-        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(getActivity(),textItems,0);
-        abc.setAdapter(textAdapter);
+//        abc = view.findViewById(R.id.demo1);
+////        Carousel with all text
+//        List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
+//        textItems.add(new CarouselPicker.TextItem("2 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("5 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("7 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("9 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("16 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("29 chỗ",10));
+//        textItems.add(new CarouselPicker.TextItem("45 chỗ",10));
+//        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(getActivity(),textItems,0);
+//        abc.setAdapter(textAdapter);
         buttonOrder.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override

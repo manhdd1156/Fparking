@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Color;
@@ -40,6 +41,7 @@ public class OrderParking extends AppCompatActivity {
     TextView textViewEmptySpace, textViewAdress, textViewSlots, textViewSpace, textViewTime, textViewPrice, textViewIDParking, textViewName, textViewDirection, textViewCall;
     ImageView imageViewdirection, imageViewcall;
 
+    private ProgressDialog progressDialog;
     String address = "N/A";
     int parkingID = 0;
     String phoneNumber;
@@ -58,7 +60,6 @@ public class OrderParking extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_oder_parking);
         getSupportActionBar().hide();
-        test = findViewById(R.id.testtest);
         textViewAdress = findViewById(R.id.textViewAddress);
         textViewEmptySpace = findViewById(R.id.textViewEmptySpace);
         textViewSlots = findViewById(R.id.textViewSlots);
@@ -67,24 +68,25 @@ public class OrderParking extends AppCompatActivity {
         textViewIDParking = findViewById(R.id.textViewIDParking);
         textViewName = findViewById(R.id.textViewName);
 
-        imageViewcall = findViewById(R.id.imageViewCallIconGrey);
-        imageViewdirection = findViewById(R.id.imageViewDirectionIconGrey);
+        imageViewcall = findViewById(R.id.imageViewCall);
+        imageViewdirection = findViewById(R.id.imageViewDirection);
         buttonDt_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
-        test.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(OrderParking.this, CheckOut.class);
-                startActivity(intent);
-            }
-        });
 
         imageViewcall.setEnabled(false);
         imageViewdirection.setEnabled(false);
         buttonDt_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Add_License_Plate add_license_plate = new Add_License_Plate();
-                add_license_plate.show(getFragmentManager(), "Day la fragment");
+//                Add_License_Plate add_license_plate = new Add_License_Plate();
+//                add_license_plate.show(getFragmentManager(), "Day la fragment");
+                progressDialog = ProgressDialog.show(OrderParking.this, "Chờ bãi đậu xe xác nhận",
+                        "Vui lòng chờ trong giây lát...!", true);
+//                buttonDt_Cho.setEnabled(false);
+//                imageViewcall.setEnabled(true);
+//                imageViewdirection.setEnabled(true);
+//                buttonDt_Cho.setBackgroundColor(Color.GRAY);
+//                imageViewcall.setImageResource(R.drawable.call_orange);
+//                imageViewdirection.setImageResource(R.drawable.direction_orange);
 
             }
         });
@@ -95,18 +97,6 @@ public class OrderParking extends AppCompatActivity {
                 Toast.makeText(OrderParking.this, "Goi dien ne", Toast.LENGTH_LONG).show();
             }
         });
-
-        Intent intent = getIntent();
-        String check = intent.getStringExtra("Status");
-        if (check != null) {
-            buttonDt_Cho.setEnabled(false);
-            imageViewcall.setEnabled(true);
-            imageViewdirection.setEnabled(true);
-            buttonDt_Cho.setBackgroundColor(Color.GRAY);
-            imageViewcall.setImageResource(R.drawable.ic_action_call_orange);
-            imageViewdirection.setImageResource(R.drawable.ic_action_direction_orange);
-
-        }
 
         new GetDetailParking().execute();
 
@@ -145,11 +135,6 @@ public class OrderParking extends AppCompatActivity {
                 String[] latLng = getLatLng(location);
 
                 HttpHandler httpHandler = new HttpHandler();
-
-//            jSonStr = httpHandler.makeServiceCall("http://192.168.119.226:8005/Fpraking/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
-//            Log.e("SQL", "http://192.168.119.226:8005/Fpraking/get_Detail_Parking.php.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
-
-
                 jSonStr = httpHandler.makeServiceCall("https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
                 Log.e("SQL", "https://fparking.net/realtimeTest/driver/get_Detail_Parking.php?latitude=" + latLng[0] + "&" + "longitude=" + latLng[1]);
                 if (jSonStr != null) {
@@ -168,7 +153,6 @@ public class OrderParking extends AppCompatActivity {
                             timeoc = c.getString("timeoc");
                             space = c.getInt("space");
                             parking = c.getInt("currentSpace");
-//                            urlImage = c.getString("url");
                             longitude = Double.parseDouble(c.getString("longitude"));
                             latitude = Double.parseDouble(c.getString("latitude"));
                         }
@@ -228,4 +212,8 @@ public class OrderParking extends AppCompatActivity {
         String[] lat_lng = location.substring(location.indexOf("(") + 1, location.indexOf(")")).split(",");
         return lat_lng;
     }
+
+public void  CountTime(){
+        Thread thread = new Thread()
+}
 }
