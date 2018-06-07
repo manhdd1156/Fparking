@@ -1,26 +1,31 @@
 package com.example.hungbui.fparking;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.DialogFragment;
-import android.app.Fragment;
-import android.app.FragmentManager;
-import android.app.FragmentTransaction;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.annotation.MainThread;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
-import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.List;
+import com.pusher.client.Pusher;
+import com.pusher.client.PusherOptions;
+import com.pusher.client.channel.Channel;
+import com.pusher.client.channel.SubscriptionEventListener;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import Service.HttpHandler;
 import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class Add_License_Plate extends DialogFragment {
@@ -37,6 +42,8 @@ public class Add_License_Plate extends DialogFragment {
     Button buttonOrder;
     CarouselPicker abc;
     Button buttonDemo;
+    private ProgressDialog progressDialog;
+    String demo = "chua qua count";
 
     @Nullable
     @Override
@@ -56,55 +63,68 @@ public class Add_License_Plate extends DialogFragment {
 //        textItems.add(new CarouselPicker.TextItem("45 chỗ",10));
 //        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(getActivity(),textItems,0);
 //        abc.setAdapter(textAdapter);
+
+
         buttonOrder.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
             public void onClick(View v) {
-
-                getDialog().dismiss();
-//                CheckAccount("1", "1");
-//                Intent intent = new Intent(getActivity(), OrderParking.class);
-//                intent.putExtra("Status", "1");
-//                startActivity(intent);
-
+                Log.e("Chay loading", "vl that");
+                AlertDialog.Builder dialogConfirmOrder = new AlertDialog.Builder(getActivity());
+                progressDialog = ProgressDialog.show(getActivity(), "Chờ bãi đậu xe xác nhận",
+                        "Vui lòng chờ trong giây lát...!", true);
+                new PushServer().execute();
+                // getDialog().dismiss();
             }
         });
-
         return view;
     }
 
-    public void CheckAccount(String username, String password) {
-        Log.e("CheckAcount chay", "vl that");
-        boolean check = false;
-        try {
+    public void GetData() {
 
-            final ProgressDialog progDailog = ProgressDialog.show(getActivity(),
-                    "Chờ bãi gửi xe xác nhận",
-                    "....vui lòng chờ trong giây lát....", true);
-            new Thread() {
-                public void run() {
-                    try {
-                        // sleep the thread, whatever time you want.
-                        sleep(5000);
-
-                    } catch (Exception e) {
-                    }
-                    progDailog.dismiss();
-                }
-            }.start();
-
-            //getting data code here
-            //getting data code here
-            //getting data code here
-            //getting data code here
-            //getting data code here
-
-        } catch (Exception e) {
-//            Log.e(LOG_TAG, e.getMessage());
-//            PopIt("CheckAccountError", e.getMessage(), "Denied");
-        }
 
     }
 
+    private boolean handleDataMessage(String json) {
+        return false;
+    }
 
+    class PushServer extends AsyncTask<Void, Void, Boolean> {
+
+        boolean success = false;
+
+        public PushServer() {
+        }
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            HttpHandler httpHandler = new HttpHandler();
+            try {
+                JSONObject formData = new JSONObject();
+                System.out.println(formData.toString());
+                formData.put("carID", "2");
+                formData.put("action", "order");
+                String json = httpHandler.post("https://fparking.net/realtimeTest/driver/booking.php", formData.toString());
+                System.out.println(json);
+//                JSONObject jsonObj = new JSONObject(json);
+
+
+            } catch (Exception ex) {
+                Log.e("Error:", ex.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progressDialog.dismiss();
+
+        }
+    }
 }
+
+
+
