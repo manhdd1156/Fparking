@@ -89,8 +89,6 @@ public class OrderParking extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                Add_License_Plate add_license_plate = new Add_License_Plate();
-                add_license_plate.show(getFragmentManager(), "Day la fragment");
 //                Add_License_Plate add_license_plate = new Add_License_Plate();
 //                add_license_plate.show(getFragmentManager(), "Day la fragment");
 
