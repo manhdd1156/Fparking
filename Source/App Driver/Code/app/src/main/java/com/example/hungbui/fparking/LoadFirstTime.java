@@ -47,7 +47,7 @@ public class LoadFirstTime extends AppCompatActivity {
         requestWindowFeature(Window.FEATURE_NO_TITLE);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN, WindowManager.LayoutParams.FLAG_FULLSCREEN);
         setContentView(R.layout.activity_load_first_time);
-<<<<<<< HEAD
+
         getSupportActionBar().hide();
         new Handler().postDelayed(new Runnable() {
             @Override
@@ -68,8 +68,6 @@ public class LoadFirstTime extends AppCompatActivity {
                 startActivity(intent);
                 finish();
             }
-        },SPLASH_TIME_OUT);
-=======
         }, SPLASH_TIME_OUT);
         pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
 
@@ -120,7 +118,7 @@ public class LoadFirstTime extends AppCompatActivity {
             public void onEvent(String channelName, String eventName, final String data) {
                 JSONObject jsonObjectData = null;
 
-                System.out.println("nhan check in:" +data);
+                System.out.println("nhan check in:" + data);
                 System.out.println("nhan check in:" + data);
                 try {
                     jsonObjectData = new JSONObject(data);
@@ -180,26 +178,8 @@ public class LoadFirstTime extends AppCompatActivity {
 //            Log.e(TAG, "Exception: " + e.getMessage());
                     System.out.println("Json Exception: " + e.getMessage());
                 }
-
             }
         });
         pusher.connect();
->>>>>>> bc4fe033b32a1f95ca024e6433ef51d52bc5d8b7
-
-
-        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-        myLocationLat = gpsTracker.getLatitude();
-        myLocationLng = gpsTracker.getLongitude();
-
-        Intent intent = new Intent(LoadFirstTime.this, HomeActivity.class);
-        double[] locaton;
-        locaton = new double[2];
-        locaton[0] = myLocationLat;
-        locaton[1] = myLocationLng;
-        Log.e("Ahihi", myLocationLat + "" + myLocationLng);
-        intent.putExtra("Location", locaton);
-        startActivity(intent);
-
-
     }
 }
