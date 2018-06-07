@@ -72,6 +72,7 @@ public class LoadFirstTime extends AppCompatActivity {
         Channel channel = pusher.subscribe("Fparking");
 
         channel.bind("BOOKING_MANAGER", new SubscriptionEventListener() {
+        channel.bind("ORDER_FOR_BOOKING", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
                 JSONObject jsonObjectData = null;
@@ -84,6 +85,7 @@ public class LoadFirstTime extends AppCompatActivity {
                     String message = jsonObjectData.getString("message");
                     if (carID.equals("2")) {
                         if (message.contains("OK")) {
+                            editor = pref.edit();
                             editor.putString("bookingID", bookingID);
                             Intent intent = new Intent(LoadFirstTime.this, Direction_Activity.class);
                             startActivity(intent);
