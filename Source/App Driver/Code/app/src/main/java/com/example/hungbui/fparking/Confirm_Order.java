@@ -14,35 +14,32 @@ import android.widget.Button;
 import android.widget.EditText;
 
 public class Confirm_Order extends DialogFragment {
-    public FragmentManager fragmentManager;
-    private EditText chiduongdemo;
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
 
         AlertDialog.Builder dialogConfirmOrder = new AlertDialog.Builder(getActivity());
-        dialogConfirmOrder.setTitle("Xác nhận");
-        dialogConfirmOrder.setMessage("Bạn có muốn đặt chỗ đỗ?");
+        dialogConfirmOrder.setTitle("Thông báo");
+        dialogConfirmOrder.setMessage("Yêu cầu đặt chỗ không được chấp nhận");
 
-        dialogConfirmOrder.setPositiveButton("Có", new DialogInterface.OnClickListener() {
+        dialogConfirmOrder.setPositiveButton("Thoát", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialog, int which) {
-//                addCall_Direction_Fragmaent();
+                addCall_Direction_Fragmaent();
             }
         });
 
-        dialogConfirmOrder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-
-            }
-        });
+//        dialogConfirmOrder.setNegativeButton("Không", new DialogInterface.OnClickListener() {
+//            @Override
+//            public void onClick(DialogInterface dialog, int which) {
+//
+//            }
+//        });
 
         Dialog dialogConfirm = dialogConfirmOrder.create();
         return dialogConfirm;
     }
 
     private void show() {
-
     }
 
     private void addCall_Direction_Fragmaent() {

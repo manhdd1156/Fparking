@@ -37,7 +37,7 @@
             android:value="@string/google_maps_key" />
 
         <activity
-            android:name=".HomeActivity"
+            android:name=".LoadFirstTime"
             android:label="@string/title_activity_home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -48,7 +48,9 @@
         <activity android:name=".OrderParking" />
         <activity
             android:name=".Direction_Activity"
-            android:label="@string/title_activity_direction_"></activity>
+            android:label="@string/title_activity_direction_" />
+        <activity android:name=".HomeActivity" />
+        <activity android:name=".CheckOut"></activity>
     </application>
 
 </manifest>
