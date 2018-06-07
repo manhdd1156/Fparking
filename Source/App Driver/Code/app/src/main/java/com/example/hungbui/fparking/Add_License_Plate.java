@@ -105,6 +105,7 @@ public class Add_License_Plate extends DialogFragment {
                 JSONObject formData = new JSONObject();
                 System.out.println(formData.toString());
                 formData.put("carID", "2");
+                formData.put("action", "order");
                 String json = httpHandler.post("https://fparking.net/realtimeTest/driver/booking.php", formData.toString());
                 System.out.println(json);
 //                JSONObject jsonObj = new JSONObject(json);

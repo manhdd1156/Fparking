@@ -71,12 +71,12 @@ public class LoadFirstTime extends AppCompatActivity {
 
         Channel channel = pusher.subscribe("Fparking");
 
-        channel.bind("BOOKING_MANAGER", new SubscriptionEventListener() {
+        channel.bind("ORDER_FOR_BOOKING", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
                 JSONObject jsonObjectData = null;
 
-                System.out.println(data);
+                System.out.println("nhan order:" + data);
                 try {
                     jsonObjectData = new JSONObject(data);
                     String carID = jsonObjectData.getString("carID");
@@ -84,7 +84,9 @@ public class LoadFirstTime extends AppCompatActivity {
                     String message = jsonObjectData.getString("message");
                     if (carID.equals("2")) {
                         if (message.contains("OK")) {
+                            editor = pref.edit();
                             editor.putString("bookingID", bookingID);
+                            editor.commit();
                             Intent intent = new Intent(LoadFirstTime.this, Direction_Activity.class);
                             startActivity(intent);
 
@@ -103,7 +105,76 @@ public class LoadFirstTime extends AppCompatActivity {
 
             }
         });
+
+        channel.bind("CHECKIN_FOR_BOOKING", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                JSONObject jsonObjectData = null;
+
+                System.out.println("nhan check in:" +data);
+                try {
+                    jsonObjectData = new JSONObject(data);
+                    String carID = jsonObjectData.getString("carID");
+                    String bookingID = jsonObjectData.getString("bookingID");
+                    String message = jsonObjectData.getString("message");
+                    if (carID.equals("2")) {
+                        if (message.contains("OK")) {
+                            editor = pref.edit();
+                            editor.putString("bookingID", bookingID);
+                            Intent intent = new Intent(LoadFirstTime.this, CheckOut.class);
+                            startActivity(intent);
+
+                            //Toast.makeText(LoadFirstTime.this, "dm met vl nhe. nhan duoc roi", Toast.LENGTH_LONG).show();
+                        } else if (message.contains("CANCEL")) {
+
+                        }
+                    }
+                } catch (JSONException e) {
+//            Log.e(TAG, "Json Exception: " + e.getMessage());
+                    System.out.println("Json Exception: " + e.getMessage());
+                } catch (Exception e) {
+//            Log.e(TAG, "Exception: " + e.getMessage());
+                    System.out.println("Json Exception: " + e.getMessage());
+                }
+
+            }
+        });
+
+        channel.bind("CHECKOUT_FOR_BOOKING", new SubscriptionEventListener() {
+            @Override
+            public void onEvent(String channelName, String eventName, final String data) {
+                JSONObject jsonObjectData = null;
+
+                System.out.println(data);
+                try {
+                    jsonObjectData = new JSONObject(data);
+                    String carID = jsonObjectData.getString("carID");
+                    String bookingID = jsonObjectData.getString("bookingID");
+                    String message = jsonObjectData.getString("message");
+                    if (carID.equals("2")) {
+                        if (message.contains("OK")) {
+                            editor = pref.edit();
+                            editor.putString("bookingID", bookingID);
+                            Intent intent = new Intent(LoadFirstTime.this, HomeActivity.class);
+                            startActivity(intent);
+
+                            //Toast.makeText(LoadFirstTime.this, "dm met vl nhe. nhan duoc roi", Toast.LENGTH_LONG).show();
+                        } else if (message.contains("CANCEL")) {
+
+                        }
+                    }
+                } catch (JSONException e) {
+//            Log.e(TAG, "Json Exception: " + e.getMessage());
+                    System.out.println("Json Exception: " + e.getMessage());
+                } catch (Exception e) {
+//            Log.e(TAG, "Exception: " + e.getMessage());
+                    System.out.println("Json Exception: " + e.getMessage());
+                }
+
+            }
+        });
         pusher.connect();
+
 
 //        PusherOptions options = new PusherOptions();
 //        options.setCluster("ap1");
