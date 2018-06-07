@@ -181,5 +181,6 @@ public class LoadFirstTime extends AppCompatActivity {
             }
         });
         pusher.connect();
+        System.out.println("ahihi");
     }
 }
