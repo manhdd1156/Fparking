@@ -37,27 +37,6 @@ public class LoadFirstTime extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
 
-
-    public Context mContext;
-
-    protected LocationManager locationManager;
-
-    // flag for GPS status
-    boolean isGPSEnabled = false;
-
-    // flag for network status
-    boolean isNetworkEnabled = false;
-
-    // flag for GPS status
-    boolean canGetLocation = false;
-
-    public LoadFirstTime(Context mContext) {
-        this.mContext = mContext;
-    }
-
-    public LoadFirstTime() {
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +50,6 @@ public class LoadFirstTime extends AppCompatActivity {
 
         Channel channel = pusher.subscribe("Fparking");
 
-        channel.bind("BOOKING_MANAGER", new SubscriptionEventListener() {
         channel.bind("ORDER_FOR_BOOKING", new SubscriptionEventListener() {
             @Override
             public void onEvent(String channelName, String eventName, final String data) {
@@ -107,32 +85,6 @@ public class LoadFirstTime extends AppCompatActivity {
         });
         pusher.connect();
 
-//        PusherOptions options = new PusherOptions();
-//        options.setCluster("ap1");
-//        Pusher pusher = new Pusher("d8e15d0b0ecad0c93a5e", options);
-//
-//        Channel channel = pusher.subscribe("Fparking");
-//
-//        channel.bind("BOOKING_MANAGER", new SubscriptionEventListener() {
-//            @Override
-//            public void onEvent(String channelName, String eventName, final String data) {
-//                System.out.println("data : " + data);
-//
-//            }
-//        });
-
-
-////
-//        button = findViewById(R.id.buttonSend);
-//        button.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                new UpdateBookingTask().execute();
-//            }
-//        });
-//        pusher.connect();
-
-
         GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
         myLocationLat = gpsTracker.getLatitude();
         myLocationLng = gpsTracker.getLongitude();
@@ -147,43 +99,5 @@ public class LoadFirstTime extends AppCompatActivity {
         startActivity(intent);
 
 
-    }
-
-    class UpdateBookingTask extends AsyncTask<Void, Void, Boolean> {
-
-        boolean success = false;
-
-        public UpdateBookingTask() {
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-            HttpHandler httpHandler = new HttpHandler();
-            try {
-                JSONObject formData = new JSONObject();
-                System.out.println(formData.toString());
-                String json = httpHandler.post("https://fparking.net/realtimeTest/driver/update_BookingInfor.php", formData.toString());
-                System.out.println(json);
-                JSONObject jsonObj = new JSONObject(json);
-
-
-            } catch (Exception ex) {
-                Log.e("Error:", ex.getMessage());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-//        Intent intent = new Intent();
-//        if (success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
-        }
     }
 }
