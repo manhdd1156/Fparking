@@ -215,5 +215,6 @@ public class OrderParking extends AppCompatActivity {
 
 public void  CountTime(){
         Thread thread = new Thread()
+        Thread thread = new Thread();
 }
 }
