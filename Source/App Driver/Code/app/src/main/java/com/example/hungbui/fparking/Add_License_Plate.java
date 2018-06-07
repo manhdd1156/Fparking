@@ -75,6 +75,7 @@ public class Add_License_Plate extends DialogFragment {
                         "Vui lòng chờ trong giây lát...!", true);
                 new PushServer().execute();
                 // getDialog().dismiss();
+
             }
         });
         return view;
