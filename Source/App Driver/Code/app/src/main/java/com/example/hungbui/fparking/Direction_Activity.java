@@ -8,6 +8,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -95,6 +96,41 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         sendRequest();
 
         btnStopDirection = (Button) findViewById(R.id.stopDirection);
+        btnStopDirection.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int choice) {
+                        switch (choice) {
+                            case DialogInterface.BUTTON_POSITIVE:
+                                pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+                                String bookingID = pref.getString("bookingID", "null");
+                                if (bookingID != null) {
+//                        Log.e("Chay loading", "vl that");
+                                    progressDialog = ProgressDialog.show(Direction_Activity.this, "Chờ bãi đậu xe xác nhận",
+                                            "Vui lòng chờ trong giây lát...!", true);
+                                    new PushServer(bookingID).execute();
+                                }
+
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+                                break;
+                        }
+
+                    }
+                };
+
+                android.support.v7.app.AlertDialog.Builder builder = new android.support.v7.app.AlertDialog.Builder(Direction_Activity.this);
+                try {
+                    builder.setMessage("Bạn có đồng ý check in vào bãi không")
+                            .setPositiveButton("Có", dialogClickListener)
+                            .setNegativeButton("Không", dialogClickListener).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 
     /**
@@ -381,6 +417,7 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             HttpHandler httpHandler = new HttpHandler();
             try {
                 Log.e("checn in booking",bookingID);
+                Log.e("checn in booking", bookingID);
                 JSONObject formData = new JSONObject();
                 System.out.println(formData.toString());
                 formData.put("bookingID", bookingID);
