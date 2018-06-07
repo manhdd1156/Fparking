@@ -88,6 +88,8 @@ public class OrderParking extends AppCompatActivity {
         buttonDt_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressDialog = ProgressDialog.show(OrderParking.this, "Chờ bãi đậu xe xác nhận",
+                        "Vui lòng chờ trong giây lát...!", true);
 
 //                Add_License_Plate add_license_plate = new Add_License_Plate();
 //                add_license_plate.show(getFragmentManager(), "Day la fragment");

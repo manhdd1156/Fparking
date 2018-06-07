@@ -2,6 +2,7 @@ package com.example.hungbui.fparking;
 
 import android.Manifest;
 
+import android.app.AlertDialog;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -14,8 +15,11 @@ import android.graphics.Color;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.AsyncTask;
+import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -39,6 +43,8 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import org.json.JSONObject;
+
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +53,7 @@ import Models.DirectionFinder;
 import Models.DirectionFinderListener;
 import Models.GPSTracker;
 import Models.Route;
+import Service.HttpHandler;
 
 public class Direction_Activity extends AppCompatActivity implements OnMapReadyCallback, DirectionFinderListener, LocationListener, GoogleMap.OnCameraMoveStartedListener, GoogleApiClient.ConnectionCallbacks, GoogleApiClient.OnConnectionFailedListener, GoogleMap.OnCameraMoveListener {
 
@@ -84,16 +91,10 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        // create and button listener Stop Direction
-        btnStopDirection = (Button) findViewById(R.id.stopDirection);
-        btnStopDirection.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Direction_Activity.this, HomeActivity.class);
-                startActivity(intent);
-            }
-        });
+        pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
         sendRequest();
+
+        btnStopDirection = (Button) findViewById(R.id.stopDirection);
     }
 
     /**
@@ -158,7 +159,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
     //get thong tin position tu getArguments
     public String[] get_Position_Parking() {
-        pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
         String postionPakring = pref.getString("positionParking", "null");
         String[] positionParking = postionPakring.substring(postionPakring.indexOf("(") + 1, postionPakring.indexOf(")")).split(",");
         return positionParking;
@@ -269,16 +269,16 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
         Toast.makeText(this, "Distance: " + distance,
                 Toast.LENGTH_SHORT).show();
 
-        if (distance <= 30 && !notificationStatus) {
+        if (distance <= 200 && !notificationStatus) {
             notificationStatus = true;
-            Intent intent = new Intent(this, HomeActivity.class);
+            Intent intent = new Intent(this, Direction_Activity.class);
             PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, 0);
 //
 //        // Build notification
 //        // Actions are just fake
             Notification noti = new Notification.Builder(this)
-                    .setContentTitle("New mail from " + "test@gmail.com")
-                    .setContentText("Subject").setSmallIcon(R.drawable.android)
+                    .setContentTitle("Fparking")
+                    .setContentText("Xe đã đên điểm đỗ, vui lòng check in").setSmallIcon(R.drawable.android)
                     .setAutoCancel(true)
                     .setContentIntent(pIntent)
                     .addAction(R.drawable.android, "Đồng ý", pIntent)
@@ -286,7 +286,22 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0, noti);
 
-            
+            // create and button listener Stop Direction
+            btnStopDirection = (Button) findViewById(R.id.stopDirection);
+            btnStopDirection.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+//                    String postionPakring = pref.getString("positionParking", "null");
+                    String bookingID = pref.getString("bookingID", "null");
+                    if(bookingID!=null){
+//                        Log.e("Chay loading", "vl that");
+                        progressDialog = ProgressDialog.show(Direction_Activity.this, "Chờ bãi đậu xe xác nhận",
+                                "Vui lòng chờ trong giây lát...!", true);
+                        new PushServer(bookingID).execute();
+                    }
+                }
+            });
         }
     }
 
@@ -347,5 +362,47 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
     @Override
     public void onCameraMove() {
 
+    }
+
+    class PushServer extends AsyncTask<Void, Void, Boolean> {
+
+        boolean success = false;
+        String bookingID;
+
+        public PushServer(String bookingID) {
+            this.bookingID = bookingID;
+        }
+
+
+        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+
+            HttpHandler httpHandler = new HttpHandler();
+            try {
+                Log.e("checn in booking",bookingID);
+                JSONObject formData = new JSONObject();
+                System.out.println(formData.toString());
+                formData.put("bookingID", bookingID);
+                formData.put("carID", "2");
+                formData.put("licensePlate", "34X2-32242");
+                formData.put("action", "checkin");
+                String json = httpHandler.post("https://fparking.net/realtimeTest/driver/booking.php", formData.toString());
+                System.out.println(json);
+//                JSONObject jsonObj = new JSONObject(json);
+
+
+            } catch (Exception ex) {
+                Log.e("Error:", ex.getMessage());
+            }
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean aBoolean) {
+            super.onPostExecute(aBoolean);
+            progressDialog.dismiss();
+
+        }
     }
 }
