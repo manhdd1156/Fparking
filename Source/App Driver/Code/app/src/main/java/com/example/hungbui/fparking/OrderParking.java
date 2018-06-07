@@ -136,7 +136,6 @@ public class OrderParking extends AppCompatActivity {
 //            Bundle bundlPosition = intent.getBundleExtra("BundlePosition");
 //            String location = bundlPosition.getString("Position");
 
-            String location = pref.getString("positionParking","null");
             String location = pref.getString("positionParking", "null");
 
             if (location == null || location.isEmpty()) {
