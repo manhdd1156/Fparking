@@ -322,22 +322,22 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             NotificationManager notificationManager = (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
             notificationManager.notify(0, noti);
 
-            // create and button listener Stop Direction
-            btnStopDirection = (Button) findViewById(R.id.stopDirection);
-            btnStopDirection.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
-//                    String postionPakring = pref.getString("positionParking", "null");
-                    String bookingID = pref.getString("bookingID", "null");
-                    if(bookingID!=null){
-//                        Log.e("Chay loading", "vl that");
-                        progressDialog = ProgressDialog.show(Direction_Activity.this, "Chờ bãi đậu xe xác nhận",
-                                "Vui lòng chờ trong giây lát...!", true);
-                        new PushServer(bookingID).execute();
-                    }
-                }
-            });
+//            // create and button listener Stop Direction
+//            btnStopDirection = (Button) findViewById(R.id.stopDirection);
+//            btnStopDirection.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
+////                    String postionPakring = pref.getString("positionParking", "null");
+//                    String bookingID = pref.getString("bookingID", "null");
+//                    if (bookingID != null) {
+////                        Log.e("Chay loading", "vl that");
+//                        progressDialog = ProgressDialog.show(Direction_Activity.this, "Chờ bãi đậu xe xác nhận",
+//                                "Vui lòng chờ trong giây lát...!", true);
+//                        new PushServer(bookingID).execute();
+//                    }
+//                }
+//            });
         }
     }
 
@@ -416,7 +416,6 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
 
             HttpHandler httpHandler = new HttpHandler();
             try {
-                Log.e("checn in booking",bookingID);
                 Log.e("checn in booking", bookingID);
                 JSONObject formData = new JSONObject();
                 System.out.println(formData.toString());
