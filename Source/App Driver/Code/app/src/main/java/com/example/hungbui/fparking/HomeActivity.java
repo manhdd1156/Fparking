@@ -188,9 +188,6 @@ public class HomeActivity extends FragmentActivity implements OnMapReadyCallback
                 return false;
             }
         });
-        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-        googleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gpsTracker.getLatitude(),gpsTracker.getLongitude()), 15));
-
         googleMap.setOnCameraMoveStartedListener(this);
         callChangedLocationListener();
     }
