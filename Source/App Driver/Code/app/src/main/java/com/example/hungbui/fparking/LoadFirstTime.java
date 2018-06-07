@@ -33,6 +33,7 @@ import Service.HttpHandler;
 
 public class LoadFirstTime extends AppCompatActivity {
 
+    private static int SPLASH_TIME_OUT = 4000;
     Location myLocation = null;
     double myLocationLat = 0;
     double myLocationLng = 0;
@@ -53,10 +54,23 @@ public class LoadFirstTime extends AppCompatActivity {
             public void run() {
                 Intent homeIntent = new Intent(LoadFirstTime.this, HomeActivity.class);
                 startActivity(homeIntent);
+                GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+                myLocationLat = gpsTracker.getLatitude();
+                myLocationLng = gpsTracker.getLongitude();
+
+                Intent intent = new Intent(LoadFirstTime.this, HomeActivity.class);
+                double[] locaton;
+                locaton = new double[2];
+                locaton[0] = myLocationLat;
+                locaton[1] = myLocationLng;
+                Log.e("Ahihi", myLocationLat + "" + myLocationLng);
+                intent.putExtra("Location", locaton);
+                startActivity(intent);
                 finish();
             }
         },SPLASH_TIME_OUT);
 =======
+        }, SPLASH_TIME_OUT);
         pref = getApplicationContext().getSharedPreferences("positionParking", 0);// 0 - là chế độ private
 
 
@@ -107,6 +121,7 @@ public class LoadFirstTime extends AppCompatActivity {
                 JSONObject jsonObjectData = null;
 
                 System.out.println("nhan check in:" +data);
+                System.out.println("nhan check in:" + data);
                 try {
                     jsonObjectData = new JSONObject(data);
                     String carID = jsonObjectData.getString("carID");

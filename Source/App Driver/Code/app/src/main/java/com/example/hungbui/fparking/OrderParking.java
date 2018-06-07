@@ -241,6 +241,7 @@ public class OrderParking extends AppCompatActivity {
                 System.out.println(formData.toString());
                 formData.put("carID", "2");
 
+                formData.put("action", "order");
                 String json = httpHandler.post("https://fparking.net/realtimeTest/driver/booking.php", formData.toString());
                 System.out.println(json);
             } catch (Exception ex) {
