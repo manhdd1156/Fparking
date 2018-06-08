@@ -262,7 +262,7 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
         protected Boolean doInBackground(Void... voids) {
             HttpHandler httpHandler = new HttpHandler();
             try {
-                String json = httpHandler.get(Constants.API_URL + "parking/get.php?ownerPhoneNumber=" + getPhone());
+                String json = httpHandler.get(Constants.API_URL + "parking/get.php?ownerPhoneNumber=" + getPhone().replace("+84","0"));
                 JSONObject jsonObj = new JSONObject(json);
                 JSONArray parkings = jsonObj.getJSONArray("parkingInfor");
                 oneParking = parkings.getJSONObject(0);
@@ -274,7 +274,8 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
                 editor.commit();
                 setText(tvAddress, address);
                 totalSpace = space;
-                tvSpace.setText(currentSpace + "/" + space);
+                setText(tvSpace,currentSpace + "/" + space);
+//                tvSpace.setText(currentSpace + "/" + space);
 //                json = httpHandler.get(Constants.API_URL + "booking/get_countBookingInfor.php?parkingID=" + parkingID);
 //                jsonObj = new JSONObject(json);
 //                JSONArray bookingInfors = jsonObj.getJSONArray("numberCarInParking");
@@ -289,7 +290,7 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
-            new GetBookingTask(pref.getString("parkingID","null")).execute((Void) null);
+            new GetBookingTask(pref.getInt("parkingID",0)+"").execute((Void) null);
 //            new ManagerBookingTask("get", getApplicationContext(), getWindow().getDecorView().getRootView(), parkingID, MainActivity.this, lv, null);
         }
     }
@@ -300,7 +301,6 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
         private final List<HashMap<String, String>> lstBookings;
         private JSONObject oneBooking;
         private Activity activity;
-        private ListView lv;
 //        private View view;
 
         public GetBookingTask(String txtSearch) {
@@ -309,14 +309,13 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
 //            activity = (Activity) container;
             lstBookings = new ArrayList<>();
 //            this.view = view;
-//            this.lv = lv;
-            pdLoading = new ProgressDialog(MainActivity.this);
+
         }
 
         @Override
         protected void onPreExecute() {
             super.onPreExecute();
-
+            pdLoading = new ProgressDialog(MainActivity.this);
             //this method will be running on UI thread
             pdLoading.setMessage("\tĐợi xíu...");
             pdLoading.setCancelable(false);
@@ -345,7 +344,7 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
                     String checkoutTime = oneBooking.getString("checkoutTime");
 
                     String price = oneBooking.getString("price");
-                    BookingDTO b = new BookingDTO(Integer.parseInt(bookingID),Integer.parseInt(parkingID),0,status,checkinTime,checkoutTime,licensePlate,type,Double.parseDouble(price));
+                    BookingDTO b = new BookingDTO(Integer.parseInt(bookingID),Integer.parseInt(txtSearch),0,status,checkinTime,checkoutTime,licensePlate,type,Double.parseDouble(price));
                     list.add(b);
                 }
                 return list;
@@ -371,21 +370,35 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
     class SearchBookingTask extends AsyncTask<Void, Void, Boolean> {
 
         private JSONObject oneBooking;
+//        ProgressDialog pdLoading;
+        String txtSearch, action;
 
-        String txtSearch, bookingID, carID, action;
 
-        @Override
-        protected void onPreExecute() {
-            super.onPreExecute();
-
-        }
 
         public SearchBookingTask(String txtSearch, String action) {
+
+
             this.txtSearch = txtSearch;
             this.action = action;
         }
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+//            runOnUiThread(new Runnable() {
+//
+//                @Override
+//                public void run() {
+//                    pdLoading = new ProgressDialog(MainActivity.this);
+//                    //this method will be running on UI thread
+//                    pdLoading.setMessage("\tĐợi xíu...");
+//                    pdLoading.setCancelable(false);
+//                    pdLoading.show();
+//                    // Stuff that updates the UI
+//
+//                }
+//            });
 
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+        }
         @Override
         protected Boolean doInBackground(Void... voids) {
             HttpHandler httpHandler = new HttpHandler();
@@ -428,24 +441,25 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
 
 
                 }
-
             } catch (Exception ex) {
-                Log.e("Error search :", ex.getMessage());
+                Log.e("Error managerBooking:", ex.getMessage());
             }
             return null;
         }
+//        }
 
         @Override
         protected void onPostExecute(Boolean aBoolean) {
             super.onPostExecute(aBoolean);
+//            pdLoading.dismiss();
             if (action.contains("order")) {
-                createNotification("Có Xe : " + pref.getInt("bookingID",0) + "muốn đặt chỗ");
+                createNotification("Có Xe : " + pref.getString("licensePlate","") + "muốn đặt chỗ");
                 createDialog("order");
             } else if (action.contains("checkin")) {
-                createNotification("Xe " + pref.getInt("bookingID",0) + " đã đến và muốn vào bãi");
+                createNotification("Xe " + pref.getString("licensePlate","") + " đã đến và muốn vào bãi");
                 createDialog("checkin");
             } else if (action.contains("checkout")) {
-                createNotification("Xe " + pref.getInt("bookingID",0) + " muốn thanh toán");
+                createNotification("Xe " + pref.getString("licensePlate","") + " muốn thanh toán");
                 createDialog("checkout");
 
 

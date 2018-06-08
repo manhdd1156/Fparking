@@ -312,7 +312,7 @@ class UpdateBookingTask extends AsyncTask<Void, Void, Boolean> {
             }
 
         } catch (Exception ex) {
-            Log.e("Error:", ex.getMessage());
+            Log.e("Error up manager:", ex.getMessage());
         }
         return null;
     }
