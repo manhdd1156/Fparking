@@ -2,7 +2,9 @@ package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 /**
@@ -10,12 +12,13 @@ import java.util.List;
  * 
  */
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Owner.findAll", query="SELECT o FROM Owner o")
 public class Owner implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
 	private String address;
@@ -23,11 +26,6 @@ public class Owner implements Serializable {
 	private String name;
 
 	private String phone;
-//
-//	//bi-directional many-to-one association to Parking
-//	@OneToMany(mappedBy="owner")
-//	private List<Parking> parkings;
-
 	public Owner() {
 	}
 
@@ -62,27 +60,4 @@ public class Owner implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-//
-//	public List<Parking> getParkings() {
-//		return this.parkings;
-//	}
-//
-//	public void setParkings(List<Parking> parkings) {
-//		this.parkings = parkings;
-//	}
-//
-//	public Parking addParking(Parking parking) {
-//		getParkings().add(parking);
-//		parking.setOwner(this);
-//
-//		return parking;
-//	}
-//
-//	public Parking removeParking(Parking parking) {
-//		getParkings().remove(parking);
-//		parking.setOwner(null);
-//
-//		return parking;
-//	}
-
 }

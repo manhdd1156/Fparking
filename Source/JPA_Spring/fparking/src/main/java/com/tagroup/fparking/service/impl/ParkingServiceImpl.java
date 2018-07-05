@@ -18,7 +18,6 @@ private ParkingRepository parkingRepository;
 		return parkingRepository.findAll();
 		
 	}
-
 	@Override
 	public Parking getById(Long id) {
 		// TODO Auto-generated method stub

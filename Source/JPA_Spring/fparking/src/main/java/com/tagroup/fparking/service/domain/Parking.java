@@ -2,7 +2,9 @@ package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 
 
 /**
@@ -10,20 +12,21 @@ import java.util.List;
  * 
  */
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Parking.findAll", query="SELECT p FROM Parking p")
 public class Parking implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
-	private int id;
-
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Long id;
+	
 	private String address;
 
 	private int currentspace;
 
 	private double deposits;
-
+	@Lob
 	private String image;
 
 	private String latitude;
@@ -35,36 +38,19 @@ public class Parking implements Serializable {
 	private String timeoc;
 
 	private int totalspace;
-//
-//	//bi-directional many-to-one association to Booking
-//	@OneToMany(mappedBy="parking")
-//	private List<Booking> bookings;
-//
-//	//bi-directional many-to-one association to Fine
-//	@OneToMany(mappedBy="parking")
-//	private List<Fine> fines;
-//
-//	//bi-directional many-to-one association to Owner
-//	@ManyToOne
-//	@JoinColumn(name = "owner_id")
-//	private Owner owner;
-//
-//	//bi-directional many-to-one association to Staff
-//	@OneToMany(mappedBy="parking")
-//	private List<Staff> staffs;
-//
-//	//bi-directional many-to-one association to Tariff
-//	@OneToMany(mappedBy="parking")
-//	private List<Tariff> tariffs;
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "owner_id", referencedColumnName = "id")
+	private Owner owner;
+	
 	public Parking() {
 	}
 
-	public int getId() {
-		return this.id;
+	public Long getId() {
+		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -139,101 +125,14 @@ public class Parking implements Serializable {
 	public void setTotalspace(int totalspace) {
 		this.totalspace = totalspace;
 	}
-//
-//	public List<Booking> getBookings() {
-//		return this.bookings;
-//	}
-//
-//	public void setBookings(List<Booking> bookings) {
-//		this.bookings = bookings;
-//	}
-//
-//	public Booking addBooking(Booking booking) {
-//		getBookings().add(booking);
-//		booking.setParking(this);
-//
-//		return booking;
-//	}
-//
-//	public Booking removeBooking(Booking booking) {
-//		getBookings().remove(booking);
-//		booking.setParking(null);
-//
-//		return booking;
-//	}
-//
-//	public List<Fine> getFines() {
-//		return this.fines;
-//	}
-//
-//	public void setFines(List<Fine> fines) {
-//		this.fines = fines;
-//	}
-//
-//	public Fine addFine(Fine fine) {
-//		getFines().add(fine);
-//		fine.setParking(this);
-//
-//		return fine;
-//	}
-//
-//	public Fine removeFine(Fine fine) {
-//		getFines().remove(fine);
-//		fine.setParking(null);
-//
-//		return fine;
-//	}
-//
-//	public Owner getOwner() {
-//		return this.owner;
-//	}
-//
-//	public void setOwner(Owner owner) {
-//		this.owner = owner;
-//	}
-//
-//	public List<Staff> getStaffs() {
-//		return this.staffs;
-//	}
-//
-//	public void setStaffs(List<Staff> staffs) {
-//		this.staffs = staffs;
-//	}
-//
-//	public Staff addStaff(Staff staff) {
-//		getStaffs().add(staff);
-//		staff.setParking(this);
-//
-//		return staff;
-//	}
-//
-//	public Staff removeStaff(Staff staff) {
-//		getStaffs().remove(staff);
-//		staff.setParking(null);
-//
-//		return staff;
-//	}
-//
-//	public List<Tariff> getTariffs() {
-//		return this.tariffs;
-//	}
-//
-//	public void setTariffs(List<Tariff> tariffs) {
-//		this.tariffs = tariffs;
-//	}
-//
-//	public Tariff addTariff(Tariff tariff) {
-//		getTariffs().add(tariff);
-//		tariff.setParking(this);
-//
-//		return tariff;
-//	}
-//
-//	public Tariff removeTariff(Tariff tariff) {
-//		getTariffs().remove(tariff);
-//		tariff.setParking(null);
-//
-//		return tariff;
-//	}
+
+	public Owner getOwner() {
+		return owner;
+	}
+
+	public void setOwner(Owner owner) {
+		this.owner = owner;
+	}
+	
 
 }

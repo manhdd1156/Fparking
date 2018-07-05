@@ -2,46 +2,40 @@ package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
-import java.util.Date;
-import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
+import java.util.Date;
 
 /**
  * The persistent class for the booking database table.
  * 
  */
 @Entity
-@NamedQuery(name="Booking.findAll", query="SELECT b FROM Booking b")
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
 public class Booking implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 
 	private double price;
 
 	private int status;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date timein;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date timeout;
-//
-//	//bi-directional many-to-one association to Vehicle
-//	@ManyToOne
-//	@JoinColumn(name = "vehicle_id")
-//	private Vehicle vehicle;
-//
-//	//bi-directional many-to-one association to Parking
-//	@ManyToOne
-//	@JoinColumn(name = "parking_id")
-//	private Parking parking;
-//
-//	//bi-directional many-to-one association to Transaction
-//	@OneToMany(mappedBy="booking")
-//	private List<Transaction> transactions;
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "parking_id", referencedColumnName = "id")
+	private Parking parking;
+
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "vehicle_id", referencedColumnName = "id")
+	private Vehicle vehicle;
+	
 
 	public Booking() {
 	}
@@ -86,42 +80,21 @@ public class Booking implements Serializable {
 		this.timeout = timeout;
 	}
 
-//	public Vehicle getVehicle() {
-//		return this.vehicle;
-//	}
-//
-//	public void setVehicle(Vehicle vehicle) {
-//		this.vehicle = vehicle;
-//	}
-//
-//	public Parking getParking() {
-//		return this.parking;
-//	}
-//
-//	public void setParking(Parking parking) {
-//		this.parking = parking;
-//	}
-//
-//	public List<Transaction> getTransactions() {
-//		return this.transactions;
-//	}
-//
-//	public void setTransactions(List<Transaction> transactions) {
-//		this.transactions = transactions;
-//	}
+	public Vehicle getVehicle() {
+		return vehicle;
+	}
 
-//	public Transaction addTransaction(Transaction transaction) {
-//		getTransactions().add(transaction);
-//		transaction.setBooking(this);
-//
-//		return transaction;
-//	}
-//
-//	public Transaction removeTransaction(Transaction transaction) {
-//		getTransactions().remove(transaction);
-//		transaction.setBooking(null);
-//
-//		return transaction;
-//	}
+	public void setVehicle(Vehicle vehicle) {
+		this.vehicle = vehicle;
+	}
+
+	public Parking getParking() {
+		return this.parking;
+	}
+
+	//
+	public void setParking(Parking parking) {
+		this.parking = parking;
+	}
 
 }

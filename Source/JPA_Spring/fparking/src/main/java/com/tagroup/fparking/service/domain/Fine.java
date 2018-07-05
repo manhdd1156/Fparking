@@ -2,6 +2,9 @@ package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
 import javax.persistence.*;
+
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import java.util.Date;
 
 
@@ -10,34 +13,31 @@ import java.util.Date;
  * 
  */
 @Entity
+@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Fine.findAll", query="SELECT f FROM Fine f")
 public class Fine implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.AUTO)
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
 
-	@Temporal(TemporalType.TIMESTAMP)
 	private Date date;
 
 	private int status;
-//
-//	//bi-directional many-to-one association to Driver
-//	@ManyToOne
-//	@JoinColumn(name = "driver_id")
-//	private Driver driver2;
-//
-//	//bi-directional many-to-one association to Parking
-//	@ManyToOne
-//	@JoinColumn(name = "parking_id")
-//	private Parking parking;
-//
-//	//bi-directional many-to-one association to Finetariff
-//	@ManyToOne
-//	@JoinColumn(name = "finetariff_id")
-//	private Finetariff finetariff;
-
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "driver_id", referencedColumnName = "id")
+	private Driver driver;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "finetariff_id", referencedColumnName = "id")
+	private Finetariff finetariff;
+	
+	@ManyToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "parking_id", referencedColumnName = "id")
+	private Parking parking;
+	
 	public Fine() {
 	}
 
@@ -65,29 +65,28 @@ public class Fine implements Serializable {
 		this.status = status;
 	}
 
-//
-//	public Driver getDriver2() {
-//		return driver2;
-//	}
-//
-//	public void setDriver2(Driver driver2) {
-//		this.driver2 = driver2;
-//	}
-//
-//	public Parking getParking() {
-//		return this.parking;
-//	}
-//
-//	public void setParking(Parking parking) {
-//		this.parking = parking;
-//	}
-//
-//	public Finetariff getFinetariff() {
-//		return this.finetariff;
-//	}
-//
-//	public void setFinetariff(Finetariff finetariff) {
-//		this.finetariff = finetariff;
-//	}
+	public Driver getDriver() {
+		return driver;
+	}
+
+	public void setDriver(Driver driver) {
+		this.driver = driver;
+	}
+
+	public Finetariff getFinetariff() {
+		return finetariff;
+	}
+
+	public void setFinetariff(Finetariff finetariff) {
+		this.finetariff = finetariff;
+	}
+
+	public Parking getParking() {
+		return parking;
+	}
+
+	public void setParking(Parking parking) {
+		this.parking = parking;
+	}
 
 }
