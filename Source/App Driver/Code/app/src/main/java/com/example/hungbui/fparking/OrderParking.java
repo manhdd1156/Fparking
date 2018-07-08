@@ -10,8 +10,6 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Color;
 import android.os.AsyncTask;
-import android.os.Build;
-import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -61,7 +59,6 @@ public class OrderParking extends AppCompatActivity {
     private SharedPreferences pref;
     private SharedPreferences.Editor editor;
     String check = null;
-    private ProgressDialog progressDialog;
 
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -88,14 +85,10 @@ public class OrderParking extends AppCompatActivity {
         buttonDt_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                progressDialog = ProgressDialog.show(OrderParking.this, "Chờ bãi đậu xe xác nhận",
-                        "Vui lòng chờ trong giây lát...!", true);
 
-//                Add_License_Plate add_license_plate = new Add_License_Plate();
-//                add_license_plate.show(getFragmentManager(), "Day la fragment");
+                Add_License_Plate add_license_plate = new Add_License_Plate();
+                add_license_plate.show(getFragmentManager(), "Day la fragment");
 
-                progressDialog = ProgressDialog.show(OrderParking.this, "Chờ bãi đậu xe xác nhận",
-                        "Vui lòng chờ trong giây lát...!", true);
             }
         });
 
@@ -138,7 +131,7 @@ public class OrderParking extends AppCompatActivity {
 //            Bundle bundlPosition = intent.getBundleExtra("BundlePosition");
 //            String location = bundlPosition.getString("Position");
 
-            String location = pref.getString("positionParking", "null");
+            String location = pref.getString("positionParking","null");
 
             if (location == null || location.isEmpty()) {
                 buttonDt_Cho.setEnabled(false);
@@ -222,38 +215,6 @@ public class OrderParking extends AppCompatActivity {
     public String[] getLatLng(String location) {
         String[] lat_lng = location.substring(location.indexOf("(") + 1, location.indexOf(")")).split(",");
         return lat_lng;
-    }
-
-    class PushServer extends AsyncTask<Void, Void, Boolean> {
-
-        boolean success = false;
-
-        public PushServer() {
-        }
-
-        @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-        @Override
-        protected Boolean doInBackground(Void... voids) {
-
-            HttpHandler httpHandler = new HttpHandler();
-            try {
-                JSONObject formData = new JSONObject();
-                System.out.println(formData.toString());
-                formData.put("carID", "2");
-
-                String json = httpHandler.post("https://fparking.net/realtimeTest/driver/booking.php", formData.toString());
-                System.out.println(json);
-            } catch (Exception ex) {
-                Log.e("Error:", ex.getMessage());
-            }
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Boolean aBoolean) {
-            super.onPostExecute(aBoolean);
-            progressDialog.dismiss();
-        }
     }
 
 }

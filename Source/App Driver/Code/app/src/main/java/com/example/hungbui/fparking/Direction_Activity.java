@@ -381,7 +381,11 @@ public class Direction_Activity extends AppCompatActivity implements OnMapReadyC
             HttpHandler httpHandler = new HttpHandler();
             try {
 <<<<<<< HEAD
+<<<<<<< HEAD
                 Log.e("checn in booking", bookingID);
+=======
+                Log.e("checn in booking",bookingID);
+>>>>>>> parent of db7292d... KhoiND
 =======
                 Log.e("checn in booking",bookingID);
 >>>>>>> parent of db7292d... KhoiND
