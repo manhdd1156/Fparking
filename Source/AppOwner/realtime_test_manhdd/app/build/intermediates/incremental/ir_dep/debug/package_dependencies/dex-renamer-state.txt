@@ -1,0 +1,4 @@
+#Thu Jun 07 16:34:58 ICT 2018
+base.0=D\:\\Fparking\\Source\\AppOwner\\realtime_test_manhdd\\app\\build\\intermediates\\transforms\\dexMerger\\debug\\10
+path.0=classes.dex
+renamed.0=classes.dex
