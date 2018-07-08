@@ -52,6 +52,12 @@ private BookingRepository bookingRepository;
 		return bookingRepository.findByParking(parking);
 	}
 
+	@Override
+	public Booking findByStatus(int status) {
+		// TODO Auto-generated method stub
+		return bookingRepository.findByStatus(status);
+	}
+
 //	@Override
 //	public Booking findByParking_id(long id) {
 //		// TODO Auto-generated method stub

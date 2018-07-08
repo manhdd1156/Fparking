@@ -22,12 +22,13 @@ public class Booking implements Serializable {
 	private int id;
 
 	private double price;
-
+	@Column
 	private int status;
 
 	private Date timein;
 
 	private Date timeout;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
 	private Parking parking;

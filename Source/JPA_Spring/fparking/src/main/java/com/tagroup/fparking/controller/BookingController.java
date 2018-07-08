@@ -10,13 +10,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
 
 @Controller
-@RequestMapping("/api/bookings")
+@RequestMapping("/tat/bookings")
 public class BookingController {
 	@Autowired
 	private BookingService bookingService;
@@ -32,6 +33,12 @@ public class BookingController {
 		Booking respone = bookingService.getById(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+	// get booking by status of booking
+		@RequestMapping(path = "", method = RequestMethod.GET)
+		public ResponseEntity<?> getbystatus(@RequestParam("status") int status) {
+			Booking respone = bookingService.findByStatus(status);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
 //@RequestMapping(path = "def", method = RequestMethod.POST)
 //public ResponseEntity<?> create(@RequestBody Student student) {
 //	Student respone = studentService.create(student);

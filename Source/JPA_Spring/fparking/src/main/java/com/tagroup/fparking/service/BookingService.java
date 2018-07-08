@@ -13,4 +13,6 @@ public interface BookingService {
 	public Booking create(Booking booking);
 	public Booking update(Booking booking);
 	public void delete(Long id);
+	
+	public Booking findByStatus(int status);
 }

@@ -18,7 +18,7 @@ import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
 
 @RestController
-@RequestMapping("/api/parkings")
+@RequestMapping("/tat/parkings")
 public class ParkingController {
 	@Autowired
 	private ParkingService parkingService;

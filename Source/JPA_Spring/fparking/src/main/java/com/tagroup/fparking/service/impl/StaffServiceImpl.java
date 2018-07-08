@@ -45,6 +45,12 @@ private StaffRepository staffRepository;
 		Staff staff = staffRepository.getOne(id);
 		staffRepository.delete(staff);
 	}
+
+	@Override
+	public Staff findByPhoneAndPassword(String phone, String password) {
+		// TODO Auto-generated method stub
+		return staffRepository.findByPhoneAndPassword(phone, password);
+	}
 	
 
 }

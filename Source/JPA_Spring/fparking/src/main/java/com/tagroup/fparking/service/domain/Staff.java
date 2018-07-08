@@ -26,6 +26,8 @@ public class Staff implements Serializable {
 	private String name;
 
 	private String phone;
+	
+	private String password;
 
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
@@ -39,6 +41,14 @@ public class Staff implements Serializable {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public String getAddress() {

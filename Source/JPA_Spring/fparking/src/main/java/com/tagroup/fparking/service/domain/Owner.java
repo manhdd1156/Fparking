@@ -26,11 +26,22 @@ public class Owner implements Serializable {
 	private String name;
 
 	private String phone;
+	
+	private String password;
+	
 	public Owner() {
 	}
 
 	public int getId() {
 		return this.id;
+	}
+
+	public String getPassword() {
+		return password;
+	}
+
+	public void setPassword(String password) {
+		this.password = password;
 	}
 
 	public void setId(int id) {

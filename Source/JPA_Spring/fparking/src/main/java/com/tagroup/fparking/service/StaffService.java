@@ -11,4 +11,6 @@ public interface StaffService {
 	public Staff create(Staff staff);
 	public Staff update(Staff staff);
 	public void delete(Long id);
+	
+	public Staff findByPhoneAndPassword(String phone, String password);
 }
