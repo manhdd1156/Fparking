@@ -1,5 +1,0 @@
-﻿Trong bảng parkinginfor : 
-- Thay phonenumber -> phoneNumber
-- Thay ReportID -> default NULL
-- Thay status -> default NULL
-- Thay flag_del -> default 0
