@@ -34,7 +34,11 @@
                                           <PersistentState>
                                             <option name="values">
                                               <map>
+<<<<<<< HEAD:Source/App Driver/Code/.idea/assetWizardSettings.xml
+                                                <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/action/ic_info_outline_black_24dp.xml" />
+=======
                                                 <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material_design_icons/navigation/ic_arrow_back_black_24dp.xml" />
+>>>>>>> c02be86aad87449ad967d71ff4ed69744ff8464e:User/HungNV/Code/UserUI/FParking/.idea/assetWizardSettings.xml
                                               </map>
                                             </option>
                                           </PersistentState>
@@ -56,9 +60,14 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
+<<<<<<< HEAD:Source/App Driver/Code/.idea/assetWizardSettings.xml
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\phone_receiver.png" />
+                                      <entry key="outputName" value="ic_action_call" />
+=======
                                       <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\distance.png" />
                                       <entry key="outputName" value="ic_action_distance" />
                                       <entry key="theme" value="CUSTOM" />
+>>>>>>> c02be86aad87449ad967d71ff4ed69744ff8464e:User/HungNV/Code/UserUI/FParking/.idea/assetWizardSettings.xml
                                       <entry key="themeColor" value="fe6621" />
                                     </map>
                                   </option>

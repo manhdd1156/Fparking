@@ -17,20 +17,31 @@
     <RelativeLayout
         android:id="@+id/relativeLayoutID"
         android:layout_width="match_parent"
+<<<<<<< HEAD:Source/App Driver/Code/app/src/main/res/layout/activity_home.xml
+        android:layout_height="35dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="5dp"
+=======
         android:layout_height="42dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_marginLeft="30dp"
         android:layout_marginRight="30dp"
         android:layout_marginTop="16dp"
+>>>>>>> c02be86aad87449ad967d71ff4ed69744ff8464e:User/HungNV/Code/UserUI/FParking/app/src/main/res/layout/activity_home.xml
         android:background="@drawable/layout_search">
 
         <fragment
             android:id="@+id/place_autocomplete_fragment_home"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
             android:layout_width="match_parent"
+<<<<<<< HEAD:Source/App Driver/Code/app/src/main/res/layout/activity_home.xml
+            android:layout_height="wrap_content" />
+=======
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true" />
+>>>>>>> c02be86aad87449ad967d71ff4ed69744ff8464e:User/HungNV/Code/UserUI/FParking/app/src/main/res/layout/activity_home.xml
     </RelativeLayout>
 </RelativeLayout>

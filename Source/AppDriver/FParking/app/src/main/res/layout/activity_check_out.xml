@@ -39,6 +39,18 @@
             tools:layout_editor_absoluteY="16dp" />
 
         <ImageView
+<<<<<<< HEAD:Source/App Driver/Code/app/src/main/res/layout/activity_check_out.xml
+            android:id="@+id/imageViewCheckout"
+            android:layout_width="176dp"
+            android:layout_height="103dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="44dp"
+            app:srcCompat="@drawable/checkout" />
+
+        <ImageView
+=======
+>>>>>>> c02be86aad87449ad967d71ff4ed69744ff8464e:Source/AppDriver/FParking/app/src/main/res/layout/activity_check_out.xml
             android:id="@+id/imageView13"
             android:layout_width="match_parent"
             android:layout_height="154dp"
