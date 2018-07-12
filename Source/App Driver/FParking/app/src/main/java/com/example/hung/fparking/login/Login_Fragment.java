@@ -27,7 +27,7 @@ import com.example.hung.fparking.R;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Login_Fragment extends Fragment implements OnClickListener{
+public class Login_Fragment extends Fragment implements OnClickListener {
     private static View view;
 
     private static EditText phoneNumber, password;
@@ -41,6 +41,7 @@ public class Login_Fragment extends Fragment implements OnClickListener{
     public Login_Fragment() {
 
     }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -49,11 +50,12 @@ public class Login_Fragment extends Fragment implements OnClickListener{
         setListeners();
         return view;
     }
+
     // Initiate Views
     private void initViews() {
         fragmentManager = getActivity().getSupportFragmentManager();
 
-        phoneNumber= (EditText) view.findViewById(R.id.phone);
+        phoneNumber = (EditText) view.findViewById(R.id.phone);
         password = (EditText) view.findViewById(R.id.login_password);
         loginButton = (Button) view.findViewById(R.id.loginBtn);
         forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
@@ -78,6 +80,7 @@ public class Login_Fragment extends Fragment implements OnClickListener{
         } catch (Exception e) {
         }
     }
+
     // Set Listeners
     private void setListeners() {
         loginButton.setOnClickListener(this);
@@ -123,7 +126,7 @@ public class Login_Fragment extends Fragment implements OnClickListener{
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginBtn:
-              checkValidation();
+                checkValidation();
                 break;
 
             case R.id.forgot_password:
@@ -147,6 +150,7 @@ public class Login_Fragment extends Fragment implements OnClickListener{
                 break;
         }
     }
+
     // Check Validation before login
     private void checkValidation() {
         // Get phone and password
