@@ -72,7 +72,6 @@
             android:name=".Direction"
             android:label="@string/title_activity_direction"
             android:noHistory="true"></activity>
-        <activity android:name=".Login"></activity>
     </application>
 
 </manifest>

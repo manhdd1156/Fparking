@@ -10,6 +10,7 @@ import android.os.Handler;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
@@ -23,12 +24,12 @@ public class Theme extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 3000;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
-        getSupportActionBar().hide();
+
+//        getSupportActionBar().hide();
 
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
@@ -42,19 +43,20 @@ public class Theme extends AppCompatActivity {
         CheckNetwork checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
         if (!checkNetwork.isNetworkConnected()) {
             checkNetwork.createDialog();
+            Log.d("abc", "isNetworkConnected");
         } else {
             splash();
         }
 
         // lưu tọa độ hiện tại vào SharedPreferences
-        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-        mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
-        mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
-        mPreferencesEditor.commit();
-
-        Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
-        startActivity(homeIntent);
-        finish();
+//        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+//        mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
+//        mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
+//        mPreferencesEditor.commit();
+//
+//        Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
+//        startActivity(homeIntent);
+//        finish();
     }
 
     public void splash() {
@@ -73,22 +75,18 @@ public class Theme extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                if (mPhoneNumber.equals("") || mPhoneNumber.equals(null)) {
-//                    Intent loginIntent = new Intent(Theme.this, Login.class);
-//                    startActivity(loginIntent);
-//                    finish();
-//                } else {
+                if (mPhoneNumber.equals("") || mPhoneNumber.equals(null)) {
+                } else {
 
-                    // lưu tọa độ hiện tại vào SharedPreferences
+//                     lưu tọa độ hiện tại vào SharedPreferences
                     GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
                     mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
                     mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
                     mPreferencesEditor.commit();
-
-                    Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
-                    startActivity(homeIntent);
-                    finish();
-//                }
+                }
+                Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
+                startActivity(homeIntent);
+                finish();
             }
         }, SPLASH_TIME_OUT);
     }
