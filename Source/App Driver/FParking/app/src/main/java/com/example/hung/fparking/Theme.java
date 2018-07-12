@@ -24,7 +24,6 @@ public class Theme extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 3000;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -44,6 +43,7 @@ public class Theme extends AppCompatActivity {
         CheckNetwork checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
         if (!checkNetwork.isNetworkConnected()) {
             checkNetwork.createDialog();
+            Log.d("abc", "isNetworkConnected");
         } else {
             splash();
         }
@@ -75,22 +75,18 @@ public class Theme extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-//                if (mPhoneNumber.equals("") || mPhoneNumber.equals(null)) {
-//                    Intent loginIntent = new Intent(Theme.this, Login.class);
-//                    startActivity(loginIntent);
-//                    finish();
-//                } else {
+                if (mPhoneNumber.equals("") || mPhoneNumber.equals(null)) {
+                } else {
 
-                // lưu tọa độ hiện tại vào SharedPreferences
-//                    GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-//                    mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
-//                    mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
-//                    mPreferencesEditor.commit();
-
+//                     lưu tọa độ hiện tại vào SharedPreferences
+                    GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
+                    mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
+                    mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
+                    mPreferencesEditor.commit();
+                }
                 Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
                 startActivity(homeIntent);
                 finish();
-//                }
             }
         }, SPLASH_TIME_OUT);
     }

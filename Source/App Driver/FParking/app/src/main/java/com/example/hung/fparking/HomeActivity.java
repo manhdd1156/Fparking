@@ -1,20 +1,11 @@
 package com.example.hung.fparking;
 
 import android.Manifest;
-import android.app.AlertDialog;
-import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
-import android.location.Address;
-import android.location.Geocoder;
-import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
-import android.speech.RecognizerIntent;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -27,9 +18,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -51,27 +39,20 @@ import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
 
-import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, IAsyncTaskHandler, GoogleMap.OnCameraMoveStartedListener, LocationListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, IAsyncTaskHandler, GoogleMap.OnCameraMoveStartedListener  {
 
     private GoogleMap mMap;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
-    private LocationManager locationManager = null;
-
-    View mMapView;
-    ImageView imageViewVoiceSearch, imageViewMute;
 
     ArrayList<GetNearPlace> nearParkingList;
     private DrawerLayout mDrawerLayout;
     private ActionBarDrawerToggle mToggle;
 
     private Toolbar mToolbar;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -85,37 +66,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
-
-        // ánh xạ button
-        imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
-        imageViewMute = findViewById(R.id.imageViewMute);
-
-        // gọi hàm search theo địa chỉ
         searchPlace();
-
-        // chỉnh vị trí nút mylocation
-        mMapView = mapFragment.getView();
-        View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
-        RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
-        // position on right bottom
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
-        rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
-        rlp.setMargins(0, 1500, 0, 0);
-
-        // event button
-        imageViewVoiceSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-//                onStopSpeech();
-                speechToText();
-            }
-        });
-//        imageViewMute.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onStopSpeech();
-//            }
-//        });
 
         //Menu
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -133,7 +84,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
     }
-
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
@@ -158,7 +108,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         item.setChecked(false);
-        if (mToggle.onOptionsItemSelected(item)) {
+        if(mToggle.onOptionsItemSelected(item)){
             item.setChecked(false);
             return true;
 
@@ -182,83 +132,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // Gọi Listener của movecamera
         mMap.setOnCameraMoveStartedListener(this);
-        callLocationChangedListener();
-
-        // event click nút mylocation
-        mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
-            @Override
-            public boolean onMyLocationButtonClick() {
-                callLocationChangedListener();
-                GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-                double myLatitude = gpsTracker.getLatitude();
-                double myLongitude = gpsTracker.getLongitude();
-                doSearchAsyncTask(myLatitude, myLongitude);
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLatitude, myLongitude), 15));
-                return false;
-            }
-        });
-
-        // move camera đến bãi đỗ xe mình đỗ nếu đã đặt chỗ
-        if (!mPreferences.getString("parkingLat", "").equals("") && !mPreferences.getString("parkingLng", "").equals("")) {
-            Double lt = Double.parseDouble(mPreferences.getString("parkingLat", ""));
-            Double ln = Double.parseDouble(mPreferences.getString("parkingLng", ""));
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(lt, ln), 15));
-        } else {
-            double myLatitude = gpsTracker.getLatitude();
-            double myLongitude = gpsTracker.getLongitude();
-            doSearchAsyncTask(myLatitude, myLongitude);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLatitude, myLongitude), 15));
-        }
-
-        // event click khi chọn marker
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-//                onStopSpeech();
-                String parkingLocation = marker.getPosition().toString();
-                String[] latlng = getLat_lng(parkingLocation);
-                String lat = latlng[0];
-                String lng = latlng[1];
-                if (mPreferences.getString("bookingID", "").equals("")) {
-                    Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
-                    intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                    startActivity(intentOrderFlagment);
-                } else if (mPreferences.getString("parkingLat", "").equals(lat) && mPreferences.getString("parkingLng", "").equals(lng)) {
-                    if (mPreferences.getString("action", "").equals("2")) {
-                        Intent intentOrderFlagment = new Intent(HomeActivity.this, CheckOut.class);
-                        intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                        startActivity(intentOrderFlagment);
-                    } else {
-                        Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
-                        intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                        startActivity(intentOrderFlagment);
-                    }
-
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int choice) {
-                            switch (choice) {
-                                case DialogInterface.BUTTON_POSITIVE:
-
-
-                                    break;
-                                case DialogInterface.BUTTON_NEGATIVE:
-
-                                    break;
-                            }
-                        }
-                    };
-                    try {
-                        builder.setMessage("Bạn đang đỗ xe tại nơi khác!").show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
-            }
-        });
+//        callLocationChangedListener();
 
 
     }
@@ -276,7 +150,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onPlaceSelected(Place place) {
-                locationManager.removeUpdates(HomeActivity.this);
                 if (marker != null) {
                     marker.remove();
                 }
@@ -287,10 +160,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 markerOptions.position(latLngMaker);
                 mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngMaker, 15));
 
+                Log.e("toa do: ", "" + latLngMaker);
+
                 double lat = latLngMaker.latitude;
                 double lng = latLngMaker.longitude;
 
-                doSearchAsyncTask(lat, lng);
+                doSearchAsyncTask(lat,lng);
             }
 
             @Override
@@ -304,8 +179,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         return latlng;
     }
 
-    private void doSearchAsyncTask(double lat, double lng) {
-        ParkingTask parkingTask = new ParkingTask(lat, lng, this);
+    private void doSearchAsyncTask(double lat, double lng){
+        ParkingTask parkingTask = new ParkingTask(lat,lng,this);
         parkingTask.execute();
     }
 
@@ -337,15 +212,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onCameraMoveStarted(int reason) {
         if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
-            locationManager.removeUpdates(HomeActivity.this);
             LatLng cameraLatLng = mMap.getCameraPosition().target;
             mMap.clear();
-
-            double lat = cameraLatLng.latitude;
-            double lng = cameraLatLng.longitude;
-
-            doSearchAsyncTask(lat, lng);
-
+            Log.e("cam lcoation",""+ cameraLatLng.latitude+ "          " + cameraLatLng.longitude);
         } else if (reason == GoogleMap.OnCameraMoveStartedListener
                 .REASON_API_ANIMATION) {
             Toast.makeText(this, "The user tapped something on the map.",
@@ -355,90 +224,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             Toast.makeText(this, "The app moved the camera.",
                     Toast.LENGTH_SHORT).show();
         }
-    }
 
-    private void callLocationChangedListener() {
-        try {
-            locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        double lat = location.getLatitude();
-        double lng = location.getLongitude();
-        doSearchAsyncTask(lat, lng);
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-
-    }
-
-    protected void speechToText() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
-        intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, "vi-VN");
-        intent.putExtra(RecognizerIntent.EXTRA_PROMPT, "Nói gì đó đi");
-
-
-        if (intent.resolveActivity(getPackageManager()) != null) {
-            startActivityForResult(intent, 10);
-        } else {
-            Toast.makeText(HomeActivity.this, "Khong ho tro", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        switch (requestCode) {
-            case 10:
-                if (resultCode == RESULT_OK && data != null) {
-                    ArrayList<String> str = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
-                    placeAutocompleteFragment.setText(str.get(0).toString());
-                    getLocationFromVoiceSearch(str.get(0).toString());
-                }
-                break;
-        }
-    }
-
-    protected void getLocationFromVoiceSearch(String location) {
-        Geocoder geocoder = new Geocoder(HomeActivity.this);
-        List<Address> addressList = new ArrayList<>();
-        try {
-            addressList = geocoder.getFromLocationName(location, 1);
-        } catch (IOException e) {
-            Log.e("getLocationFromVoiceSearch:", e.getMessage());
-        }
-
-        if (addressList.size() > 0) {
-            Address address = addressList.get(0);
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 15));
-            locationManager.removeUpdates(HomeActivity.this);
-            double voiceLatitude = address.getLatitude();
-            double voiceLongitude = address.getLongitude();
-            doSearchAsyncTask(voiceLatitude, voiceLongitude);
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        startActivity(getIntent());
     }
 }
 
