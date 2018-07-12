@@ -31,8 +31,8 @@ public class DriverLoginTask extends AsyncTask<Void, Void, Boolean> {
             JSONObject formData = new JSONObject();
             formData.put("phone", mPhone);
             formData.put("password", mPassword);
-            String json = httpHandler.post(Constants.API_URL + "staffs/login/", formData.toString());
-//            String json = httpHandler.get(Constants.API_URL + "staffs/");
+            String json = httpHandler.post(Constants.API_URL + "driver/login/", formData.toString());
+
             JSONObject jsonObj = new JSONObject(json);
 //            if (jsonObj.getInt("size") > 0) {
 //                JSONArray resultList = jsonObj.getJSONArray("result");
@@ -49,5 +49,17 @@ public class DriverLoginTask extends AsyncTask<Void, Void, Boolean> {
             Log.e("Exception", "Login fail");
         }
         return false;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        container.onPostExecute(false);
     }
 }

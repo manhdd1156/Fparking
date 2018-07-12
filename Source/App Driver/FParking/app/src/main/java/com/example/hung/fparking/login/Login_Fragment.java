@@ -1,5 +1,6 @@
 package com.example.hung.fparking.login;
 
+import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
@@ -22,12 +23,17 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
+import com.example.hung.fparking.asynctask.DriverLoginTask;
+import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
+import com.example.hung.fparking.config.Constants;
+import com.example.hung.fparking.notification.Notification;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class Login_Fragment extends Fragment implements OnClickListener {
+public class Login_Fragment extends Fragment implements OnClickListener, IAsyncTaskHandler {
     private static View view;
 
     private static EditText phoneNumber, password;
@@ -37,6 +43,8 @@ public class Login_Fragment extends Fragment implements OnClickListener {
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
     private static FragmentManager fragmentManager;
+
+    private DriverLoginTask mDriverLoginTask = null;
 
     public Login_Fragment() {
 
@@ -158,27 +166,48 @@ public class Login_Fragment extends Fragment implements OnClickListener {
         String getPassword = password.getText().toString();
 
         // Check patter for email id
-        Pattern p = Pattern.compile(Utils.regEx);
+        Pattern p = Pattern.compile(Constants.regEx);
 
         Matcher m = p.matcher(getPhone);
 
         // Check for both field is empty or not
-        if (getPhone.equals("") || getPhone.length() == 0
-                || getPassword.equals("") || getPassword.length() == 0) {
+        if (getPhone.equals("") || getPhone.isEmpty()) {
             loginLayout.startAnimation(shakeAnimation);
             new CustomToast().Show_Toast(getActivity(), view,
-                    "Nhập cả 2 đi đmm");
-
+                    "Hãy nhập số điện thoại");
+        }
+        if (getPassword.equals("") || getPassword.isEmpty()) {
+            loginLayout.startAnimation(shakeAnimation);
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Hãy nhập mật khẩu");
         }
         // Check if email id is valid or not
         else if (!m.find())
             new CustomToast().Show_Toast(getActivity(), view,
-                    "Your Email Id is Invalid.");
+                    "Số điện thoại không đúng");
             // Else do login and do your stuff
-        else
+        else {
+            mDriverLoginTask = new DriverLoginTask(getPhone, getPassword, this);
+            mDriverLoginTask.execute((Void) null);
             Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
                     .show();
+        }
+    }
 
+    @Override
+    public void onPostExecute(Object o) {
+        mDriverLoginTask = null;
+        if (Boolean.TRUE.equals(o)) {
+//            Notification notification= new Notification();
+            Intent intent = new Intent(view.getContext(), Notification.class);
+            System.out.println("đăng nhập thành công");
+            startActivity( new Intent(this.getContext(), HomeActivity.class));
+            getActivity().startService(intent);
+
+        } else {
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Số điện thoại hoặc mật khẩu không đúng");
+        }
     }
 }
 
