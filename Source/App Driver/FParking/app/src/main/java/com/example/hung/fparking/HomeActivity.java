@@ -143,7 +143,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.nav_history:
-                    Intent intent = new Intent(HomeActivity.this, Direction.class);
+                    Intent intent = new Intent(HomeActivity.this, OrderParking.class);
                     startActivity(intent);
                     break;
                 case R.id.nav_mCar:
