@@ -19,16 +19,17 @@
             android:layout_height="match_parent"
             android:background="@color/background">
 
-
-            <ImageView
-                android:id="@+id/imageViewParking"
+            <com.synnapps.carouselview.CarouselView
+                android:id="@+id/customCarouselView"
                 android:layout_width="match_parent"
-                android:layout_height="192dp"
+                android:layout_height="200dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:background="#009dff"
-                android:scaleType="fitXY"
-                app:srcCompat="@drawable/parking" />
+                app:disableAutoPlayOnUserInteraction="true"
+                app:pageColor="#00000000"
+                app:radius="6dp"
+                app:strokeColor="#FF777777"
+                app:strokeWidth="1dp" />
 
             <Button
                 android:id="@+id/buttonDat_Cho_Ngay"
@@ -57,7 +58,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="60dp"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/imageViewParking"
+                android:layout_below="@+id/customCarouselView"
                 android:scaleType="fitXY"
                 app:srcCompat="@drawable/slot" />
 
@@ -66,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentStart="true"
-                android:layout_below="@+id/imageViewParking"
+                android:layout_below="@+id/customCarouselView"
                 android:layout_marginStart="29dp"
                 android:text="NA"
                 android:textColor="@color/white_greyish"
