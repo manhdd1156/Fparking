@@ -9,8 +9,14 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 import com.synnapps.carouselview.ViewListener;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import in.goodiebag.carouselpicker.CarouselPicker;
+
 public class OrderParking extends AppCompatActivity {
     CarouselView customCarouselView;
+    CarouselPicker carouselPicker;
 
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
@@ -24,12 +30,24 @@ public class OrderParking extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_parking);
+        carouselPicker = (CarouselPicker)findViewById(R.id.carouselPickerLicensePlates);
         customCarouselView = (CarouselView) findViewById(R.id.customCarouselView);
         customCarouselView.setPageCount(sampleImages.length);
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
+        licensePlates();
     }
-
+     public void licensePlates() {
+         //Carousel 2 with all text
+         List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
+         textItems.add(new CarouselPicker.TextItem("30ZA-12580", 6)); // 5 is text size (sp)
+         textItems.add(new CarouselPicker.TextItem("40AH-15468", 6)); // 5 is text size (sp)
+         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
+         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
+         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
+         CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
+         carouselPicker.setAdapter(textAdapter);
+     }
     // To set simple images
     ImageListener imageListener = new ImageListener() {
         @Override
