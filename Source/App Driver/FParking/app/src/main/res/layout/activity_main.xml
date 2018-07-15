@@ -17,7 +17,7 @@
             android:id="@+id/frameContainer"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/abc" />
+            android:background="@drawable/car" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

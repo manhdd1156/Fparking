@@ -20,30 +20,33 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="168dp"
+        android:layout_marginBottom="150dp"
         android:orientation="vertical">
+
 
         <EditText
             android:id="@+id/phone"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
+
             android:background="@android:color/transparent"
-            android:drawableLeft="@drawable/ic_action_phone"
             android:drawablePadding="8dp"
+            android:hint="Số điện thoại"
             android:gravity="center_vertical"
-            android:hint="@string/phone"
             android:inputType="phone"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/whitetext"
-            android:textColorHint="@color/white"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <View
             android:layout_width="fill_parent"
             android:layout_height="1px"
+            android:layout_marginBottom="15dp"
             android:background="@color/white_greyish" />
+
+
 
         <EditText
             android:id="@+id/login_password"
@@ -52,13 +55,11 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:hint="@string/passowrd"
+            android:textColor="@color/black"
             android:inputType="textPassword"
             android:padding="10dp"
-            android:drawableLeft="@drawable/ic_action_pass"
             android:singleLine="true"
-            android:textColor="@color/whitetext"
-            android:textColorHint="@color/white"
+            android:hint="Mật khẩu"
             android:textSize="16sp" />
 
         <View
@@ -73,19 +74,6 @@
             android:paddingBottom="5dp"
             android:paddingTop="8dp">
 
-            <CheckBox
-                android:id="@+id/show_hide_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:buttonTint="@color/white"
-                android:text="@string/show_pwd"
-                android:textColor="@color/white"
-                android:textColorHint="@color/white"
-                android:textColorLink="@color/white_greyish"
-                android:textSize="14sp" />
-
             <TextView
                 android:id="@+id/forgot_password"
                 android:layout_width="wrap_content"
@@ -95,7 +83,7 @@
                 android:gravity="end"
                 android:padding="5dp"
                 android:text="@string/forgot"
-                android:textColor="@color/white"
+                android:textColor="@color/white_greyish"
                 android:textSize="14sp" />
         </LinearLayout>
 
@@ -110,6 +98,7 @@
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
+
     </LinearLayout>
 
     <TextView

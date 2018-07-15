@@ -5,6 +5,7 @@ import java.sql.SQLException;
 import java.util.List;
 
 import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Rating;
 
 
 public interface ParkingService {
@@ -14,5 +15,5 @@ public interface ParkingService {
 	public Parking update(Parking parking);
 	public void delete(Long id);
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude);
-    
+    public String getRatingByPid(Long parkingId); 
 }

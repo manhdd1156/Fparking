@@ -2,6 +2,7 @@ package com.tagroup.fparking.service.impl;
 
 import java.io.IOException;
 import java.sql.SQLException;
+import java.text.DecimalFormat;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -11,12 +12,21 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.repository.ParkingRepository;
+import com.tagroup.fparking.repository.RatingRepository;
+import com.tagroup.fparking.repository.StaffRepository;
 import com.tagroup.fparking.service.ParkingService;
+import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Rating;
+import com.tagroup.fparking.service.domain.Staff;
 @Service
 public class ParkingServiceImpl implements ParkingService{
 @Autowired
 private ParkingRepository parkingRepository;
+@Autowired
+private StaffService staffService;
+@Autowired
+private RatingRepository ratingRepository;
 	@Override
 	public List<Parking> getAll() {
 		// TODO Auto-generated method stub
@@ -54,6 +64,25 @@ private ParkingRepository parkingRepository;
 		// TODO Auto-generated method stub
 		
 		return parkingRepository.findByLatitudeANDLongitude(latitude, longitude);
+	}
+	@Override
+	public String getRatingByPid(Long parkingId) {
+		Parking p = parkingRepository.getOne(parkingId);
+		List<Staff> staffs = staffService.findByParking(parkingRepository.getOne(parkingId));
+		double totalPoint = 0;
+		double totalRating =0;
+		for (Staff staff : staffs) {
+			List<Rating> ratings = ratingRepository.findByStaff(staff);
+			
+			for (Rating rating : ratings) {
+				if(rating.getType()==1) {
+				totalPoint+=rating.getPoint();
+				totalRating++;
+				}
+			}
+		}
+		// TODO Auto-generated method stub
+		return new DecimalFormat("#0.00").format(totalPoint/totalRating);
 	}
 	
 	   

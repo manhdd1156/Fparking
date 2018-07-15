@@ -25,7 +25,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static Button signUpButton;
     private static TextView login;
     private static ImageView back;
-    private static FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
     private static Animation shakeAnimation;
     public SignUp_Fragment() {
 
@@ -84,7 +84,7 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
                 fragmentManager
                         .beginTransaction()
                         .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
+                        .replace(R.id.testframe,
                                 new ConfirmRegister_Fragment(),
                                 Constants.ConfirmRegister_Fragment).commit();
                 break;

@@ -1,7 +1,9 @@
 package com.example.hung.myapplication.asyntask;
 
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -48,10 +50,21 @@ public class StaffLoginTask extends AsyncTask<Void, Void, Boolean> {
                 Session.currentStaff.setPassword(jsonObj.getString("password"));
                 JSONObject parking = jsonObj.getJSONObject("parking");
                 Session.currentStaff.setParking_id(parking.getInt("id"));
+                Session.currentParking.setId(parking.getInt("id"));
+                Session.currentParking.setAddress(parking.getString("address"));
+                Session.currentParking.setCurrentspace(parking.getInt("currentspace"));
+                Session.currentParking.setDeposits(parking.getDouble("deposits"));
+                Session.currentParking.setImage(parking.getString("image"));
+                Session.currentParking.setLatitude(parking.getString("latitude"));
+                Session.currentParking.setLongitude(parking.getString("longitude"));
+                Session.currentParking.setStatus(parking.getInt("status"));
+                Session.currentParking.setTimeoc(parking.getString("timeoc"));
+                Session.currentParking.setTotalspace(parking.getInt("totalspace"));
+
                 return true;
 //            }
         } catch (Exception e) {
-            Log.e("Exception", "Login fail");
+            Log.e("Exception", "Login fail : " + e);
         }
         return false;
     }

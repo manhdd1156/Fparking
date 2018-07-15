@@ -20,7 +20,7 @@ import com.example.hung.fparking.R;
 
 public class SignUp_Fragment extends Fragment implements OnClickListener {
     private static View view;
-    private static EditText phone, password, confirmPassword,fullName;
+    private static EditText phone, password, confirmPassword;
     private static Button signUpButton;
     private static TextView login;
     private static ImageView back;
@@ -42,7 +42,6 @@ public class SignUp_Fragment extends Fragment implements OnClickListener {
     // Initialize all views
     private void initViews() {
         fragmentManager = getActivity().getSupportFragmentManager();
-        fullName = (EditText) view.findViewById(R.id.fullName);
         phone = (EditText) view.findViewById(R.id.phone);
         password = (EditText) view.findViewById(R.id.password);
         confirmPassword = (EditText) view.findViewById(R.id.confirmPassword);

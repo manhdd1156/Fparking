@@ -1,6 +1,5 @@
 package com.example.hung.myapplication;
 
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
@@ -10,16 +9,10 @@ import android.support.v7.app.AppCompatActivity;
 
 import com.example.hung.myapplication.config.Constants;
 import com.example.hung.myapplication.login.Login_Fragment;
-import com.example.hung.myapplication.login.MainActivity;
-import com.example.hung.myapplication.login.Utils;
-import com.pusher.client.Pusher;
-import com.pusher.client.channel.Channel;
 
-public class LoadFirstActivity extends AppCompatActivity {
+public class IntroApplication extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 2000;
-    Pusher pusher;
-    Channel channel;
-    private static FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -29,22 +22,30 @@ public class LoadFirstActivity extends AppCompatActivity {
         final SharedPreferences spref =
                 PreferenceManager.getDefaultSharedPreferences(this);
         fragmentManager = getSupportFragmentManager();
-
+        System.out.println("b1");
         // If savedinstnacestate is null then replace login fragment
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if (spref.getString("phonenumber", "") == null && spref.getBoolean(
-                        "first_time", false)) {
+//                System.out.println("b2");
+//                if (spref.getBoolean("first_time", false)) {
+//                    System.out.println("b3");
                     fragmentManager
                             .beginTransaction()
-                            .replace(R.id.frameContainer, new Login_Fragment(),
+                            .replace(R.id.testframe, new Login_Fragment(),
                                     Constants.Login_Fragment).commit();
-                } else if (!spref.getBoolean("first_time", false)) {
-                    Intent homeIntent = new Intent(LoadFirstActivity.this, MainActivity.class);
-                    startActivity(homeIntent);
-                    finish();
-                }
+//                    System.out.println("b4");
+//                } else if (!spref.getBoolean("first_time", false)) {
+//                    System.out.println("b32");
+//                    SharedPreferences.Editor editor = spref.edit();
+//                    editor.putBoolean("first_time",true);
+//                    editor.commit();
+//                    Intent homeIntent = new Intent(IntroApplication.this, Manage_Home.class);
+//                    startActivity(homeIntent);
+//                    System.out.println("b42");
+//                    finish();
+//                }
+//                System.out.println("b5");
             }
         }, SPLASH_TIME_OUT);
 

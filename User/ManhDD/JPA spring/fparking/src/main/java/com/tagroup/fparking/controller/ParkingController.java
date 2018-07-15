@@ -62,5 +62,11 @@ public class ParkingController {
 		List<Parking> respone = parkingService.findByLatitudeANDLongitude(latitude, longitude);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-
+	// get bookings by parking id
+		@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)
+		public ResponseEntity<?> getRatebyPid(@PathVariable Long id) {
+			System.out.println(id);
+			String respone = parkingService.getRatingByPid(id);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
 }
