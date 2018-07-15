@@ -1,6 +1,7 @@
 package com.example.hung.fparking.asynctask;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.config.Constants;
@@ -28,7 +29,7 @@ public class ParkingTask extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             String json = httpHandler.get(Constants.API_URL + "parkings?" + "latitude=" + lat + "&longitude=" + lng);
-
+            Log.e("toa do: ", "" + Constants.API_URL + "parkings?" + "latitude=" + lat + "&longitude=" + lng);
             JSONArray jsonObj = new JSONArray(json);
 
             for (int i = 0; i < jsonObj.length(); i++) {

@@ -7,12 +7,18 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Handler;
+import android.preference.PreferenceManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.example.hung.fparking.config.Constants;
+import com.example.hung.fparking.login.Login_Fragment;
+import com.example.hung.fparking.login.MainActivity;
 import com.example.hung.fparking.model.CheckNetwork;
 import com.example.hung.fparking.model.GPSTracker;
 import com.example.hung.fparking.notification.Notification;
@@ -24,15 +30,41 @@ public class Theme extends AppCompatActivity {
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
+    private static FragmentManager fragmentManager;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_theme);
-        getSupportActionBar().hide();
+
+//        getSupportActionBar().hide();
 
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
+
+        final SharedPreferences spref =
+                PreferenceManager.getDefaultSharedPreferences(this);
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if (spref.getString("phonenumber", "") == null && spref.getBoolean(
+                        "first_time", false)) {
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.frameContainer, new Login_Fragment(),
+                                    Constants.Login_Fragment).commit();
+                } else if (!spref.getBoolean("first_time", false)) {
+                    Intent homeIntent = new Intent(Theme.this, MainActivity.class);
+                    startActivity(homeIntent);
+                    finish();
+                }
+            }
+        }, SPLASH_TIME_OUT);
+
+        // khởi tạo fragment
+        fragmentManager = getSupportFragmentManager();
 
         // chay service noti/pusher
         Intent myIntent = new Intent(Theme.this, Notification.class);
@@ -46,15 +78,6 @@ public class Theme extends AppCompatActivity {
             splash();
         }
 
-        // lưu tọa độ hiện tại vào SharedPreferences
-        GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-        mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
-        mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
-        mPreferencesEditor.commit();
-
-        Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
-        startActivity(homeIntent);
-        finish();
     }
 
     public void splash() {
@@ -70,27 +93,7 @@ public class Theme extends AppCompatActivity {
             return;
         }
         final String mPhoneNumber = tMgr.getLine1Number();
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-//                if (mPhoneNumber.equals("") || mPhoneNumber.equals(null)) {
-//                    Intent loginIntent = new Intent(Theme.this, Login.class);
-//                    startActivity(loginIntent);
-//                    finish();
-//                } else {
 
-                    // lưu tọa độ hiện tại vào SharedPreferences
-                    GPSTracker gpsTracker = new GPSTracker(getApplicationContext());
-                    mPreferencesEditor.putString("myLa", gpsTracker.getLatitude()+"");
-                    mPreferencesEditor.putString("myLo", gpsTracker.getLongitude()+"");
-                    mPreferencesEditor.commit();
-
-                    Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
-                    startActivity(homeIntent);
-                    finish();
-//                }
-            }
-        }, SPLASH_TIME_OUT);
     }
 
 }
