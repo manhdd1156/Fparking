@@ -3,7 +3,7 @@ package com.example.hung.myapplication.config;
 
 
 public class Constants {
-    public static final String API_URL = "http://192.168.1.62:9000/tat/";
+    public static final String API_URL = "http://192.168.1.3:9000/tat/";
     public static final String PUSHER_KEY = "d8e15d0b0ecad0c93a5e";
     public static final String PUSHER_CHANNEL = "Fparking";
     public static final String PUSHER_ORDER_FROM_DRIVER = "ORDER_FROM_DRIVER";

@@ -1,6 +1,7 @@
 package com.example.hung.myapplication;
 
 import android.annotation.TargetApi;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -16,32 +17,26 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.widget.Button;
+import android.widget.ListView;
+import android.widget.TextView;
 
 import com.example.hung.myapplication.R;
+import com.example.hung.myapplication.asyntask.GetRateTask;
+import com.example.hung.myapplication.asyntask.IAsyncTaskHandler;
+import com.example.hung.myapplication.asyntask.ManagerParkingTask;
+import com.example.hung.myapplication.change_space.NumberPickerActivity;
+import com.example.hung.myapplication.config.Session;
 
 public class Manage_Home extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
-
+        implements NavigationView.OnNavigationItemSelectedListener, IAsyncTaskHandler {
+    ListView lv;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_manage__home);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        getWindow().requestFeature(Window.FEATURE_ACTION_BAR_OVERLAY);
-//        toolbar.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-//        toolbar.setElevation();
         setSupportActionBar(toolbar);
-
-
-//        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-//        fab.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-//                        .setAction("Action", null).show();
-//            }
-//        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -50,8 +45,36 @@ public class Manage_Home extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-    }
+        lv = (ListView) findViewById(R.id.cars_list);
+        if(Session.currentStaff!=null) {
+            if (Session.currentParking == null) {
+                new ManagerParkingTask("get", Session.currentStaff.getParking_id() + "", Manage_Home.this, lv);
+            } else {
+                TextView tvSpace = (TextView) findViewById(R.id.tvSpace);
+                TextView tvAddress = (TextView) findViewById(R.id.tvAddress);
+                setText(tvAddress, Session.currentParking.getAddress());
+                setText(tvAddress, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+            }
+        }
+        new GetRateTask(this).execute((Void) null);
+        Button btnChangeSpace = (Button) findViewById(R.id.btnChange);
+        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v) {
+                Intent intent = new Intent(Manage_Home.this, NumberPickerActivity.class);
+                startActivity(intent);
+                // TODO Auto-generated method stub
+            }
+        });
 
+    }
+    private void setText(final TextView text, final String value) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                text.setText(value);
+            }
+        });
+    }
     @Override
     public void onBackPressed() {
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -62,7 +85,7 @@ public class Manage_Home extends AppCompatActivity
         }
     }
 
-
+    
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
@@ -86,5 +109,10 @@ public class Manage_Home extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onPostExecute(Object o) {
+
     }
 }

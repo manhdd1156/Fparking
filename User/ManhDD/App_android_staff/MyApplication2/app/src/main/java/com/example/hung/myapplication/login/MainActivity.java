@@ -9,7 +9,7 @@ import com.example.hung.myapplication.R;
 import com.example.hung.myapplication.config.Constants;
 
 public class MainActivity extends AppCompatActivity {
-    private static FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         if (savedInstanceState == null) {
             fragmentManager
                     .beginTransaction()
-                    .replace(R.id.frameContainer, new Login_Fragment(),
+                    .replace(R.id.testframe, new Login_Fragment(),
                             Constants.Login_Fragment).commit();
         }
 
@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                .replace(R.id.frameContainer, new Login_Fragment(),
+                .replace(R.id.testframe, new Login_Fragment(),
                         Constants.Login_Fragment).commit();
     }
     // Replace SignUp Fragment with animation
@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
         fragmentManager
                 .beginTransaction()
                 .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                .replace(R.id.frameContainer, new SignUp_Fragment(),
+                .replace(R.id.testframe, new SignUp_Fragment(),
                         Constants.SignUp_Fragment).commit();
     }
         // Replace Forgot Password Fragment with animation
@@ -47,7 +47,7 @@ public class MainActivity extends AppCompatActivity {
             fragmentManager
                     .beginTransaction()
                     .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                    .replace(R.id.frameContainer, new ForgotPassword_Fragment(),
+                    .replace(R.id.testframe, new ForgotPassword_Fragment(),
                             Constants.ForgotPassword_Fragment).commit();
         }
 

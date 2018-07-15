@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.Rating;
+import com.tagroup.fparking.service.domain.Staff;
 public interface RatingRepository extends JpaRepository<Rating, Long>{
-//	List<Rating> findByDriver(Driver driver);
+	List<Rating> findByStaff(Staff staff);
 }

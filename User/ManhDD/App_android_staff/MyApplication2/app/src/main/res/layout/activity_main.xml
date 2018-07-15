@@ -14,10 +14,10 @@
 
 
         <FrameLayout
-            android:id="@+id/frameContainer"
+            android:id="@+id/testframe"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:background="@drawable/abc" />
+            android:background="@drawable/background" />
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

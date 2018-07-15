@@ -1,10 +1,13 @@
 package com.example.hung.myapplication.login;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.text.InputType;
@@ -40,41 +43,45 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     private static EditText phoneNumber, password;
     private static Button loginButton;
     private static TextView forgotPassword, signUp;
-    private static CheckBox show_hide_password;
+//    private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
-    private static FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
     private StaffLoginTask mStaffLoginTask = null;
-    private View mProgressView;
-    private View mLoginFormView;
+//    final SharedPreferences spref =
+//            getActivity().getPreferences(Context.MODE_PRIVATE);
 
-
+//    SharedPreferences.Editor editor = spref.edit();
+//    private String getPhone;
+//    private String getPassword;
     public Login_Fragment() {
-
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.login_layout, container, false);
-        initViews();
-
-        setListeners();
+        System.out.println("b1");
+//        initViews();
+        System.out.println("b2");
+//        setListeners();
         return view;
     }
 
     // Initiate Views
     private void initViews() {
-        fragmentManager = getActivity().getSupportFragmentManager();
+        try {
+            System.out.println("vào trong initviews : login_fragment");
+        fragmentManager = this.getActivity().getSupportFragmentManager();
 
         phoneNumber = (EditText) view.findViewById(R.id.login_phone);
         password = (EditText) view.findViewById(R.id.login_password);
         loginButton = (Button) view.findViewById(R.id.loginBtn);
         forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
         signUp = (TextView) view.findViewById(R.id.createAccount);
-        show_hide_password = (CheckBox) view
-                .findViewById(R.id.show_hide_password);
+//        show_hide_password = (CheckBox) view
+//                .findViewById(R.id.show_hide_password);
         loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
 
         // Load ShakeAnimation
@@ -82,15 +89,16 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
                 R.anim.shake);
 
         // Setting text selector over textviews
-        @SuppressLint("ResourceType") XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
-        try {
+        XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
+
             ColorStateList csl = ColorStateList.createFromXml(getResources(),
                     xrp);
 
             forgotPassword.setTextColor(csl);
-            show_hide_password.setTextColor(csl);
+//            show_hide_password.setTextColor(csl);
             signUp.setTextColor(csl);
         } catch (Exception e) {
+            System.out.println("lỗi ở login_fragment : " + e);
         }
     }
 
@@ -100,39 +108,39 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
         forgotPassword.setOnClickListener(this);
         signUp.setOnClickListener(this);
 
-        // Set check listener over checkbox for showing and hiding password
-        show_hide_password
-                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-
-                    @Override
-                    public void onCheckedChanged(CompoundButton button,
-                                                 boolean isChecked) {
-
-                        // If it is checked then show password else hide
-                        // password
-                        if (isChecked) {
-
-                            show_hide_password.setText(R.string.hide_pwd);// change
-                            // checkbox
-                            // text
-
-                            password.setInputType(InputType.TYPE_CLASS_TEXT);
-                            password.setTransformationMethod(HideReturnsTransformationMethod
-                                    .getInstance());// show password
-                        } else {
-                            show_hide_password.setText(R.string.show_pwd);// change
-                            // checkbox
-                            // text
-
-                            password.setInputType(InputType.TYPE_CLASS_TEXT
-                                    | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-                            password.setTransformationMethod(PasswordTransformationMethod
-                                    .getInstance());// hide password
-
-                        }
-
-                    }
-                });
+//        // Set check listener over checkbox for showing and hiding password
+//        show_hide_password
+//                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+//
+//                    @Override
+//                    public void onCheckedChanged(CompoundButton button,
+//                                                 boolean isChecked) {
+//
+//                        // If it is checked then show password else hide
+//                        // password
+//                        if (isChecked) {
+//
+//                            show_hide_password.setText(R.string.hide_pwd);// change
+//                            // checkbox
+//                            // text
+//
+//                            password.setInputType(InputType.TYPE_CLASS_TEXT);
+//                            password.setTransformationMethod(HideReturnsTransformationMethod
+//                                    .getInstance());// show password
+//                        } else {
+//                            show_hide_password.setText(R.string.show_pwd);// change
+//                            // checkbox
+//                            // text
+//
+//                            password.setInputType(InputType.TYPE_CLASS_TEXT
+//                                    | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+//                            password.setTransformationMethod(PasswordTransformationMethod
+//                                    .getInstance());// hide password
+//
+//                        }
+//
+//                    }
+//                });
     }
 
     @Override
@@ -148,7 +156,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
                 fragmentManager
                         .beginTransaction()
                         .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
+                        .replace(R.id.testframe,
                                 new ForgotPassword_Fragment(),
                                 Constants.ForgotPassword_Fragment).commit();
                 break;
@@ -158,7 +166,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
                 fragmentManager
                         .beginTransaction()
                         .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer, new SignUp_Fragment(),
+                        .replace(R.id.testframe, new SignUp_Fragment(),
                                 Constants.SignUp_Fragment).commit();
                 break;
         }
@@ -167,8 +175,8 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     // Check Validation before login
     private void checkValidation() {
         // Get phone and password
-        String getPhone = phoneNumber.getText().toString();
-        String getPassword = password.getText().toString();
+       String getPhone = phoneNumber.getText().toString();
+       String getPassword = password.getText().toString();
 
         // Check patter for email id
         Pattern p = Pattern.compile(Constants.regEx);
@@ -194,25 +202,28 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
         else {
             mStaffLoginTask = new StaffLoginTask(getPhone, getPassword, this);
             mStaffLoginTask.execute((Void) null);
-            Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
+            Toast.makeText(getActivity(), "Vui lòng đợi xíu.", Toast.LENGTH_SHORT)
                     .show();
         }
     }
 
     @Override
     public void onPostExecute(Object o) {
-        mStaffLoginTask = null;
-        if (Boolean.TRUE.equals(o)) {
-//            Notification notification= new Notification();
-            Intent intent = new Intent(view.getContext(), Notification.class);
-            System.out.println("đăng nhập thành công");
-            startActivity( new Intent(this.getContext(), Manage_Home.class));
-            getActivity().startService(intent);
-
-        } else {
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Số điện thoại hoặc mật khẩu không đúng");
-        }
+//        mStaffLoginTask = null;
+//        if (Boolean.TRUE.equals(o)) {
+////            Notification notification= new Notification();
+//            Intent intent = new Intent(view.getContext(), Notification.class);
+//            System.out.println("đăng nhập thành công");
+//            startActivity( new Intent(this.getContext(), Manage_Home.class));
+////            editor.putString("phonenumber", getPhone);
+////            editor.commit();
+//            getActivity().startService(intent);
+//            getActivity().getFragmentManager().popBackStack();
+//
+//        } else {
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Số điện thoại hoặc mật khẩu không đúng");
+//        }
     }
 }
 

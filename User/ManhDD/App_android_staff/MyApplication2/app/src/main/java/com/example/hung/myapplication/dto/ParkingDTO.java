@@ -1,7 +1,7 @@
 package com.example.hung.myapplication.dto;
 
 public class ParkingDTO {
-    private Long id;
+    private int id;
 
     private String address;
 
@@ -25,7 +25,7 @@ public class ParkingDTO {
 
     }
 
-    public ParkingDTO(Long id, String address, int currentspace, double deposits, String image, String latitude, String longitude, int status, String timeoc, int totalspace) {
+    public ParkingDTO(int id, String address, int currentspace, double deposits, String image, String latitude, String longitude, int status, String timeoc, int totalspace) {
         this.id = id;
         this.address = address;
         this.currentspace = currentspace;
@@ -38,7 +38,7 @@ public class ParkingDTO {
         this.totalspace = totalspace;
     }
 
-    public Long getId() {
+    public int getId() {
         return id;
     }
 
@@ -78,7 +78,7 @@ public class ParkingDTO {
         return totalspace;
     }
 
-    public void setId(Long id) {
+    public void setId(int id) {
         this.id = id;
     }
 

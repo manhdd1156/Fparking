@@ -20,7 +20,7 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
     private static EditText phoneNumber;
     private static TextView submit;
     private static ImageView back;
-    private static FragmentManager fragmentManager;
+    private FragmentManager fragmentManager;
 
     public ForgotPassword_Fragment() {
 
@@ -67,7 +67,7 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
                 fragmentManager
                         .beginTransaction()
                         .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
+                        .replace(R.id.testframe,
                                 new ForgotPasswordOtp_Fragment(),
                                 Constants.ForgotPasswordOtp_Fragment).commit();
                 break;
