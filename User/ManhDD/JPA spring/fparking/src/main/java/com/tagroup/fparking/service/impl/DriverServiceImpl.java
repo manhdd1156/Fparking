@@ -11,6 +11,7 @@ import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.DriverVehicle;
+import com.tagroup.fparking.service.domain.Vehicle;
 import com.tagroup.fparking.service.domain.Vehicletype;
 
 @Service
@@ -60,15 +61,16 @@ public class DriverServiceImpl implements DriverService {
 		return driverRepository.findByPhoneAndPassword(phone, password);
 	}
 
+
 	@Override
-	public List<Vehicletype> getTypesByDriver(String phone) {
+	public List<Vehicle> getVehicleByDriver(String phone) {
+		// TODO Auto-generated method stub
 		List<DriverVehicle> dv = driverVehicleRepository.findByDriver(driverRepository.findByPhone(phone));
-		List<Vehicletype> listVT = new ArrayList<>();
+		List<Vehicle> listVT = new ArrayList<>();
 		for (DriverVehicle driverVehicle : dv) {
-			listVT.add(driverVehicle.getVehicle().getVehicletype());
+			listVT.add(driverVehicle.getVehicle());
 		}
 
-		// TODO Auto-generated method stub
 		return listVT;
 	}
 

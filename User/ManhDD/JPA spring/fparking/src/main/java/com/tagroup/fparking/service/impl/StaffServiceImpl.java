@@ -58,6 +58,12 @@ private StaffRepository staffRepository;
 		// TODO Auto-generated method stub
 		return staffRepository.findByPhoneAndPassword(phone, password);
 	}
+
+	@Override
+	public Staff findByPhone(String phone) {
+		// TODO Auto-generated method stub
+		return staffRepository.findByPhone(phone);
+	}
 	
 
 }

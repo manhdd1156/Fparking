@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tagroup.fparking.repository.ParkingRepository;
@@ -30,22 +31,22 @@ public ResponseEntity<?> getAll() {
 	List<Staff> respone = staffService.getAll();
 	return new ResponseEntity<>(respone,HttpStatus.OK);
 }
-//get booking by booking id
+//get login by staff infor
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
 	public ResponseEntity<?> login(@RequestBody Staff staffLogin) throws Exception {
 		Staff respone = staffService.findByPhoneAndPassword(staffLogin.getPhone(), staffLogin.getPassword());
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+	@RequestMapping(path = "/login", method = RequestMethod.GET)
+	public ResponseEntity<?> getinfo(@RequestParam("phone") String phone) throws Exception {
+		Staff respone = staffService.findByPhone(phone);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+	//get list staff
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> findByParking(@PathVariable Long id) {
 		Parking parking = parkingService.getById(id);
 		List<Staff> respone = staffService.findByParking(parking);
 		return new ResponseEntity<>(respone,HttpStatus.OK);
 	}
-//@RequestMapping(path = "def", method = RequestMethod.POST)
-//public ResponseEntity<?> create(@RequestBody Student student) {
-//	Student respone = studentService.create(student);
-//	return new ResponseEntity<>(respone,HttpStatus.OK);
-//}
-
 }
