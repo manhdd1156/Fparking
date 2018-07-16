@@ -12,10 +12,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class ParkingTask extends AsyncTask<Void, Void, Boolean> {
-    double lat, lng;
+    private double lat, lng;
     private IAsyncTaskHandler container;
-    ArrayList<GetNearPlace> nearParkingList;
-    String strJSON = null;
+    private ArrayList<GetNearPlace> nearParkingList;
+    private String action;
+    private String strJSON = null;
 
     public ParkingTask(double lat, double lng, IAsyncTaskHandler container) {
         this.lat = lat;
@@ -51,6 +52,6 @@ public class ParkingTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        container.onPostExecute(nearParkingList);
+        container.onPostExecute(nearParkingList, action);
     }
 }

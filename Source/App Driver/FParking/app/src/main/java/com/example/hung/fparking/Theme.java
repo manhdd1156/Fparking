@@ -46,23 +46,6 @@ public class Theme extends AppCompatActivity {
         final SharedPreferences spref =
                 PreferenceManager.getDefaultSharedPreferences(this);
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (spref.getString("phonenumber", "") == null && spref.getBoolean(
-                        "first_time", false)) {
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.frameContainer, new Login_Fragment(),
-                                    Constants.Login_Fragment).commit();
-                } else if (!spref.getBoolean("first_time", false)) {
-                    Intent homeIntent = new Intent(Theme.this, MainActivity.class);
-                    startActivity(homeIntent);
-                    finish();
-                }
-            }
-        }, SPLASH_TIME_OUT);
-
         // khởi tạo fragment
         fragmentManager = getSupportFragmentManager();
 
@@ -75,7 +58,22 @@ public class Theme extends AppCompatActivity {
         if (!checkNetwork.isNetworkConnected()) {
             checkNetwork.createDialog();
         } else {
-            splash();
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (spref.getString("phonenumber", "") == null && spref.getBoolean(
+                            "first_time", false)) {
+                        fragmentManager
+                                .beginTransaction()
+                                .replace(R.id.frameContainer, new Login_Fragment(),
+                                        Constants.Login_Fragment).commit();
+                    } else if (!spref.getBoolean("first_time", false)) {
+                        Intent homeIntent = new Intent(Theme.this, MainActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    }
+                }
+            }, SPLASH_TIME_OUT);
         }
 
     }
