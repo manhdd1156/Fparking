@@ -20,7 +20,7 @@ public class Fine implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private Date date;
 
@@ -41,11 +41,11 @@ public class Fine implements Serializable {
 	public Fine() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

@@ -14,4 +14,5 @@ public interface StaffService {
 	public void delete(Long id);
 	public List<Staff> findByParking(Parking parking);
 	public Staff findByPhoneAndPassword(String phone, String password);
+	public Staff findByPhone(String phone);
 }

@@ -39,8 +39,16 @@ private TariffRepository tariffRepository;
 
 	@Override
 	public Booking update(Booking booking) {
+		Booking b= bookingRepository.getOne(booking.getId());
+		b.setStatus(booking.getStatus());
+		if(booking.getStatus()==2) {
+			
+			b.setTimein(booking.getTimein());
+		}else if(booking.getStatus()==3) {
+			b.setTimeout(booking.getTimeout());
+		}
 		// TODO Auto-generated method stub
-		return bookingRepository.save(booking);
+		return bookingRepository.save(b);
 		
 	}
 

@@ -9,4 +9,5 @@ import com.tagroup.fparking.service.domain.Staff;
 public interface StaffRepository extends JpaRepository<Staff, Long>{
 	public List<Staff> findByParking(Parking parking);
 	public Staff findByPhoneAndPassword(String phone,String password);
+	public Staff findByPhone(String phone);
 }
