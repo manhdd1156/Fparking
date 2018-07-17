@@ -3,15 +3,22 @@ package com.example.hung.fparking;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
+import com.example.hung.fparking.asynctask.ParkingInforTask;
+import com.example.hung.fparking.asynctask.TariffTask;
 import com.example.hung.fparking.asynctask.VehicleTask;
 import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.dto.ParkingDTO;
+import com.example.hung.fparking.dto.TariffDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
@@ -32,8 +39,11 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     CarouselView customCarouselView;
     CarouselPicker carouselPicker;
     ArrayList<VehicleDTO> vehicle;
+    ArrayList<ParkingDTO> parkingDTOS;
+    ArrayList<TariffDTO> tariffDTOS;
 
     Button buttonDat_Cho;
+    TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress;
 
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
@@ -43,17 +53,24 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
             "https://placeholdit.imgix.net/~text?txtsize=15&txt=image4&txt=350%C3%97150&w=350&h=150",
             "https://placeholdit.imgix.net/~text?txtsize=15&txt=image5&txt=350%C3%97150&w=350&h=150"
     };
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_order_parking);
-        carouselPicker = (CarouselPicker)findViewById(R.id.carouselPickerLicensePlates);
+        carouselPicker = (CarouselPicker) findViewById(R.id.carouselPickerLicensePlates);
         customCarouselView = (CarouselView) findViewById(R.id.customCarouselView);
         customCarouselView.setPageCount(sampleImages.length);
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
         licensePlates();
 
+        // ánh xạ
+        textViewAddress = findViewById(R.id.textViewAddress);
+        textViewEmptySpace = findViewById(R.id.textViewEmptySpace);
+        textViewSlots = findViewById(R.id.textViewSlots);
+        textViewPrice = findViewById(R.id.textViewPrice);
+        textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,15 +79,45 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 startActivity(checkOutIntent);
             }
         });
+
+        // sư kiện carouselPicker
+        carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                for (int i = 0; i < tariffDTOS.size(); i++) {
+                    if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
+                        textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                    }
+                }
+                Log.e("postion", position + "");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
-     public void licensePlates() {
+
+    public void licensePlates() {
 
         // gọi vehicletask
 
-         VehicleTask vehicleTask = new VehicleTask(Session.currentDriver.getPhone(), "", this);
-         vehicleTask.execute();
+        VehicleTask vehicleTask = new VehicleTask(Session.currentDriver.getPhone(), "vt", this);
+        vehicleTask.execute();
 
-         //Carousel 2 with all text
+        ParkingInforTask parkingInforTask = new ParkingInforTask("2", "pi", this);
+        parkingInforTask.execute();
+
+        TariffTask tariffTask = new TariffTask("2", "tt", this);
+        tariffTask.execute();
+
+        //Carousel 2 with all text
 //         List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
 //
 //         textItems.add(new CarouselPicker.TextItem("30ZA-12580", 6)); // 5 is text size (sp)
@@ -80,7 +127,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 //         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
 //         CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
 //         carouselPicker.setAdapter(textAdapter);
-     }
+    }
+
     // To set simple images
     ImageListener imageListener = new ImageListener() {
         @Override
@@ -105,16 +153,33 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
     @Override
     public void onPostExecute(Object o, String action) {
-        List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
-        vehicle = (ArrayList<VehicleDTO>) o;
 
-        if (vehicle.size() > 0) {
-            for (int i = 0; i < vehicle.size(); i++) {
-                textItems.add(new CarouselPicker.TextItem(vehicle.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
+        if (action.equals("vt")) {
+            List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
+            vehicle = (ArrayList<VehicleDTO>) o;
+
+            if (vehicle.size() > 0) {
+                for (int i = 0; i < vehicle.size(); i++) {
+                    textItems.add(new CarouselPicker.TextItem(vehicle.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
+                }
             }
+            CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
+            carouselPicker.setAdapter(textAdapter);
+        } else if (action.equals("pi")) {
+            parkingDTOS = (ArrayList<ParkingDTO>) o;
 
+            textViewEmptySpace.setText(parkingDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+            textViewSlots.setText("/" + parkingDTOS.get(0).getTotalspace() + "");
+
+            textViewTime.setText(parkingDTOS.get(0).getTimeoc());
+            textViewAddress.setText(parkingDTOS.get(0).getAddress());
+        } else if (action.equals("tt")) {
+            tariffDTOS = (ArrayList<TariffDTO>) o;
+            for (int i = 0; i < tariffDTOS.size(); i++) {
+                if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
+                    textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                }
+            }
         }
-        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
-        carouselPicker.setAdapter(textAdapter);
     }
 }

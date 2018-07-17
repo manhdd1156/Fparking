@@ -374,6 +374,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
+        mMap.clear();
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         doSearchAsyncTask(lat, lng);
