@@ -46,12 +46,12 @@ public class BookingController {
 		Booking respone = bookingService.findByStatus(status);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-	// get tariff by booking id = ?
-	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
-	public ResponseEntity<?> getTariffByBId(@PathVariable Long id) {
-		List<Tariff> respone = bookingService.getTariffByBid(bookingService.getById(id));
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-	}
+//	// get tariff by booking id = ?
+//	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
+//	public ResponseEntity<?> getTariffByBId(@PathVariable Long id) {
+//		List<Tariff> respone = bookingService.getTariffByBid(bookingService.getById(id));
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//	}
 	//get booking by parking id = ?
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getTariffByPId(@PathVariable Long id) {

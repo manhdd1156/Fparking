@@ -14,11 +14,14 @@ import org.springframework.stereotype.Service;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.StaffRepository;
+import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Staff;
+import com.tagroup.fparking.service.domain.Tariff;
 @Service
 public class ParkingServiceImpl implements ParkingService{
 @Autowired
@@ -27,6 +30,8 @@ private ParkingRepository parkingRepository;
 private StaffService staffService;
 @Autowired
 private RatingRepository ratingRepository;
+@Autowired
+private TariffRepository tariffRepository;
 	@Override
 	public List<Parking> getAll() {
 		// TODO Auto-generated method stub
@@ -85,6 +90,9 @@ private RatingRepository ratingRepository;
 		return new DecimalFormat("#0.00").format(totalPoint/totalRating);
 	}
 	
-	   
+	@Override
+	public List<Tariff> getTariffByBid(Parking parking) {
+		return tariffRepository.findByParking(parking);
+	}
 
 }
