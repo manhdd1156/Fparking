@@ -1,5 +1,6 @@
 package com.example.hung.fparking;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -17,7 +18,7 @@ import in.goodiebag.carouselpicker.CarouselPicker;
 public class OrderParking extends AppCompatActivity {
     CarouselView customCarouselView;
     CarouselPicker carouselPicker;
-
+    ImageView backOrder;
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
             "https://placeholdit.imgix.net/~text?txtsize=15&txt=image1&txt=350%C3%97150&w=350&h=150",
@@ -32,10 +33,18 @@ public class OrderParking extends AppCompatActivity {
         setContentView(R.layout.activity_order_parking);
         carouselPicker = (CarouselPicker)findViewById(R.id.carouselPickerLicensePlates);
         customCarouselView = (CarouselView) findViewById(R.id.customCarouselView);
+        backOrder = (ImageView) findViewById(R.id.imageViewBackOrder);
         customCarouselView.setPageCount(sampleImages.length);
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
         licensePlates();
+        backOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(OrderParking.this,HomeActivity.class);
+                startActivity(intent);
+            }
+        });
     }
      public void licensePlates() {
          //Carousel 2 with all text
@@ -48,6 +57,7 @@ public class OrderParking extends AppCompatActivity {
          CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
          carouselPicker.setAdapter(textAdapter);
      }
+
     // To set simple images
     ImageListener imageListener = new ImageListener() {
         @Override
