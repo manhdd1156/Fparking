@@ -134,9 +134,9 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginBtn:
-//                checkValidation();
-                Intent intent = new Intent(getActivity(),HomeActivity.class);
-                startActivity(intent);
+                checkValidation();
+//                Intent intent = new Intent(getActivity(),HomeActivity.class);
+//                startActivity(intent);
                 break;
 
             case R.id.forgot_password:
@@ -197,7 +197,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     }
 
     @Override
-    public void onPostExecute(Object o) {
+    public void onPostExecute(Object o, String s) {
         mDriverLoginTask = null;
         if (Boolean.TRUE.equals(o)) {
 //            Notification notification= new Notification();
