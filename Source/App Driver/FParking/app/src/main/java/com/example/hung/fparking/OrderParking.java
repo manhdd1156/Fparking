@@ -41,6 +41,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     ArrayList<VehicleDTO> vehicle;
     ArrayList<ParkingDTO> parkingDTOS;
     ArrayList<TariffDTO> tariffDTOS;
+    List<CarouselPicker.PickerItem> textItems;
 
     Button buttonDat_Cho;
     TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress;
@@ -75,7 +76,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent checkOutIntent = new Intent(OrderParking.this, CheckOut.class);
+                Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
                 startActivity(checkOutIntent);
             }
         });
@@ -89,12 +90,19 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
             @Override
             public void onPageSelected(int position) {
-                for (int i = 0; i < tariffDTOS.size(); i++) {
-                    if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
-                        textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                String lis = textItems.get(position).getText();
+                for (int j = 0; j < vehicle.size(); j++) {
+                    if (vehicle.get(j).getLicenseplate().equals(lis)) {
+                        for (int i = 0; i < tariffDTOS.size(); i++) {
+                            if (vehicle.get(j).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
+                                textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                                Log.e("price", tariffDTOS.get(i).getPrice() + "");
+                            }
+                        }
                     }
                 }
-                Log.e("postion", position + "");
+
+                Log.e("postion", textItems.get(position).getText() + "");
             }
 
             @Override
@@ -117,16 +125,16 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         TariffTask tariffTask = new TariffTask("2", "tt", this);
         tariffTask.execute();
 
-        //Carousel 2 with all text
-//         List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
-//
-//         textItems.add(new CarouselPicker.TextItem("30ZA-12580", 6)); // 5 is text size (sp)
-//         textItems.add(new CarouselPicker.TextItem("40AH-15468", 6)); // 5 is text size (sp)
-//         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
-//         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
-//         textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
-//         CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
-//         carouselPicker.setAdapter(textAdapter);
+//        Carousel 2 with all text
+//        textItems = new ArrayList<>();
+
+//        textItems.add(new CarouselPicker.TextItem("30ZA-12580", 6)); // 5 is text size (sp)
+//        textItems.add(new CarouselPicker.TextItem("40AH-15468", 6)); // 5 is text size (sp)
+//        textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
+//        textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
+//        textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
+//        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
+//        carouselPicker.setAdapter(textAdapter);
     }
 
     // To set simple images
@@ -155,9 +163,9 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     public void onPostExecute(Object o, String action) {
 
         if (action.equals("vt")) {
-            List<CarouselPicker.PickerItem> textItems = new ArrayList<>();
-            vehicle = (ArrayList<VehicleDTO>) o;
 
+            vehicle = (ArrayList<VehicleDTO>) o;
+            textItems = new ArrayList<>();
             if (vehicle.size() > 0) {
                 for (int i = 0; i < vehicle.size(); i++) {
                     textItems.add(new CarouselPicker.TextItem(vehicle.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
