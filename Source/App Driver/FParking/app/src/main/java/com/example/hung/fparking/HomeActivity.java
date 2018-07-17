@@ -225,6 +225,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String lat = latlng[0];
                 String lng = latlng[1];
                 if (mPreferences.getString("bookingID", "").equals("")) {
+                    locationManager.removeUpdates(HomeActivity.this);
                     Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
                     intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
                     startActivity(intentOrderFlagment);
