@@ -3,6 +3,7 @@ package com.tagroup.fparking.service.impl;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.Session;
@@ -11,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 
+import com.tagroup.fparking.dto.ParkingTariffDTO;
+import com.tagroup.fparking.dto.TariffSingle;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.StaffRepository;
@@ -91,8 +94,16 @@ private TariffRepository tariffRepository;
 	}
 	
 	@Override
-	public List<Tariff> getTariffByBid(Parking parking) {
-		return tariffRepository.findByParking(parking);
+	public ParkingTariffDTO getTariffByBid(Parking parking) {
+		List<Tariff> tarifflst = tariffRepository.findByParking(parking);
+		ParkingTariffDTO ptDTO = new ParkingTariffDTO();
+		ptDTO.setParking(parking);
+		List<TariffSingle> ts = new ArrayList<>();
+		for (Tariff tariff : tarifflst) {
+			ts.add(new TariffSingle(tariff.getId(),tariff.getPrice()));
+		}
+		ptDTO.setTariffList(ts);
+		return ptDTO;
 	}
 
 }

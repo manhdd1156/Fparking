@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.sql.SQLException;
 import java.util.List;
 
+import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
@@ -18,5 +19,5 @@ public interface ParkingService {
 	public void delete(Long id);
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude);
     public String getRatingByPid(Long parkingId); 
-    public List<Tariff> getTariffByBid(Parking parking); 
+    public ParkingTariffDTO getTariffByBid(Parking parking); 
 }

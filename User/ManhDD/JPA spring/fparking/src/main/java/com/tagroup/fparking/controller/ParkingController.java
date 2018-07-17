@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.domain.Booking;
@@ -67,7 +68,7 @@ public class ParkingController {
 	// get tariff by parking id = ?
 		@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
 		public ResponseEntity<?> getTariffByBId(@PathVariable Long id) {
-			List<Tariff> respone = parkingService.getTariffByBid(parkingService.getById(id));
+			ParkingTariffDTO respone = parkingService.getTariffByBid(parkingService.getById(id));
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		}
 	
