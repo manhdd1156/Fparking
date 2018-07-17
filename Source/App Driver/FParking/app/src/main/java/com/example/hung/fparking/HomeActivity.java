@@ -14,7 +14,10 @@ import android.location.Geocoder;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
+import android.os.Build;
 import android.speech.RecognizerIntent;
+import android.speech.tts.TextToSpeech;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
@@ -54,6 +57,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, IAsyncTaskHandler, GoogleMap.OnCameraMoveStartedListener, LocationListener {
 
@@ -62,6 +66,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private SharedPreferences.Editor mPreferencesEditor;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
     private LocationManager locationManager = null;
+    private TextToSpeech textToSpeechNearPlace;
 
     View mMapView;
     ImageView imageViewVoiceSearch, imageViewMute;
@@ -310,7 +315,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onPostExecute(Object o) {
+    public void onPostExecute(Object o, String s) {
         nearParkingList = (ArrayList<GetNearPlace>) o;
         int height = 90;
         int width = 90;
@@ -402,6 +407,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    protected void textToSpeech() {
+        textToSpeechNearPlace = new TextToSpeech(HomeActivity.this, new TextToSpeech.OnInitListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onInit(int status) {
+                textToSpeechNearPlace.setLanguage(Locale.forLanguageTag("vi-VN"));
+                textToSpeechNearPlace.speak("Địa chỉ không hợp lệ", TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
+    }
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -421,8 +437,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         List<Address> addressList = new ArrayList<>();
         try {
             addressList = geocoder.getFromLocationName(location, 1);
+            Log.e("List location", addressList + "");
         } catch (IOException e) {
-            Log.e("getLocationFromVoiceSearch:", e.getMessage());
+            e.printStackTrace();
         }
 
         if (addressList.size() > 0) {
@@ -432,6 +449,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             double voiceLatitude = address.getLatitude();
             double voiceLongitude = address.getLongitude();
             doSearchAsyncTask(voiceLatitude, voiceLongitude);
+        } else {
+            textToSpeech();
         }
     }
 
