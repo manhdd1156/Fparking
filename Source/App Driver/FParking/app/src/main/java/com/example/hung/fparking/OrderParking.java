@@ -1,10 +1,12 @@
 package com.example.hung.fparking;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -31,6 +33,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     CarouselPicker carouselPicker;
     ArrayList<VehicleDTO> vehicle;
 
+    Button buttonDat_Cho;
+
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
             "https://placeholdit.imgix.net/~text?txtsize=15&txt=image1&txt=350%C3%97150&w=350&h=150",
@@ -49,6 +53,15 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
         licensePlates();
+
+        buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
+        buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent checkOutIntent = new Intent(OrderParking.this, CheckOut.class);
+                startActivity(checkOutIntent);
+            }
+        });
     }
      public void licensePlates() {
 
