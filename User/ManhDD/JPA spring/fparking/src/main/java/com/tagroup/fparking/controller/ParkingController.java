@@ -17,6 +17,7 @@ import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Tariff;
 
 @RestController
 @RequestMapping("/tat/parkings")
@@ -62,11 +63,26 @@ public class ParkingController {
 		List<Parking> respone = parkingService.findByLatitudeANDLongitude(latitude, longitude);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+
+	// get tariff by parking id = ?
+		@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
+		public ResponseEntity<?> getTariffByBId(@PathVariable Long id) {
+			List<Tariff> respone = parkingService.getTariffByBid(parkingService.getById(id));
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
+	
 	// get bookings by parking id
-		@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)
-		public ResponseEntity<?> getRatebyPid(@PathVariable Long id) {
-			System.out.println(id);
-			String respone = parkingService.getRatingByPid(id);
+	@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)
+	public ResponseEntity<?> getRatebyPid(@PathVariable Long id) {
+		System.out.println(id);
+		String respone = parkingService.getRatingByPid(id);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+	
+	// update parking 
+		@RequestMapping(path = "/update", method = RequestMethod.POST)
+		public ResponseEntity<?> update(@RequestBody Parking parking) throws Exception {
+			Parking respone = parkingService.update(parking);
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		}
 }

@@ -14,6 +14,6 @@ public interface BookingService {
 	public Booking create(Booking booking);
 	public Booking update(Booking booking);
 	public void delete(Long id);
-	public List<Tariff> getTariffByBid(Booking booking); 
+	
 	public Booking findByStatus(int status);
 }
