@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Tariff;
+import com.tagroup.fparking.service.domain.Vehicletype;
 
 
 /**
@@ -18,11 +19,13 @@ public class TariffSingle {
 
 	private double price;
 
-	
-	public TariffSingle(int id, double price) {
+	private Vehicletype vehicletype;
+
+	public TariffSingle(int id, double price, Vehicletype vehicletype) {
 		super();
 		this.id = id;
 		this.price = price;
+		this.vehicletype = vehicletype;
 	}
 
 	public int getId() {
@@ -40,6 +43,15 @@ public class TariffSingle {
 	public void setPrice(double price) {
 		this.price = price;
 	}
+
+	public Vehicletype getVehicletype() {
+		return vehicletype;
+	}
+
+	public void setVehicletype(Vehicletype vehicletype) {
+		this.vehicletype = vehicletype;
+	}
+	
 	
 
 }

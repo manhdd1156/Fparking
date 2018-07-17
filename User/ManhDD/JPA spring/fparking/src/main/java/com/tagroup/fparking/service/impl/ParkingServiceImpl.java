@@ -100,7 +100,7 @@ private TariffRepository tariffRepository;
 		ptDTO.setParking(parking);
 		List<TariffSingle> ts = new ArrayList<>();
 		for (Tariff tariff : tarifflst) {
-			ts.add(new TariffSingle(tariff.getId(),tariff.getPrice()));
+			ts.add(new TariffSingle(tariff.getId(),tariff.getPrice(),tariff.getVehicletype()));
 		}
 		ptDTO.setTariffList(ts);
 		return ptDTO;
