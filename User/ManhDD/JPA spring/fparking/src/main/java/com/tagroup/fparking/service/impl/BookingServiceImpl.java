@@ -8,18 +8,21 @@ import org.springframework.stereotype.Service;
 import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.service.BookingService;
+import com.tagroup.fparking.service.PusherService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
-import com.tagroup.fparking.service.domain.Tariff;
 @Service
 public class BookingServiceImpl implements BookingService{
 @Autowired
 private BookingRepository bookingRepository;
 @Autowired
 private TariffRepository tariffRepository;
+	@Autowired
+	private PusherService pusherService;
 	@Override
 	public List<Booking> getAll() {
 		// TODO Auto-generated method stub
+		pusherService.trigger("channel", "event", "dataa");
 		return bookingRepository.findAll();
 		
 	}
