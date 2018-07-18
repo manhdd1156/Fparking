@@ -42,11 +42,11 @@ public class ParkingController {
 	}
 
 	// lấy thông tin theo link : http://localhost:9000/api/parkings/abc?id=3
-	@RequestMapping(path = "abc", method = RequestMethod.GET)
-	public ResponseEntity<?> getbyid2(@RequestParam("id") Long id) {
-		Parking respone = parkingService.getById(id);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-	}
+//	@RequestMapping(path = "abc", method = RequestMethod.GET)
+//	public ResponseEntity<?> getbyid2(@RequestParam("id") Long id) {
+//		Parking respone = parkingService.getById(id);
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//	}
 
 	// get bookings by parking id
 	@RequestMapping(path = "/{id}/bookings", method = RequestMethod.GET)
@@ -68,7 +68,7 @@ public class ParkingController {
 	// get tariff by parking id = ?
 		@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
 		public ResponseEntity<?> getTariffByBId(@PathVariable Long id) {
-			ParkingTariffDTO respone = parkingService.getTariffByBid(parkingService.getById(id));
+			ParkingTariffDTO respone = parkingService.getTariffByPid(parkingService.getById(id));
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		}
 	

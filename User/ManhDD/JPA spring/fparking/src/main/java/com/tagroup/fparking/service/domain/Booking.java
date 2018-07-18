@@ -21,7 +21,7 @@ public class Booking implements Serializable {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	private double price;
+	
 	@Column
 	private int status;
 
@@ -29,14 +29,46 @@ public class Booking implements Serializable {
 
 	private Date timeout;
 	
+	private double price;
+	
+	private double amount;
+	
+	private double comission;
+	
+	private double totalfine;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
 	private Parking parking;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "vehicle_id", referencedColumnName = "id")
-	private Vehicle vehicle;
+	@JoinColumn(name = "drivervehicle_id", referencedColumnName = "id")
+	private DriverVehicle drivervehicle;
 	
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public double getComission() {
+		return comission;
+	}
+
+	public void setComission(double comission) {
+		this.comission = comission;
+	}
+
+	public double getTotalfine() {
+		return totalfine;
+	}
+
+	public void setTotalfine(double totalfine) {
+		this.totalfine = totalfine;
+	}
 
 	public Booking() {
 	}
@@ -81,12 +113,13 @@ public class Booking implements Serializable {
 		this.timeout = timeout;
 	}
 
-	public Vehicle getVehicle() {
-		return vehicle;
+	
+	public DriverVehicle getDrivervehicle() {
+		return drivervehicle;
 	}
 
-	public void setVehicle(Vehicle vehicle) {
-		this.vehicle = vehicle;
+	public void setDrivervehicle(DriverVehicle drivervehicle) {
+		this.drivervehicle = drivervehicle;
 	}
 
 	public Parking getParking() {

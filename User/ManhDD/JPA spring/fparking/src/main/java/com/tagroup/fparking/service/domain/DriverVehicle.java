@@ -20,7 +20,7 @@ public class DriverVehicle implements Serializable {
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
 	private int id;
-	
+	private int status;
 	public DriverVehicle() {
 	}
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -32,6 +32,14 @@ public class DriverVehicle implements Serializable {
 	private Vehicle vehicle;
 	public int getId() {
 		return this.id;
+	}
+
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
 	}
 
 	public void setId(int id) {

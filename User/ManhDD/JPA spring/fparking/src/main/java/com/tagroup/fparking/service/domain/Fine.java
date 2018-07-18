@@ -29,10 +29,7 @@ public class Fine implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "driver_id", referencedColumnName = "id")
 	private Driver driver;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "finetariff_id", referencedColumnName = "id")
-	private Finetariff finetariff;
+
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
@@ -73,13 +70,7 @@ public class Fine implements Serializable {
 		this.driver = driver;
 	}
 
-	public Finetariff getFinetariff() {
-		return finetariff;
-	}
-
-	public void setFinetariff(Finetariff finetariff) {
-		this.finetariff = finetariff;
-	}
+	
 
 	public Parking getParking() {
 		return parking;

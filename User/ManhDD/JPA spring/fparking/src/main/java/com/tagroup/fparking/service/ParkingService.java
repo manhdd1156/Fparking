@@ -19,5 +19,5 @@ public interface ParkingService {
 	public void delete(Long id);
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude);
     public String getRatingByPid(Long parkingId); 
-    public ParkingTariffDTO getTariffByBid(Parking parking); 
+    public ParkingTariffDTO getTariffByPid(Parking parking); 
 }

@@ -15,7 +15,8 @@ import com.tagroup.fparking.service.domain.Tariff;
 public class BookingServiceImpl implements BookingService{
 @Autowired
 private BookingRepository bookingRepository;
-
+@Autowired
+private TariffRepository tariffRepository;
 	@Override
 	public List<Booking> getAll() {
 		// TODO Auto-generated method stub
@@ -32,8 +33,8 @@ private BookingRepository bookingRepository;
 	@Override
 	public Booking create(Booking booking) {
 		// TODO Auto-generated method stub
+		
 		return bookingRepository.save(booking);
-	
 	}
 
 	@Override

@@ -58,6 +58,15 @@ public class BookingController {
 		List<Booking> respone = bookingService.findByParking(parkingService.getById(id));
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+	
+	//create new booking
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody Booking booking) throws Exception {
+		
+		Booking respone = bookingService.create(booking);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+	
 	// update booking 
 	@RequestMapping(path = "/update", method = RequestMethod.POST)
 	public ResponseEntity<?> update(@RequestBody Booking booking) throws Exception {

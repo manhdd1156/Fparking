@@ -57,7 +57,16 @@ private TariffRepository tariffRepository;
 	@Override
 	public Parking update(Parking parking) {
 		// TODO Auto-generated method stub
-		return parkingRepository.save(parking);
+		Parking p = new Parking();
+		try {
+		p = parkingRepository.save(parking);
+		}catch(Exception e) {
+			System.out.println("lỗi");
+			p = parkingRepository.getOne(parking.getId());
+			p.setCurrentspace(parking.getCurrentspace());
+			p = parkingRepository.save(p);
+		}
+		return p;
 		
 	}
 
@@ -94,7 +103,7 @@ private TariffRepository tariffRepository;
 	}
 	
 	@Override
-	public ParkingTariffDTO getTariffByBid(Parking parking) {
+	public ParkingTariffDTO getTariffByPid(Parking parking) {
 		List<Tariff> tarifflst = tariffRepository.findByParking(parking);
 		ParkingTariffDTO ptDTO = new ParkingTariffDTO();
 		ptDTO.setParking(parking);
