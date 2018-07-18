@@ -1,8 +1,15 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -23,6 +30,8 @@ public class Vehicle implements Serializable {
 	private Long id;
 
 	private String licenseplate;
+	private String color;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicletype_id", referencedColumnName = "id")
 	private Vehicletype vehicletype;
@@ -36,6 +45,14 @@ public class Vehicle implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getLicenseplate() {
