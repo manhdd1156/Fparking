@@ -28,9 +28,9 @@ public class PusherServiceImpl implements PusherService {
 	}
 
 	@Override
-	public void trigger(String channal, String event, String data) {
+	public void trigger(String channel, String event, String data) {
 		// TODO Auto-generated method stub
-		pusher.trigger(channal, event, data);
+		pusher.trigger(channel, event, data);
 
 	}
 
