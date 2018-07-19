@@ -1,15 +1,15 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
-
-
-//import com.ctwgroup.erestaurant.service.domain.Category;
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.List;
 
 
 /**
@@ -35,9 +35,9 @@ public class Driver implements Serializable {
 	
 	private int status;
 
-	@ManyToMany
-	@JoinTable(name = "driver_vehicle", joinColumns = @JoinColumn(name = "driver_id"), inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
-	private List<Vehicle> vehicles;
+//	@ManyToMany
+//	@JoinTable(name = "driver_vehicle", joinColumns = @JoinColumn(name = "driver_id"), inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
+//	private List<Vehicle> vehicles;
 	public Driver() {
 	}
 
@@ -81,13 +81,13 @@ public class Driver implements Serializable {
 		this.status = status;
 	}
 
-	public List<Vehicle> getVehicles() {
-		return vehicles;
-	}
-
-	public void setVehicles(List<Vehicle> vehicles) {
-		this.vehicles = vehicles;
-	}
+//	public List<Vehicle> getVehicles() {
+//		return vehicles;
+//	}
+//
+//	public void setVehicles(List<Vehicle> vehicles) {
+//		this.vehicles = vehicles;
+//	}
 
 
 	

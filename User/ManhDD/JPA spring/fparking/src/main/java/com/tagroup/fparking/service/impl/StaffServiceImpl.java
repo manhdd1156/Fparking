@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.repository.StaffRepository;
 import com.tagroup.fparking.service.StaffService;
+import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Staff;
 @Service
 public class StaffServiceImpl implements StaffService{
@@ -45,11 +46,23 @@ private StaffRepository staffRepository;
 		Staff staff = staffRepository.getOne(id);
 		staffRepository.delete(staff);
 	}
-
+	
+	@Override
+	public List<Staff> findByParking(Parking parking) {
+		// TODO Auto-generated method stub
+		return staffRepository.findByParking(parking);
+	}
+	
 	@Override
 	public Staff findByPhoneAndPassword(String phone, String password) {
 		// TODO Auto-generated method stub
 		return staffRepository.findByPhoneAndPassword(phone, password);
+	}
+
+	@Override
+	public Staff findByPhone(String phone) {
+		// TODO Auto-generated method stub
+		return staffRepository.findByPhone(phone);
 	}
 	
 

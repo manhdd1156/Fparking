@@ -25,11 +25,23 @@ public class Finetariff implements Serializable {
 
 	private int type;
 	
+	@OneToOne(fetch = FetchType.EAGER)
+	@JoinColumn(name = "vehicletype_id", referencedColumnName = "id")
+	private Vehicletype vehicletype;
+	
 	public Finetariff() {
 	}
 
 	public int getId() {
 		return this.id;
+	}
+
+	public Vehicletype getVehicletype() {
+		return vehicletype;
+	}
+
+	public void setVehicletype(Vehicletype vehicletype) {
+		this.vehicletype = vehicletype;
 	}
 
 	public void setId(int id) {

@@ -16,6 +16,7 @@ public class DriverLoginTask extends AsyncTask<Void, Void, Boolean> {
     private final String mPhone;
     private final String mPassword;
     private final IAsyncTaskHandler container;
+    private String action;
 
     public DriverLoginTask(String mPhone, String mPassword, IAsyncTaskHandler container) {
         this.mPhone = mPhone;
@@ -31,7 +32,7 @@ public class DriverLoginTask extends AsyncTask<Void, Void, Boolean> {
             JSONObject formData = new JSONObject();
             formData.put("phone", mPhone);
             formData.put("password", mPassword);
-            String json = httpHandler.post(Constants.API_URL + "driver/login/", formData.toString());
+            String json = httpHandler.post(Constants.API_URL + "drivers/login/", formData.toString());
 
             JSONObject jsonObj = new JSONObject(json);
 //            if (jsonObj.getInt("size") > 0) {
@@ -54,12 +55,12 @@ public class DriverLoginTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        container.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean, action);
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        container.onPostExecute(false);
+        container.onPostExecute(false, action);
     }
 }

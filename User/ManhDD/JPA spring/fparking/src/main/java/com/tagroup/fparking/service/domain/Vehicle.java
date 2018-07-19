@@ -1,8 +1,15 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
 
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -20,22 +27,44 @@ public class Vehicle implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private String licenseplate;
+	private String color;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicletype_id", referencedColumnName = "id")
 	private Vehicletype vehicletype;
 
+//	@ManyToMany
+//	@JoinTable(name = "driver_vehicle", joinColumns = @JoinColumn(name = "vehicle_id"), inverseJoinColumns = @JoinColumn(name = "driver_id"))
+//	private List<Driver> drivers;
+	
 	public Vehicle() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getColor() {
+		return color;
+	}
+
+//	public List<Driver> getDrivers() {
+//		return drivers;
+//	}
+//
+//	public void setDrivers(List<Driver> drivers) {
+//		this.drivers = drivers;
+//	}
+
+	public void setColor(String color) {
+		this.color = color;
 	}
 
 	public String getLicenseplate() {

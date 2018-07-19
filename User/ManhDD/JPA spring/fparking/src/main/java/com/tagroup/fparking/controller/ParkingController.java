@@ -13,10 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Tariff;
 
 @RestController
 @RequestMapping("/tat/parkings")
@@ -40,11 +42,11 @@ public class ParkingController {
 	}
 
 	// lấy thông tin theo link : http://localhost:9000/api/parkings/abc?id=3
-	@RequestMapping(path = "abc", method = RequestMethod.GET)
-	public ResponseEntity<?> getbyid2(@RequestParam("id") Long id) {
-		Parking respone = parkingService.getById(id);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-	}
+//	@RequestMapping(path = "abc", method = RequestMethod.GET)
+//	public ResponseEntity<?> getbyid2(@RequestParam("id") Long id) {
+//		Parking respone = parkingService.getById(id);
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//	}
 
 	// get bookings by parking id
 	@RequestMapping(path = "/{id}/bookings", method = RequestMethod.GET)
@@ -63,4 +65,25 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
+	// get tariff by parking id = ?
+		@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
+		public ResponseEntity<?> getTariffByBId(@PathVariable Long id) {
+			ParkingTariffDTO respone = parkingService.getTariffByPid(parkingService.getById(id));
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
+	
+	// get bookings by parking id
+	@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)
+	public ResponseEntity<?> getRatebyPid(@PathVariable Long id) {
+		System.out.println(id);
+		String respone = parkingService.getRatingByPid(id);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+	
+	// update parking 
+		@RequestMapping(path = "/update", method = RequestMethod.POST)
+		public ResponseEntity<?> update(@RequestBody Parking parking) throws Exception {
+			Parking respone = parkingService.update(parking);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
 }

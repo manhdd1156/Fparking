@@ -1,6 +1,7 @@
 package com.example.hung.fparking.model;
 
 import android.os.AsyncTask;
+import android.util.Log;
 
 import com.google.android.gms.maps.model.LatLng;
 

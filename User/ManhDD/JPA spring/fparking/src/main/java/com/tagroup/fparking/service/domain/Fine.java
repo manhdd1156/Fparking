@@ -20,7 +20,7 @@ public class Fine implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private Date date;
 
@@ -29,10 +29,7 @@ public class Fine implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "driver_id", referencedColumnName = "id")
 	private Driver driver;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "finetariff_id", referencedColumnName = "id")
-	private Finetariff finetariff;
+
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
@@ -41,11 +38,11 @@ public class Fine implements Serializable {
 	public Fine() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -73,13 +70,7 @@ public class Fine implements Serializable {
 		this.driver = driver;
 	}
 
-	public Finetariff getFinetariff() {
-		return finetariff;
-	}
-
-	public void setFinetariff(Finetariff finetariff) {
-		this.finetariff = finetariff;
-	}
+	
 
 	public Parking getParking() {
 		return parking;
