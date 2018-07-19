@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.service.DriverVehicleService;
+import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 
 @Service
@@ -46,6 +47,25 @@ private DriverVehicleRepository driverVehicleRepository;
 		DriverVehicle drivervehicle = driverVehicleRepository.getOne(id);
 		driverVehicleRepository.delete(drivervehicle);
 	}
+
+	@Override
+	public List<Driver> getbyDriverId(Driver driver) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+//	@Override
+//	public List<DriverVehicle> getbyDriverId(Driver driver) {
+//		// TODO Auto-generated method stub
+//		List<DriverVehicle> drivervehiclelist = driverVehicleRepository.findByDriver(driver);
+//		List<Driver> d = new ArrayList<>();
+//		for (DriverVehicle driverVehicle : drivervehiclelist) {
+//			d.add(driverVehicle.getDriver());
+//		}
+//		
+//		return drivervehiclelist;
+//	}
+
 	
 
 }
