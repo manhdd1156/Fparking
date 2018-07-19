@@ -112,7 +112,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
         // move camera đến vị trí của mình
         GPSTracker gps = new GPSTracker(this);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(gps.getLatitude(), gps.getLongitude()), 17));
 
         // setEnabled nút locaiotn
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
@@ -175,7 +175,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         destinationMarkers = new ArrayList<>();
 
         for (Route route : routes) {
-            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 16));
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(route.startLocation, 17));
             ((TextView) findViewById(R.id.tvDuration)).setText(route.duration.text);
             ((TextView) findViewById(R.id.tvDistance)).setText(route.distance.text);
 
@@ -235,7 +235,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         if (!userGesture) {
             cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
-                    .zoom(18)                   // Sets the zoom
+                    .zoom(17)                   // Sets the zoom
                     .bearing(location.getBearing()) // Sets the orientation of the camera to east
                     .tilt(0)                   // Sets the tilt of the camera to 0 degrees
                     .build();                   // Creates a CameraPosition from the builder
