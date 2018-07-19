@@ -164,6 +164,8 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     // Check Validation before login
     private void checkValidation() {
         // Get phone and password
+        phoneNumber.setText("01288028666");
+        password.setText("khoi1995");
         String getPhone = phoneNumber.getText().toString();
         String getPassword = password.getText().toString();
 

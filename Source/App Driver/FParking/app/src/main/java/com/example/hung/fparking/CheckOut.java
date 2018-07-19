@@ -56,7 +56,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
             }
 
             textViewAddress.setText(myBookingDTO.getAddress());
-
+            textViewTotalPrice.setText(myBookingDTO.getAmount()+"");
             textViewPrice.setText(myBookingDTO.getPrice() + "");
             textViewLicensePlate.setText(myBookingDTO.getLicenseplate());
         }

@@ -215,22 +215,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(myLatitude, myLongitude), 15));
         }
 
-        mMap.setOnMarkerClickListener(this);
         // event click khi chọn marker
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-                marker.getTag();
-                Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
-//                intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                startActivity(intentOrderFlagment);
-//                if () {
-//                }
-                return false;
-            }
-        });
-
-
+        mMap.setOnMarkerClickListener(this);
     }
 
     public void searchPlace() {
@@ -297,7 +283,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng latLng = new LatLng(nearParkingList.get(i).getLattitude(), nearParkingList.get(i).getLongitude());
 
                 mMap.addMarker(new MarkerOptions()
-                        .position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(nearParkingList.get(i).getId()+""));
+                        .position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(nearParkingList.get(i).getId() + ""));
             }
         }
     }
@@ -427,7 +413,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.hideInfoWindow();
-        return false;
+        if (mPreferences.getString("status", "").equals("")) {
+            mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
+            mPreferencesEditor.commit();
+            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+            startActivity(intentOrderFlagment);
+        }
+        return true;
     }
 }
 
