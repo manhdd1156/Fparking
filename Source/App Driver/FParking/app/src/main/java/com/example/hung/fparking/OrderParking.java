@@ -82,8 +82,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         backOrder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent backOrder = new Intent(OrderParking.this, HomeActivity.class);
-                startActivity(backOrder);
+                Intent backOrderIntent = new Intent(OrderParking.this, HomeActivity.class);
+                startActivity(backOrderIntent);
             }
         });
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
