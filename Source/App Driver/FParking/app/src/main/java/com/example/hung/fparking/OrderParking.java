@@ -47,6 +47,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
+    ImageView backOrder;
     Button buttonDat_Cho;
     TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress;
 
@@ -76,6 +77,15 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         textViewPrice = findViewById(R.id.textViewPrice);
         textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
+        backOrder = findViewById(R.id.imageViewBackOrder);
+
+        backOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backOrder = new Intent(OrderParking.this, HomeActivity.class);
+                startActivity(backOrder);
+            }
+        });
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
