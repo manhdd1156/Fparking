@@ -20,7 +20,13 @@ public class BookingDTO {
 
     private String licenseplate;
 
-    public BookingDTO(int bookingID, int vehicleID, int parkingID, String address, String timeIn, String timeOut, double price, int status, String licenseplate) {
+    private double amount;
+
+    private double comission;
+
+    private double totalfine;
+
+    public BookingDTO(int bookingID, int vehicleID, int parkingID, String address, String timeIn, String timeOut, double price, int status, String licenseplate, double amount, double comission, double totalfine) {
         this.bookingID = bookingID;
         this.vehicleID = vehicleID;
         this.parkingID = parkingID;
@@ -30,6 +36,12 @@ public class BookingDTO {
         this.price = price;
         this.status = status;
         this.licenseplate = licenseplate;
+        this.amount = amount;
+        this.comission = comission;
+        this.totalfine = totalfine;
+    }
+
+    public BookingDTO() {
     }
 
     public int getBookingID() {
@@ -68,6 +80,18 @@ public class BookingDTO {
         return licenseplate;
     }
 
+    public double getAmount() {
+        return amount;
+    }
+
+    public double getComission() {
+        return comission;
+    }
+
+    public double getTotalfine() {
+        return totalfine;
+    }
+
     public void setBookingID(int bookingID) {
         this.bookingID = bookingID;
     }
@@ -102,5 +126,17 @@ public class BookingDTO {
 
     public void setLicenseplate(String licenseplate) {
         this.licenseplate = licenseplate;
+    }
+
+    public void setAmount(double amount) {
+        this.amount = amount;
+    }
+
+    public void setComission(double comission) {
+        this.comission = comission;
+    }
+
+    public void setTotalfine(double totalfine) {
+        this.totalfine = totalfine;
     }
 }

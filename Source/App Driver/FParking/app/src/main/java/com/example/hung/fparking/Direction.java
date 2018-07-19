@@ -82,10 +82,14 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         // khởi tạo shareRePreference
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
+        String parkingID = mPreferences.getString("parkingID", "");
+        if (!parkingID.equals("")) {
+            ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
+            parkingInforTask.execute();
+        }
 
         //excute chỉ đường
-        ParkingInforTask parkingInforTask = new ParkingInforTask("2", "pi", this);
-        parkingInforTask.execute();
+
 
         // Ánh xạ
         buttonCheckin = (Button) findViewById(R.id.buttonCheckin);
