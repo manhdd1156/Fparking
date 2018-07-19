@@ -36,6 +36,10 @@ public class Vehicle implements Serializable {
 	@JoinColumn(name = "vehicletype_id", referencedColumnName = "id")
 	private Vehicletype vehicletype;
 
+//	@ManyToMany
+//	@JoinTable(name = "driver_vehicle", joinColumns = @JoinColumn(name = "vehicle_id"), inverseJoinColumns = @JoinColumn(name = "driver_id"))
+//	private List<Driver> drivers;
+	
 	public Vehicle() {
 	}
 
@@ -50,6 +54,14 @@ public class Vehicle implements Serializable {
 	public String getColor() {
 		return color;
 	}
+
+//	public List<Driver> getDrivers() {
+//		return drivers;
+//	}
+//
+//	public void setDrivers(List<Driver> drivers) {
+//		this.drivers = drivers;
+//	}
 
 	public void setColor(String color) {
 		this.color = color;
