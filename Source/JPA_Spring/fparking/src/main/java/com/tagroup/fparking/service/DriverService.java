@@ -11,4 +11,5 @@ public interface DriverService {
 	public Driver create(Driver driver);
 	public Driver update(Driver driver);
 	public void delete(Long id);
+	public List<Driver> getByStatus(int status);
 }

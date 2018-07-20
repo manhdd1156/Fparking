@@ -71,8 +71,9 @@
         <activity
             android:name=".Direction"
             android:label="@string/title_activity_direction"
-            android:noHistory="true"></activity>
-        <activity android:name=".login.MainActivity"></activity>
+            android:noHistory="true" />
+        <activity android:name=".login.MainActivity" />
+        <activity android:name=".ParkingHistory"></activity>
     </application>
 
 </manifest>

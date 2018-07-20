@@ -13,14 +13,20 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tagroup.fparking.service.BookingService;
+import com.tagroup.fparking.service.DriverService;
+import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.domain.Booking;
-import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Driver;
 
 @Controller
 @RequestMapping("/tat/bookings")
 public class BookingController {
 	@Autowired
 	private BookingService bookingService;
+	@Autowired
+	private DriverService driverService;
+	@Autowired
+	private DriverVehicleService driverVehicleService;
 	// get all bookings
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public ResponseEntity<?> getall() {
@@ -44,5 +50,11 @@ public class BookingController {
 //	Student respone = studentService.create(student);
 //	return new ResponseEntity<>(respone,HttpStatus.OK);
 //}
-
+		@RequestMapping(path = "/driverdetail/{id}", method = RequestMethod.GET)
+		public ResponseEntity<?> getbyDriverId(@PathVariable Long id) {
+			//
+			Driver d = driverService.getById(id);
+			List<Driver> listDV = driverVehicleService.getbyDriverId(d);
+			return new ResponseEntity<>(listDV, HttpStatus.OK);
+		}
 }
