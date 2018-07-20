@@ -11,4 +11,5 @@ public interface VehicleService {
 	public Vehicle create(Vehicle vehicle);
 	public Vehicle update(Vehicle vehicle);
 	public void delete(Long id);
+	public Vehicle getVehicleByDriverVehicle(Long id);
 }

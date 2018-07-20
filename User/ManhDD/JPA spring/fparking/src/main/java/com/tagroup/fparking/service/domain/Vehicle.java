@@ -30,6 +30,7 @@ public class Vehicle implements Serializable {
 	private Long id;
 
 	private String licenseplate;
+	
 	private String color;
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -54,15 +55,6 @@ public class Vehicle implements Serializable {
 	public String getColor() {
 		return color;
 	}
-
-//	public List<Driver> getDrivers() {
-//		return drivers;
-//	}
-//
-//	public void setDrivers(List<Driver> drivers) {
-//		this.drivers = drivers;
-//	}
-
 	public void setColor(String color) {
 		this.color = color;
 	}

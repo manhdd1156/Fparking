@@ -5,13 +5,17 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Vehicle;
 @Service
 public class VehicleServiceImpl implements VehicleService{
 @Autowired
 private VehicleRepository vehicleRepository;
+@Autowired
+private DriverVehicleRepository drivervehicleRepository;
 	@Override
 	public List<Vehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -44,6 +48,13 @@ private VehicleRepository vehicleRepository;
 		// TODO Auto-generated method stub
 		Vehicle vehicle = vehicleRepository.getOne(id);
 		vehicleRepository.delete(vehicle);
+	}
+
+	@Override
+	public Vehicle getVehicleByDriverVehicle(Long id) {
+		DriverVehicle dv = drivervehicleRepository.getOne(id);
+		// TODO Auto-generated method stub
+		return dv.getVehicle();
 	}
 	
 

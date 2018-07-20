@@ -1,7 +1,16 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
@@ -19,7 +28,7 @@ public class DriverVehicle implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 	private int status;
 	public DriverVehicle() {
 	}
@@ -30,7 +39,7 @@ public class DriverVehicle implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicle_id", referencedColumnName = "id")
 	private Vehicle vehicle;
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
@@ -42,7 +51,7 @@ public class DriverVehicle implements Serializable {
 		this.status = status;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
