@@ -59,7 +59,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
-public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, IAsyncTaskHandler, GoogleMap.OnCameraMoveStartedListener, LocationListener {
+public class HomeActivity extends AppCompatActivity implements OnMapReadyCallback, IAsyncTaskHandler, GoogleMap.OnCameraMoveStartedListener, LocationListener, GoogleMap.OnMarkerClickListener {
 
     private GoogleMap mMap;
     private SharedPreferences mPreferences;
@@ -216,57 +216,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
 
         // event click khi chọn marker
-        mMap.setOnMarkerClickListener(new GoogleMap.OnMarkerClickListener() {
-            @Override
-            public boolean onMarkerClick(Marker marker) {
-//                onStopSpeech();
-                String parkingLocation = marker.getPosition().toString();
-                String[] latlng = getLat_lng(parkingLocation);
-                String lat = latlng[0];
-                String lng = latlng[1];
-                if (mPreferences.getString("bookingID", "").equals("")) {
-                    locationManager.removeUpdates(HomeActivity.this);
-                    Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
-                    intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                    startActivity(intentOrderFlagment);
-                } else if (mPreferences.getString("parkingLat", "").equals(lat) && mPreferences.getString("parkingLng", "").equals(lng)) {
-                    if (mPreferences.getString("action", "").equals("2")) {
-                        Intent intentOrderFlagment = new Intent(HomeActivity.this, CheckOut.class);
-                        intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                        startActivity(intentOrderFlagment);
-                    } else {
-                        Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
-                        intentOrderFlagment.putExtra("ParkingLocation", parkingLocation);
-                        startActivity(intentOrderFlagment);
-                    }
-
-                } else {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int choice) {
-                            switch (choice) {
-                                case DialogInterface.BUTTON_POSITIVE:
-
-
-                                    break;
-                                case DialogInterface.BUTTON_NEGATIVE:
-
-                                    break;
-                            }
-                        }
-                    };
-                    try {
-                        builder.setMessage("Bạn đang đỗ xe tại nơi khác!").show();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-                return false;
-            }
-        });
-
-
+        mMap.setOnMarkerClickListener(this);
     }
 
     public void searchPlace() {
@@ -333,11 +283,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng latLng = new LatLng(nearParkingList.get(i).getLattitude(), nearParkingList.get(i).getLongitude());
 
                 mMap.addMarker(new MarkerOptions()
-                        .position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)));
+                        .position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(nearParkingList.get(i).getId() + ""));
             }
-
         }
-
     }
 
     @Override
@@ -460,6 +408,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected void onRestart() {
         super.onRestart();
         startActivity(getIntent());
+    }
+
+    @Override
+    public boolean onMarkerClick(Marker marker) {
+        marker.hideInfoWindow();
+        if (mPreferences.getString("status", "").equals("")) {
+            mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
+            mPreferencesEditor.commit();
+            locationManager.removeUpdates(HomeActivity.this);
+            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+            startActivity(intentOrderFlagment);
+        }
+        return true;
     }
 }
 

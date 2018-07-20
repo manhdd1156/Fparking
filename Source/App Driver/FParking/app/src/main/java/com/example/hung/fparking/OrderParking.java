@@ -1,6 +1,7 @@
 package com.example.hung.fparking;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.support.v4.view.ViewPager;
@@ -43,6 +44,10 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     ArrayList<TariffDTO> tariffDTOS;
     List<CarouselPicker.PickerItem> textItems;
 
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mPreferencesEditor;
+
+    ImageView backOrder;
     Button buttonDat_Cho;
     TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress;
 
@@ -64,7 +69,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         customCarouselView.setPageCount(sampleImages.length);
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
-        licensePlates();
 
         // ánh xạ
         textViewAddress = findViewById(R.id.textViewAddress);
@@ -73,6 +77,15 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         textViewPrice = findViewById(R.id.textViewPrice);
         textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
+        backOrder = findViewById(R.id.imageViewBackOrder);
+
+        backOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent backOrderIntent = new Intent(OrderParking.this, HomeActivity.class);
+                startActivity(backOrderIntent);
+            }
+        });
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -80,6 +93,14 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 startActivity(checkOutIntent);
             }
         });
+
+        // SharedPreferences
+        mPreferences = getSharedPreferences("driver", 0);
+        mPreferencesEditor = mPreferences.edit();
+        String parkingID = mPreferences.getString("parkingID", "");
+        if (!parkingID.equals("")) {
+            licensePlates(parkingID);
+        }
 
         // sư kiện carouselPicker
         carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -112,29 +133,19 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         });
     }
 
-    public void licensePlates() {
+    public void licensePlates(String parkingID) {
 
         // gọi vehicletask
 
         VehicleTask vehicleTask = new VehicleTask(Session.currentDriver.getPhone(), "vt", this);
         vehicleTask.execute();
 
-        ParkingInforTask parkingInforTask = new ParkingInforTask("2", "pi", this);
+        ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
         parkingInforTask.execute();
 
-        TariffTask tariffTask = new TariffTask("2", "tt", this);
+        TariffTask tariffTask = new TariffTask(parkingID, "tt", this);
         tariffTask.execute();
 
-//        Carousel 2 with all text
-//        textItems = new ArrayList<>();
-
-//        textItems.add(new CarouselPicker.TextItem("30ZA-12580", 6)); // 5 is text size (sp)
-//        textItems.add(new CarouselPicker.TextItem("40AH-15468", 6)); // 5 is text size (sp)
-//        textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
-//        textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
-//        textItems.add(new CarouselPicker.TextItem("10AR-28459", 6)); // 5 is text size (sp)
-//        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
-//        carouselPicker.setAdapter(textAdapter);
     }
 
     // To set simple images

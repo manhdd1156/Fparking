@@ -44,6 +44,15 @@ private DriverRepository driverRepository;
 		Driver driver = driverRepository.getOne(id);
 		driverRepository.delete(driver);
 	}
+
+	@Override
+	public List<Driver> getByStatus(int status) {
+		// TODO Auto-generated method stub
+		List<Driver> out = driverRepository.findByStatus(status);
+		System.out.println(out.size());
+		return out;
+		
+	}
 	
 
 }

@@ -40,16 +40,20 @@ public class BookingTask extends AsyncTask<Void, Void, Boolean> {
                 int status = c.getInt("status");
                 String timein = c.getString("timein");
                 String timeout = c.getString("timeout");
+                double amount = c.getDouble("amount");
+                double comission = c.getDouble("comission");
+                double totalfine = c.getDouble("totalfine");
 
                 JSONObject parking = c.getJSONObject("parking");
                 int parkingID = parking.getInt("id");
                 String address = parking.getString("address");
 
-                JSONObject vehicle = c.getJSONObject("vehicle");
+                JSONObject drivervehicle = c.getJSONObject("drivervehicle");
+                JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
                 int vehicleID = vehicle.getInt("id");
                 String licenseplate = vehicle.getString("licenseplate");
 
-                booking.add(new BookingDTO(bookingID,vehicleID,parkingID,address,timein,timeout,price,status,licenseplate));
+                booking.add(new BookingDTO(bookingID,vehicleID,parkingID,address,timein,timeout,price,status,licenseplate,amount,comission,totalfine));
 //            }
 
         } catch (Exception e) {
