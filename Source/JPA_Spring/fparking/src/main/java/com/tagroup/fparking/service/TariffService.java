@@ -7,8 +7,8 @@ import com.tagroup.fparking.service.domain.Tariff;
 
 public interface TariffService {
 	public List<Tariff> getAll();
-	public Tariff getById(Long id);
-	public Tariff create(Tariff tariff);
-	public Tariff update(Tariff tariff);
-	public void delete(Long id);
+	public Tariff getById(Long id)throws Exception;
+	public Tariff create(Tariff tariff)throws Exception;
+	public Tariff update(Tariff tariff)throws Exception;
+	public void delete(Long id)throws Exception;
 }

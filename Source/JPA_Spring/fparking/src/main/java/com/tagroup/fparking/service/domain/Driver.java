@@ -2,22 +2,16 @@ package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
 
-//import com.ctwgroup.erestaurant.service.domain.Category;
-//import com.fasterxml.jackson.annotation.JsonIgnore;
-
-import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 /**
@@ -33,27 +27,27 @@ public class Driver implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private Long id;
+	private int id;
 	
 	private String name;
 	
 	private String phone;
-	
+	@JsonIgnore
 	private String password;
 	
 	private int status;
 
-	@ManyToMany
-	@JoinTable(name = "driver_vehicle", joinColumns = @JoinColumn(name = "driver_id"), inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
-	private List<Vehicle> vehicles;
+//	@ManyToMany
+//	@JoinTable(name = "driver_vehicle", joinColumns = @JoinColumn(name = "driver_id"), inverseJoinColumns = @JoinColumn(name = "vehicle_id"))
+//	private List<Vehicle> vehicles;
 	public Driver() {
 	}
 
-	public Long getId() {
+	public int getId() {
 		return this.id;
 	}
 
-	public void setId(Long id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 
@@ -89,13 +83,13 @@ public class Driver implements Serializable {
 		this.status = status;
 	}
 
-	public List<Vehicle> getVehicles() {
-		return vehicles;
-	}
-
-	public void setVehicles(List<Vehicle> vehicles) {
-		this.vehicles = vehicles;
-	}
+//	public List<Vehicle> getVehicles() {
+//		return vehicles;
+//	}
+//
+//	public void setVehicles(List<Vehicle> vehicles) {
+//		this.vehicles = vehicles;
+//	}
 
 
 	

@@ -12,6 +12,8 @@ import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.Proxy;
+
 
 /**
  * The persistent class for the driver_vehicle database table.
@@ -19,15 +21,17 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name="driver_vehicle")
+@Proxy(lazy = false)
 @NamedQuery(name="DriverVehicle.findAll", query="SELECT d FROM DriverVehicle d")
 public class DriverVehicle implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
-	
-	
+	private Long id;
+	private int status;
+	public DriverVehicle() {
+	}
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "driver_id", referencedColumnName = "id")
 	private Driver driver;
@@ -35,12 +39,19 @@ public class DriverVehicle implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicle_id", referencedColumnName = "id")
 	private Vehicle vehicle;
-
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
+	public void setId(Long id) {
 		this.id = id;
 	}
 

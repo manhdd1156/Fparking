@@ -7,8 +7,8 @@ import com.tagroup.fparking.service.domain.Rating;
 
 public interface RatingService {
 	public List<Rating> getAll();
-	public Rating getById(Long id);
-	public Rating create(Rating rating);
-	public Rating update(Rating rating);
-	public void delete(Long id);
+	public Rating getById(Long id)throws Exception;
+	public Rating create(Rating rating)throws Exception;
+	public Rating update(Rating rating)throws Exception;
+	public void delete(Long id)throws Exception;
 }

@@ -1,11 +1,20 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
+import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.Date;
 
 
 /**
@@ -13,6 +22,7 @@ import java.util.Date;
  * 
  */
 @Entity
+@Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Fine.findAll", query="SELECT f FROM Fine f")
 public class Fine implements Serializable {
@@ -20,7 +30,7 @@ public class Fine implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private Date date;
 
@@ -29,10 +39,7 @@ public class Fine implements Serializable {
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "driver_id", referencedColumnName = "id")
 	private Driver driver;
-	
-	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "finetariff_id", referencedColumnName = "id")
-	private Finetariff finetariff;
+
 	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
@@ -41,11 +48,11 @@ public class Fine implements Serializable {
 	public Fine() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -73,13 +80,7 @@ public class Fine implements Serializable {
 		this.driver = driver;
 	}
 
-	public Finetariff getFinetariff() {
-		return finetariff;
-	}
-
-	public void setFinetariff(Finetariff finetariff) {
-		this.finetariff = finetariff;
-	}
+	
 
 	public Parking getParking() {
 		return parking;

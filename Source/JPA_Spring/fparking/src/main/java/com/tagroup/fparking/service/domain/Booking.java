@@ -1,17 +1,28 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+import java.util.Date;
+
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
+import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
-
-import java.util.Date;
 
 /**
  * The persistent class for the booking database table.
  * 
  */
 @Entity
+@Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
 public class Booking implements Serializable {
@@ -19,9 +30,9 @@ public class Booking implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
-	private double price;
+	
 	@Column
 	private int status;
 
@@ -29,23 +40,55 @@ public class Booking implements Serializable {
 
 	private Date timeout;
 	
+	private double price;
+	
+	private double amount;
+	
+	private double comission;
+	
+	private double totalfine;
+
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
 	private Parking parking;
 
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "vehicle_id", referencedColumnName = "id")
-	private Vehicle vehicle;
+	@JoinColumn(name = "drivervehicle_id", referencedColumnName = "id")
+	private DriverVehicle drivervehicle;
 	
+
+	public double getAmount() {
+		return amount;
+	}
+
+	public void setAmount(double amount) {
+		this.amount = amount;
+	}
+
+	public double getComission() {
+		return comission;
+	}
+
+	public void setComission(double comission) {
+		this.comission = comission;
+	}
+
+	public double getTotalfine() {
+		return totalfine;
+	}
+
+	public void setTotalfine(double totalfine) {
+		this.totalfine = totalfine;
+	}
 
 	public Booking() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
@@ -81,12 +124,13 @@ public class Booking implements Serializable {
 		this.timeout = timeout;
 	}
 
-	public Vehicle getVehicle() {
-		return vehicle;
+	
+	public DriverVehicle getDrivervehicle() {
+		return drivervehicle;
 	}
 
-	public void setVehicle(Vehicle vehicle) {
-		this.vehicle = vehicle;
+	public void setDrivervehicle(DriverVehicle drivervehicle) {
+		this.drivervehicle = drivervehicle;
 	}
 
 	public Parking getParking() {
