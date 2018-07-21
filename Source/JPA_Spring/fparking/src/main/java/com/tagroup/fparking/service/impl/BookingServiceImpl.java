@@ -39,8 +39,6 @@ public class BookingServiceImpl implements BookingService {
 		try {
 			return bookingRepository.getOne(id);
 		} catch (Exception e) {
-			System.out.println("lỗi ");
-			System.out.println(e);
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
 	}

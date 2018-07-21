@@ -19,7 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
+@NamedQuery(name = "Notification.findAll", query = "SELECT n FROM Notification n")
 public class Notification implements Serializable {
 	private static final long serialVersionUID = 1L;
 
