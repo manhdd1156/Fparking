@@ -15,7 +15,7 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2).select()
-				.apis(RequestHandlerSelectors.basePackage("com.ctwgroup.erestaurant")).paths(PathSelectors.any())
+				.apis(RequestHandlerSelectors.basePackage("com.tagroup.fparking")).paths(PathSelectors.any())
 				.build();
 	}
 }

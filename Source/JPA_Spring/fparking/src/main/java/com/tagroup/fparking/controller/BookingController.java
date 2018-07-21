@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,12 +26,12 @@ public class BookingController {
 	private ParkingService parkingService;
 
 	// get all bookings
-//	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-//	@RequestMapping(path = "/", method = RequestMethod.GET)
-//	public ResponseEntity<?> getall() throws Exception {
-//		List<Booking> respone = bookingService.getAll();
-//		return new ResponseEntity<>(respone, HttpStatus.OK);
-//	}
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
+	@RequestMapping(path = "/", method = RequestMethod.GET)
+	public ResponseEntity<?> getall() throws Exception {
+		List<Booking> respone = bookingService.getAll();
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
 
 	// get booking by booking id
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -41,12 +42,12 @@ public class BookingController {
 	}
 
 	// get booking by status of booking
-	@RequestMapping(path = "", method = RequestMethod.GET)
-	public ResponseEntity<?> getbystatus(@RequestParam("status") int status) throws Exception {
-			Booking respone = bookingService.findByStatus(status);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
-		
-	}
+//	@RequestMapping(path = "", method = RequestMethod.GET)
+//	public ResponseEntity<?> getbystatus(@RequestParam("status") int status) throws Exception {
+//			Booking respone = bookingService.findByStatus(status);
+//			return new ResponseEntity<>(respone, HttpStatus.OK);
+//		
+//	}
 
 	// get booking by parking id = ?
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)
