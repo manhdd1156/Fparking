@@ -193,14 +193,17 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
             textViewTime.setText(parkingDTOS.get(0).getTimeoc());
             textViewAddress.setText(parkingDTOS.get(0).getAddress());
         } else if (action.equals("tt")) {
-            tariffDTOS = (ArrayList<TariffDTO>) o;
-            for (int i = 0; i < tariffDTOS.size(); i++) {
-                if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
-                    textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+            if (vehicle.size()>0) {
+                tariffDTOS = (ArrayList<TariffDTO>) o;
+                for (int i = 0; i < tariffDTOS.size(); i++) {
+                    if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
+                        textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                    }
                 }
             }
         }
     }
+
     @Override
     public void finish() {
         super.finish();

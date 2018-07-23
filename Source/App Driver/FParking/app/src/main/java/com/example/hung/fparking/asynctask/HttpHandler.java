@@ -4,6 +4,8 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
+import com.example.hung.fparking.config.Session;
+
 import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
@@ -30,6 +32,13 @@ public class HttpHandler {
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("GET");
             // read the response
+            conn.setRequestProperty("Authorization","Bearer " + Session.spref.getString("token",""));
+            int status = conn.getResponseCode();
+            String message = conn.getResponseMessage();
+            String checkAuthor = conn.getRequestProperty("Authorization");
+            System.out.println("message :" +message);
+            System.out.println("author :" +checkAuthor);
+            System.out.println("status = " + status);
             InputStream in = new BufferedInputStream(conn.getInputStream());
             response = convertStreamToString(in);
         } catch (MalformedURLException e) {
@@ -45,15 +54,16 @@ public class HttpHandler {
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
-    public String post(String reqUrl, String urlParameters) {
+    public String requestMethod(String reqUrl, String urlParameters,String method) {
         String response = null;
         try {
             byte[] postData = urlParameters.getBytes(StandardCharsets.UTF_8);
             int postDataLength = postData.length;
             URL url = new URL(reqUrl);
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
-            conn.setRequestMethod("POST");
+            conn.setRequestMethod(method.toUpperCase());
             conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization","Bearer " + Session.spref.getString("token",""));
             conn.setRequestProperty("Content-Type", "application/json");
             conn.setRequestProperty("charset", "utf-8");
             conn.setRequestProperty("Content-Length", Integer.toString(postDataLength));

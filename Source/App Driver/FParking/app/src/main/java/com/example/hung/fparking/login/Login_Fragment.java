@@ -44,7 +44,6 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     private static Animation shakeAnimation;
     private static FragmentManager fragmentManager;
 
-    private DriverLoginTask mDriverLoginTask = null;
 
     public Login_Fragment() {
 
@@ -191,8 +190,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
                     "Số điện thoại không đúng");
             // Else do login and do your stuff
         else {
-            mDriverLoginTask = new DriverLoginTask(getPhone, getPassword, this);
-            mDriverLoginTask.execute((Void) null);
+            new DriverLoginTask("first_time",getPhone,getPassword,this);
             Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
                     .show();
         }
@@ -200,13 +198,13 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 
     @Override
     public void onPostExecute(Object o, String s) {
-        mDriverLoginTask = null;
         if (Boolean.TRUE.equals(o)) {
 //            Notification notification= new Notification();
             Intent intent = new Intent(view.getContext(), Notification.class);
             System.out.println("đăng nhập thành công");
             startActivity( new Intent(this.getContext(), HomeActivity.class));
             getActivity().startService(intent);
+            getActivity().getFragmentManager().popBackStack();
 
         } else {
             new CustomToast().Show_Toast(getActivity(), view,
