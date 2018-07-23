@@ -34,22 +34,25 @@ public class BookingController {
 	}
 
 	// get booking by booking id
+	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getbyid(@PathVariable Long id) throws Exception {
 			Booking respone = bookingService.getById(id);
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		
 	}
-
+//
 	// get booking by status of booking
-//	@RequestMapping(path = "", method = RequestMethod.GET)
-//	public ResponseEntity<?> getbystatus(@RequestParam("status") int status) throws Exception {
-//			Booking respone = bookingService.findByStatus(status);
-//			return new ResponseEntity<>(respone, HttpStatus.OK);
-//		
-//	}
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
+	@RequestMapping(path = "", method = RequestMethod.GET)
+	public ResponseEntity<?> getbystatus(@RequestParam("status") int status) throws Exception {
+			Booking respone = bookingService.findByStatus(status);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		
+	}
 
 	// get booking by parking id = ?
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getBookingByPId(@PathVariable Long id) throws Exception {
 		
@@ -59,6 +62,7 @@ public class BookingController {
 	}
 
 	// get booking by phone of driver ?
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/drivers", method = RequestMethod.GET)
 	public ResponseEntity<?> getBookingByDphone(@RequestParam("phone") String phone) throws Exception {
 		
@@ -68,6 +72,7 @@ public class BookingController {
 	}
 
 	// create new booking
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody Booking booking) throws Exception {
 			Booking respone = bookingService.create(booking);
@@ -75,7 +80,8 @@ public class BookingController {
 		
 	}
 
-	// update booking
+	// update booking  
+	@PreAuthorize("hasAnyAuthority('STAFF')")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody Booking booking) throws Exception {
 		
@@ -83,4 +89,13 @@ public class BookingController {
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		
 	}
+//	// update booking by status = 5.
+//		@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
+//		@RequestMapping(path = "/update/status", method = RequestMethod.PUT)
+//		public ResponseEntity<?> updateByStatus(@RequestBody Booking booking) throws Exception {
+//			
+//				Booking respone = bookingService.updateByStatus(booking);
+//				return new ResponseEntity<>(respone, HttpStatus.OK);
+//			
+//		}
 }

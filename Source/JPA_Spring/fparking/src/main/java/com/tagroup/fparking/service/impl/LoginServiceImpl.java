@@ -11,6 +11,7 @@ import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.security.TokenProvider;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.LoginService;
+import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Admin;
 import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.Owner;
@@ -22,9 +23,12 @@ public class LoginServiceImpl implements LoginService {
 	private TokenProvider tokenProvider;
 	@Autowired
 	private DriverService driverService;
+	@Autowired
+	private StaffService staffService;
 
 	@Override
 	public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) throws Exception {
+		System.out.println(loginRequestDTO);
 		Long id;
 		switch (loginRequestDTO.getType()) {
 		case "ADMIN":
@@ -32,7 +36,8 @@ public class LoginServiceImpl implements LoginService {
 			break;
 
 		case "STAFF":
-			id = loginByStaff(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()).getId();
+			
+			id = loginByStaff(loginRequestDTO.getUsername(), loginRequestDTO.getPassword()).getId(); 
 			break;
 
 		case "DRIVER":
@@ -58,14 +63,23 @@ public class LoginServiceImpl implements LoginService {
 
 	private Driver loginByDriver(String phone, String password) throws Exception {
 		try {
+			Driver d = driverService.findByPhoneAndPassword(phone, password);
+			
 			return driverService.findByPhoneAndPassword(phone, password);
+			
 		} catch (Exception e) {
+			
 			throw new APIException(HttpStatus.UNAUTHORIZED, "Wrong password or username");
 		}
 	}
 
 	private Staff loginByStaff(String phone, String password) throws Exception {
-		return null;
+		try {
+			return staffService.findByPhoneAndPassword(phone, password);
+		} catch (Exception e) {
+			System.out.println(e);
+			throw new APIException(HttpStatus.UNAUTHORIZED, "Wrong password or username");
+		}
 	}
 
 	private Owner loginByOwner(String phone, String password) throws Exception {

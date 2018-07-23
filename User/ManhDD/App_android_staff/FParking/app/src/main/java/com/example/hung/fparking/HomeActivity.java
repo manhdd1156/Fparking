@@ -1,14 +1,8 @@
 package com.example.hung.fparking;
 
-import android.annotation.TargetApi;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -17,14 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.view.Menu;
 import android.view.MenuItem;
-import android.view.Window;
-import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.hung.fparking.adapter.ListBookingAdapter;
 import com.example.hung.fparking.asynctask.GetRateTask;
@@ -34,20 +24,18 @@ import com.example.hung.fparking.asynctask.ManagerParkingTask;
 import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
+import com.example.hung.fparking.notification.Notification;
 
-import java.text.DateFormat;
-import java.text.DecimalFormat;
-import java.text.NumberFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
-public class HomeActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener, IAsyncTaskHandler, AdapterView.OnItemSelectedListener {
-    ListView lv;
+import static com.example.hung.fparking.config.Constants.PICK_CONTACT_REQUEST;
 
+public class HomeActivity extends AppCompatActivity
+        implements NavigationView.OnNavigationItemSelectedListener, IAsyncTaskHandler {
+    ListView lv;
+    TextView tvSpace;
+    TextView tvAddress;
+    FragmentManager fm;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,14 +53,15 @@ public class HomeActivity extends AppCompatActivity
         lv = (ListView) findViewById(R.id.cars_list);
         if (Session.currentStaff != null) {
             if (Session.currentParking == null) {
-                new ManagerParkingTask("get", Session.currentStaff.getParking_id() + "", HomeActivity.this, lv);
+                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
             } else {
-                TextView tvSpace = (TextView) findViewById(R.id.tvSpace);
-                TextView tvAddress = (TextView) findViewById(R.id.tvAddress);
+                tvSpace = (TextView) findViewById(R.id.tvSpace);
+                tvAddress = (TextView) findViewById(R.id.tvAddress);
                 setText(tvAddress, Session.currentParking.getAddress());
                 setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
             }
+
             BookingDTO b = new BookingDTO();
             b.setParkingID(Session.currentStaff.getParking_id());
             new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
@@ -83,13 +72,37 @@ public class HomeActivity extends AppCompatActivity
         btnChangeSpace.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v) {
                 Intent intent = new Intent(HomeActivity.this, NumberPickerActivity.class);
-                startActivity(intent);
+                startActivityForResult(intent,PICK_CONTACT_REQUEST);
+//                startActivity(intent);
                 // TODO Auto-generated method stub
             }
         });
+//        DialogActivity myDialogFragment = new DialogActivity();
+//        myDialogFragment.show
+//        fm = getSupportFragmentManager();
+//        Notification n = new Notification();
+//startActivity(new Intent(this,Notification.class));
+//        myDialogFragment.show(fm,"dsadasdas");
 
+//        Intent intent = new Intent(this, n.getClass());
+//        this.startService(intent);
     }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == PICK_CONTACT_REQUEST) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                System.out.println("ở trong activityressult");
+                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
+                // The user picked a contact.
+                // The Intent's data Uri identifies which contact was selected.
+
+                // Do something with the contact here (bigger example below)
+            }
+        }
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -113,6 +126,8 @@ public class HomeActivity extends AppCompatActivity
         } else {
             super.onBackPressed();
         }
+
+
     }
 
 
@@ -145,123 +160,9 @@ public class HomeActivity extends AppCompatActivity
     public void onPostExecute(Object o) {
         List<BookingDTO> lstBooking = (List<BookingDTO>) o;
         Log.d("HomeActivity_onPost: ", lstBooking.toString());
-//        TableDTO[] tables = new TableDTO[lstTable.size()];
-//        Log.d("----", tables.toString());
-//        for(int i=0;i<lstTable.size();i++) {
-//            tables[i] = lstTable.get(i);
-//            Log.d("3333", tables[i].toString());
-//        }
-//        ArrayAdapter<TableDTO> arrayAdapter = new ArrayAdapter<TableDTO>(this, R.layout.table_list_row, tables);
         ListBookingAdapter arrayAdapter = new ListBookingAdapter(this,lstBooking, this);
         lv.setAdapter(arrayAdapter);
     }
 
-    @Override
-    public void onItemSelected(final AdapterView<?> parent, View view, final int position, long id) {
-        final BookingDTO dataModel = (BookingDTO) parent.getItemAtPosition(position);
-        final Button btnAcept = (Button) view.findViewById(R.id.btnAccept);
-        Button btnCancel = (Button) view.findViewById(R.id.btnCancel);
-        System.out.println("onItemSelected");
-        if (dataModel.getStatus() == 1) {
-//            btnAcept.setText("VÀO BÃI");
-            btnAcept.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    Calendar calendar = Calendar.getInstance();
-                    DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    String timeIn = dateFormatter.format(calendar.getTime().getTime());
-//                    BookingDTO b = dataModel;
-//                    b.setStatus(2);
-//                    b.setTimein(timeIn.toString());
-                    dataModel.setStatus(2);
-                    dataModel.setTimein(timeIn.toString());
-                    new ManagerBookingTask("update", dataModel, HomeActivity.this);
-                    btnAcept.setText("THANH TOÁN");
-                    onResume();
-                }
-            });
-            btnCancel.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    BookingDTO b = dataModel;
-                    b.setStatus(0);
-                    new ManagerBookingTask("update", b, HomeActivity.this);
-//                    parent.removeViewAt(position);
-//                    btnAcept.setText("CHeckOut");
-                    onResume();
-                }
-            });
-        } else if (dataModel.getStatus() == 2) {
-            btnCancel.setVisibility(parent.INVISIBLE);
-            btnAcept.setText("THANH TOÁN");
-            btnAcept.setOnClickListener(new View.OnClickListener() {
-
-                @Override
-                public void onClick(View arg0) {
-                    // TODO Auto-generated method stub
-                    Calendar calendar = Calendar.getInstance();
-                    DateFormat dateFormatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                    final String timeout = dateFormatter.format(calendar.getTime().getTime());
-                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialog, int choice) {
-                            switch (choice) {
-                                case DialogInterface.BUTTON_POSITIVE:
-//                                        dialog.dismiss();
-//                                    BookingDTO b = dataModel;
-//                                    b.setStatus(3);
-//                                    b.setTimeout();
-                                    dataModel.setStatus(3);
-                                    dataModel.setTimeout(timeout.toString());
-                                    new ManagerBookingTask("update", dataModel, HomeActivity.this);
-                                    onResume();
-                                    break;
-                                case DialogInterface.BUTTON_NEGATIVE:
-
-                                    break;
-                            }
-                        }
-                    };
-
-                    AlertDialog.Builder builder = new AlertDialog.Builder(HomeActivity.this);
-                    try {
-                        Date date1 = dateFormatter.parse(dataModel.getTimein());
-                        Date date2 = dateFormatter.parse(dataModel.getTimeout());
-                        long diff = date2.getTime() - date1.getTime();
-                        double diffInHours = diff / ((double) 1000 * 60 * 60);
-                        NumberFormat formatter = new DecimalFormat("###,###");
-                        NumberFormat formatterHour = new DecimalFormat("0.00");
-                        String totalPrice = formatter.format(diffInHours * dataModel.getPrice());
-                        if (diffInHours < 1) {
-                            totalPrice = dataModel.getPrice() + "";
-                        }
-                        builder.setMessage("\tHóa đơn checkout \n"
-                                + "Biển số :          " + dataModel.getLicensePlate() + "\n"
-                                + "loại xe :           " + dataModel.getTypeCar() + "\n"
-                                + "thời gian vào : " + dataModel.getTimein() + "\n"
-                                + "thời gian ra :   " + dataModel.getTimeout() + "\n"
-                                + "giá đỗ :           " + formatter.format(dataModel.getPrice()) + "vnđ\n"
-                                + "thời gian đỗ :  " + formatterHour.format(diffInHours) + " giờ \n"
-                                + "tổng giá :        " + totalPrice + "vnđ")
-                                .setPositiveButton("Yes", dialogClickListener)
-                                .setNegativeButton("No", dialogClickListener).setCancelable(false).show();
-
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-
-                }
-            });
-        }
-    }
-
-    @Override
-    public void onNothingSelected(AdapterView<?> parent) {
-
-    }
 
 }

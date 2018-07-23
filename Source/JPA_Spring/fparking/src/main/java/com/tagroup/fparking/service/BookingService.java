@@ -21,4 +21,6 @@ public interface BookingService {
 	public List<Booking> findByDriverPhone(String phone) throws Exception;
 
 	public Booking findByStatus(int status) throws Exception;
+	
+	public Booking updateByStatus(Booking booking) throws Exception;
 }

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
+import com.tagroup.fparking.repository.NotificationRepository;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 
@@ -15,6 +16,9 @@ import com.tagroup.fparking.service.domain.DriverVehicle;
 public class DriverVehicleServiceImpl implements DriverVehicleService{
 @Autowired
 private DriverVehicleRepository driverVehicleRepository;
+
+@Autowired
+NotificationRepository notificationRepository;
 	@Override
 	public List<DriverVehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -54,6 +58,17 @@ private DriverVehicleRepository driverVehicleRepository;
 		driverVehicleRepository.delete(drivervehicle);
 	}
 
+	@Override
+	public DriverVehicle getInfoDriverVehicle(int parkingID) throws Exception {
+		// TODO Auto-generated method stub
+//		Notification noti = notificationRepository.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, "order", 0);
+//		
+//		if(noti!=null) {
+//			Long id = (Long) noti.getDrivervehicle_id();
+//			return driverVehicleRepository.getOne(id);
+//		}
+		return null;
+	}
 
 	
 

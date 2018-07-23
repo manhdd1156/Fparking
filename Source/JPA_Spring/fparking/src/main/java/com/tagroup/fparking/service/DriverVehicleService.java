@@ -11,4 +11,5 @@ public interface DriverVehicleService {
 	public DriverVehicle create(DriverVehicle drivervehicle)throws Exception;
 	public DriverVehicle update(DriverVehicle drivervehicle)throws Exception;
 	public void delete(Long id)throws Exception;
+	public DriverVehicle getInfoDriverVehicle(int parkingID) throws Exception;
 }

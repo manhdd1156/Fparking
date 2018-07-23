@@ -21,4 +21,6 @@ public interface StaffService {
 	public Staff findByPhoneAndPassword(String phone, String password) throws Exception;
 
 	public Staff findByPhone(String phone) throws Exception;
+
+	public Staff getProfile() throws Exception;
 }

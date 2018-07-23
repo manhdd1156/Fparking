@@ -11,6 +11,7 @@ import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.NotificationService;
+import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.PusherService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Notification;
@@ -22,6 +23,8 @@ public class BookingServiceImpl implements BookingService {
 	private BookingRepository bookingRepository;
 	@Autowired
 	private PusherService pusherService;
+	@Autowired
+	private ParkingService parkingService;
 	@Autowired
 	private NotificationService notificationService;
 
@@ -83,6 +86,28 @@ public class BookingServiceImpl implements BookingService {
 			}
 			// TODO Auto-generated method stub
 			return bookingRepository.save(b);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+		}
+
+	}
+	
+	@Override
+	public Booking updateByStatus(Booking booking) throws Exception {
+		try {
+//			if (booking == null) {
+//				throw new APIException(HttpStatus.NO_CONTENT, "The Booking was not content");
+//			}
+//			Booking b = bookingRepository.findByParkingAndStatus(booking.getParking(), booking.getStatus());
+//			b.setStatus(1);
+//			Date date = new Date("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+////			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+//			b.setTimein(date);
+////			Notification noti = new Notification()
+//			notificationService.update(new)
+			// TODO Auto-generated method stub
+//			return bookingRepository.save(b);
+			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
