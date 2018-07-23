@@ -7,8 +7,8 @@ import com.tagroup.fparking.service.domain.Vehicletype;
 
 public interface VehicletypeService {
 	public List<Vehicletype> getAll();
-	public Vehicletype getById(Long id);
-	public Vehicletype create(Vehicletype vehicletype);
-	public Vehicletype update(Vehicletype vehicletype);
-	public void delete(Long id);
+	public Vehicletype getById(Long id)throws Exception;
+	public Vehicletype create(Vehicletype vehicletype)throws Exception;
+	public Vehicletype update(Vehicletype vehicletype)throws Exception;
+	public void delete(Long id)throws Exception;
 }

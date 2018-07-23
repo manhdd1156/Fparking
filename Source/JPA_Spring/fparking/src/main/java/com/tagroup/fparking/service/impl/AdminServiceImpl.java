@@ -56,7 +56,7 @@ public void delete(Long id) {
 //	}
 
 @Override
-public Admin checklogin(Admin admin) {
+public Admin checklogin(Admin admin) throws Exception {
 	// TODO Auto-generated method stub
 	return adminRepository.findByUsernameAndPassword(admin.getUsername(), admin.getPassword());
 }

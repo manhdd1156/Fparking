@@ -418,6 +418,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (mPreferences.getString("status", "").equals("")) {
             mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
             mPreferencesEditor.commit();
+            locationManager.removeUpdates(HomeActivity.this);
             Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
             startActivity(intentOrderFlagment);
         }

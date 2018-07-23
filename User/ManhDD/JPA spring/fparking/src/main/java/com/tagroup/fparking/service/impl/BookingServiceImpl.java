@@ -32,14 +32,24 @@ private TariffRepository tariffRepository;
 		// TODO Auto-generated method stub
 		return bookingRepository.getOne(id);
 	}
-
+///// dang viet do
 	@Override
 	public Booking create(Booking booking) {
 		// TODO Auto-generated method stub
-		
+//		try {
+//			Booking b = bookingRepository.save(booking);
+//			if(b!=null) {
+//				
+//				pusherService.trigger(b.getDrivervehicle().getId()+"channel", "order", "dataa");
+//			}
+//		}catch(Exception e) {
+//			
+//		}
 		return bookingRepository.save(booking);
 	}
 
+	
+	
 	@Override
 	public Booking update(Booking booking) {
 		Booking b= bookingRepository.getOne(booking.getId());

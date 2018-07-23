@@ -1,11 +1,13 @@
 package com.example.hung.fparking.login;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
@@ -43,26 +45,29 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 
 //    private StaffLoginTask mStaffLoginTask = null;
     private SharedPreferences spref;
-
+    private Login_Fragment login_Fragment;
     private SharedPreferences.Editor editor;
-    private String getPhone;
-    private String getPassword;
+//    private String getPhone;
+//    private String getPassword;
     public Login_Fragment() {
     }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         view = inflater.inflate(R.layout.login_layout, container, false);
+
         initViews();
         setListeners();
         return view;
     }
 
+
     // Initiate Views
     private void initViews() {
         try {
-            fragmentManager = this.getActivity().getSupportFragmentManager();
+            fragmentManager = getActivity().getSupportFragmentManager();
             spref = getActivity().getSharedPreferences("info",0);
             editor = spref.edit();
             phoneNumber = (EditText) view.findViewById(R.id.phone);
@@ -165,8 +170,8 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     // Check Validation before login
     private void checkValidation() {
         // Get phone and password
-         getPhone = phoneNumber.getText().toString();
-         getPassword = password.getText().toString();
+        String getPhone = phoneNumber.getText().toString();
+        String getPassword = password.getText().toString();
 
         // Check patter for email id
         Pattern p = Pattern.compile(Constants.regEx);
@@ -202,12 +207,10 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     public void onPostExecute(Object o) {
 //        mStaffLoginTask = null;
         if (Boolean.TRUE.equals(o)) {
-//            Notification notification= new Notification();
+            Notification notification= new Notification();
             Intent intent = new Intent(view.getContext(), Notification.class);
             System.out.println("đăng nhập thành công");
             startActivity( new Intent(this.getContext(), HomeActivity.class));
-            editor.putString("phonenumber", getPhone);
-            editor.commit();
             getActivity().startService(intent);
             getActivity().getFragmentManager().popBackStack();
 

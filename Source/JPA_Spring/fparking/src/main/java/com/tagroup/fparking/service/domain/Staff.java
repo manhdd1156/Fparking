@@ -1,9 +1,19 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Proxy;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 
 
@@ -19,14 +29,14 @@ public class Staff implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private String address;
 
 	private String name;
 
 	private String phone;
-	
+	@JsonIgnore
 	private String password;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -35,11 +45,11 @@ public class Staff implements Serializable {
 	public Staff() {
 	}
 
-	public int getId() {
-		return this.id;
+	public Long getId() {
+		return id;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

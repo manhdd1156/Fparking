@@ -2,6 +2,8 @@ package com.example.hung.fparking.asynctask;
 
 import android.app.Activity;
 import android.app.ProgressDialog;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -19,6 +21,8 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.app.Activity.RESULT_OK;
+
 /**
  * Created by klot on 3/7/2018.
  */
@@ -29,7 +33,10 @@ public class ManagerBookingTask {
 
         if (method.equals("get")) {
             new GetBookingTask(bookingDTO.getParkingID(), container).execute((Void) null);
-        }else if(method.equals("update")) {
+        }else if(method.equals("create")) {
+            new CreateBooking(container,bookingDTO).execute((Void) null);
+        }
+        else if(method.equals("update")) {
          new UpdateBooking(container,bookingDTO).execute((Void) null);
         }
 
@@ -43,12 +50,14 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
     private final int parkingID;
     private JSONObject oneBooking;
     private Activity activity;
+    private SharedPreferences spref;
     private IAsyncTaskHandler container;
     ProgressDialog pdLoading;
     public GetBookingTask(int parkingID, IAsyncTaskHandler container) {
         this.parkingID = parkingID;
         this.activity = (Activity) container;
         this.container = container;
+//        spref = activity.getSharedPreferences("info",0);
     }
 
     @Override
@@ -105,25 +114,71 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
         super.onPostExecute(list);
         pdLoading.dismiss();
         container.onPostExecute(list);
-//        CarAdapter adapter = new CarAdapter(getWindow().getDecorView().getRootView(), MainActivity.this, list);
-//        lv.setAdapter(adapter);
-//            }
-
     }
 
 
 }
+class CreateBooking extends AsyncTask<Void, Void, Boolean> {
+
+    IAsyncTaskHandler container;
+    BookingDTO b;
+    Activity activity;
+    boolean success = false;
+    private SharedPreferences spref;
+    public CreateBooking(IAsyncTaskHandler container, BookingDTO b){
+        this.container = container;
+        this.activity = (Activity)container;
+        this.b = b;
+//        spref = activity.getSharedPreferences("info",0);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+        HttpHandler httpHandler = new HttpHandler();
+        try{
+            JSONObject formData = new JSONObject();
+            formData.put("parking_id", b.getParkingID());
+            formData.put("drivervehicle_id", b.getDrivervehicleID());
+
+            String json = httpHandler.requestMethod(Constants.API_URL + "bookings", formData.toString(),"POST");
+            JSONObject jsonObj = new JSONObject(json);
+            if(jsonObj!=null) {
+                success = true;
+            }
+        }catch (Exception ex){
+            Log.e("Error CreateBooking:", ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+//        Intent intent = new Intent();
+//        if(success)
+//            intent.putExtra("result", "success!");
+//        else
+//            intent.putExtra("result", "failed");
+//        this.activity.setResult(RESULT_OK, intent);
+//        this.activity.finish();
+    }
+}
+
+
 class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     BookingDTO b;
     Activity activity;
     boolean success = false;
+    private SharedPreferences spref;
 
     public UpdateBooking(IAsyncTaskHandler container, BookingDTO b){
         this.container = container;
         this.activity = (Activity)container;
         this.b = b;
+//        spref = activity.getSharedPreferences("info",0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -140,14 +195,8 @@ class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
             }else if(b.getStatus()==3) {
                 formData.put("timeout", b.getTimeout());
             }
-            String json = httpHandler.post(Constants.API_URL + "bookings/update/", formData.toString());
+            String json = httpHandler.requestMethod(Constants.API_URL + "bookings/update/", formData.toString(),"PUT");
 
-//            formData.put("name", u.getName());
-//            formData.put("username", u.getUsername());
-//            formData.put("password", ""+ u.getPassword());
-//            formData.put("role_id", ""+u.getRole_id());
-//            formData.put("status",""+u.getStatus());
-//            String json = httpHandler.post(Constants.API_URL + "user/update/", formData.toString());
             JSONObject jsonObj = new JSONObject(json);
             Log.e(" Updatebooking : ", jsonObj.toString());
             success = true;

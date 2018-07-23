@@ -3,8 +3,10 @@ package com.tagroup.fparking.service.impl;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.FineRepository;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.domain.Fine;
@@ -20,9 +22,14 @@ private FineRepository fineRepository;
 	}
 
 	@Override
-	public Fine getById(Long id) {
+	public Fine getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return fineRepository.getOne(id);
+		
+		try {
+			return fineRepository.getOne(id);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+		}
 	}
 
 	@Override

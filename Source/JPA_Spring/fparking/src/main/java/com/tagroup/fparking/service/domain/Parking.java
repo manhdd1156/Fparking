@@ -1,7 +1,18 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
+import javax.persistence.ManyToOne;
+import javax.persistence.NamedQuery;
+
+import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -12,6 +23,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
+@Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Parking.findAll", query="SELECT p FROM Parking p")
 public class Parking implements Serializable {

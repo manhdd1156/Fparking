@@ -3,7 +3,7 @@ package com.example.hung.fparking.dto;
 public class BookingDTO {
     private int bookingID;
     private int parkingID;
-    private int vehicleID;
+    private int drivervehicleID;
     private String timein;
     private String timeout;
     private double price;
@@ -17,10 +17,10 @@ public class BookingDTO {
 
     }
 
-    public BookingDTO(int bookingID, int parkingID, int vehicleID, String timein, String timeout, double price, String licensePlate, String typeCar, double rating, int status) {
+    public BookingDTO(int bookingID, int parkingID, int drivervehicleID, String timein, String timeout, double price, String licensePlate, String typeCar, double rating, int status) {
         this.bookingID = bookingID;
         this.parkingID = parkingID;
-        this.vehicleID = vehicleID;
+        this.drivervehicleID = drivervehicleID;
         this.timein = timein;
         this.timeout = timeout;
         this.price = price;
@@ -39,9 +39,6 @@ public class BookingDTO {
         return parkingID;
     }
 
-    public int getVehicleID() {
-        return vehicleID;
-    }
 
     public String getTimein() {
         return timein;
@@ -79,8 +76,12 @@ public class BookingDTO {
         this.parkingID = parkingID;
     }
 
-    public void setVehicleID(int vehicleID) {
-        this.vehicleID = vehicleID;
+    public int getDrivervehicleID() {
+        return drivervehicleID;
+    }
+
+    public void setDrivervehicleID(int drivervehicleID) {
+        this.drivervehicleID = drivervehicleID;
     }
 
     public void setTimein(String timein) {
@@ -116,14 +117,14 @@ public class BookingDTO {
         return "BookingDTO{" +
                 "bookingID=" + bookingID +
                 ", parkingID=" + parkingID +
-                ", vehicleID=" + vehicleID +
+                ", drivervehicleID=" + drivervehicleID +
                 ", timein='" + timein + '\'' +
                 ", timeout='" + timeout + '\'' +
                 ", price=" + price +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", typeCar='" + typeCar + '\'' +
                 ", rating=" + rating +
-                ", status='" + status + '\'' +
+                ", status=" + status +
                 '}';
     }
 }

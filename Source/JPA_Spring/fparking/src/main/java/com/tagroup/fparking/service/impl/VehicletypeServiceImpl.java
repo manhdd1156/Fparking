@@ -13,6 +13,7 @@ import com.tagroup.fparking.service.domain.Vehicletype;
 public class VehicletypeServiceImpl implements VehicletypeService{
 @Autowired
 private VehicletypeRepository vehicletypeRepository;
+
 	@Override
 	public List<Vehicletype> getAll() {
 		// TODO Auto-generated method stub

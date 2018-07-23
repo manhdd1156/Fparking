@@ -1,17 +1,35 @@
 package com.tagroup.fparking.service.impl;
 
+import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
+import com.tagroup.fparking.controller.error.APIException;
+import com.tagroup.fparking.dto.ParkingTariffDTO;
+import com.tagroup.fparking.dto.TariffSingle;
 import com.tagroup.fparking.repository.ParkingRepository;
+import com.tagroup.fparking.repository.RatingRepository;
+import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.service.ParkingService;
+import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Rating;
+import com.tagroup.fparking.service.domain.Staff;
+import com.tagroup.fparking.service.domain.Tariff;
 @Service
 public class ParkingServiceImpl implements ParkingService{
 @Autowired
 private ParkingRepository parkingRepository;
+@Autowired
+private StaffService staffService;
+@Autowired
+private RatingRepository ratingRepository;
+@Autowired
+private TariffRepository tariffRepository;
 	@Override
 	public List<Parking> getAll() {
 		// TODO Auto-generated method stub
@@ -19,9 +37,14 @@ private ParkingRepository parkingRepository;
 		
 	}
 	@Override
-	public Parking getById(Long id) {
+	public Parking getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return parkingRepository.getOne(id);
+		
+		try {
+			return parkingRepository.getOne(id);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+		}
 	}
 
 	@Override
@@ -32,10 +55,25 @@ private ParkingRepository parkingRepository;
 	}
 
 	@Override
-	public Parking update(Parking parking) {
+	public Parking update(Parking parking) throws Exception {
 		// TODO Auto-generated method stub
-		return parkingRepository.save(parking);
-		
+		try {
+			if(parking==null) {
+				throw new APIException(HttpStatus.NO_CONTENT, "Parking was not content");
+			}
+			Parking p = new Parking();
+			try {
+			p = parkingRepository.save(parking);
+			}catch(Exception e) {
+				System.out.println("lỗi");
+				p = parkingRepository.getOne(parking.getId());
+				p.setCurrentspace(parking.getCurrentspace());
+				p = parkingRepository.save(p);
+			}
+			return p;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+		}
 	}
 
 	@Override
@@ -44,6 +82,55 @@ private ParkingRepository parkingRepository;
 		Parking parking = parkingRepository.getOne(id);
 		parkingRepository.delete(parking);
 	}
+	@Override
+	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+			return parkingRepository.findByLatitudeANDLongitude(latitude, longitude);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+		}
+		
+	}
+	@Override
+	public String getRatingByPid(Long parkingId) throws Exception {
+		try {
+			Parking p = parkingRepository.getOne(parkingId);
+			List<Staff> staffs = staffService.findByParking(parkingRepository.getOne(parkingId));
+			double totalPoint = 0;
+			double totalRating =0;
+			for (Staff staff : staffs) {
+				List<Rating> ratings = ratingRepository.findByStaff(staff);
+				
+				for (Rating rating : ratings) {
+					if(rating.getType()==1) {
+					totalPoint+=rating.getPoint();
+					totalRating++;
+					}
+				}
+			}
+			// TODO Auto-generated method stub
+			return new DecimalFormat("#0.00").format(totalPoint/totalRating);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Rating was not found");
+		}
+	}
 	
+	@Override
+	public ParkingTariffDTO getTariffByPid(Parking parking) throws Exception  {
+		try {
+			List<Tariff> tarifflst = tariffRepository.findByParking(parking);
+			ParkingTariffDTO ptDTO = new ParkingTariffDTO();
+			ptDTO.setParking(parking);
+			List<TariffSingle> ts = new ArrayList<>();
+			for (Tariff tariff : tarifflst) {
+				ts.add(new TariffSingle(tariff.getId(),tariff.getPrice(),tariff.getVehicletype()));
+			}
+			ptDTO.setTariffList(ts);
+			return ptDTO;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+		}
+	}
 
 }

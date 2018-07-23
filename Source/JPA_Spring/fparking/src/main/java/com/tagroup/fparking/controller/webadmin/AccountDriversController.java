@@ -17,7 +17,7 @@ public class AccountDriversController {
 	@Autowired
 	private DriverService driverService;
 	@RequestMapping(path = "", method = RequestMethod.GET)
-	public String accountDriver(Map<String, Object> model) {
+	public String accountDriver(Map<String, Object> model) throws Exception {
 		List<Driver> listDriver = driverService.getByStatus(1);
 		for (int i = 0; i < 100; i++) {
 			listDriver.add(listDriver.get(0));
@@ -29,7 +29,7 @@ public class AccountDriversController {
 
 
 	@RequestMapping(path = "/block", method = RequestMethod.GET)
-	public String blockAccountDriver(Map<String, Object> model) {
+	public String blockAccountDriver(Map<String, Object> model) throws Exception {
 		List<Driver> listDriver = driverService.getByStatus(0);
 		if(listDriver!=null && listDriver.size()>0) {
 			model.put("listDriver", listDriver);

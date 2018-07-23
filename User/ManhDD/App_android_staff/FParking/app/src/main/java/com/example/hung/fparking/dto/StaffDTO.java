@@ -9,22 +9,12 @@ public class StaffDTO {
 
     private String phone;
 
-    private String password;
-
     private String address;
 
     public StaffDTO() {
 
     }
 
-    public StaffDTO(Long id, int parking_id, String name, String phone, String password, String address) {
-        this.id = id;
-        this.parking_id = parking_id;
-        this.name = name;
-        this.phone = phone;
-        this.password = password;
-        this.address = address;
-    }
 
     public Long getId() {
         return id;
@@ -58,13 +48,7 @@ public class StaffDTO {
         this.phone = phone;
     }
 
-    public String getPassword() {
-        return password;
-    }
 
-    public void setPassword(String password) {
-        this.password = password;
-    }
 
     public String getAddress() {
         return address;
@@ -81,7 +65,6 @@ public class StaffDTO {
                 ", parking_id=" + parking_id +
                 ", name='" + name + '\'' +
                 ", phone='" + phone + '\'' +
-                ", password='" + password + '\'' +
                 ", address='" + address + '\'' +
                 '}';
     }

@@ -1,7 +1,14 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.NamedQuery;
+
+import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
@@ -12,6 +19,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * 
  */
 @Entity
+@Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 @NamedQuery(name="Owner.findAll", query="SELECT o FROM Owner o")
 public class Owner implements Serializable {
@@ -19,7 +27,7 @@ public class Owner implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private Long id;
 
 	private String address;
 
@@ -32,7 +40,7 @@ public class Owner implements Serializable {
 	public Owner() {
 	}
 
-	public int getId() {
+	public Long getId() {
 		return this.id;
 	}
 
@@ -44,7 +52,7 @@ public class Owner implements Serializable {
 		this.password = password;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

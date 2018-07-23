@@ -45,36 +45,45 @@ public class IntroApplication extends AppCompatActivity {
         final SharedPreferences spref =
                 getSharedPreferences("info",0);
         final SharedPreferences.Editor editor = spref.edit();
-        editor.putString("phonenumber","0968949064");
-        editor.commit();
+//        editor.putString("f","0968949064");
+//        editor.commit();
+        // khởi tạo fragment
+        fragmentManager = getSupportFragmentManager();
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 if (spref.getBoolean("first_time", false)) {
-
                     fragmentManager
                             .beginTransaction()
                             .replace(R.id.frameContainer, new Login_Fragment(),
                                     Constants.Login_Fragment).commit();
                 } else if (!spref.getBoolean("first_time", false)) {
-                    new ManagerLoginTask("second_time", spref.getString("phonenumber", ""), "", new IAsyncTaskHandler() {
-                        @Override
-                        public void onPostExecute(Object o) {
-                        }
-                    });
-                    Intent homeIntent = new Intent(IntroApplication.this, HomeActivity.class);
-                    startActivity(homeIntent);
-                    finish();
+//                    Login_Fragment fragment = (tryLogin(view);Login_Fragment) getSupportFragmentManager().findFragmentById(R.id.frameContainer);
+                    fragmentManager
+                            .beginTransaction()
+                            .replace(R.id.frameContainer, new Login_Fragment(),
+                                    Constants.Login_Fragment).commit();
+
+//                    new ManagerLoginTask("second_time","", "", new IAsyncTaskHandler() {
+//                        @Override
+//                        public void onPostExecute(Object o) {
+//                            Intent myIntent = new Intent(IntroApplication.this, Notification.class);
+//                            IntroApplication.this.startService(myIntent);
+//                        }
+//                    });
+//
+//                    Intent homeIntent = new Intent(IntroApplication.this, HomeActivity.class);
+//                    startActivity(homeIntent);
+//                    finish();
                 }
             }
         }, SPLASH_TIME_OUT);
 
-        // khởi tạo fragment
-        fragmentManager = getSupportFragmentManager();
+
 
         // chay service noti/pusher
-        Intent myIntent = new Intent(IntroApplication.this, Notification.class);
-        this.startService(myIntent);
+//        Intent myIntent = new Intent(IntroApplication.this, Notification.class);
+//        this.startService(myIntent);
 
         // kiểm tra có bật kết nối mạng không
         CheckNetwork checkNetwork = new CheckNetwork(IntroApplication.this, getApplicationContext());
