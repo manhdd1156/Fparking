@@ -3,6 +3,7 @@ package com.tagroup.fparking.service;
 import java.util.List;
 
 import com.tagroup.fparking.service.domain.Booking;
+import com.tagroup.fparking.service.domain.Notification;
 import com.tagroup.fparking.service.domain.Parking;
 
 public interface BookingService {
@@ -12,7 +13,7 @@ public interface BookingService {
 
 	public Booking getById(Long id) throws Exception;
 
-	public Booking create(Booking booking) throws Exception;
+	public Booking create(Long drivervehicleid, Long parkingid, int status) throws Exception;
 
 	public Booking update(Booking booking) throws Exception;
 
@@ -21,6 +22,8 @@ public interface BookingService {
 	public List<Booking> findByDriverPhone(String phone) throws Exception;
 
 	public Booking findByStatus(int status) throws Exception;
+
+	public Booking updateByStatus(Notification noti) throws Exception;
 	
-	public Booking updateByStatus(Booking booking) throws Exception;
+	
 }

@@ -22,6 +22,10 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
  * The persistent class for the booking database table.
  * 
  */
+/**
+ * @author duymanhr
+ *
+ */
 @Entity
 @Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
@@ -125,7 +129,13 @@ public class Booking implements Serializable {
 	public void setTimeout(Date timeout) {
 		this.timeout = timeout;
 	}
-
+	public void setdrivervehicleid(Long id) {
+		this.drivervehicle.setId(id);
+	}
+	
+	public void setparkingid(Long id) {
+		this.parking.setId(id);
+	}
 	
 	public DriverVehicle getDrivervehicle() {
 		return drivervehicle;
@@ -142,6 +152,13 @@ public class Booking implements Serializable {
 	//
 	public void setParking(Parking parking) {
 		this.parking = parking;
+	}
+
+	@Override
+	public String toString() {
+		return "Booking [id=" + id + ", status=" + status + ", timein=" + timein + ", timeout=" + timeout + ", price="
+				+ price + ", amount=" + amount + ", comission=" + comission + ", totalfine=" + totalfine + ", parking="
+				+ parking + ", drivervehicle=" + drivervehicle + "]";
 	}
 
 }

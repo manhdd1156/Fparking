@@ -1,6 +1,7 @@
 package com.tagroup.fparking.service.impl;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,10 +10,14 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.BookingRepository;
+import com.tagroup.fparking.repository.DriverVehicleRepository;
+import com.tagroup.fparking.repository.ParkingRepository;
+import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.PusherService;
 import com.tagroup.fparking.service.domain.Booking;
+import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Notification;
 import com.tagroup.fparking.service.domain.Parking;
 
@@ -21,9 +26,17 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private BookingRepository bookingRepository;
 	@Autowired
+	private ParkingRepository parkingRepository;
+	@Autowired
 	private PusherService pusherService;
 	@Autowired
 	private NotificationService notificationService;
+	@Autowired
+	private BookingService bookingService;
+	@Autowired
+	private TariffRepository tariffRepository;
+	@Autowired
+	private DriverVehicleRepository driverVehicleRepository;
 
 	@Override
 	public List<Booking> getAll() {
@@ -44,11 +57,20 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Booking create(Booking booking) throws Exception {
+	public Booking create(Long drivervehicleid, Long parkingid, int status) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			// driverVehicleid, parkingid, status = 5,
-			Booking b = bookingRepository.save(booking);
+			Booking bb = new Booking();
+			Parking p = new Parking();
+			p.setId(parkingid);
+			DriverVehicle dv = new DriverVehicle();
+			dv.setId(drivervehicleid);
+			bb.setDrivervehicle(dv);
+			bb.setParking(p);
+			bb.setStatus(5);
+			System.out.println(bb.toString());
+			Booking b = bookingRepository.save(bb);
 			if (b != null) {
 				Notification n = new Notification();
 				n.setDrivervehicle_id(b.getDrivervehicle().getId());
@@ -56,14 +78,14 @@ public class BookingServiceImpl implements BookingService {
 				n.setEvent("order");
 				n.setType(1); // 1 : driver gửi cho parking
 				n.setStatus(0); // 0 : parking chưa nhận.
-				notificationService.create(n);
+				Notification nn = notificationService.create(n);
+				System.out.println("BookingServiceIml/create : " + nn);
 				pusherService.trigger(b.getParking().getId() + "channel", "order", "");
 			}
-			return bookingRepository.save(booking);
+			return b;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
-		
 
 	}
 
@@ -88,22 +110,62 @@ public class BookingServiceImpl implements BookingService {
 		}
 
 	}
-	
+
+	// update booking, update noti vs type = 2, đẩy pusher về cho driver là ok.
 	@Override
-	public Booking updateByStatus(Booking booking) throws Exception {
+	public Booking updateByStatus(Notification noti) throws Exception {
 		try {
-//			if (booking == null) {
-//				throw new APIException(HttpStatus.NO_CONTENT, "The Booking was not content");
-//			}
-//			Booking b = bookingRepository.findByParkingAndStatus(booking.getParking(), booking.getStatus());
-//			b.setStatus(1);
-//			Date date = new Date("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
-////			DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
-//			b.setTimein(date);
-////			Notification noti = new Notification()
-//			notificationService.update(new)
+			if (noti == null) {
+				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
+			}
+
+			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),
+					1, noti.getEvent(), 0);
+			System.out.println("BookingServerImp/updatebystatus : " + noti);
+			modelNoti.setType(2);
+			Notification n = notificationService.update(modelNoti);
+			List<Booking> blist = bookingRepository.findAll();
+			for (Booking booking : blist) {
+				if (booking.getParking().getId() == noti.getParking_id()
+						&& booking.getDrivervehicle().getId() == noti.getDrivervehicle_id()
+						&& booking.getStatus() == 5) {
+
+					booking.setStatus(1);
+
+					return bookingRepository.save(booking);
+				} else if (booking.getParking().getId() == noti.getParking_id()
+						&& booking.getDrivervehicle().getId() == noti.getDrivervehicle_id()
+						&& booking.getStatus() == 1) {
+					booking.setStatus(2);
+					System.out.println("booking : " + booking.toString());
+					Date date = new Date();
+					booking.setTimein(date);
+					System.out.println("BookingServerImp/updatebystatus : " + booking);
+
+					return bookingRepository.save(booking);
+				} else if (booking.getParking().getId() == noti.getParking_id()
+						&& booking.getDrivervehicle().getId() == noti.getDrivervehicle_id()
+						&& booking.getStatus() == 2) {
+					booking.setStatus(3);
+					System.out.println("booking : " + booking.toString());
+					Date date = new Date();
+					booking.setTimeout(date);
+					double price = tariffRepository.findByParkingAndVehicletype(
+							parkingRepository.getOne(noti.getParking_id()),
+							driverVehicleRepository.getOne(noti.getDrivervehicle_id()).getVehicle().getVehicletype())
+							.getPrice();
+					booking.setPrice(price);
+					System.out.println("BookingServerImp/updatebystatus : " + booking);
+
+					return bookingRepository.save(booking);
+				}
+			}
+			if (n != null) {
+				pusherService.trigger(n.getDrivervehicle_id() + "channel", n.getEvent(), "ok");
+
+			}
 			// TODO Auto-generated method stub
-//			return bookingRepository.save(b);
+
 			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");

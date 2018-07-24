@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.domain.Booking;
-import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Notification;
 
 @RestController
@@ -22,18 +21,18 @@ public class NotificationController {
 
 	// delete notification by DriverVehicle
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
-	@RequestMapping(path = "/drivervehicles", method = RequestMethod.POST)
-	public ResponseEntity<?> deleteNotification(@RequestBody DriverVehicle drivervehicle) throws Exception {
+	@RequestMapping(path = "/delete", method = RequestMethod.POST)
+	public ResponseEntity<?> deleteNotification(@RequestBody Notification notification) throws Exception {
 
-//		notificationService.deleteByDriverVehicle(drivervehicle);
-		return new ResponseEntity<>("jhhjh",HttpStatus.OK);
+		notificationService.deleteByNoti(notification);
+		return new ResponseEntity<>("ok", HttpStatus.OK);
 
 	}
 
-	// create new noti
+	// create new noti by booking
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/bookings", method = RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestBody Booking booking) throws Exception {
+	public ResponseEntity<?> createNotiAndBooking(@RequestBody Booking booking) throws Exception {
 		Notification noti = new Notification();
 		noti.setType(1);
 		noti.setStatus(0);
@@ -41,9 +40,29 @@ public class NotificationController {
 		noti.setDrivervehicle_id(booking.getDrivervehicle().getId());
 		noti.setParking_id(booking.getParking().getId());
 		Notification respone = notificationService.create(noti);
-		
+
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
 
+	// create new noti
+	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@RequestMapping(path = "/create", method = RequestMethod.POST)
+	public ResponseEntity<?> createNewNoti(@RequestBody Notification notification) throws Exception {
+
+		Notification respone = notificationService.create(notification);
+
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
+	// cancel order,checkin,checkout from Parking.
+	@PreAuthorize("hasAnyAuthority('STAFF')")
+	@RequestMapping(path = "/cancel", method = RequestMethod.PUT)
+	public ResponseEntity<?> deleteByStatus(@RequestBody Notification notification) throws Exception {
+		System.out.println("notifications/cancel : " + notification.toString());
+		Notification respone = notificationService.cancelNoti(notification);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
 }
