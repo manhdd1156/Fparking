@@ -49,7 +49,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
                 Date date1 = df.parse(myBookingDTO.getTimeIn());
                 Date date2 = df.parse(myBookingDTO.getTimeOut());
                 long diff = date2.getTime() - date1.getTime();
-                textViewCheckIn.setText(date2 + "");
+                textViewCheckIn.setText(diff + "");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
