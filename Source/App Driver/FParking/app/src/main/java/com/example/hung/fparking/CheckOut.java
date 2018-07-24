@@ -35,8 +35,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
         buttonCheckOut = findViewById(R.id.buttonCheckout);
 
-        BookingTask bookingTask = new BookingTask("2", "", this);
-        bookingTask.execute();
+        new BookingTask("bookingID", "2", "", this);
     }
 
     @Override
@@ -50,13 +49,13 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
                 Date date1 = df.parse(myBookingDTO.getTimeIn());
                 Date date2 = df.parse(myBookingDTO.getTimeOut());
                 long diff = date2.getTime() - date1.getTime();
-                textViewCheckIn.setText(date2+"");
+                textViewCheckIn.setText(date2 + "");
             } catch (ParseException e) {
                 e.printStackTrace();
             }
 
             textViewAddress.setText(myBookingDTO.getAddress());
-            textViewTotalPrice.setText(myBookingDTO.getAmount()+"");
+            textViewTotalPrice.setText(myBookingDTO.getAmount() + "");
             textViewPrice.setText(myBookingDTO.getPrice() + "");
             textViewLicensePlate.setText(myBookingDTO.getLicenseplate());
         }

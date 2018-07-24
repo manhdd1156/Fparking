@@ -56,7 +56,7 @@ android:orientation="vertical">
             app:srcCompat="@drawable/ic_action_mylocation" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/textViewHLicenseplate"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -65,7 +65,7 @@ android:orientation="vertical">
             android:text="Điểm đi" />
 
         <TextView
-            android:id="@+id/textView4"
+            android:id="@+id/textViewAmount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView11"
