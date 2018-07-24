@@ -11,7 +11,6 @@ import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.NotificationService;
-import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.PusherService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Notification;
@@ -23,8 +22,6 @@ public class BookingServiceImpl implements BookingService {
 	private BookingRepository bookingRepository;
 	@Autowired
 	private PusherService pusherService;
-	@Autowired
-	private ParkingService parkingService;
 	@Autowired
 	private NotificationService notificationService;
 

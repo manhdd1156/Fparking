@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Proxy;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 /**
@@ -24,6 +25,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @Entity
 @Proxy(lazy = false)
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+
 @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
 public class Booking implements Serializable {
 	private static final long serialVersionUID = 1L;
@@ -35,7 +37,7 @@ public class Booking implements Serializable {
 	
 	@Column
 	private int status;
-
+	
 	private Date timein;
 
 	private Date timeout;
@@ -107,7 +109,7 @@ public class Booking implements Serializable {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.000 ", timezone="UTC")
 	public Date getTimein() {
 		return this.timein;
 	}
@@ -115,7 +117,7 @@ public class Booking implements Serializable {
 	public void setTimein(Date timein) {
 		this.timein = timein;
 	}
-
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.000 ", timezone="UTC")
 	public Date getTimeout() {
 		return this.timeout;
 	}
