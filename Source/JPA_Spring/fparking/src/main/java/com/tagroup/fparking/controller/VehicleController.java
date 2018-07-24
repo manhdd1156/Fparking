@@ -42,7 +42,7 @@ public ResponseEntity<?> getTypesByDriver(@RequestParam("phone") String phone) t
 
 //get rating by vehicle
 @PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-	@RequestMapping(path = "/{id}/vehicles", method = RequestMethod.GET)
+	@RequestMapping(path = "/ratings/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getbyid(@PathVariable Long id) throws Exception{
 		double respone = vehicleService.getRatingByVehicle(vehicleService.getById(id));
 		return new ResponseEntity<>(respone, HttpStatus.OK);
