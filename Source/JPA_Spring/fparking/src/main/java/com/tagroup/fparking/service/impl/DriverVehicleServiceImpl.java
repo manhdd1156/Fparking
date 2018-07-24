@@ -13,23 +13,24 @@ import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 
 @Service
-public class DriverVehicleServiceImpl implements DriverVehicleService{
-@Autowired
-private DriverVehicleRepository driverVehicleRepository;
+public class DriverVehicleServiceImpl implements DriverVehicleService {
+	@Autowired
+	private DriverVehicleRepository driverVehicleRepository;
 
-@Autowired
-NotificationRepository notificationRepository;
+	@Autowired
+	NotificationRepository notificationRepository;
+
 	@Override
 	public List<DriverVehicle> getAll() {
 		// TODO Auto-generated method stub
 		return driverVehicleRepository.findAll();
-		
+
 	}
 
 	@Override
 	public DriverVehicle getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			return driverVehicleRepository.getOne(id);
 		} catch (Exception e) {
@@ -41,14 +42,14 @@ NotificationRepository notificationRepository;
 	public DriverVehicle create(DriverVehicle drivervehicle) {
 		// TODO Auto-generated method stub
 		return driverVehicleRepository.save(drivervehicle);
-	
+
 	}
 
 	@Override
 	public DriverVehicle update(DriverVehicle drivervehicle) {
 		// TODO Auto-generated method stub
 		return driverVehicleRepository.save(drivervehicle);
-		
+
 	}
 
 	@Override
@@ -58,18 +59,17 @@ NotificationRepository notificationRepository;
 		driverVehicleRepository.delete(drivervehicle);
 	}
 
-	@Override
-	public DriverVehicle getInfoDriverVehicle(int parkingID) throws Exception {
-		// TODO Auto-generated method stub
-//		Notification noti = notificationRepository.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, "order", 0);
-//		
-//		if(noti!=null) {
-//			Long id = (Long) noti.getDrivervehicle_id();
-//			return driverVehicleRepository.getOne(id);
-//		}
-		return null;
-	}
 
-	
+//	@Override
+//	public DriverVehicle getInfoDriverVehicle(Long parkingID) throws Exception {
+//		// TODO Auto-generated method stub
+////		Notification noti = notificationRepository.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, "order", 0);
+////
+////		if (noti != null) {
+////			Long id = (Long) noti.getDrivervehicle_id();
+////			return driverVehicleRepository.getOne(id);
+////		}
+//		return null;
+//	}
 
 }

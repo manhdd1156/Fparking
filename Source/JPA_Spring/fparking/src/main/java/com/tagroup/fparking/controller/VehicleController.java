@@ -34,7 +34,7 @@ public ResponseEntity<?> getVehicleByDrivervehicle(@PathVariable Long id) throws
 
 //get vehicles by phone of driver
 @PreAuthorize("hasAnyAuthority('DRIVER')")
-@RequestMapping(path = "/drivers/{phone}", method = RequestMethod.GET)
+@RequestMapping(path = "/drivers", method = RequestMethod.GET)
 public ResponseEntity<?> getTypesByDriver(@RequestParam("phone") String phone) throws Exception {
 	List<Vehicle> respone = vehicleService.getVehicleByDriver(phone);
 	return new ResponseEntity<>(respone, HttpStatus.OK);

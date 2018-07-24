@@ -15,4 +15,5 @@ public interface NotificationService {
 	public Notification update(Notification notification) throws Exception;
 
 	public void delete(Long id) throws Exception;
+	
 }

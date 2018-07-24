@@ -41,12 +41,7 @@ public class DriverServiceImpl implements DriverService {
 		return driverRepository.save(driver);
 
 	}
-	@Override
-	public Driver getProfile() throws Exception {
-		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
-		return driverRepository.getOne(t.getId());
-	}
+
 	@Override
 	public Driver update(Driver driver) {
 		// TODO Auto-generated method stub
@@ -64,7 +59,7 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public List<Driver> getByStatus(int status) {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			List<Driver> out = driverRepository.findByStatus(status);
 			return out;
@@ -82,6 +77,14 @@ public class DriverServiceImpl implements DriverService {
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
 		}
+	}
+
+	@Override
+	public Driver getProfile() throws Exception {
+		// TODO Auto-generated method stub
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		return driverRepository.getOne(t.getId());
 	}
 
 }
