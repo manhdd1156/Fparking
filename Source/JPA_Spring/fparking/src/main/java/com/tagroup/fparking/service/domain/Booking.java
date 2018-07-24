@@ -109,7 +109,7 @@ public class Booking implements Serializable {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.000 ", timezone="UTC")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss dd-MM-yyyy", timezone="UTC")
 	public Date getTimein() {
 		return this.timein;
 	}
@@ -117,7 +117,7 @@ public class Booking implements Serializable {
 	public void setTimein(Date timein) {
 		this.timein = timein;
 	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="yyyy-MM-dd HH:mm:ss.000 ", timezone="UTC")
+	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss dd-MM-yyyy", timezone="UTC")
 	public Date getTimeout() {
 		return this.timeout;
 	}

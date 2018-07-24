@@ -73,7 +73,7 @@ public class BookingController {
 
 	// create new booking
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-	@RequestMapping(path = "", method = RequestMethod.POST)
+	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody Booking booking) throws Exception {
 			Booking respone = bookingService.create(booking);
 			return new ResponseEntity<>(respone, HttpStatus.OK);
