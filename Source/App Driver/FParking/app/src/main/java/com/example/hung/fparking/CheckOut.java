@@ -44,7 +44,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
         if (booking.size() > 0) {
             BookingDTO myBookingDTO = booking.get(0);
 
-            final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+            final DateFormat df = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
             try {
                 Date date1 = df.parse(myBookingDTO.getTimeIn());
                 Date date2 = df.parse(myBookingDTO.getTimeOut());

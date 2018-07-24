@@ -30,8 +30,8 @@ public class VehicleTask extends AsyncTask<Void, Void, Boolean> {
         vehicle = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "drivers/" + phone + "/vehicles");
-            Log.e("toa do: ", Constants.API_URL + "drivers/" + phone + "/vehicles");
+            String json = httpHandler.get(Constants.API_URL + "vehicles/drivers?phone=" + phone);
+            Log.e("toa do: ", Constants.API_URL + "vehicles/drivers?phone=" + phone);
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
