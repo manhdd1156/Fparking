@@ -14,5 +14,6 @@ public interface ParkingService {
 	public void delete(Long id)throws Exception;
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude)throws Exception;
     public String getRatingByPid(Long parkingId) throws Exception; 
-    public ParkingTariffDTO getTariffByPid(Parking parking)throws Exception; 
+    public ParkingTariffDTO getTariffByPid(Parking parking)throws Exception;
+    public List<Parking> getByStatus(int status)throws Exception;
 }

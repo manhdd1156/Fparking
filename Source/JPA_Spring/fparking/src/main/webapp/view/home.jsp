@@ -45,12 +45,12 @@
                                     <i class="fa fa-comments fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">26</div>
+                                    <div class="huge">${totalAccountDriver }</div>
                                     <div>Tài khoản lái xe</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="/account/driver">
                             <div class="panel-footer">
                                 <span class="pull-left">Xem chi tiết</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -67,12 +67,12 @@
                                     <i class="fa fa-tasks fa-5x"></i>
                                 </div>
                                 <div class="col-xs-9 text-right">
-                                    <div class="huge">12</div>
+                                    <div class="huge">${totalAccountParking }</div>
                                     <div>Tổng số bãi đỗ</div>
                                 </div>
                             </div>
                         </div>
-                        <a href="#">
+                        <a href="/account/parking">
                             <div class="panel-footer">
                                 <span class="pull-left">Xem chi tiết</span>
                                 <span class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>

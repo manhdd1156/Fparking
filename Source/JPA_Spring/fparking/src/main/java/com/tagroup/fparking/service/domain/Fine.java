@@ -36,9 +36,13 @@ public class Fine implements Serializable {
 
 	private int status;
 	
+	private int type;
+	
+	private double price;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
-	@JoinColumn(name = "driver_id", referencedColumnName = "id")
-	private Driver driver;
+	@JoinColumn(name = "drivervehicle_id", referencedColumnName = "id")
+	private DriverVehicle drivervehicle;
 
 	
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -72,15 +76,30 @@ public class Fine implements Serializable {
 		this.status = status;
 	}
 
-	public Driver getDriver() {
-		return driver;
+
+	public double getPrice() {
+		return price;
 	}
 
-	public void setDriver(Driver driver) {
-		this.driver = driver;
+	public int getType() {
+		return type;
 	}
 
-	
+	public void setType(int type) {
+		this.type = type;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public DriverVehicle getDrivervehicle() {
+		return drivervehicle;
+	}
+
+	public void setDrivervehicle(DriverVehicle drivervehicle) {
+		this.drivervehicle = drivervehicle;
+	}
 
 	public Parking getParking() {
 		return parking;

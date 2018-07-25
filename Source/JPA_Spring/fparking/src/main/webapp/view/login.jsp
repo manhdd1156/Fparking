@@ -35,7 +35,7 @@
 									<input type="submit"
 									class="btn btn-lg btn-success btn-block" value="Đăng nhập">
 							</fieldset>
-							<h5>${DMRAROI}</h5>
+							<h5 style="color: red">${messError}</h5>
 						</form>
 					</div>
 				</div>

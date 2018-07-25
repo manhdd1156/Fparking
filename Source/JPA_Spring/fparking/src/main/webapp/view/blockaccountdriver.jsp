@@ -46,21 +46,21 @@
 									<tr>
 										<th>Họ Tên</th>
 										<th>Số điện thoại</th>
-										<th>Địa chỉ</th>
 										<th></th>
 										<th></th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									<tr class="even gradeC">
-										<td>Trident</td>
-										<td>Internet Explorer 5.0</td>
-										<td>Win 95+</td>
-										<td class="center"><a href="">Xem</a></td>
-										<td class="center"><a href="">Khóa</a></td>
+									<c:forEach items= "${ listDriver}" var="driver">
+									<tr class="odd gradeX">
+										<td>${driver.name }</td>
+										<td>${driver.phone }</td>
+										<td class="center"><a href="/account/driver/detail/${driver.id }">Xem</a></td>
+										<td class="center"><a href="/account/driver/unblockaccount/${driver.id }">Mở Khóa</a></td>
 										<td class="center"><a href="">Sửa</a></td>
 									</tr>
+									</c:forEach>
 								</tbody>
 							</table>
 							<!-- /.table-responsive -->

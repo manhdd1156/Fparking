@@ -52,6 +52,4 @@ private FineRepository fineRepository;
 		Fine fine = fineRepository.getOne(id);
 		fineRepository.delete(fine);
 	}
-	
-
 }

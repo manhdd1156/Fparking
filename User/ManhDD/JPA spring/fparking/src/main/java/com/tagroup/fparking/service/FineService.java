@@ -7,8 +7,8 @@ import com.tagroup.fparking.service.domain.Fine;
 
 public interface FineService {
 	public List<Fine> getAll();
-	public Fine getById(Long id);
-	public Fine create(Fine fine);
-	public Fine update(Fine fine);
-	public void delete(Long id);
+	public Fine getById(Long id)throws Exception;
+	public Fine create(Fine fine)throws Exception;
+	public Fine update(Fine fine)throws Exception;
+	public void delete(Long id)throws Exception;
 }
