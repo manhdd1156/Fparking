@@ -13,6 +13,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ParkingInforTask;
 import com.example.hung.fparking.asynctask.TariffTask;
@@ -22,6 +23,7 @@ import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.dto.TariffDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 import com.example.hung.fparking.entity.GetNearPlace;
+import com.example.hung.fparking.notification.Notification;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -43,6 +45,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     ArrayList<ParkingDTO> parkingDTOS;
     ArrayList<TariffDTO> tariffDTOS;
     List<CarouselPicker.PickerItem> textItems;
+
+    int driverVehicleID, parkingID;
 
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
@@ -89,6 +93,12 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                mPreferencesEditor.putString("drivervehicleID",driverVehicleID+"").commit();
+                mPreferencesEditor.putString("parkingID",parkingID+"").commit();
+                new BookingTask("create", driverVehicleID+"", parkingID+"", "",OrderParking.this);
+
+                Intent intent = new Intent(OrderParking.this, Notification.class);
+                startService(intent);
                 Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
                 startActivity(checkOutIntent);
             }
@@ -181,6 +191,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 for (int i = 0; i < vehicle.size(); i++) {
                     textItems.add(new CarouselPicker.TextItem(vehicle.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
                 }
+                driverVehicleID = vehicle.get(0).getDriverVehicleID();
             }
             CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
             carouselPicker.setAdapter(textAdapter);
@@ -192,8 +203,9 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
             textViewTime.setText(parkingDTOS.get(0).getTimeoc());
             textViewAddress.setText(parkingDTOS.get(0).getAddress());
+            parkingID = parkingDTOS.get(0).getParkingID();
         } else if (action.equals("tt")) {
-            if (vehicle.size()>0) {
+            if (vehicle.size() > 0) {
                 tariffDTOS = (ArrayList<TariffDTO>) o;
                 for (int i = 0; i < tariffDTOS.size(); i++) {
                     if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {

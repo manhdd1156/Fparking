@@ -36,13 +36,18 @@ public class VehicleTask extends AsyncTask<Void, Void, Boolean> {
 
             for (int i = 0; i < jsonArray.length(); i++) {
                 JSONObject c = jsonArray.getJSONObject(i);
-                int vehicleID = c.getInt("id");
-                String licenseplate = c.getString("licenseplate");
-                JSONObject vehicletype = c.getJSONObject("vehicletype");
+                int driverVehicleID = c.getInt("id");
+                int status = c.getInt("status");
+
+                JSONObject vehicleObject = c.getJSONObject("vehicle");
+                int vehicleID = vehicleObject.getInt("id");
+                String licenseplate = vehicleObject.getString("licenseplate");
+
+                JSONObject vehicletype = vehicleObject.getJSONObject("vehicletype");
                 int vehicleTypeID = vehicletype.getInt("id");
                 String type = vehicletype.getString("type");
 
-                vehicle.add(new VehicleDTO(vehicleID,licenseplate,vehicleTypeID,type));
+                vehicle.add(new VehicleDTO(driverVehicleID,status,vehicleID,licenseplate,vehicleTypeID,type));
             }
 
         } catch (Exception e) {

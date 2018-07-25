@@ -28,7 +28,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
+import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.asynctask.ParkingInforTask;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.entity.Route;
@@ -82,7 +84,8 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         // khởi tạo shareRePreference
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
-        String parkingID = mPreferences.getString("parkingID", "");
+
+        final String parkingID = mPreferences.getString("parkingID", "");
         if (!parkingID.equals("")) {
             ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
             parkingInforTask.execute();
@@ -93,6 +96,15 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
         // Ánh xạ
         buttonCheckin = (Button) findViewById(R.id.buttonCheckin);
+        buttonCheckin.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                locationManager.removeUpdates(Direction.this);
+                new NotificationTask("checkin", mPreferences.getString("drivervehicleID",""), parkingID, "",Direction.this);
+                Intent checkOutIntent = new Intent(Direction.this, CheckOut.class);
+                startActivity(checkOutIntent);
+            }
+        });
         buttonHuy = (Button) findViewById(R.id.buttonHuy);
 
         // đặt vị trí nút mylocation
@@ -244,7 +256,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
         try {
             double distanceValue = distination.distanceTo(location);
-            Log.e("khoảng cách", distanceValue + "");
+//            Log.e("khoảng cách", distanceValue + "");
             if (distanceValue <= 40) {
 
                 createNotification("Fparking");

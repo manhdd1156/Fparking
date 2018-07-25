@@ -242,7 +242,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (marker != null) {
                     marker.remove();
                 }
-                mMap.clear();
                 MarkerOptions markerOptions = new MarkerOptions();
                 LatLng latLngMaker = place.getLatLng();
 
@@ -285,6 +284,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bitmap parkMarker = Bitmap.createScaledBitmap(p, width, height, false);
 
         if (nearParkingList.size() > 0) {
+            mMap.clear();
             for (int i = 0; i < nearParkingList.size(); i++) {
                 LatLng latLng = new LatLng(nearParkingList.get(i).getLattitude(), nearParkingList.get(i).getLongitude());
 
@@ -299,7 +299,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
             locationManager.removeUpdates(HomeActivity.this);
             LatLng cameraLatLng = mMap.getCameraPosition().target;
-            mMap.clear();
 
             double lat = cameraLatLng.latitude;
             double lng = cameraLatLng.longitude;
@@ -328,7 +327,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        mMap.clear();
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         doSearchAsyncTask(lat, lng);
