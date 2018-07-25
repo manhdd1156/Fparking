@@ -35,7 +35,8 @@ public class NumberPickerActivity extends Activity implements IAsyncTaskHandler{
             oldValue=0;
             newValue=0;
             np.setMinValue(0);// restricted number to minimum value i.e 1
-            np.setMaxValue(Session.currentParking.getTotalspace());// restricked number to maximum value i.e. 31
+//            np.setMaxValue(Session.currentParking.getTotalspace());// restricked number to maximum value i.e. 31
+            np.setMaxValue(30);// restricked number to maximum value i.e. 31
         }
         np.setWrapSelectorWheel(true);
 
@@ -51,20 +52,20 @@ public class NumberPickerActivity extends Activity implements IAsyncTaskHandler{
             }
         });
 
-        Log.d("NumberPicker", "NumberPicker");
-        Button btnChangeSpace = (Button) findViewById(R.id.apply_button);
-        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(Session.currentParking!=null) {
-                    Session.currentParking.setCurrentspace(newValue);
-                    new ManagerParkingTask("update", Session.currentParking, NumberPickerActivity.this);
-                    Intent _result = new Intent();
-//                    _result.setData(Session.current);
-                    setResult(Activity.RESULT_OK, _result);
-                    finish();
-                }
-            }
-        });
+//        Log.d("NumberPicker", "NumberPicker");
+//        Button btnChangeSpace = (Button) findViewById(R.id.apply_button);
+//        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if(Session.currentParking!=null) {
+//                    Session.currentParking.setCurrentspace(newValue);
+//                    new ManagerParkingTask("update", Session.currentParking, NumberPickerActivity.this);
+//                    Intent _result = new Intent();
+////                    _result.setData(Session.current);
+//                    setResult(Activity.RESULT_OK, _result);
+//                    finish();
+//                }
+//            }
+//        });
     }
 
 
