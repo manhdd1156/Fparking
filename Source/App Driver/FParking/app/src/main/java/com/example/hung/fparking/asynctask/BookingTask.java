@@ -22,9 +22,9 @@ public class BookingTask {
             new GetBookingTaskByID(data1, action, container).execute((Void) null);
         } else if (type.equals("phone")) {
             new GetBookingTaskByPhone(data1, action, container).execute((Void) null);
-        }else if (type.equals("create")) {
+        } else if (type.equals("create")) {
             new CreateBooking(data1, data2, action, container).execute((Void) null);
-        }else if (type.equals("getorder")) {
+        } else if (type.equals("getorder")) {
             new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
         }
     }
@@ -70,8 +70,12 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
             JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
             int vehicleID = vehicle.getInt("id");
             String licenseplate = vehicle.getString("licenseplate");
+            String color = vehicle.getString("color");
 
-            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine));
+            JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
+            String type = vehicletype.getString("type");
+
+            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
 //            }
 
         } catch (Exception e) {
@@ -127,8 +131,12 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
                 JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
                 int vehicleID = vehicle.getInt("id");
                 String licenseplate = vehicle.getString("licenseplate");
+                String color = vehicle.getString("color");
 
-                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine));
+                JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
+                String type = vehicletype.getString("type");
+
+                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
             }
 
         } catch (Exception e) {
@@ -209,8 +217,8 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/drivervehicle?parkingid="+parkingid+"&drivervehicleid="+drivervehicleid+"&status=1");
-            Log.e("Get booking when order: ", Constants.API_URL + "bookings/drivervehicle?parkingid="+parkingid+"&drivervehicleid="+drivervehicleid+"&status=1");
+            String json = httpHandler.get(Constants.API_URL + "bookings/drivervehicle?parkingid=" + parkingid + "&drivervehicleid=" + drivervehicleid + "&status=1");
+            Log.e("Get booking when order: ", Constants.API_URL + "bookings/drivervehicle?parkingid=" + parkingid + "&drivervehicleid=" + drivervehicleid + "&status=1");
 //            JSONArray jsonArray = new JSONArray(json);
 
 //            for (int i = 0; i < jsonArray.length(); i++) {
@@ -232,8 +240,12 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
             JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
             int vehicleID = vehicle.getInt("id");
             String licenseplate = vehicle.getString("licenseplate");
+            String color = vehicle.getString("color");
 
-            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine));
+            JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
+            String type = vehicletype.getString("type");
+
+            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
 //            }
 
         } catch (Exception e) {

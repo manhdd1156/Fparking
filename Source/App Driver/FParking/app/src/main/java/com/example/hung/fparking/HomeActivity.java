@@ -148,6 +148,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }else if(status == 2){
             Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
             startActivity(intentCheckoutFlagment);
+        }else if(status == 3){
+            Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
         }
     }
 

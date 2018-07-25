@@ -74,6 +74,10 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
 
+        // tạo SharedPreferences
+        mPreferences = getSharedPreferences("driver", 0);
+        mPreferencesEditor = mPreferences.edit();
+
         // ánh xạ
         textViewAddress = findViewById(R.id.textViewAddress);
         textViewEmptySpace = findViewById(R.id.textViewEmptySpace);
@@ -82,6 +86,12 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
         backOrder = findViewById(R.id.imageViewBackOrder);
+
+        // set text cho button theo data
+        int status = mPreferences.getInt("status", 8);
+        if (status == 1) {
+            buttonDat_Cho.setText("CHỈ ĐƯỜNG");
+        }
 
         backOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,14 +103,19 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferencesEditor.putString("drivervehicleID",driverVehicleID+"").commit();
-                mPreferencesEditor.putString("parkingID",parkingID+"").commit();
-                new BookingTask("create", driverVehicleID+"", parkingID+"", "",OrderParking.this);
+                if (buttonDat_Cho.getText().equals("CHỈ ĐƯỜNG")) {
+                    Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
+                    startActivity(checkOutIntent);
+                } else {
+                    mPreferencesEditor.putString("drivervehicleID", driverVehicleID + "").commit();
+                    mPreferencesEditor.putString("parkingID", parkingID + "").commit();
+                    new BookingTask("create", driverVehicleID + "", parkingID + "", "", OrderParking.this);
 
-                Intent intent = new Intent(OrderParking.this, Notification.class);
-                startService(intent);
-                Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
-                startActivity(checkOutIntent);
+                    Intent intent = new Intent(OrderParking.this, Notification.class);
+                    startService(intent);
+                    Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
+                    startActivity(checkOutIntent);
+                }
             }
         });
 

@@ -1,5 +1,6 @@
 package com.example.hung.fparking;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.dto.BookingDTO;
+import com.example.hung.fparking.notification.Notification;
 
 import java.text.DateFormat;
 import java.text.ParseException;
@@ -45,14 +47,26 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
         buttonCheckOut = findViewById(R.id.buttonCheckout);
 
+        // set text cho button theo data
+        int status = mPreferences.getInt("status", 8);
+        if (status == 3) {
+            buttonCheckOut.setText("QUAY VỀ");
+        }
+
         buttonCheckOut.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new NotificationTask("checkout", mPreferences.getString("drivervehicleID",""), mPreferences.getString("parkingID",""), "",CheckOut.this);
+                if (buttonCheckOut.getText().equals("QUAY VỀ")) {
+                    mPreferencesEditor.clear().commit();
+                    Intent intentHome = new Intent(CheckOut.this, HomeActivity.class);
+                    startActivity(intentHome);
+                } else {
+                    new NotificationTask("checkout", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", CheckOut.this);
+                }
             }
         });
 
-        new BookingTask("bookingID", mPreferences.getString("bookingid",""), "", "", this);
+        new BookingTask("bookingID", mPreferences.getString("bookingid", ""), "", "", this);
     }
 
     @Override
@@ -66,7 +80,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
                 Date date1 = df.parse(myBookingDTO.getTimeIn());
                 Date date2 = df.parse(myBookingDTO.getTimeOut());
                 long diff = date2.getTime() - date1.getTime();
-                textViewCheckIn.setText(diff + "");
+                textViewCheckIn.setText(myBookingDTO.getTimeIn() + " - " + myBookingDTO.getTimeOut());
             } catch (ParseException e) {
                 e.printStackTrace();
             }

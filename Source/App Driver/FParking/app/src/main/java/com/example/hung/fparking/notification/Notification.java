@@ -15,6 +15,7 @@ import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import com.example.hung.fparking.CheckOut;
+import com.example.hung.fparking.Direction;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.OrderParking;
 import com.example.hung.fparking.R;
@@ -93,17 +94,23 @@ public class Notification extends Service implements SubscriptionEventListener, 
                 if (eventName.toLowerCase().contains("order")) {
                     new BookingTask("getorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "bookingid",Notification.this);
                     new NotificationTask("cancelorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
-                    createNotification("Có xe muốn đặt chỗ");
+                    createNotification("Bạn đã đặt chỗ thành công");
+                    Intent intentDirection = new Intent(Notification.this, Direction.class);
+                    startActivity(intentDirection);
                 } else if (eventName.toLowerCase().contains("checkin")) {
                     new NotificationTask("cancelcheckin", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                     mPreferencesEditor.putInt("status",2);
                     mPreferencesEditor.commit();
-                    createNotification("Có xe muốn vào bãi");
+                    createNotification("Xe của bạn đã được chấp nhận vào bãi");
+                    Intent intentCheckout = new Intent(Notification.this, CheckOut.class);
+                    startActivity(intentCheckout);
                 } else if (eventName.toLowerCase().contains("checkout")) {
                     new NotificationTask("cancelcheckout", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
-//                    mPreferencesEditor.putInt("status",3);
-                    mPreferencesEditor.clear().commit();
-                    createNotification("Có xe muốn thanh toán");
+                    mPreferencesEditor.putInt("status",3);
+                    mPreferencesEditor.commit();
+                    createNotification("Bạn đã thanh toán thành công");
+                    Intent intentCheckout = new Intent(Notification.this, CheckOut.class);
+                    startActivity(intentCheckout);
                 }
             } else if (data.contains("cancel")) {
                 if (eventName.toLowerCase().contains("order")) {

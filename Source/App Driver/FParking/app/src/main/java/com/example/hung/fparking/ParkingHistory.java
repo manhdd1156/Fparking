@@ -37,9 +37,9 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
         backHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent backHistoryIntent = new Intent(ParkingHistory.this,HomeActivity.class);
+                Intent backHistoryIntent = new Intent(ParkingHistory.this, HomeActivity.class);
                 startActivity(backHistoryIntent);
-                overridePendingTransition(R.anim.slide_in_left,R.anim.slide_out_right);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
 
@@ -51,7 +51,7 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
 //        mAdapter = new MyRecyclerViewAdapter(getDataSet());
 //        mRecyclerView.setAdapter(mAdapter);
 
-        new BookingTask("phone", Session.currentDriver.getPhone(),"", "", this);
+        new BookingTask("phone", Session.currentDriver.getPhone(), "", "", this);
 
     }
 
@@ -80,11 +80,13 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
         mAdapter = new MyRecyclerViewAdapter(booking);
         mRecyclerView.setAdapter(mAdapter);
 
-                ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
+        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                Log.i("adsdasdasdasdas", " Clicked on Item " + position);
+                Intent intentDetail = new Intent(ParkingHistory.this, DetailedHistory.class);
+                intentDetail.putExtra("bookingid", booking.get(position).getBookingID());
+                startActivity(intentDetail);
             }
         });
     }
@@ -101,12 +103,14 @@ class MyRecyclerViewAdapter extends RecyclerView
             implements View
             .OnClickListener {
         TextView label;
-        TextView dateTime;
+        TextView amount;
+        TextView time;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
             label = (TextView) itemView.findViewById(R.id.textViewHLicenseplate);
-            dateTime = (TextView) itemView.findViewById(R.id.textViewAmount);
+            amount = (TextView) itemView.findViewById(R.id.textViewAmount);
+            time = (TextView) itemView.findViewById(R.id.textViewTime);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -138,7 +142,8 @@ class MyRecyclerViewAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getLicenseplate());
-        holder.dateTime.setText(mDataset.get(position).getAmount()+"");
+        holder.amount.setText(mDataset.get(position).getAmount() + "");
+        holder.time.setText(mDataset.get(position).getTimeIn().substring(8));
     }
 
     public void addItem(BookingDTO dataObj, int index) {
