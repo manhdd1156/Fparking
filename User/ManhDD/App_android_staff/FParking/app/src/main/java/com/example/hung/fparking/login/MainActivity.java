@@ -1,5 +1,6 @@
 package com.example.hung.fparking.login;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v4.app.Fragment;
@@ -7,6 +8,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.example.hung.fparking.DialogActivity;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -18,39 +20,38 @@ import com.example.hung.fparking.notification.Notification;
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private static int SPLASH_TIME_OUT = 1000;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Session.spref = getSharedPreferences("intro", 0);
-
-        if (savedInstanceState == null) {
-            new Handler().postDelayed(new Runnable() {
-                @Override
-                public void run() {
-                    if (Session.spref.getBoolean("first_time", false)) {
-                        fragmentManager
-                                .beginTransaction()
-                                .replace(R.id.frameContainer, new Login_Fragment(),
-                                        Constants.Login_Fragment).commit();
-                    } else {
-
-                        new ManagerLoginTask("second_time", "", "", new IAsyncTaskHandler() {
-                            @Override
-                            public void onPostExecute(Object o) {
-                                Intent myIntent = new Intent(MainActivity.this, Notification.class);
-                                MainActivity.this.startService(myIntent);
-                            }
-                        });
+        fragmentManager = getSupportFragmentManager();
+//        if (savedInstanceState == null) {
+//            new Handler().postDelayed(new Runnable() {
+//                @Override
+//                public void run() {
+//                    if (Session.spref.getBoolean("first_time", false)) {
+//                        fragmentManager
+//                                .beginTransaction()
+//                                .replace(R.id.frameContainer, new Login_Fragment(),
+//                                        Constants.Login_Fragment).commit();
+//                    } else {
 //
-                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
-                        finish();
-                    }
-                }
-            }, SPLASH_TIME_OUT);
-            fragmentManager = getSupportFragmentManager();
+//                        new ManagerLoginTask("second_time", "", "", new IAsyncTaskHandler() {
+//                            @Override
+//                            public void onPostExecute(Object o) {
+//                                Intent myIntent = new Intent(MainActivity.this, Notification.class);
+//                                MainActivity.this.startService(myIntent);
+//                            }
+//                        });
+////
+//                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
+//                        finish();
+//                    }
+//                }
+//            }, SPLASH_TIME_OUT);
+
 
             // If savedinstnacestate is null then replace login fragment
 
@@ -58,7 +59,10 @@ public class MainActivity extends AppCompatActivity {
                     .beginTransaction()
                     .replace(R.id.frameContainer, new Login_Fragment(),
                             Utils.Login_Fragment).commit();
-        }
+
+        Intent dialog = new Intent(MainActivity.this, DialogActivity.class);
+                        startActivity(dialog);
+
 
     }
 

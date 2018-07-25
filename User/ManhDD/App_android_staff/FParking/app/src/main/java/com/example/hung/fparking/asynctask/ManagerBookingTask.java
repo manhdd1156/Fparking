@@ -262,6 +262,7 @@ class UpdateBookingByStatus extends AsyncTask<Void, Void, Boolean> {
             }else if(bookingDTO.getStatus()==3) {
                 formData.put("event", "checkout");
             }
+
             formData.put("status", 0);
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/update/status", formData.toString(), "PUT");
 

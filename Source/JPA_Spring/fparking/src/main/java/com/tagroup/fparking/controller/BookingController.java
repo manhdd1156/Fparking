@@ -54,6 +54,16 @@ public class BookingController {
 
 	}
 
+	// get booking by parking id,  drivervehicleid , status ?
+		@PreAuthorize("hasAnyAuthority('DRIVER')")
+		@RequestMapping(path = "/drivervehicle", method = RequestMethod.GET)
+		public ResponseEntity<?> getBookingByPId(@RequestParam("parkingid") Long parkingid,@RequestParam("drivervehicleid") Long drivervehicleid,@RequestParam("status") int status) throws Exception {
+
+			Booking respone = bookingService.findByParkingIDAndDriverVehicleIDAndStatus(parkingid,drivervehicleid,status);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
+	
 	// get booking by parking id = ?
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)

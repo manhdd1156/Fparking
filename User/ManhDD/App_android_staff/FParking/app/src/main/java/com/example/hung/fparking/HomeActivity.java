@@ -2,6 +2,8 @@ package com.example.hung.fparking;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.PersistableBundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.View;
@@ -40,6 +42,7 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -47,6 +50,19 @@ public class HomeActivity extends AppCompatActivity
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+        Session.homeActivity = HomeActivity.this;
+        setView();
+//        DialogActivity myDialogFragment = new DialogActivity();
+//        myDialogFragment.show
+//        fm = getSupportFragmentManager();
+//        Notification n = new Notification();
+//startActivity(new Intent(this,Notification.class));
+//        myDialogFragment.show(fm,"dsadasdas");
+
+//        Intent intent = new Intent(this, n.getClass());
+//        this.startService(intent);
+    }
+    protected void setView() {
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -77,16 +93,15 @@ public class HomeActivity extends AppCompatActivity
                 // TODO Auto-generated method stub
             }
         });
-//        DialogActivity myDialogFragment = new DialogActivity();
-//        myDialogFragment.show
-//        fm = getSupportFragmentManager();
-//        Notification n = new Notification();
-//startActivity(new Intent(this,Notification.class));
-//        myDialogFragment.show(fm,"dsadasdas");
-
-//        Intent intent = new Intent(this, n.getClass());
-//        this.startService(intent);
     }
+    @Override
+    public void recreate() {
+//        super.recreate();
+        System.out.println("recreate");
+        setView();
+    }
+
+
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
