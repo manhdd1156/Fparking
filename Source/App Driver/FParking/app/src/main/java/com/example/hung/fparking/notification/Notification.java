@@ -83,7 +83,6 @@ public class Notification extends Service implements SubscriptionEventListener, 
     @Override
     public void onEvent(String channelName, String eventName, final String data) { //data = ok/cancel
         try {
-            System.out.print("Notification Data: " + data);
             if (data.contains("ok")) {
                 if (eventName.toLowerCase().contains("order")) {
                     new NotificationTask("cancelorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
@@ -97,13 +96,10 @@ public class Notification extends Service implements SubscriptionEventListener, 
                 }
             } else if (data.contains("cancel")) {
                 if (eventName.toLowerCase().contains("order")) {
-                    System.out.print("Notification Order Cancel");
                     new NotificationTask("cancelorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                 } else if (eventName.toLowerCase().contains("checkin")) {
-                    System.out.print("Notification CheckIn Cancel");
                     new NotificationTask("cancelcheckin", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                 } else if (eventName.toLowerCase().contains("checkout")) {
-                    System.out.print("Notification Checkout Cancel");
                     new NotificationTask("cancelcheckout", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                 }
             }

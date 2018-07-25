@@ -24,6 +24,8 @@ public class BookingTask {
             new GetBookingTaskByPhone(data1, action, container).execute((Void) null);
         }else if (type.equals("create")) {
             new CreateBooking(data1, data2, action, container).execute((Void) null);
+        }else if (type.equals("getorder")) {
+            new CreateBooking(data1, data2, action, container).execute((Void) null);
         }
     }
 }
@@ -46,7 +48,7 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             String json = httpHandler.get(Constants.API_URL + "bookings/" + bookingID);
-            Log.e("toa do: ", Constants.API_URL + "bookings/" + bookingID);
+            Log.e("Get Booking By ID: ", Constants.API_URL + "bookings/" + bookingID);
 //            JSONArray jsonArray = new JSONArray(json);
 
 //            for (int i = 0; i < jsonArray.length(); i++) {
@@ -103,7 +105,7 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             String json = httpHandler.get(Constants.API_URL + "bookings/drivers?phone=" + mphone);
-            Log.e("toa do: ", Constants.API_URL + "bookings/drivers?phone=" + mphone);
+            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers?phone=" + mphone);
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -191,12 +193,13 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
 
 class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
 
-    private String bookingID, action;
+    String drivervehicleid, parkingid, action;
     private ArrayList<BookingDTO> booking;
     private IAsyncTaskHandler container;
 
-    public GetBookingTaskWhenOrder(String bookingID, String action, IAsyncTaskHandler container) {
-        this.bookingID = bookingID;
+    public GetBookingTaskWhenOrder(String drivervehicleid, String parkingid, String action, IAsyncTaskHandler container) {
+        this.drivervehicleid = drivervehicleid;
+        this.parkingid = parkingid;
         this.action = action;
         this.container = container;
     }
@@ -206,8 +209,8 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/" + bookingID);
-            Log.e("toa do: ", Constants.API_URL + "bookings/" + bookingID);
+            String json = httpHandler.get(Constants.API_URL + "bookings/drivervehicle?parkingid="+parkingid+"&drivervehicleid="+drivervehicleid+"&status=1");
+            Log.e("toa do: ", Constants.API_URL + "bookings/drivervehicle?parkingid=1&drivervehicleid=2&status=2");
 //            JSONArray jsonArray = new JSONArray(json);
 
 //            for (int i = 0; i < jsonArray.length(); i++) {
