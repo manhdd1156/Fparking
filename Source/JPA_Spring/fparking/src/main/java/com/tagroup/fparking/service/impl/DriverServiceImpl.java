@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.DriverRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.domain.Driver;
 
@@ -57,7 +59,7 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public List<Driver> getByStatus(int status) {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			List<Driver> listDriver = driverRepository.findByStatus(status);
 			return listDriver;
@@ -75,6 +77,14 @@ public class DriverServiceImpl implements DriverService {
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
 		}
+	}
+
+	@Override
+	public Driver getProfile() throws Exception {
+		// TODO Auto-generated method stub
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		return driverRepository.getOne(t.getId());
 	}
 
 }

@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -70,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     View mMapView;
     ImageView imageViewVoiceSearch, imageViewMute;
+    TextView textViewMPhone;
 
     ArrayList<GetNearPlace> nearParkingList;
     private DrawerLayout mDrawerLayout;
@@ -90,10 +92,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
-
         // ánh xạ button
         imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
         imageViewMute = findViewById(R.id.imageViewMute);
+        textViewMPhone = findViewById(R.id.textViewMPhone);
 
         // gọi hàm search theo địa chỉ
         searchPlace();
@@ -148,12 +150,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.nav_history:
-                    Intent intent = new Intent(HomeActivity.this, OrderParking.class);
+                    locationManager.removeUpdates(HomeActivity.this);
+                    Intent intent = new Intent(HomeActivity.this, ParkingHistory.class);
                     startActivity(intent);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
                 case R.id.nav_mCar:
+                    locationManager.removeUpdates(HomeActivity.this);
                     Intent intent1 = new Intent(HomeActivity.this, CheckOut.class);
                     startActivity(intent1);
+                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;
             }
             return true;
@@ -236,7 +242,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 if (marker != null) {
                     marker.remove();
                 }
-                mMap.clear();
                 MarkerOptions markerOptions = new MarkerOptions();
                 LatLng latLngMaker = place.getLatLng();
 
@@ -279,6 +284,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         Bitmap parkMarker = Bitmap.createScaledBitmap(p, width, height, false);
 
         if (nearParkingList.size() > 0) {
+            mMap.clear();
             for (int i = 0; i < nearParkingList.size(); i++) {
                 LatLng latLng = new LatLng(nearParkingList.get(i).getLattitude(), nearParkingList.get(i).getLongitude());
 
@@ -293,7 +299,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
             locationManager.removeUpdates(HomeActivity.this);
             LatLng cameraLatLng = mMap.getCameraPosition().target;
-            mMap.clear();
 
             double lat = cameraLatLng.latitude;
             double lng = cameraLatLng.longitude;
@@ -322,7 +327,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     @Override
     public void onLocationChanged(Location location) {
-        mMap.clear();
         double lat = location.getLatitude();
         double lng = location.getLongitude();
         doSearchAsyncTask(lat, lng);

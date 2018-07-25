@@ -1,6 +1,7 @@
 package com.example.hung.fparking.asynctask;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -9,6 +10,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 
+import com.example.hung.fparking.R;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
@@ -22,21 +24,13 @@ import org.json.JSONObject;
 
 public class ManagerParkingTask {
 
-    public ManagerParkingTask(String method,String text,IAsyncTaskHandler container, ListView lv) {
+    public ManagerParkingTask(String method,ParkingDTO parkingDTO,IAsyncTaskHandler container) {
 
         if (method.equals("get")) {
-            new GetParkingTask(Integer.parseInt(text)).execute((Void) null);
+            new GetParkingTask(parkingDTO.getId(),container).execute((Void) null);
+        }else if(method.equals("update")) {
+            new UpdateParkingTask(container,parkingDTO).execute((Void) null);
         }
-//        else if (method.equals("create")) {
-//            new CreateMenuTask(container, p).execute((Void) null);
-//        } else if (method.equals("delete")) {
-//            new DeleteMenuTask(p).execute((Void) null);
-//        } else if (method.equals("updateGetForm")) {
-//            new UpdateFormMenuTask(container, p).execute((Void) null);
-//        } else if (method.equals("update")) {
-//            new Update(container, p).execute((Void) null);
-//        }
-
     }
 
 }
@@ -44,9 +38,11 @@ public class ManagerParkingTask {
 class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
 
     int id;
-
-    public GetParkingTask(int parkingID) {
+    IAsyncTaskHandler container;
+    private SharedPreferences spref;
+    public GetParkingTask(int parkingID,IAsyncTaskHandler container) {
         this.id = parkingID;
+        this.container = container;
     }
     @Override
     protected void onPreExecute() {
@@ -84,17 +80,18 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
 
 
 }
-class UpdateParking extends AsyncTask<Void, Void, Boolean> {
+class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     ParkingDTO p;
     Activity activity;
     boolean success = false;
-
-    public UpdateParking(IAsyncTaskHandler container, ParkingDTO p){
+    private SharedPreferences spref;
+    public UpdateParkingTask(IAsyncTaskHandler container, ParkingDTO p){
         this.container = container;
         this.activity = (Activity)container;
         this.p = p;
+//        spref = activity.getSharedPreferences("info",0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -106,9 +103,9 @@ class UpdateParking extends AsyncTask<Void, Void, Boolean> {
             JSONObject formData = new JSONObject();
             formData.put("id", p.getId());
             formData.put("currentspace", p.getCurrentspace());
-            String json = httpHandler.post(Constants.API_URL + "parkings/update/", formData.toString());
+            String json = httpHandler.requestMethod(Constants.API_URL + "parkings/update/", formData.toString(),"POST");
             JSONObject jsonObj = new JSONObject(json);
-            Log.e(" Updatebooking : ", jsonObj.toString());
+            Log.e(" Updateparking : ", jsonObj.toString());
             success = true;
             TextView tv = activity.findViewById(R.id.apply_button);
             tv.setText(Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());

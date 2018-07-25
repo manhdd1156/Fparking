@@ -26,7 +26,7 @@ private DriverVehicleRepository drivervehicleRepository;
 private DriverRepository driverRepository;
 @Autowired
 RatingRepository ratingRepository;
-	@Override
+@Override
 	public List<Vehicle> getAll() {
 		// TODO Auto-generated method stub
 		return vehicleRepository.findAll();
@@ -101,4 +101,6 @@ RatingRepository ratingRepository;
 		}
 		return totalrating/count;
 	}
+
+	
 }

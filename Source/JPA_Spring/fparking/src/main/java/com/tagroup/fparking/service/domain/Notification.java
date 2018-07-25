@@ -26,9 +26,7 @@ public class Notification implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
 	private Long drivervehicle_id;
-	
 	private Long parking_id;
 	
 	private String event;

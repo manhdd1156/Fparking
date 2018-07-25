@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.StaffRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Staff;
@@ -75,9 +77,10 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public Staff findByPhoneAndPassword(String phone, String password) throws Exception{
 		// TODO Auto-generated method stub
-		
 		try {
+			if(staffRepository.findByPhoneAndPassword(phone, password)!=null)
 			return staffRepository.findByPhoneAndPassword(phone, password);
+			else throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		}
@@ -90,6 +93,13 @@ public class StaffServiceImpl implements StaffService {
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		}
+	}
+
+	@Override
+	public Staff getProfile() throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		return staffRepository.getOne(t.getId());
 	}
 
 }

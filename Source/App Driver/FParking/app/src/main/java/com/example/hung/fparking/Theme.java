@@ -16,7 +16,10 @@ import android.support.v7.widget.Toolbar;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
+import com.example.hung.fparking.asynctask.DriverLoginTask;
+import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.config.Constants;
+import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.login.Login_Fragment;
 import com.example.hung.fparking.login.MainActivity;
 import com.example.hung.fparking.model.CheckNetwork;
@@ -41,17 +44,18 @@ public class Theme extends AppCompatActivity {
 
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
-        mPreferencesEditor = mPreferences.edit();
+//        mPreferencesEditor = mPreferences.edit();
 
-        final SharedPreferences spref =
-                PreferenceManager.getDefaultSharedPreferences(this);
+        Session.spref = getSharedPreferences("intro", 0);
+//        mPreferencesEditor = Session.spref.edit();
+//        mPreferencesEditor.clear().commit();
 
         // khởi tạo fragment
         fragmentManager = getSupportFragmentManager();
 
         // chay service noti/pusher
-        Intent myIntent = new Intent(Theme.this, Notification.class);
-        this.startService(myIntent);
+//        Intent myIntent = new Intent(Theme.this, Notification.class);
+//        this.startService(myIntent);
 
         // kiểm tra có bật kết nối mạng không
         CheckNetwork checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
@@ -61,14 +65,19 @@ public class Theme extends AppCompatActivity {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
-                    if (spref.getString("phonenumber", "") == null && spref.getBoolean(
-                            "first_time", false)) {
-                        fragmentManager
-                                .beginTransaction()
-                                .replace(R.id.frameContainer, new Login_Fragment(),
-                                        Constants.Login_Fragment).commit();
-                    } else if (!spref.getBoolean("first_time", false)) {
+                    if (Session.spref.getBoolean("first_time", true)) {
                         Intent homeIntent = new Intent(Theme.this, MainActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    } else {
+                        new DriverLoginTask("second_time", "", "", new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o, String action) {
+                                Intent myIntent = new Intent(Theme.this, Notification.class);
+                                Theme.this.startService(myIntent);
+                            }
+                        });
+                        Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
                         startActivity(homeIntent);
                         finish();
                     }

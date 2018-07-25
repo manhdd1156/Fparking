@@ -13,4 +13,5 @@ public interface DriverService {
 	public void delete(Long id)throws Exception;
 	public List<Driver> getByStatus(int status)throws Exception;
 	public Driver findByPhoneAndPassword(String phone, String password)throws Exception;
+	public Driver getProfile() throws Exception;
 }

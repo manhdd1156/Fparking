@@ -28,11 +28,7 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
         <activity android:name=".IntroApplication">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <!--
              The API key for Google Maps-based APIs is defined as a string resource.
@@ -63,13 +59,19 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" />
         <activity
-            android:name=".CheckOut"
-            android:noHistory="true" />
-        <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth">
         </activity>
-        <activity android:name=".login.MainActivity"></activity>
+        <activity
+            android:name=".DialogActivity"
+            android:theme="@android:style/Theme.Holo.Light.Dialog"></activity>
+        <activity android:name=".login.MainActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

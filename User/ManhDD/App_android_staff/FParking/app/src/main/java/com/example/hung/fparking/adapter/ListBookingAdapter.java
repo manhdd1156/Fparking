@@ -1,19 +1,16 @@
 package com.example.hung.fparking.adapter;
 
 import android.app.Activity;
+//import android.app.FragmentManager;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.HomeActivity;
@@ -27,11 +24,8 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 
 /**
@@ -39,7 +33,7 @@ import java.util.TimeZone;
  */
 
 public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
-
+    Button show_dailog;
     private List<BookingDTO> dataSet;
     Context mContext;
     Activity activity;
@@ -69,7 +63,8 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
         TextView tvRating = (TextView) convertView.findViewById(R.id.tvRating);
         final Button btnAcept = (Button) convertView.findViewById(R.id.btnAccept);
         Button btnCancel = (Button) convertView.findViewById(R.id.btnCancel);
-        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+//        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+        final DateFormat df = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
         if (dataModel.getStatus() == 1) {
             btnAcept.setText("VÀO BÃI");
             btnAcept.setOnClickListener(new View.OnClickListener() {
@@ -77,13 +72,12 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
                 @Override
                 public void onClick(View arg0) {
                     // TODO Auto-generated method stub
-                    final Date datetimeint = new Date();
+                    final Date datetimein = new Date();
                     dataModel.setStatus(2);
-                    dataModel.setTimein(df.format(datetimeint));
+                    dataModel.setTimein(df.format(datetimein));
                     new ManagerBookingTask("update", dataModel, container);
                     btnAcept.setText("THANH TOÁN");
                     reload();
-//                    activity.getClass().onResume();
                 }
             });
             btnCancel.setOnClickListener(new View.OnClickListener() {
@@ -95,9 +89,6 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
                     b.setStatus(0);
                     new ManagerBookingTask("update", b, container);
                     reload();
-//                    parent.removeViewAt(position);
-//                    btnAcept.setText("CHeckOut");
-//                    onResume();
                 }
             });
         } else if (dataModel.getStatus() == 2) {
@@ -107,9 +98,14 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
 
                 @Override
                 public void onClick(View arg0) {
+////                    FragmentManager fm = activity.getFragmentManager();
+//                    DialogActivity mydialogfragment = DialogActivity.newInstance("Nguyễn Văn Linh");
+////                    mydialogfragment.show(fm, null);
+//                    mydialogfragment.show(fm,"myTag");
+
+
                     // TODO Auto-generated method stub
-                    Calendar calendar = Calendar.getInstance();
-                   final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 //                    final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
                     final Date datetimeout = new Date();
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
@@ -134,11 +130,8 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     try {
                         Date date1 = df.parse(dataModel.getTimein());
-//                            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-//                            sdf.setTimeZone(TimeZone.getTimeZone("GMT"));
-//                            System.out.println(sdf.format(result)); //prints date in the format sdf
-                        String dateformat1 = dateFormatter.format(date1);
-                        String dateformat2 = dateFormatter.format(datetimeout);
+                        String dateformat1 = dataModel.getTimein();
+                        String dateformat2 = dataModel.getTimeout();
                         long diff = datetimeout.getTime() - date1.getTime();
                         double diffInHours = diff / ((double) 1000 * 60 * 60);
                         NumberFormat formatter = new DecimalFormat("###,###");
@@ -174,6 +167,7 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
         }
         return convertView;
     }
+
     public void reload() {
 
         Intent intent = new Intent(getContext(), HomeActivity.class);

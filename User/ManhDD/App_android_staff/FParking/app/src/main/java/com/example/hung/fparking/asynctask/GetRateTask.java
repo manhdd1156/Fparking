@@ -1,6 +1,7 @@
 package com.example.hung.fparking.asynctask;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
@@ -18,9 +19,11 @@ public class GetRateTask extends AsyncTask<Void, Void, Boolean> {
 
     private Activity activity;
 private int parkingid;
+    private SharedPreferences spref;
     public GetRateTask(int parkingid, Activity activity) {
         this.activity = activity;
         this.parkingid = parkingid;
+//        spref = activity.getSharedPreferences("info",0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
