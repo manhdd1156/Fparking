@@ -13,9 +13,12 @@ import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerLoginTask;
+import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.notification.Notification;
+
+import static com.example.hung.fparking.config.Constants.PICK_CONTACT_REQUEST;
 
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
@@ -62,7 +65,8 @@ public class MainActivity extends AppCompatActivity {
 
         Intent dialog = new Intent(MainActivity.this, DialogActivity.class);
                         startActivity(dialog);
-
+//        Intent intent = new Intent(MainActivity.this, NumberPickerActivity.class);
+//        startActivityForResult(intent,PICK_CONTACT_REQUEST);
 
     }
 
