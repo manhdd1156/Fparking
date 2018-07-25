@@ -1,5 +1,6 @@
 package com.tagroup.fparking.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,6 +74,19 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 			return driverVehicleRepository.getOne(id);
 		}
 		return null;
+	}
+
+	@Override
+	public List<DriverVehicle> getDriverVehicleByDriver(String phone) throws Exception {
+		// TODO Auto-generated method stub
+		List<DriverVehicle> dvlist = driverVehicleRepository.findAll();
+		List<DriverVehicle> dvreturn = new ArrayList<>();
+		for (DriverVehicle driverVehicle : dvlist) {
+			if(driverVehicle.getDriver().getPhone().equals(phone)) {
+				dvreturn.add(driverVehicle);
+			}
+		}
+		return dvreturn;
 	}
 
 }
