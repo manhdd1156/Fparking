@@ -49,7 +49,7 @@ public class NotificationController {
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public ResponseEntity<?> createNewNoti(@RequestBody Notification notification) throws Exception {
-
+		System.out.println(notification.toString());
 		Notification respone = notificationService.create(notification);
 
 		return new ResponseEntity<>(respone, HttpStatus.OK);

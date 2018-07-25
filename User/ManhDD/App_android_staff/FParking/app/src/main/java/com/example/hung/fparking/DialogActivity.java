@@ -82,9 +82,11 @@ public class DialogActivity extends Activity implements OnClickListener {
                         b.setStatus(1);
                         new ManagerBookingTask("updatebystatus",b, null);
                         showToastMessage("Ok Button Clicked");
-                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
+//                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
                         finish();
+                        Session.homeActivity.recreate();
+
 
 //                startActivity(intent);
                         // TODO Auto-generated method stub
@@ -97,9 +99,11 @@ public class DialogActivity extends Activity implements OnClickListener {
                         b.setStatus(1);
                         new ManagerBookingTask("cancel",b, null);
                         showToastMessage("Cancel Button Clicked");
-                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
+//                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
                         finish();
+                        Session.homeActivity.recreate();
+
 
 //                startActivity(intent);
                         // TODO Auto-generated method stub
@@ -115,9 +119,11 @@ public class DialogActivity extends Activity implements OnClickListener {
                         b.setStatus(2);
                         new ManagerBookingTask("updatebystatus",b, null);
                         showToastMessage("Ok Button Clicked");
-                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
+//                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
                         finish();
+                        Session.homeActivity.recreate();
+
 
 //                startActivity(intent);
                         // TODO Auto-generated method stub
@@ -130,9 +136,11 @@ public class DialogActivity extends Activity implements OnClickListener {
                         b.setStatus(2);
                         new ManagerBookingTask("cancel",b, null);
                         showToastMessage("Cancel Button Clicked");
-                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
+//                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
                         finish();
+                        Session.homeActivity.recreate();
+
 
 //                startActivity(intent);
                         // TODO Auto-generated method stub
@@ -147,9 +155,11 @@ public class DialogActivity extends Activity implements OnClickListener {
                         b.setStatus(3);
                         new ManagerBookingTask("updatebystatus",b, null);
                         showToastMessage("Ok Button Clicked");
-                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
+//                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
                         finish();
+                        Session.homeActivity.recreate();
+
 
 //                startActivity(intent);
                         // TODO Auto-generated method stub
@@ -162,9 +172,11 @@ public class DialogActivity extends Activity implements OnClickListener {
                         b.setStatus(3);
                         new ManagerBookingTask("cancel",b, null);
                         showToastMessage("Cancel Button Clicked");
-                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
-                        startActivity(homeIntent);
+//                        Intent homeIntent = new Intent(DialogActivity.this, HomeActivity.class);
+//                        startActivity(homeIntent);
                         finish();
+                        Session.homeActivity.recreate();
+
 
 //                startActivity(intent);
                         // TODO Auto-generated method stub

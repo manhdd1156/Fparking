@@ -25,5 +25,7 @@ public interface BookingService {
 
 	public Booking updateByStatus(Notification noti) throws Exception;
 	
+	public Booking findByParkingIDAndDriverVehicleIDAndStatus(Long parkingid, Long drivervehicleid,int status);
+	
 	
 }

@@ -1,5 +1,6 @@
 package com.example.hung.fparking.config;
 
+import android.app.Activity;
 import android.content.SharedPreferences;
 
 import com.example.hung.fparking.dto.DriverDTO;
@@ -14,4 +15,5 @@ public class Session {
     public static Pusher pusher;
     public static Channel channel;
     public static SharedPreferences spref;
+    public static Activity homeActivity;
 }

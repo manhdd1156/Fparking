@@ -223,4 +223,17 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
+	@Override
+	public Booking findByParkingIDAndDriverVehicleIDAndStatus(Long parkingid, Long drivervehicleid, int status) {
+		// TODO Auto-generated method stub
+		List<Booking> bAll = bookingRepository.findAll();
+		
+		for (Booking booking : bAll) {
+			if (booking.getDrivervehicle().getId()==drivervehicleid && booking.getParking().getId() == parkingid && booking.getStatus()==status) {
+				return booking;
+			}
+		}
+		return null;
+	}
+
 }

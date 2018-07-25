@@ -25,6 +25,8 @@ public class VehicleController {
 	private VehicleService vehicleService;
 	@Autowired
 	private DriverVehicleService drivervehicleService;
+	
+	
 //get vehicle by drivervehicle_id
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 @RequestMapping(path = "/drivervehicles/{id}", method = RequestMethod.GET)
@@ -33,11 +35,11 @@ public ResponseEntity<?> getVehicleByDrivervehicle(@PathVariable Long id) throws
 	return new ResponseEntity<>(respone, HttpStatus.OK);
 }
 
-//get vehicles by phone of driver
-@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN')")
+//get drivervehicles by phone of driver
+@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN','STAFF')")
 @RequestMapping(path = "/drivers", method = RequestMethod.GET)
 public ResponseEntity<?> getTypesByDriver(@RequestParam("phone") String phone) throws Exception {
-	List<Vehicle> respone = vehicleService.getVehicleByDriver(phone);
+	List<DriverVehicle> respone = drivervehicleService.getDriverVehicleByDriver(phone);
 	return new ResponseEntity<>(respone, HttpStatus.OK);
 }
 
