@@ -22,6 +22,8 @@ public class BookingTask {
             new GetBookingTaskByID(data1, action, container).execute((Void) null);
         } else if (type.equals("phone")) {
             new GetBookingTaskByPhone(data1, action, container).execute((Void) null);
+        }else if (type.equals("create")) {
+            new CreateBooking(data1, data2, action, container).execute((Void) null);
         }
     }
 }
@@ -146,10 +148,11 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
     String drivervehicleid, parkingid, action;
     boolean success = false;
 
-    public CreateBooking(IAsyncTaskHandler container, String drivervehicleid, String parkingid) {
+    public CreateBooking(String drivervehicleid, String parkingid, String action, IAsyncTaskHandler container) {
         this.container = container;
         this.drivervehicleid = drivervehicleid;
         this.parkingid = parkingid;
+        this.action = action;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -158,11 +161,11 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
-            formData.put("parking_id", parkingid);
-            formData.put("drivervehicle_id", drivervehicleid);
+            formData.put("parkingid", parkingid);
+            formData.put("drivervehicleid", drivervehicleid);
             formData.put("status", 5);
 
-            String json = httpHandler.requestMethod(Constants.API_URL + "bookings", formData.toString(), "POST");
+            String json = httpHandler.requestMethod(Constants.API_URL + "bookings/create", formData.toString(), "POST");
             JSONObject jsonObj = new JSONObject(json);
             if (jsonObj != null) {
                 success = true;
@@ -185,3 +188,7 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
 //        this.activity.finish();
     }
 }
+
+
+
+

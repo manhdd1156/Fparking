@@ -2,6 +2,10 @@ package com.example.hung.fparking.dto;
 
 public class VehicleDTO {
 
+    private int driverVehicleID;
+
+    private int status;
+
     private int vehicleID;
 
     private String licenseplate;
@@ -13,12 +17,21 @@ public class VehicleDTO {
     public VehicleDTO() {
     }
 
-    public VehicleDTO(int vehicleID, String licenseplate, int vehicleTypeID, String type) {
-
+    public VehicleDTO(int driverVehicleID, int status, int vehicleID, String licenseplate, int vehicleTypeID, String type) {
+        this.driverVehicleID = driverVehicleID;
+        this.status = status;
         this.vehicleID = vehicleID;
         this.licenseplate = licenseplate;
         this.vehicleTypeID = vehicleTypeID;
         this.type = type;
+    }
+
+    public int getDriverVehicleID() {
+        return driverVehicleID;
+    }
+
+    public int getStatus() {
+        return status;
     }
 
     public int getVehicleID() {
@@ -35,6 +48,14 @@ public class VehicleDTO {
 
     public String getType() {
         return type;
+    }
+
+    public void setDriverVehicleID(int driverVehicleID) {
+        this.driverVehicleID = driverVehicleID;
+    }
+
+    public void setStatus(int status) {
+        this.status = status;
     }
 
     public void setVehicleID(int vehicleID) {
