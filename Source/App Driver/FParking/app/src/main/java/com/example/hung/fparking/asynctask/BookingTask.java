@@ -1,6 +1,10 @@
 package com.example.hung.fparking.asynctask;
 
+import android.app.Activity;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.hung.fparking.config.Constants;
@@ -13,11 +17,11 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 
 public class BookingTask {
-    public BookingTask(String type, String data, String action, IAsyncTaskHandler container) {
+    public BookingTask(String type, String data1, String data2, String action, IAsyncTaskHandler container) {
         if (type.equals("bookingID")) {
-            new GetBookingTaskByID(data, action, container).execute((Void) null);
+            new GetBookingTaskByID(data1, action, container).execute((Void) null);
         } else if (type.equals("phone")) {
-            new GetBookingTaskByPhone(data, action, container).execute((Void) null);
+            new GetBookingTaskByPhone(data1, action, container).execute((Void) null);
         }
     }
 }
@@ -133,5 +137,51 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
         container.onPostExecute(booking, action);
+    }
+}
+
+class CreateBooking extends AsyncTask<Void, Void, Boolean> {
+
+    IAsyncTaskHandler container;
+    String drivervehicleid, parkingid, action;
+    boolean success = false;
+
+    public CreateBooking(IAsyncTaskHandler container, String drivervehicleid, String parkingid) {
+        this.container = container;
+        this.drivervehicleid = drivervehicleid;
+        this.parkingid = parkingid;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+            JSONObject formData = new JSONObject();
+            formData.put("parking_id", parkingid);
+            formData.put("drivervehicle_id", drivervehicleid);
+            formData.put("status", 5);
+
+            String json = httpHandler.requestMethod(Constants.API_URL + "bookings", formData.toString(), "POST");
+            JSONObject jsonObj = new JSONObject(json);
+            if (jsonObj != null) {
+                success = true;
+            }
+        } catch (Exception ex) {
+            Log.e("Error CreateBooking:", ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+//        Intent intent = new Intent();
+//        if(success)
+//            intent.putExtra("result", "success!");
+//        else
+//            intent.putExtra("result", "failed");
+//        this.activity.setResult(RESULT_OK, intent);
+//        this.activity.finish();
     }
 }

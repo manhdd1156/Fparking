@@ -35,7 +35,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
         buttonCheckOut = findViewById(R.id.buttonCheckout);
 
-        new BookingTask("bookingID", "2", "", this);
+        new BookingTask("bookingID", "2", "", "", this);
     }
 
     @Override

@@ -15,6 +15,7 @@ public class CheckNetworkReciever extends BroadcastReceiver {
         boolean isConnected = activeNetInfo != null && activeNetInfo.isConnectedOrConnecting();
         if (isConnected) {
             Log.e("NET", "Connected" + isConnected);
+
         }
 //        else
 //            Log.i("NET", "Not Connected" + isConnected);
