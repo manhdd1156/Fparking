@@ -167,7 +167,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     break;
                 case R.id.nav_mCar:
                     locationManager.removeUpdates(HomeActivity.this);
-                    Intent intent1 = new Intent(HomeActivity.this, CheckOut.class);
+                    Intent intent1 = new Intent(HomeActivity.this, DetailedHistory.class);
                     startActivity(intent1);
                     overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
                     break;

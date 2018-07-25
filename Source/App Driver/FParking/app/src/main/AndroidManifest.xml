@@ -55,14 +55,15 @@
         <receiver android:name=".notification.BootCompleteReceiver">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
         <receiver android:name=".notification.CheckNetworkReciever">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
+
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
@@ -81,7 +82,8 @@
             android:label="@string/title_activity_direction"
             android:noHistory="true" />
         <activity android:name=".login.MainActivity" />
-        <activity android:name=".ParkingHistory"></activity>
+        <activity android:name=".ParkingHistory" />
+        <activity android:name=".DetailedHistory"></activity>
     </application>
 
 </manifest>
