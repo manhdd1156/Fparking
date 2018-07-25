@@ -52,7 +52,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
             }
         });
 
-        new BookingTask("bookingID", "2", "", "", this);
+        new BookingTask("bookingID", mPreferences.getString("bookingid",""), "", "", this);
     }
 
     @Override

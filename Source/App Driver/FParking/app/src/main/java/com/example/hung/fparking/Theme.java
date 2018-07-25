@@ -75,11 +75,11 @@ public class Theme extends AppCompatActivity {
                             public void onPostExecute(Object o, String action) {
                                 Intent myIntent = new Intent(Theme.this, Notification.class);
                                 Theme.this.startService(myIntent);
+                                Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
+                                startActivity(homeIntent);
+                                finish();
                             }
                         });
-                        Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
-                        startActivity(homeIntent);
-                        finish();
                     }
                 }
             }, SPLASH_TIME_OUT);

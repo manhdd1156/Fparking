@@ -25,7 +25,7 @@ public class BookingTask {
         }else if (type.equals("create")) {
             new CreateBooking(data1, data2, action, container).execute((Void) null);
         }else if (type.equals("getorder")) {
-            new CreateBooking(data1, data2, action, container).execute((Void) null);
+            new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
         }
     }
 }
@@ -210,7 +210,7 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             String json = httpHandler.get(Constants.API_URL + "bookings/drivervehicle?parkingid="+parkingid+"&drivervehicleid="+drivervehicleid+"&status=1");
-            Log.e("toa do: ", Constants.API_URL + "bookings/drivervehicle?parkingid=1&drivervehicleid=2&status=2");
+            Log.e("Get booking when order: ", Constants.API_URL + "bookings/drivervehicle?parkingid="+parkingid+"&drivervehicleid="+drivervehicleid+"&status=1");
 //            JSONArray jsonArray = new JSONArray(json);
 
 //            for (int i = 0; i < jsonArray.length(); i++) {

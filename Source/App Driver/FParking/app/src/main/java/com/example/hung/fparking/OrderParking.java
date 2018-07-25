@@ -198,7 +198,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         } else if (action.equals("pi")) {
             parkingDTOS = (ArrayList<ParkingDTO>) o;
 
-            textViewEmptySpace.setText(parkingDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+            textViewEmptySpace.setText(parkingDTOS.get(0).getCurrentspace() + "");
             textViewSlots.setText("/" + parkingDTOS.get(0).getTotalspace() + "");
 
             textViewTime.setText(parkingDTOS.get(0).getTimeoc());

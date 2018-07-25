@@ -139,6 +139,16 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // check data
+        int status = mPreferences.getInt("status", 8);
+        if(status == 1){
+//            locationManager.removeUpdates(HomeActivity.this);
+            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+            startActivity(intentOrderFlagment);
+        }else if(status == 2){
+            Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+        }
     }
 
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {

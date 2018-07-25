@@ -18,10 +18,12 @@ import com.example.hung.fparking.CheckOut;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.OrderParking;
 import com.example.hung.fparking.R;
+import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.dto.BookingDTO;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.Channel;
@@ -30,11 +32,13 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
 
 public class Notification extends Service implements SubscriptionEventListener, IAsyncTaskHandler {
 
     private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mPreferencesEditor;
 
     public Notification() {
     }
@@ -54,6 +58,8 @@ public class Notification extends Service implements SubscriptionEventListener, 
     public int onStartCommand(Intent intent, int flags, int startId) {
 
         mPreferences = getSharedPreferences("driver", 0);
+        mPreferencesEditor = mPreferences.edit();
+
         //        Bundle extras = intent.getExtras();
         PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
@@ -85,13 +91,18 @@ public class Notification extends Service implements SubscriptionEventListener, 
         try {
             if (data.contains("ok")) {
                 if (eventName.toLowerCase().contains("order")) {
+                    new BookingTask("getorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "bookingid",Notification.this);
                     new NotificationTask("cancelorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                     createNotification("Có xe muốn đặt chỗ");
                 } else if (eventName.toLowerCase().contains("checkin")) {
                     new NotificationTask("cancelcheckin", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
+                    mPreferencesEditor.putInt("status",2);
+                    mPreferencesEditor.commit();
                     createNotification("Có xe muốn vào bãi");
                 } else if (eventName.toLowerCase().contains("checkout")) {
                     new NotificationTask("cancelcheckout", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
+//                    mPreferencesEditor.putInt("status",3);
+                    mPreferencesEditor.clear().commit();
                     createNotification("Có xe muốn thanh toán");
                 }
             } else if (data.contains("cancel")) {
@@ -136,6 +147,11 @@ public class Notification extends Service implements SubscriptionEventListener, 
 
     @Override
     public void onPostExecute(Object o, String action) {
-
+        ArrayList<BookingDTO> booking = (ArrayList<BookingDTO>) o;
+        if(action.equals("bookingid")){
+            mPreferencesEditor.putString("bookingid",booking.get(0).getBookingID()+"");
+            mPreferencesEditor.putInt("status",booking.get(0).getStatus());
+            mPreferencesEditor.commit();
+        }
     }
 }
