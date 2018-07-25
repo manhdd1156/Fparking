@@ -1,26 +1,22 @@
 package com.tagroup.fparking.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.DriverRepository;
-import com.tagroup.fparking.repository.DriverVehicleRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.domain.Driver;
-import com.tagroup.fparking.service.domain.DriverVehicle;
-import com.tagroup.fparking.service.domain.Vehicle;
-import com.tagroup.fparking.service.domain.Vehicletype;
 
 @Service
 public class DriverServiceImpl implements DriverService {
 	@Autowired
 	private DriverRepository driverRepository;
-
-	@Autowired
-	private DriverVehicleRepository driverVehicleRepository;
 
 	@Override
 	public List<Driver> getAll() {
@@ -29,9 +25,14 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Driver getById(Long id) {
+	public Driver getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return driverRepository.getOne(id);
+		try {
+			return driverRepository.getOne(id);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+		}
+
 	}
 
 	@Override
@@ -56,22 +57,34 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Driver findByPhoneAndPassword(String phone, String password) {
+	public List<Driver> getByStatus(int status) {
 		// TODO Auto-generated method stub
-		return driverRepository.findByPhoneAndPassword(phone, password);
-	}
 
-
-	@Override
-	public List<Vehicle> getVehicleByDriver(String phone) {
-		// TODO Auto-generated method stub
-		List<DriverVehicle> dv = driverVehicleRepository.findByDriver(driverRepository.findByPhone(phone));
-		List<Vehicle> listVT = new ArrayList<>();
-		for (DriverVehicle driverVehicle : dv) {
-			listVT.add(driverVehicle.getVehicle());
+		try {
+			List<Driver> out = driverRepository.findByStatus(status);
+			return out;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
 		}
 
-		return listVT;
+	}
+
+	@Override
+	public Driver findByPhoneAndPassword(String phone, String password) {
+		// TODO Auto-generated method stub
+		try {
+			return driverRepository.findByPhoneAndPassword(phone, password);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
+		}
+	}
+
+	@Override
+	public Driver getProfile() throws Exception {
+		// TODO Auto-generated method stub
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+
+		return driverRepository.getOne(t.getId());
 	}
 
 }

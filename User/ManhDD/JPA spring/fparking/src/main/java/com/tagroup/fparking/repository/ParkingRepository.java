@@ -10,5 +10,4 @@ public interface ParkingRepository extends JpaRepository<Parking, Long>{
 	@Query("SELECT p FROM Parking p WHERE p.totalspace > p.currentspace AND status=1 AND ( 6371 * Acos( Cos( Radians(:mylatitude) ) * Cos( Radians( latitude ) ) * Cos( Radians( longitude ) - Radians(:mylongitude) ) + Sin( Radians(:mylatitude) ) * Sin( Radians( latitude ) ) ) ) < 3")
 	  List<Parking> findByLatitudeANDLongitude(@Param("mylatitude") String mylatitude,
 	                                 @Param("mylongitude") String mylongitude);
-	
 }

@@ -45,6 +45,18 @@ private TariffRepository tariffRepository;
 		Tariff tariff = tariffRepository.getOne(id);
 		tariffRepository.delete(tariff);
 	}
+
+	@Override
+	public Tariff findByParkingAndVehicletype(Long parkingid, int vehicleTypeid) {
+		// TODO Auto-generated method stub
+		List<Tariff> tariffList = tariffRepository.findAll();
+		for (Tariff tariff : tariffList) {
+			if(tariff.getParking().getId()==parkingid && tariff.getVehicletype().getId()==vehicleTypeid) {
+				return tariff;
+			}
+		}
+		return null;
+	}
 	
 
 }

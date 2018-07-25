@@ -23,6 +23,7 @@ private FinetariffRepository finetariffRepository;
 	public Finetariff getById(Long id) {
 		// TODO Auto-generated method stub
 		return finetariffRepository.getOne(id);
+		
 	}
 
 	@Override

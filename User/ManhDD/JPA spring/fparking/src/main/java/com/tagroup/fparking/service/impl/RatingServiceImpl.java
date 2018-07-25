@@ -1,52 +1,53 @@
 package com.tagroup.fparking.service.impl;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
-import com.tagroup.fparking.repository.DriverVehicleRepository;
+import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.service.RatingService;
-import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Rating;
-import com.tagroup.fparking.service.domain.Vehicle;
+
 @Service
-public class RatingServiceImpl implements RatingService{
-@Autowired
-private RatingRepository raingRepository;
-	
+public class RatingServiceImpl implements RatingService {
+	@Autowired
+	private RatingRepository raingRepository;
+
 	@Autowired
 	RatingRepository ratingRepository;
-	
-	@Autowired
-	DriverVehicleRepository drivervehicleRepository;
-	
+
 	@Override
 	public List<Rating> getAll() {
 		return raingRepository.findAll();
-		
+
 	}
 
 	@Override
-	public Rating getById(Long id) {
+	public Rating getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		return raingRepository.getOne(id);
+		try {
+			return raingRepository.getOne(id);
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+		}
+		
 	}
 
 	@Override
 	public Rating create(Rating rating) {
 		// TODO Auto-generated method stub
 		return raingRepository.save(rating);
-	
+
 	}
 
 	@Override
 	public Rating update(Rating rating) {
 		// TODO Auto-generated method stub
 		return raingRepository.save(rating);
-		
+
 	}
 
 	@Override
@@ -55,24 +56,5 @@ private RatingRepository raingRepository;
 		Rating rating = raingRepository.getOne(id);
 		raingRepository.delete(rating);
 	}
-
-	@Override
-	public double getByVehicle(Vehicle vehicle) {
-		// TODO Auto-generated method stub
-		double totalrating =0;
-		double count = 0;
-		List<DriverVehicle> driverVehicle = drivervehicleRepository.findByVehicle(vehicle);
-		for (DriverVehicle driverVehicle2 : driverVehicle) {
-			List<Rating> r = ratingRepository.findByDriver(driverVehicle2.getDriver());
-			for (Rating rating : r) {
-				if(rating.getType()==2) {
-					count++;
-					totalrating+=rating.getPoint();
-				}
-			}
-		}
-		return totalrating/count;
-	}
-	
 
 }
