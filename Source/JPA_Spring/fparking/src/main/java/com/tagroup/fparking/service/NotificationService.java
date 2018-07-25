@@ -15,5 +15,14 @@ public interface NotificationService {
 	public Notification update(Notification notification) throws Exception;
 
 	public void delete(Long id) throws Exception;
-	
+
+	public Notification findByParkingIDAndTypeAndEventAndStatus(Long parkingID, int type, String event, int status);
+
+	public void deleteByNoti(Notification notification) throws Exception;
+
+	public Notification cancelNoti(Notification notification) throws Exception;
+
+	// public Notification check(Long parkingid,int type, String event) throws
+	// Exception;
+
 }

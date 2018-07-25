@@ -10,7 +10,9 @@ import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.NotificationRepository;
 import com.tagroup.fparking.service.DriverVehicleService;
+import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
+import com.tagroup.fparking.service.domain.Notification;
 
 @Service
 public class DriverVehicleServiceImpl implements DriverVehicleService {
@@ -19,7 +21,8 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 
 	@Autowired
 	NotificationRepository notificationRepository;
-
+	@Autowired
+	NotificationService notificationService;
 	@Override
 	public List<DriverVehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -60,16 +63,16 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 
-//	@Override
-//	public DriverVehicle getInfoDriverVehicle(Long parkingID) throws Exception {
-//		// TODO Auto-generated method stub
-////		Notification noti = notificationRepository.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, "order", 0);
-////
-////		if (noti != null) {
-////			Long id = (Long) noti.getDrivervehicle_id();
-////			return driverVehicleRepository.getOne(id);
-////		}
-//		return null;
-//	}
+	@Override
+	public DriverVehicle getInfoDriverVehicle(Long parkingID,String event) throws Exception {
+		// TODO Auto-generated method stub
+		Notification noti = notificationService.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, event, 0);
+		System.out.println("DriverVehicleImp/getInfoDriverVehicle : " +noti);
+		if (noti != null) {
+			Long id = (Long) noti.getDrivervehicle_id();
+			return driverVehicleRepository.getOne(id);
+		}
+		return null;
+	}
 
 }

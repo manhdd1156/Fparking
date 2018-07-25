@@ -9,7 +9,7 @@
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
         android:layout_width="fill_parent"
-        android:layout_height="100dp"
+        android:layout_height="85dp"
         android:layout_gravity="center"
         android:layout_margin="5dp"
         card_view:cardCornerRadius="2dp"
@@ -17,8 +17,38 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="66dp">
 
+            <ImageView
+                android:id="@+id/imageView7"
+                android:layout_width="88dp"
+                android:layout_height="69dp"
+                android:layout_alignParentBottom="true"
+                android:layout_alignParentStart="true"
+                app:srcCompat="@drawable/carslist" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/imageView7"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="8dp"
+                android:layout_toEndOf="@+id/imageView7"
+                android:text="ABVD97869"
+                android:textColor="#000000"
+                android:textSize="18dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/textView4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_marginBottom="8dp"
+                android:layout_marginLeft="10dp"
+                android:layout_toEndOf="@+id/imageView7"
+                android:text="Xe con/khách 2 chỗ" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 

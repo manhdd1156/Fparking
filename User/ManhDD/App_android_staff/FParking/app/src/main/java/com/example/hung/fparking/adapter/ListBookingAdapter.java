@@ -63,7 +63,8 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
         TextView tvRating = (TextView) convertView.findViewById(R.id.tvRating);
         final Button btnAcept = (Button) convertView.findViewById(R.id.btnAccept);
         Button btnCancel = (Button) convertView.findViewById(R.id.btnCancel);
-        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+//        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
+        final DateFormat df = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
         if (dataModel.getStatus() == 1) {
             btnAcept.setText("VÀO BÃI");
             btnAcept.setOnClickListener(new View.OnClickListener() {
@@ -129,8 +130,8 @@ public class ListBookingAdapter extends ArrayAdapter<BookingDTO> {
                     AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
                     try {
                         Date date1 = df.parse(dataModel.getTimein());
-                        String dateformat1 = dateFormatter.format(date1);
-                        String dateformat2 = dateFormatter.format(datetimeout);
+                        String dateformat1 = dataModel.getTimein();
+                        String dateformat2 = dataModel.getTimeout();
                         long diff = datetimeout.getTime() - date1.getTime();
                         double diffInHours = diff / ((double) 1000 * 60 * 60);
                         NumberFormat formatter = new DecimalFormat("###,###");

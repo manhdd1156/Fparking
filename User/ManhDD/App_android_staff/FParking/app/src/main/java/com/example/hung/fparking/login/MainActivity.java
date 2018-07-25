@@ -18,40 +18,41 @@ import com.example.hung.fparking.notification.Notification;
 public class MainActivity extends AppCompatActivity {
     private FragmentManager fragmentManager;
     private static int SPLASH_TIME_OUT = 1000;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Session.spref = getSharedPreferences("intro",0);
+        Session.spref = getSharedPreferences("intro", 0);
 
         if (savedInstanceState == null) {
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                if (Session.spref.getBoolean("first_time", false)) {
-                    fragmentManager
-                            .beginTransaction()
-                            .replace(R.id.frameContainer, new Login_Fragment(),
-                                    Constants.Login_Fragment).commit();
-                } else {
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    if (Session.spref.getBoolean("first_time", false)) {
+                        fragmentManager
+                                .beginTransaction()
+                                .replace(R.id.frameContainer, new Login_Fragment(),
+                                        Constants.Login_Fragment).commit();
+                    } else {
 
-                    new ManagerLoginTask("second_time","", "", new IAsyncTaskHandler() {
-                        @Override
-                        public void onPostExecute(Object o) {
-                            Intent myIntent = new Intent(MainActivity.this, Notification.class);
-                            MainActivity.this.startService(myIntent);
-                        }
-                    });
+                        new ManagerLoginTask("second_time", "", "", new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+                                Intent myIntent = new Intent(MainActivity.this, Notification.class);
+                                MainActivity.this.startService(myIntent);
+                            }
+                        });
 //
-                    Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
-                    startActivity(homeIntent);
-                    finish();
+                        Intent homeIntent = new Intent(MainActivity.this, HomeActivity.class);
+                        startActivity(homeIntent);
+                        finish();
+                    }
                 }
-            }
-        }, SPLASH_TIME_OUT);
-        fragmentManager = getSupportFragmentManager();
+            }, SPLASH_TIME_OUT);
+            fragmentManager = getSupportFragmentManager();
 
-        // If savedinstnacestate is null then replace login fragment
+            // If savedinstnacestate is null then replace login fragment
 
             fragmentManager
                     .beginTransaction()
@@ -60,6 +61,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     // Replace Login Fragment with animation
     protected void replaceLoginFragment() {
         fragmentManager
@@ -68,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frameContainer, new Login_Fragment(),
                         Utils.Login_Fragment).commit();
     }
+
     // Replace SignUp Fragment with animation
     protected void replaceSignUpFragment() {
         fragmentManager
@@ -76,6 +79,7 @@ public class MainActivity extends AppCompatActivity {
                 .replace(R.id.frameContainer, new SignUp_Fragment(),
                         Utils.SignUp_Fragment).commit();
     }
+
     // Replace Forgot Password Fragment with animation
     protected void replaceForgotPasswordFragment() {
         fragmentManager

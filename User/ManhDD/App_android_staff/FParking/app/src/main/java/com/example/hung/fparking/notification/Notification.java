@@ -91,13 +91,12 @@ public class Notification extends Service implements SubscriptionEventListener {
     public void onEvent(String channelName, String eventName, final String data) {
         try {
 //            System.out.println(data);
-            JSONObject json = new JSONObject(data);
-            System.out.println(json);
+//            JSONObject json = new JSONObject(data);
+//            System.out.println(json);
 //            BookingDTO b = new BookingDTO();
 //                b.setParkingID(Session.currentParking.getId());
                 if (eventName.toLowerCase().contains("order")) {
                     createNotification("Có xe muốn đặt chỗ");
-
                 } else if (eventName.toLowerCase().contains("checkin")) {
                     createNotification("Có xe muốn vào bãi");
 

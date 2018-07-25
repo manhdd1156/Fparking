@@ -15,6 +15,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Vehicle;
 
 @RestController
@@ -33,7 +34,7 @@ public ResponseEntity<?> getVehicleByDrivervehicle(@PathVariable Long id) throws
 }
 
 //get vehicles by phone of driver
-@PreAuthorize("hasAnyAuthority('DRIVER')")
+@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN')")
 @RequestMapping(path = "/drivers", method = RequestMethod.GET)
 public ResponseEntity<?> getTypesByDriver(@RequestParam("phone") String phone) throws Exception {
 	List<Vehicle> respone = vehicleService.getVehicleByDriver(phone);
@@ -49,11 +50,12 @@ public ResponseEntity<?> getTypesByDriver(@RequestParam("phone") String phone) t
 	}
 
 //get driverVehicle by parking_id and check notification
-//@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-//	@RequestMapping(path = "/notifications", method = RequestMethod.GET)
-//	public ResponseEntity<?> getbydParkingid(@RequestParam("parkingID") int parkingID) throws Exception{
-//		DriverVehicle respone = drivervehicleService.getInfoDriverVehicle(parkingID);
-//		return new ResponseEntity<>(respone, HttpStatus.OK);
-//	}
+@PreAuthorize("hasAnyAuthority('STAFF')")
+	@RequestMapping(path = "/notifications", method = RequestMethod.GET)
+	public ResponseEntity<?> getbydParkingid(@RequestParam("parkingid") Long parkingID,@RequestParam("event") String event) throws Exception{
+	System.out.println("/api/vehicles/notifications : " + parkingID);
+		DriverVehicle respone = drivervehicleService.getInfoDriverVehicle(parkingID,event);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
 
 }

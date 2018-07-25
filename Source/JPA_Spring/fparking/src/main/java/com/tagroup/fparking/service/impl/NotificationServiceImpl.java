@@ -8,13 +8,20 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.NotificationRepository;
+import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.NotificationService;
+import com.tagroup.fparking.service.PusherService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Notification;
 
 @Service
 public class NotificationServiceImpl implements NotificationService {
 	@Autowired
 	private NotificationRepository notificationRepository;
+	@Autowired
+	private PusherService pusherService;
+	@Autowired
+	private BookingService bookingService;
 
 	@Override
 	public List<Notification> getAll() {
@@ -37,7 +44,9 @@ public class NotificationServiceImpl implements NotificationService {
 	public Notification create(Notification notification) throws Exception {
 		// TODO Auto-generated method stub
 		try {
+			pusherService.trigger(notification.getParking_id() + "channel", notification.getEvent(), "");
 			return notificationRepository.save(notification);
+
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
@@ -47,7 +56,7 @@ public class NotificationServiceImpl implements NotificationService {
 	@Override
 	public Notification update(Notification notification) throws Exception {
 		try {
-			
+
 			// TODO Auto-generated method stub
 			return notificationRepository.save(notification);
 		} catch (Exception e) {
@@ -65,6 +74,75 @@ public class NotificationServiceImpl implements NotificationService {
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
+	}
+
+	@Override
+	public Notification findByParkingIDAndTypeAndEventAndStatus(Long parkingID, int type, String event, int status) {
+		List<Notification> notilst = notificationRepository.findAll();
+		for (Notification notification : notilst) {
+			System.out.println(notification.toString());
+			System.out.println(parkingID + ",type =" + type + ", event = " + event + ", statuys : " + status);
+			if (notification.getParking_id() == parkingID && notification.getType() == type
+					&& notification.getEvent().equals(event) && notification.getStatus() == status) {
+
+				return notification;
+			}
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Notification cancelNoti(Notification notification) throws Exception {
+		try {
+			if (notification == null) {
+				throw new APIException(HttpStatus.NO_CONTENT, "The Booking was not content");
+			}
+			Notification noti = findByParkingIDAndTypeAndEventAndStatus(notification.getParking_id(), 1,
+					notification.getEvent(), 0);
+			System.out.println("BookingServerImp/deleteByStatus : " + noti);
+			noti.setType(2);
+			Notification n = update(noti);
+
+			List<Booking> blist = bookingService.getAll();
+			for (Booking booking : blist) {
+				if (booking.getParking().getId() == notification.getParking_id()
+						&& booking.getDrivervehicle().getId() == notification.getDrivervehicle_id()
+						&& booking.getStatus() == 5 && notification.getEvent().equals("order")) {
+					bookingService.delete(booking.getId());
+					break;
+				}
+			}
+			if (n != null) {
+				pusherService.trigger(n.getDrivervehicle_id() + "channel", notification.getEvent(), "cancel");
+
+			}
+
+			return n;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+		}
+	}
+
+	@Override
+	public void deleteByNoti(Notification notification) throws Exception {
+		try {
+			System.out.println("NotificationServiceIml/DeleteByNoti :" + notification.toString());
+			List<Notification> notilst = notificationRepository.findAll();
+			for (Notification noti : notilst) {
+				if (noti.getDrivervehicle_id() == notification.getDrivervehicle_id()
+						&& noti.getType() == notification.getType() && noti.getEvent().equals(notification.getEvent())
+						&& noti.getStatus() == notification.getStatus()) {
+					System.out.println("NotificationServiceIml/DeleteByNoti : ok");
+					notificationRepository.delete(noti);
+					System.out.println("NotificationServiceIml/DeleteByNoti : ok");
+				}
+			}
+
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+		}
+
 	}
 
 }

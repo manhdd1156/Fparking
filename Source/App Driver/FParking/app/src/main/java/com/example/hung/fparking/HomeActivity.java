@@ -33,6 +33,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -70,6 +71,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
     View mMapView;
     ImageView imageViewVoiceSearch, imageViewMute;
+    TextView textViewMPhone;
 
     ArrayList<GetNearPlace> nearParkingList;
     private DrawerLayout mDrawerLayout;
@@ -90,10 +92,10 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
-
         // ánh xạ button
         imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
         imageViewMute = findViewById(R.id.imageViewMute);
+        textViewMPhone = findViewById(R.id.textViewMPhone);
 
         // gọi hàm search theo địa chỉ
         searchPlace();

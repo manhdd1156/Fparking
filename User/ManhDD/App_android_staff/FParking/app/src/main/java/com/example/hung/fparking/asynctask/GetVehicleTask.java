@@ -19,12 +19,12 @@ import org.json.JSONObject;
 public class GetVehicleTask extends AsyncTask<Void, Void, Boolean> {
 
     private Activity activity;
-private int drivervehicleID;
-    private SharedPreferences spref;
-    public GetVehicleTask(int drivervehicleID, Activity activity) {
+private int parkingID;
+    private String event;
+    public GetVehicleTask(int parkingID,String event, Activity activity) {
         this.activity = activity;
-        this.drivervehicleID = drivervehicleID;
-//        spref = activity.getSharedPreferences("info",0);
+        this.parkingID = parkingID;
+        this.event = event;
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -33,14 +33,16 @@ private int drivervehicleID;
         HttpHandler httpHandler = new HttpHandler();
         try {
 //            JSONObject jsonObj = new JSONObject(json);
-            String json = httpHandler.get(Constants.API_URL + "vehicles/drivervehicles/" + drivervehicleID);
+            String json = httpHandler.get(Constants.API_URL + "vehicles/notifications/parkingid=" + parkingID +"&event=" + event);
             JSONObject jsonObj = new JSONObject(json);
+            System.out.println("GetVehicleTask : " + jsonObj);
             TextView tvLicensePlate = (TextView) activity.findViewById(R.id.tvLP);
             TextView tvType = (TextView) activity.findViewById(R.id.tvType);
             TextView tvColor = (TextView) activity.findViewById(R.id.tvColor);
-            tvLicensePlate.setText(jsonObj.getString("licenseplate"));
+            JSONObject jsonVehicle = new JSONObject(jsonObj.getString("vehicle"));
+            tvLicensePlate.setText(jsonVehicle.getString("licenseplate"));
             tvColor.setText(jsonObj.getString("color"));
-            JSONObject jsonVehicleType = new JSONObject(jsonObj.getString("vehicletype"));
+            JSONObject jsonVehicleType = new JSONObject(jsonVehicle.getString("vehicletype"));
             tvType.setText(jsonVehicleType.getString("type"));
         } catch (Exception e) {
             Log.e("Exception", " get driverVehicle fail in GetVehicleTask " + e);

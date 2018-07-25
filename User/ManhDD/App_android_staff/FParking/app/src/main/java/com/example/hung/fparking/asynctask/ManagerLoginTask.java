@@ -150,7 +150,9 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
         try {
 
             String json = httpHandler.get(Constants.API_URL + "staffs/profile");
+
             JSONObject jsonObj = new JSONObject(json);
+            System.out.println(jsonObj);
             Session.currentStaff = new StaffDTO();
             Session.currentParking = new ParkingDTO();
             Session.currentStaff.setId(jsonObj.getLong("id"));
