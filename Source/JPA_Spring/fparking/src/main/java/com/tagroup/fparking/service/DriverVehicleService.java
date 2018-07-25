@@ -2,6 +2,7 @@ package com.tagroup.fparking.service;
 
 import java.util.List;
 
+import com.tagroup.fparking.dto.DriverFineDTO;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 
 
@@ -11,4 +12,5 @@ public interface DriverVehicleService {
 	public DriverVehicle create(DriverVehicle drivervehicle)throws Exception;
 	public DriverVehicle update(DriverVehicle drivervehicle)throws Exception;
 	public void delete(Long id)throws Exception;
+	public List<DriverFineDTO> findByDriverId(Long driverid) throws Exception;
 }

@@ -59,8 +59,8 @@ public class DriverServiceImpl implements DriverService {
 		// TODO Auto-generated method stub
 		
 		try {
-			List<Driver> out = driverRepository.findByStatus(status);
-			return out;
+			List<Driver> listDriver = driverRepository.findByStatus(status);
+			return listDriver;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
 		}

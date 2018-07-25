@@ -132,5 +132,17 @@ private TariffRepository tariffRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 	}
-
+	
+	//get all acount parking by status 0:1
+	@Override
+	public List<Parking> getByStatus(int status) {
+		// TODO Auto-generated method stub
+		try {
+			List<Parking> listParking = parkingRepository.findByStatus(status);
+			return listParking;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+		}
+	}
+	
 }
