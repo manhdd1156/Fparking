@@ -47,6 +47,18 @@ private VehicletypeRepository vehicletypeRepository;
 		Vehicletype vehicletype = vehicletypeRepository.getOne(id);
 		vehicletypeRepository.delete(vehicletype);
 	}
+
+	@Override
+	public Vehicletype findByType(String type) {
+		// TODO Auto-generated method stub
+		List<Vehicletype> vtList = getAll();
+		for (Vehicletype vehicletype : vtList) {
+			if(vehicletype.getType().contains(type)) {
+				return vehicletype;
+			}
+		}
+		return null;
+	}
 	
 
 }

@@ -43,6 +43,7 @@ public class DriverController {
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		
 	}
+	
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/profile", method = RequestMethod.GET)
 	public ResponseEntity<?> getProfile() throws Exception {

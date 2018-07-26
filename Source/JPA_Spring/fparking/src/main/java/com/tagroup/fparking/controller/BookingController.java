@@ -64,6 +64,16 @@ public class BookingController {
 
 		}
 	
+		// get booking by notification.
+		@PreAuthorize("hasAnyAuthority('STAFF')")
+		@RequestMapping(path = "/notifications", method = RequestMethod.PUT)
+		public ResponseEntity<?> getByNotification(@RequestBody Notification noti) throws Exception {
+//			System.out.println("bookings/update/status : " + noti.toString());
+			Booking respone = bookingService.getByNoti(noti);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
+		
 	// get booking by parking id = ?
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)
@@ -76,10 +86,10 @@ public class BookingController {
 
 	// get booking by phone of driver ?
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-	@RequestMapping(path = "/drivers", method = RequestMethod.GET)
-	public ResponseEntity<?> getBookingByDphone(@RequestParam("phone") String phone) throws Exception {
+	@RequestMapping(path = "/drivers/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> getBookingByDphone(@PathVariable Long id) throws Exception {
 
-		List<Booking> respone = bookingService.findByDriverPhone(phone);
+		List<Booking> respone = bookingService.findByDriverId(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}

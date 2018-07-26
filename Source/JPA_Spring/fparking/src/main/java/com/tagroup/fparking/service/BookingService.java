@@ -19,13 +19,15 @@ public interface BookingService {
 
 	public void delete(Long id) throws Exception;
 
-	public List<Booking> findByDriverPhone(String phone) throws Exception;
+	public List<Booking> findByDriverId(Long id) throws Exception;
 
 	public Booking findByStatus(int status) throws Exception;
 
 	public Booking updateByStatus(Notification noti) throws Exception;
 	
 	public Booking findByParkingIDAndDriverVehicleIDAndStatus(Long parkingid, Long drivervehicleid,int status);
+	
+	public Booking getByNoti(Notification noti) throws Exception;
 	
 	
 }

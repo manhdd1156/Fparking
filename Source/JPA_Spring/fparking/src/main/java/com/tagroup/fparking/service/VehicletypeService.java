@@ -11,4 +11,5 @@ public interface VehicletypeService {
 	public Vehicletype create(Vehicletype vehicletype)throws Exception;
 	public Vehicletype update(Vehicletype vehicletype)throws Exception;
 	public void delete(Long id)throws Exception;
+	public Vehicletype findByType(String type);
 }

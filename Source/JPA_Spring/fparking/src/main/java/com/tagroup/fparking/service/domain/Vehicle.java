@@ -78,5 +78,11 @@ public class Vehicle implements Serializable {
 		this.vehicletype = vehicletype;
 	}
 
+	@Override
+	public String toString() {
+		return "Vehicle [id=" + id + ", licenseplate=" + licenseplate + ", color=" + color + ", vehicletype="
+				+ vehicletype + "]";
+	}
+
 
 }

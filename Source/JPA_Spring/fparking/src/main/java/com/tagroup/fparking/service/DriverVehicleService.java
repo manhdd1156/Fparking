@@ -7,25 +7,18 @@ import com.tagroup.fparking.service.domain.DriverVehicle;
 
 public interface DriverVehicleService {
 	public List<DriverVehicle> getAll();
-<<<<<<< HEAD
-	public DriverVehicle getById(Long id)throws Exception;
-	public DriverVehicle create(DriverVehicle drivervehicle)throws Exception;
-	public DriverVehicle update(DriverVehicle drivervehicle)throws Exception;
-	public void delete(Long id)throws Exception;
-	public List<DriverFineDTO> findByDriverId(Long driverid) throws Exception;
-=======
 
 	public DriverVehicle getById(Long id) throws Exception;
 
 	public DriverVehicle create(DriverVehicle drivervehicle) throws Exception;
 
-	public DriverVehicle update(DriverVehicle drivervehicle) throws Exception;
+	public DriverVehicle update(Long id) throws Exception;
 
 	public void delete(Long id) throws Exception;
 
+	public List<DriverFineDTO> findByDriverId(Long driverid) throws Exception;
+
 	public DriverVehicle getInfoDriverVehicle(Long parkingID, String event) throws Exception;
 
-	public List<DriverVehicle> getDriverVehicleByDriver(String phone) throws Exception;
-
->>>>>>> 644b42bb1c00b3a1b700fc0fccf1e08ed2e4b947
+	public List<DriverVehicle> getDriverVehicleByDriver(Long id) throws Exception;
 }

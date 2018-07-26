@@ -11,37 +11,27 @@ import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.dto.DriverFineDTO;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
-<<<<<<< HEAD
 import com.tagroup.fparking.repository.FineRepository;
-=======
 import com.tagroup.fparking.repository.NotificationRepository;
->>>>>>> 644b42bb1c00b3a1b700fc0fccf1e08ed2e4b947
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
-<<<<<<< HEAD
 import com.tagroup.fparking.service.domain.Fine;
-=======
 import com.tagroup.fparking.service.domain.Notification;
->>>>>>> 644b42bb1c00b3a1b700fc0fccf1e08ed2e4b947
 
 @Service
 public class DriverVehicleServiceImpl implements DriverVehicleService {
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
-<<<<<<< HEAD
 	@Autowired
 	private DriverRepository driverRepository;
 	@Autowired
 	private FineRepository fineRepository;
 
-=======
-
 	@Autowired
 	NotificationRepository notificationRepository;
 	@Autowired
 	NotificationService notificationService;
->>>>>>> 644b42bb1c00b3a1b700fc0fccf1e08ed2e4b947
 	@Override
 	public List<DriverVehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -68,9 +58,12 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 	@Override
-	public DriverVehicle update(DriverVehicle drivervehicle) {
+	public DriverVehicle update(Long id) {
+		
 		// TODO Auto-generated method stub
-		return driverVehicleRepository.save(drivervehicle);
+		DriverVehicle dv = driverVehicleRepository.getOne(id);
+		dv.setStatus(0);
+		return driverVehicleRepository.save(dv);
 
 	}
 
@@ -81,7 +74,6 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		driverVehicleRepository.delete(drivervehicle);
 	}
 
-<<<<<<< HEAD
 	@Override
 	public List<DriverFineDTO> findByDriverId(Long driverid) throws Exception {
 		// TODO Auto-generated method stub
@@ -107,8 +99,8 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 			dfList.add(dfDTO);
 		}
 		return dfList;
-=======
-
+	}
+	
 	@Override
 	public DriverVehicle getInfoDriverVehicle(Long parkingID,String event) throws Exception {
 		// TODO Auto-generated method stub
@@ -122,17 +114,16 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 	@Override
-	public List<DriverVehicle> getDriverVehicleByDriver(String phone) throws Exception {
+	public List<DriverVehicle> getDriverVehicleByDriver(Long id) throws Exception {
 		// TODO Auto-generated method stub
 		List<DriverVehicle> dvlist = driverVehicleRepository.findAll();
 		List<DriverVehicle> dvreturn = new ArrayList<>();
 		for (DriverVehicle driverVehicle : dvlist) {
-			if(driverVehicle.getDriver().getPhone().equals(phone)) {
+			if(driverVehicle.getDriver().getId()==id) {
 				dvreturn.add(driverVehicle);
 			}
 		}
 		return dvreturn;
->>>>>>> 644b42bb1c00b3a1b700fc0fccf1e08ed2e4b947
 	}
 
 }
