@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý tài khoản</title>
+<title>Tài khoản lái xe</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -28,7 +28,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Tài khoản bị khóa</h1>
+					<h1 class="page-header">Tài khoản chủ bãi xe</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -48,17 +48,15 @@
 										<th>Số điện thoại</th>
 										<th></th>
 										<th></th>
-										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items= "${ listDriver}" var="driver">
+									<c:forEach items= "${ listOwner}" var="owner">
 									<tr class="odd gradeX">
-										<td>${driver.name }</td>
-										<td>${driver.phone }</td>
-										<td class="center"><a href="/account/driver/detail/${driver.id }">Xem</a></td>
-										<td class="center"><a href="/account/driver/unblockaccount/${driver.id }">Mở Khóa</a></td>
-										<td class="center"><a href="/account/driver/editaccount/${driver.id }">Sửa</a></td>
+										<td>${owner.name }</td>
+										<td>${owner.phone }</td>
+										<td class="center"><a href="/account/owner/detail/${owner.id }">Xem</a></td>
+										<td class="center" ><a href="/account/owner/edit/${owner.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

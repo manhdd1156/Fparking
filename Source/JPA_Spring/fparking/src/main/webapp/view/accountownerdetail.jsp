@@ -30,7 +30,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Thông tin lái xe</h1>
+					<h1 class="page-header">Thông tin chủ bãi xe</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -47,8 +47,8 @@
 											class="text-success"><i class="fa fa-bookmark-o"></i>
 												Thông tin tài khoản</a></li>
 										<li><a data-toggle="tab" href="#FineHistory"
-											class="text-success"><i class="fa fa-info"></i> Lịch sử
-												phạt</a></li>
+											class="text-success"><i class="fa fa-info"></i> Bãi xe
+												của bạn</a></li>
 									</ul>
 
 									<div class="tab-content">
@@ -67,14 +67,9 @@
 															<td>${phonenumber}</td>
 														</tr>
 														<tr>
-															<td class="text-success"><i class="fa fa-user"></i>
-																Trạng thái tài khoản</td>
-															<td>${status }</td>
-														</tr>
-														<tr>
-															<td class="text-success"><i class="fa fa-car"></i>
-																Xe đã đăng kí</td>
-															<td>${TotalCar}</td>
+															<td class="text-success"><i class="fa fa-list-alt"></i>
+																Địa chỉ</td>
+															<td>${address }</td>
 														</tr>
 													</tbody>
 												</table>
@@ -85,31 +80,29 @@
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="panel panel-default">
-														<div class="panel-heading">Tổng số tiền phạt:
-															${totalPriceFine } VNĐ</div>
+														<div class="panel-heading">Tổng số bãi:
+															${totalPriceFine }</div>
 														<div class="panel-body">
 															<table width="100%"
 																class="table table-striped table-bordered table-hover"
 																id="dataTables-example">
 																<thead>
 																	<tr>
-																		<th>Ngày phạt</th>
-																		<th>Biển số xe</th>
-																		<th>Điển đếm</th>
-																		<th>Số tiền bị phạt</th>
-																		<th>Trạng thái</th>
+																		<th>Địa chỉ</th>
+																		<th>Số chỗ trống</th>
+																		<th>Tổng số chỗ</th>
+																		<th>Thời gian mở/đóng cửa</th>
+																		<th>Số dư tài khoản</th>
 																	</tr>
 																</thead>
 																<tbody>
-																	<c:forEach items="${ driverFine}" var="driverFine">
-																		<tr>
-																			<td>${driverFine.date }</td>
-																			<td>${driverFine.licenseplate }</td>
-																			<td>${driverFine.nameParking }</td>
-																			<td>${driverFine.price }</td>
-																			<td>${driverFine.status }</td>
-																		</tr>
-																	</c:forEach>
+																	<tr>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																		<td></td>
+																	</tr>
 																</tbody>
 															</table>
 															<!-- /.table-responsive -->

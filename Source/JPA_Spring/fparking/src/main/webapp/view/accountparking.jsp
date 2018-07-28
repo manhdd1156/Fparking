@@ -60,9 +60,9 @@
 										<td>${parking.currentspace }</td>
 										<td>${parking.totalspace }</td>
 										<td>${parking.deposits }</td>
-										<td class="cente" value="${driver.id }"><a href="">Xem</a></td>
-										<td class="center" value="${driver.id }"><a href="">Khóa</a></td>
-										<td class="center" value="${driver.id }"><a href="">Sửa</a></td>
+										<td class="cente"><a href="/account/patking/detail/${parking.id }">Xem</a></td>
+										<td class="center"><a href="/account/parking/blockaccount/${parking.id }">Khóa</a></td>
+										<td class="center"><a href="/account/patking/detail/${parking.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

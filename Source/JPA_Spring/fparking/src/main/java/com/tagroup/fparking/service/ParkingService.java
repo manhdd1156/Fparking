@@ -17,3 +17,4 @@ public interface ParkingService {
     public ParkingTariffDTO getTariffByPid(Parking parking)throws Exception;
     public List<Parking> getByStatus(int status)throws Exception;
 }
+

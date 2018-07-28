@@ -2,10 +2,7 @@ package com.tagroup.fparking.dto;
 
 import java.util.List;
 
-
-
 import com.tagroup.fparking.service.domain.Parking;
-import com.tagroup.fparking.service.domain.Tariff;
 
 
 /**
@@ -28,6 +25,4 @@ public class ParkingTariffDTO {
 	public void setTariffList(List<TariffSingle> tariffList) {
 		this.tariffList = tariffList;
 	}
-	
-
 }

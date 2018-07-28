@@ -4,7 +4,10 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Thông tin tài khoản</title>
+<title>Thông tin bãi xe</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<script
+	src="http://css3-mediaqueries-js.googlecode.com/svn/trunk/css3-mediaqueries.js"></script>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -23,14 +26,13 @@
 			<!-- ===============Left End================= -->
 
 		</nav>
-
 		<!-- ===============Hearder+Left End================= -->
 
 		<!-- ===============Content Start================= -->
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Thông tin lái xe</h1>
+					<h1 class="page-header">Thông tin bãi xe</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -41,7 +43,7 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-lg-12">
-
+								
 									<ul class="nav nav-tabs">
 										<li><a data-toggle="tab" href="#Infromation"
 											class="text-success"><i class="fa fa-bookmark-o"></i>
