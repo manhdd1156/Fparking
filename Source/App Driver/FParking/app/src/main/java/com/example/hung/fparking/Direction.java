@@ -85,22 +85,20 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
 
+        //excute chỉ đường
         final String parkingID = mPreferences.getString("parkingID", "");
         if (!parkingID.equals("")) {
             ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
             parkingInforTask.execute();
         }
-
-        //excute chỉ đường
-
-
+        
         // Ánh xạ
         buttonCheckin = (Button) findViewById(R.id.buttonCheckin);
         buttonCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 locationManager.removeUpdates(Direction.this);
-                new NotificationTask("checkin", mPreferences.getString("drivervehicleID",""), parkingID, "",Direction.this);
+                new NotificationTask("checkin", mPreferences.getString("vehicleID",""), parkingID, "",Direction.this);
                 Intent checkOutIntent = new Intent(Direction.this, CheckOut.class);
                 startActivity(checkOutIntent);
             }
@@ -111,6 +109,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         mMapView = mapFragment.getView();
         View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
+
         // position on right bottom
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);

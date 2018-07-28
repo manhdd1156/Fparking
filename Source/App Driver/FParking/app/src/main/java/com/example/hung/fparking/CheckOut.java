@@ -61,7 +61,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
                     Intent intentHome = new Intent(CheckOut.this, HomeActivity.class);
                     startActivity(intentHome);
                 } else {
-                    new NotificationTask("checkout", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "", CheckOut.this);
+                    new NotificationTask("checkout", mPreferences.getString("vehicleID", ""), mPreferences.getString("parkingID", ""), "", CheckOut.this);
                 }
             }
         });
