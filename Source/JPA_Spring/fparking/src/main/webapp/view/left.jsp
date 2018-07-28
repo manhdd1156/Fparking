@@ -6,11 +6,11 @@
                 <div class="sidebar-nav navbar-collapse">
                     <ul class="nav" id="side-menu">
                         <li>
-                            <a href="/home"><i class="fa fa-dashboard fa-fw"></i> Thống kê</a>
+                            <a href="/home"><i class="fa fa-home"></i> Trang chủ</a>
                         </li>
 						<!-- ===============Tai khoản lai xe Start================= -->
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Quản lý tài khoản lái xe<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-car"></i> Quản lý tài khoản lái xe<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="/account/driver">Tài Khoản</a>
@@ -25,7 +25,7 @@
 			
 						<!-- ===============Tai khoản bai xe Start================= -->
                         <li>
-                            <a href="#"><i class="fa fa-bar-chart-o fa-fw"></i> Quản lý tài khoản bãi xe<span class="fa arrow"></span></a>
+                            <a href="#"><i class="fa fa-ruble"></i> Quản lý tài khoản bãi xe<span class="fa arrow"></span></a>
                             <ul class="nav nav-second-level">
                                 <li>
                                     <a href="/account/parking">Tài Khoản</a>
@@ -37,6 +37,11 @@
                             <!-- /.nav-second-level -->
                         </li>
 						<!-- ===============Tai khoan bai xe End================= -->
+						<!-- ===============Tai khoan owner Start================= -->
+						 <li>
+                            <a href="/account/owner"><i class="fa fa-users"></i> Quản lý tài khoản chủ bãi xe</a>
+                        </li>
+                        <!-- ===============Tai khoan owner End================= -->
 						<!-- ===============Nghiep vu Start================= -->
                         <li>
                             <a href="#"><i class="fa fa-wrench fa-fw"></i> Quản lý nghiệp vụ<span class="fa arrow"></span></a>
