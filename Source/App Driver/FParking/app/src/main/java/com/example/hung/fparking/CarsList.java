@@ -117,7 +117,7 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
                         }
                     }
                 };
-                builder.setMessage("Chủ bãi đỗ đang bận!")
+                builder.setMessage("Bạn có muốn xóa xe này không?")
                         .setPositiveButton("Đồng Ý", dialogClickListener).setCancelable(false)
                         .setNegativeButton("Hủy", dialogClickListener).show();
             }
