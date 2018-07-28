@@ -13,17 +13,23 @@ import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.FineRepository;
 import com.tagroup.fparking.repository.NotificationRepository;
+import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Notification;
+import com.tagroup.fparking.service.domain.Vehicle;
+>>>>>>> 535ad99745d408a0b0ad021408946687af6b84e8
 
 @Service
 public class DriverVehicleServiceImpl implements DriverVehicleService {
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
 
+	@Autowired
+	private VehicleRepository vehicleRepository;
+>>>>>>> 535ad99745d408a0b0ad021408946687af6b84e8
 	@Autowired
 	private DriverRepository driverRepository;
 	@Autowired
@@ -60,9 +66,12 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 	@Override
-	public DriverVehicle update(DriverVehicle drivervehicle) {
+	public DriverVehicle update(Long id) {
+		
 		// TODO Auto-generated method stub
-		return driverVehicleRepository.save(drivervehicle);
+		DriverVehicle dv = driverVehicleRepository.getOne(id);
+		dv.setStatus(0);
+		return driverVehicleRepository.save(dv);
 
 	}
 
@@ -102,27 +111,35 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 
 	@Override
 	public DriverVehicle getInfoDriverVehicle(Long parkingID, String event) throws Exception {
+=======
+	
+	@Override
+	public Vehicle getInfoVehicle(Long parkingID,String event) throws Exception {
 		// TODO Auto-generated method stub
 		Notification noti = notificationService.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, event, 0);
 		System.out.println("DriverVehicleImp/getInfoDriverVehicle : " + noti);
 		if (noti != null) {
-			Long id = (Long) noti.getDrivervehicle_id();
-			return driverVehicleRepository.getOne(id);
+			Long id = (Long) noti.getVehicle_id();
+			return vehicleRepository.getOne(id);
 		}
 		return null;
 	}
 
 	@Override
-	public List<DriverVehicle> getDriverVehicleByDriver(String phone) throws Exception {
+	public List<DriverVehicle> getDriverVehicleByDriver(Long id) throws Exception {
 		// TODO Auto-generated method stub
 		List<DriverVehicle> dvlist = driverVehicleRepository.findAll();
 		List<DriverVehicle> dvreturn = new ArrayList<>();
 		for (DriverVehicle driverVehicle : dvlist) {
 			if (driverVehicle.getDriver().getPhone().equals(phone)) {
+			if(driverVehicle.getDriver().getId()==id && driverVehicle.getVehicle().getStatus()==1) {
+>>>>>>> 535ad99745d408a0b0ad021408946687af6b84e8
 				dvreturn.add(driverVehicle);
 			}
 		}
 		return dvreturn;
 	}
+
+	
 
 }

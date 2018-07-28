@@ -8,8 +8,8 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.hung.fparking.config.Constants;
+import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
-import com.example.hung.fparking.dto.VehicleDTO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -21,9 +21,11 @@ public class BookingTask {
         if (type.equals("bookingID")) {
             new GetBookingTaskByID(data1, action, container).execute((Void) null);
         } else if (type.equals("phone")) {
-            new GetBookingTaskByPhone(data1, action, container).execute((Void) null);
-        }else if (type.equals("create")) {
+            new GetBookingTaskByDriverID(data1, action, container).execute((Void) null);
+        } else if (type.equals("create")) {
             new CreateBooking(data1, data2, action, container).execute((Void) null);
+        } else if (type.equals("getorder")) {
+            new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
         }
     }
 }
@@ -46,7 +48,7 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             String json = httpHandler.get(Constants.API_URL + "bookings/" + bookingID);
-            Log.e("toa do: ", Constants.API_URL + "bookings/" + bookingID);
+            Log.e("Get Booking By ID: ", Constants.API_URL + "bookings/" + bookingID);
 //            JSONArray jsonArray = new JSONArray(json);
 
 //            for (int i = 0; i < jsonArray.length(); i++) {
@@ -68,8 +70,12 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
             JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
             int vehicleID = vehicle.getInt("id");
             String licenseplate = vehicle.getString("licenseplate");
+            String color = vehicle.getString("color");
 
-            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine));
+            JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
+            String type = vehicletype.getString("type");
+
+            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
 //            }
 
         } catch (Exception e) {
@@ -85,14 +91,14 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
     }
 }
 
-class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
+class GetBookingTaskByDriverID extends AsyncTask<Void, Void, Boolean> {
 
-    private String mphone, action;
+    private String driverID, action;
     private ArrayList<BookingDTO> booking;
     private IAsyncTaskHandler container;
 
-    public GetBookingTaskByPhone(String mphone, String action, IAsyncTaskHandler container) {
-        this.mphone = mphone;
+    public GetBookingTaskByDriverID(String driverID, String action, IAsyncTaskHandler container) {
+        this.driverID = driverID;
         this.action = action;
         this.container = container;
     }
@@ -102,8 +108,8 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/drivers?phone=" + mphone);
-            Log.e("toa do: ", Constants.API_URL + "bookings/drivers?phone=" + mphone);
+            String json = httpHandler.get(Constants.API_URL + "bookings/drivers/" + driverID);
+            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers/" + driverID);
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -125,8 +131,12 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
                 JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
                 int vehicleID = vehicle.getInt("id");
                 String licenseplate = vehicle.getString("licenseplate");
+                String color = vehicle.getString("color");
 
-                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine));
+                JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
+                String type = vehicletype.getString("type");
+
+                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
             }
 
         } catch (Exception e) {
@@ -145,12 +155,12 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
 class CreateBooking extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
-    String drivervehicleid, parkingid, action;
+    String vehicleid, parkingid, action;
     boolean success = false;
 
-    public CreateBooking(String drivervehicleid, String parkingid, String action, IAsyncTaskHandler container) {
+    public CreateBooking(String vehicleid, String parkingid, String action, IAsyncTaskHandler container) {
         this.container = container;
-        this.drivervehicleid = drivervehicleid;
+        this.vehicleid = vehicleid;
         this.parkingid = parkingid;
         this.action = action;
     }
@@ -161,8 +171,9 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
+            formData.put("driverid", Session.currentDriver.getId());
+            formData.put("vehicleid", vehicleid);
             formData.put("parkingid", parkingid);
-            formData.put("drivervehicleid", drivervehicleid);
             formData.put("status", 5);
 
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/create", formData.toString(), "POST");
@@ -191,12 +202,13 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
 
 class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
 
-    private String bookingID, action;
+    String drivervehicleid, parkingid, action;
     private ArrayList<BookingDTO> booking;
     private IAsyncTaskHandler container;
 
-    public GetBookingTaskWhenOrder(String bookingID, String action, IAsyncTaskHandler container) {
-        this.bookingID = bookingID;
+    public GetBookingTaskWhenOrder(String drivervehicleid, String parkingid, String action, IAsyncTaskHandler container) {
+        this.drivervehicleid = drivervehicleid;
+        this.parkingid = parkingid;
         this.action = action;
         this.container = container;
     }
@@ -206,8 +218,8 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/" + bookingID);
-            Log.e("toa do: ", Constants.API_URL + "bookings/" + bookingID);
+            String json = httpHandler.get(Constants.API_URL + "bookings/drivervehicle?parkingid=" + parkingid + "&drivervehicleid=" + drivervehicleid + "&status=1");
+            Log.e("Get booking when order: ", Constants.API_URL + "bookings/drivervehicle?parkingid=" + parkingid + "&drivervehicleid=" + drivervehicleid + "&status=1");
 //            JSONArray jsonArray = new JSONArray(json);
 
 //            for (int i = 0; i < jsonArray.length(); i++) {
@@ -229,8 +241,12 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
             JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
             int vehicleID = vehicle.getInt("id");
             String licenseplate = vehicle.getString("licenseplate");
+            String color = vehicle.getString("color");
 
-            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine));
+            JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
+            String type = vehicletype.getString("type");
+
+            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
 //            }
 
         } catch (Exception e) {

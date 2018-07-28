@@ -31,8 +31,9 @@ public class BookingDTO {
 
 	private Long parkingid;
 	
-	private Long drivervehicleid;
-
+	private Long driverid;
+	private Long vehicleid;
+	
 	public Long getId() {
 		return id;
 	}
@@ -105,20 +106,32 @@ public class BookingDTO {
 		this.parkingid = parkingid;
 	}
 
-	public Long getDrivervehicleid() {
-		return drivervehicleid;
+	public Long getDriverid() {
+		return driverid;
 	}
 
-	public void setDrivervehicleid(Long drivervehicleid) {
-		this.drivervehicleid = drivervehicleid;
+	public Long getVehicleid() {
+		return vehicleid;
+	}
+
+	public void setVehicleid(Long vehicleid) {
+		this.vehicleid = vehicleid;
+	}
+
+	public void setDriverid(Long driverid) {
+		this.driverid = driverid;
 	}
 
 	@Override
 	public String toString() {
 		return "BookingDTO [id=" + id + ", status=" + status + ", timein=" + timein + ", timeout=" + timeout
 				+ ", price=" + price + ", amount=" + amount + ", comission=" + comission + ", totalfine=" + totalfine
-				+ ", parkingid=" + parkingid + ", drivervehicleid=" + drivervehicleid + "]";
+				+ ", parkingid=" + parkingid + ", driverid=" + driverid + ", vehicleid=" + vehicleid + "]";
 	}
+
+	
+
+	
 	
 
 }

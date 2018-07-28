@@ -107,7 +107,8 @@ public class NotificationServiceImpl implements NotificationService {
 				List<Booking> blist = bookingService.getAll();
 				for (Booking booking : blist) {
 					if (booking.getParking().getId() == noti.getParking_id()
-							&& booking.getDrivervehicle().getId() == noti.getDrivervehicle_id()
+							&& booking.getDrivervehicle().getDriver().getId() == noti.getDriver_id()
+							&& booking.getDrivervehicle().getVehicle().getId() == noti.getVehicle_id()
 							&& booking.getStatus() == 5 && noti.getEvent().equals("order")) {
 						bookingService.delete(booking.getId());
 						break;
@@ -115,7 +116,7 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			}
 			if (n != null) {
-				pusherService.trigger(n.getDrivervehicle_id() + "channel", notification.getEvent(), "cancel");
+				pusherService.trigger(n.getDriver_id() + "channel", notification.getEvent(), "cancel");
 				System.out.println("====================== đã đẩy pusher");
 			}
 
@@ -131,8 +132,9 @@ public class NotificationServiceImpl implements NotificationService {
 			System.out.println("NotificationServiceIml/DeleteByNoti :" + notification.toString());
 			List<Notification> notilst = notificationRepository.findAll();
 			for (Notification noti : notilst) {
-				if (noti.getDrivervehicle_id() == notification.getDrivervehicle_id()
-						&& noti.getType() == notification.getType() && noti.getEvent().equals(notification.getEvent())
+				if (noti.getDriver_id() == notification.getDriver_id() && noti.getType() == notification.getType()
+						&& noti.getVehicle_id() == notification.getVehicle_id()
+						&& noti.getEvent().equals(notification.getEvent())
 						&& noti.getStatus() == notification.getStatus()) {
 					System.out.println("NotificationServiceIml/DeleteByNoti : ok");
 					notificationRepository.delete(noti);

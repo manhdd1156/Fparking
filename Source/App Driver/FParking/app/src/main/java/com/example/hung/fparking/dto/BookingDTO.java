@@ -26,7 +26,11 @@ public class BookingDTO {
 
     private double totalfine;
 
-    public BookingDTO(int bookingID, int vehicleID, int parkingID, String address, String timeIn, String timeOut, double price, int status, String licenseplate, double amount, double comission, double totalfine) {
+    private String type;
+
+    private String color;
+
+    public BookingDTO(int bookingID, int vehicleID, int parkingID, String address, String timeIn, String timeOut, double price, int status, String licenseplate, double amount, double comission, double totalfine, String type, String color) {
         this.bookingID = bookingID;
         this.vehicleID = vehicleID;
         this.parkingID = parkingID;
@@ -39,6 +43,8 @@ public class BookingDTO {
         this.amount = amount;
         this.comission = comission;
         this.totalfine = totalfine;
+        this.type = type;
+        this.color = color;
     }
 
     public BookingDTO() {
@@ -92,6 +98,14 @@ public class BookingDTO {
         return totalfine;
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public String getColor() {
+        return color;
+    }
+
     public void setBookingID(int bookingID) {
         this.bookingID = bookingID;
     }
@@ -138,5 +152,13 @@ public class BookingDTO {
 
     public void setTotalfine(double totalfine) {
         this.totalfine = totalfine;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

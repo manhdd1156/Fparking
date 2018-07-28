@@ -16,5 +16,10 @@ public interface ParkingService {
     public String getRatingByPid(Long parkingId) throws Exception; 
     public ParkingTariffDTO getTariffByPid(Parking parking)throws Exception;
     public List<Parking> getByStatus(int status)throws Exception;
+<<<<<<< HEAD
 }
 
+=======
+    public List<Parking> getByOwnerID(Long id) throws Exception;
+ }
+>>>>>>> 535ad99745d408a0b0ad021408946687af6b84e8

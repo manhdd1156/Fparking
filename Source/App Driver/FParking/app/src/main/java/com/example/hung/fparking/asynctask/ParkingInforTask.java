@@ -5,9 +5,7 @@ import android.util.Log;
 
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.dto.ParkingDTO;
-import com.example.hung.fparking.dto.VehicleDTO;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.ArrayList;

@@ -1,9 +1,13 @@
 package com.example.hung.fparking;
 
+import android.app.AlertDialog;
+import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
+import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -39,14 +43,16 @@ import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler {
 
-    CarouselView customCarouselView;
-    CarouselPicker carouselPicker;
-    ArrayList<VehicleDTO> vehicle;
-    ArrayList<ParkingDTO> parkingDTOS;
-    ArrayList<TariffDTO> tariffDTOS;
-    List<CarouselPicker.PickerItem> textItems;
+    private CarouselView customCarouselView;
+    private CarouselPicker carouselPicker;
+    private ArrayList<VehicleDTO> vehicle;
+    private ArrayList<ParkingDTO> parkingDTOS;
+    private ArrayList<TariffDTO> tariffDTOS;
+    private List<CarouselPicker.PickerItem> textItems;
 
-    int driverVehicleID, parkingID;
+    int driverVehicleID, parkingID, vehicleID;
+    ProgressDialog proD;
+    AlertDialog.Builder builder;
 
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
@@ -74,6 +80,10 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
 
+        // tạo SharedPreferences
+        mPreferences = getSharedPreferences("driver", 0);
+        mPreferencesEditor = mPreferences.edit();
+
         // ánh xạ
         textViewAddress = findViewById(R.id.textViewAddress);
         textViewEmptySpace = findViewById(R.id.textViewEmptySpace);
@@ -82,6 +92,16 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
         backOrder = findViewById(R.id.imageViewBackOrder);
+
+        // create dialog
+        proD = new ProgressDialog(OrderParking.this);
+        builder = new AlertDialog.Builder(OrderParking.this);
+
+        // set text cho button theo data
+        int status = mPreferences.getInt("status", 8);
+        if (status == 1) {
+            buttonDat_Cho.setText("CHỈ ĐƯỜNG");
+        }
 
         backOrder.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -93,14 +113,57 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                mPreferencesEditor.putString("drivervehicleID",driverVehicleID+"").commit();
-                mPreferencesEditor.putString("parkingID",parkingID+"").commit();
-                new BookingTask("create", driverVehicleID+"", parkingID+"", "",OrderParking.this);
+                if (buttonDat_Cho.getText().equals("CHỈ ĐƯỜNG")) {
+                    Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
+                    startActivity(checkOutIntent);
+                } else {
+                    mPreferencesEditor.putString("drivervehicleID", driverVehicleID + "").commit();
+                    mPreferencesEditor.putString("vehicleID", vehicleID + "").commit();
+                    mPreferencesEditor.putString("parkingID", parkingID + "").commit();
+                    new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
 
-                Intent intent = new Intent(OrderParking.this, Notification.class);
-                startService(intent);
-                Intent checkOutIntent = new Intent(OrderParking.this, Direction.class);
-                startActivity(checkOutIntent);
+//                    Intent intent = new Intent(OrderParking.this, Notification.class);
+//                    startService(intent);
+                    proD.setCancelable(false);
+                    proD.show();
+
+                    new CountDownTimer(3000, 1000) {
+                        boolean checkOwer = true;
+
+                        public void onTick(long millisUntilFinished) {
+                            proD.setMessage("\tĐang đợi chủ bãi đỗ xác nhận ... " + millisUntilFinished / 1000);
+                            if (checkOwer) {
+//                                new pushToOwner("2", "order").execute((Void) null);
+                                checkOwer = false;
+                            }
+                        }
+
+                        public void onFinish() {
+
+//                            new pushToOwnerOverTime("2", "cancel").execute((Void) null);
+                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int choice) {
+                                    switch (choice) {
+                                        case DialogInterface.BUTTON_POSITIVE:
+
+                                            break;
+                                        case DialogInterface.BUTTON_NEGATIVE:
+
+                                            break;
+                                    }
+                                }
+                            };
+                            try {
+                                proD.dismiss();
+                                builder.setMessage("Chủ bãi đỗ đang bận!")
+                                        .setPositiveButton("Chấp Nhận", dialogClickListener).setCancelable(false).show();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }.start();
+                }
             }
         });
 
@@ -127,6 +190,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                         for (int i = 0; i < tariffDTOS.size(); i++) {
                             if (vehicle.get(j).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
                                 textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                                driverVehicleID = vehicle.get(j).getDriverVehicleID();
+                                vehicleID = vehicle.get(j).getVehicleID();
                                 Log.e("price", tariffDTOS.get(i).getPrice() + "");
                             }
                         }
@@ -147,8 +212,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
         // gọi vehicletask
 
-        VehicleTask vehicleTask = new VehicleTask(Session.currentDriver.getPhone(), "vt", this);
-        vehicleTask.execute();
+        VehicleDTO v = new VehicleDTO();
+        new VehicleTask("select", v, "vt", this);
 
         ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
         parkingInforTask.execute();
@@ -192,13 +257,14 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     textItems.add(new CarouselPicker.TextItem(vehicle.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
                 }
                 driverVehicleID = vehicle.get(0).getDriverVehicleID();
+                vehicleID = vehicle.get(0).getVehicleID();
             }
             CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
             carouselPicker.setAdapter(textAdapter);
         } else if (action.equals("pi")) {
             parkingDTOS = (ArrayList<ParkingDTO>) o;
 
-            textViewEmptySpace.setText(parkingDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+            textViewEmptySpace.setText(parkingDTOS.get(0).getCurrentspace() + "");
             textViewSlots.setText("/" + parkingDTOS.get(0).getTotalspace() + "");
 
             textViewTime.setText(parkingDTOS.get(0).getTimeoc());
@@ -220,5 +286,11 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        startActivity(getIntent());
     }
 }

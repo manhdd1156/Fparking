@@ -56,9 +56,9 @@
 									<tr class="odd gradeX">
 										<td>${driver.name }</td>
 										<td>${driver.phone }</td>
-										<td class="center"><a href="">Xem</a></td>
-										<td class="center"><a href="">Khóa</a></td>
-										<td class="center"><a href="">Sửa</a></td>
+										<td class="center"><a href="/account/driver/detail/${driver.id }">Xem</a></td>
+										<td class="center"><a href="/account/driver/blockaccount/${driver.id }">Khóa</a></td>
+										<td class="center" ><a href="/account/driver/editaccount/${driver.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

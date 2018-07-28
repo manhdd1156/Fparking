@@ -38,6 +38,7 @@ import android.widget.Toast;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ParkingTask;
+import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.model.GPSTracker;
 import com.google.android.gms.common.api.Status;
@@ -69,6 +70,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private LocationManager locationManager = null;
     private TextToSpeech textToSpeechNearPlace;
 
+    NavigationView navigationView;
+    View headerView;
     View mMapView;
     ImageView imageViewVoiceSearch, imageViewMute;
     TextView textViewMPhone;
@@ -95,7 +98,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         // ánh xạ button
         imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
         imageViewMute = findViewById(R.id.imageViewMute);
-        textViewMPhone = findViewById(R.id.textViewMPhone);
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        headerView = navigationView.getHeaderView(0);
+        textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
+        textViewMPhone.setText(Session.currentDriver.getPhone());
 
         // gọi hàm search theo địa chỉ
         searchPlace();
@@ -139,6 +146,19 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        // check data
+        int status = mPreferences.getInt("status", 8);
+        if (status == 1) {
+//            locationManager.removeUpdates(HomeActivity.this);
+            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+            startActivity(intentOrderFlagment);
+        } else if (status == 2) {
+            Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+        } else if (status == 3) {
+            Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+        }
     }
 
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
@@ -153,13 +173,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locationManager.removeUpdates(HomeActivity.this);
                     Intent intent = new Intent(HomeActivity.this, ParkingHistory.class);
                     startActivity(intent);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_mCar:
                     locationManager.removeUpdates(HomeActivity.this);
-                    Intent intent1 = new Intent(HomeActivity.this, CheckOut.class);
+                    Intent intent1 = new Intent(HomeActivity.this, CarsList.class);
                     startActivity(intent1);
-                    overridePendingTransition(R.anim.slide_in_right,R.anim.slide_out_left);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
             }
             return true;
@@ -417,7 +437,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.hideInfoWindow();
-        if (mPreferences.getString("status", "").equals("")) {
+        if (mPreferences.getInt("status", 8) == 8) {
             mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
             mPreferencesEditor.commit();
             locationManager.removeUpdates(HomeActivity.this);
@@ -425,6 +445,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             startActivity(intentOrderFlagment);
         }
         return true;
+    }
+
+    @Override
+    public void onBackPressed() {
+//        super.onBackPressed();
     }
 }
 
