@@ -73,7 +73,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     NavigationView navigationView;
     View headerView;
     View mMapView;
-    ImageView imageViewVoiceSearch, imageViewMute;
+    ImageView imageViewVoiceSearch, imageViewMute, imageViewFParking;
     TextView textViewMPhone;
 
     ArrayList<GetNearPlace> nearParkingList;
@@ -103,7 +103,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         headerView = navigationView.getHeaderView(0);
         textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
         textViewMPhone.setText(Session.currentDriver.getPhone());
-
+        textViewMPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDriverInfo = new Intent(HomeActivity.this, DriverInformation.class);
+                startActivity(intentDriverInfo);
+            }
+        });
+        imageViewFParking=headerView.findViewById(R.id.imageViewFParking);
+        imageViewFParking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDriverInfo = new Intent(HomeActivity.this, DriverInformation.class);
+                startActivity(intentDriverInfo);
+            }
+        });
         // gọi hàm search theo địa chỉ
         searchPlace();
 
