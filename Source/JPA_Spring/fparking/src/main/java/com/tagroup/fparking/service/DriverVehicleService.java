@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.tagroup.fparking.dto.DriverFineDTO;
 import com.tagroup.fparking.service.domain.DriverVehicle;
+import com.tagroup.fparking.service.domain.Vehicle;
 
 public interface DriverVehicleService {
 	public List<DriverVehicle> getAll();
@@ -18,7 +19,8 @@ public interface DriverVehicleService {
 
 	public List<DriverFineDTO> findByDriverId(Long driverid) throws Exception;
 
-	public DriverVehicle getInfoDriverVehicle(Long parkingID, String event) throws Exception;
+	public Vehicle getInfoVehicle(Long parkingID, String event) throws Exception;
 
 	public List<DriverVehicle> getDriverVehicleByDriver(Long id) throws Exception;
+	
 }

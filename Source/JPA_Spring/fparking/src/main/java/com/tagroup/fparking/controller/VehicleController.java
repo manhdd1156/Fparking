@@ -57,7 +57,7 @@ public class VehicleController {
 	public ResponseEntity<?> getbydParkingid(@RequestParam("parkingid") Long parkingID,
 			@RequestParam("event") String event) throws Exception {
 		System.out.println("/api/vehicles/notifications : " + parkingID);
-		DriverVehicle respone = drivervehicleService.getInfoDriverVehicle(parkingID, event);
+		Vehicle respone = drivervehicleService.getInfoVehicle(parkingID, event);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
@@ -70,14 +70,23 @@ public class VehicleController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
-	
-	// create DriverVehicle by licenseplate, type, driverid
-		@PreAuthorize("hasAnyAuthority('DRIVER')")
-		@RequestMapping(path = "", method = RequestMethod.POST)
-		public ResponseEntity<?> create(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
-//			System.out.println("=======");
-			DriverVehicle respone = vehicleService.create(drivervehicle);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
+	// create DriverVehicle by licenseplate, type, driverid
+	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
+		DriverVehicle respone = vehicleService.create(drivervehicle);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
+	// create DriverVehicle by licenseplate, type, driverid
+	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@RequestMapping(path = "", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
+		// System.out.println("=======");
+		 vehicleService.delete(drivervehicle);
+		return new ResponseEntity<>("ok", HttpStatus.OK);
+
+	}
 }

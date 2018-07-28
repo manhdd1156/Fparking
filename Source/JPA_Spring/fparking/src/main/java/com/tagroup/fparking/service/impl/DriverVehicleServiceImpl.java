@@ -13,16 +13,20 @@ import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.FineRepository;
 import com.tagroup.fparking.repository.NotificationRepository;
+import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Notification;
+import com.tagroup.fparking.service.domain.Vehicle;
 
 @Service
 public class DriverVehicleServiceImpl implements DriverVehicleService {
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
+	@Autowired
+	private VehicleRepository vehicleRepository;
 	@Autowired
 	private DriverRepository driverRepository;
 	@Autowired
@@ -102,13 +106,13 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 	
 	@Override
-	public DriverVehicle getInfoDriverVehicle(Long parkingID,String event) throws Exception {
+	public Vehicle getInfoVehicle(Long parkingID,String event) throws Exception {
 		// TODO Auto-generated method stub
 		Notification noti = notificationService.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, event, 0);
 		System.out.println("DriverVehicleImp/getInfoDriverVehicle : " +noti);
 		if (noti != null) {
-			Long id = (Long) noti.getDrivervehicle_id();
-			return driverVehicleRepository.getOne(id);
+			Long id = (Long) noti.getVehicle_id();
+			return vehicleRepository.getOne(id);
 		}
 		return null;
 	}
@@ -125,5 +129,7 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		}
 		return dvreturn;
 	}
+
+	
 
 }

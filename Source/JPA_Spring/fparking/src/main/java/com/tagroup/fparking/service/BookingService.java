@@ -13,7 +13,7 @@ public interface BookingService {
 
 	public Booking getById(Long id) throws Exception;
 
-	public Booking create(Long drivervehicleid, Long parkingid, int status) throws Exception;
+	public Booking create(Long drivervid,Long vehicleid, Long parkingid, int status) throws Exception;
 
 	public Booking update(Booking booking) throws Exception;
 

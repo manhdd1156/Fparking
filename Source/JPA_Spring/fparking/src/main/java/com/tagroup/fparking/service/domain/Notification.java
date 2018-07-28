@@ -26,9 +26,9 @@ public class Notification implements Serializable {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-	private Long drivervehicle_id;
+	private Long driver_id;
 	private Long parking_id;
-	
+	private Long vehicle_id;
 	private String event;
 	
 	private int type;
@@ -47,16 +47,24 @@ public class Notification implements Serializable {
 	}
 
 	
-	public Long getDrivervehicle_id() {
-		return drivervehicle_id;
+	public Long getDriver_id() {
+		return driver_id;
 	}
 
-	public void setDrivervehicle_id(Long drivervehicle_id) {
-		this.drivervehicle_id = drivervehicle_id;
+	public void setDriver_id(Long driver_id) {
+		this.driver_id = driver_id;
 	}
 
 	public Long getParking_id() {
 		return parking_id;
+	}
+
+	public Long getVehicle_id() {
+		return vehicle_id;
+	}
+
+	public void setVehicle_id(Long vehicle_id) {
+		this.vehicle_id = vehicle_id;
 	}
 
 	public void setParking_id(Long parking_id) {
@@ -89,9 +97,11 @@ public class Notification implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Notification [id=" + id + ", drivervehicle_id=" + drivervehicle_id + ", parking_id=" + parking_id
-				+ ", event=" + event + ", type=" + type + ", status=" + status + "]";
+		return "Notification [id=" + id + ", driver_id=" + driver_id + ", parking_id=" + parking_id + ", vehicle_id="
+				+ vehicle_id + ", event=" + event + ", type=" + type + ", status=" + status + "]";
 	}
+
+	
 	
 	
 

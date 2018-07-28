@@ -89,8 +89,7 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
-		Vehicle vehicle = vehicleRepository.getOne(id);
-		vehicleRepository.delete(vehicle);
+		
 	}
 
 	@Override
@@ -131,10 +130,34 @@ public class VehicleServiceImpl implements VehicleService {
 	}
 
 	@Override
-	public Vehicle findByLicenseplate(String licenseplate) throws Exception {
+	public Vehicle findByLicenseplateAndStatus(String licenseplate, int status) throws Exception {
 		// TODO Auto-generated method stub
-		vehicleRepository.findByLicenseplate(licenseplate);
-		return null;
+		
+		return vehicleRepository.findByLicenseplateAndStatus(licenseplate, status);
+	}
+
+	@Override
+	public void delete(DriverVehicleDTO drivervehicle) throws Exception {
+		// TODO Auto-generated method stub
+		Vehicle v = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
+		System.out.println("VehicleServiceIml/delete : " + v);
+		
+		DriverVehicle dv = drivervehicleRepository
+				.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v);
+		System.out.println("DriverVehicleServiceIml/delete : " + dv);
+		dv.setStatus(0);
+		drivervehicleRepository.save(dv);
+		int vehicleExistCount = 0;
+		List<DriverVehicle> dvByvehicleList = drivervehicleRepository.findByVehicle(v);
+		for (DriverVehicle dv2 : dvByvehicleList) {
+			if(dv2.getStatus()==1) {
+				vehicleExistCount++;
+			}
+		}
+		if(vehicleExistCount==0) {
+			v.setStatus(0);
+			update(v);
+		}
 	}
 
 }
