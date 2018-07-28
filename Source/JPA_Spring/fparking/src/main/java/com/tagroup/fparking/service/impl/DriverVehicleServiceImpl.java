@@ -148,6 +148,7 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 =======
 			if(driverVehicle.getDriver().getId()==id && driverVehicle.getVehicle().getStatus()==1) {
 >>>>>>> 535ad99745d408a0b0ad021408946687af6b84e8
+			if(driverVehicle.getDriver().getId()==id && driverVehicle.getVehicle().getStatus()==1 && driverVehicle.getStatus()==1) {
 				dvreturn.add(driverVehicle);
 			}
 		}

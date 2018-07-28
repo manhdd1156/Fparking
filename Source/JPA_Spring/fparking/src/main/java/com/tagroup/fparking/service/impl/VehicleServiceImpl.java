@@ -83,7 +83,7 @@ public class VehicleServiceImpl implements VehicleService {
 					return drivervehicleRepository.save(dvtemp);
 				}
 			} else if (v1 == null && v2 == null) { // TH3
-				// else v1== null và v2 == null
+				
 				v.setLicenseplate(drivervehicle.getLicenseplate());
 				v.setColor(drivervehicle.getColor());
 				v.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
