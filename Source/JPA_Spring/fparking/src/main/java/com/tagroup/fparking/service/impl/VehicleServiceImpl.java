@@ -52,30 +52,52 @@ public class VehicleServiceImpl implements VehicleService {
 
 	@Override
 	public DriverVehicle create(DriverVehicleDTO drivervehicle) throws Exception {
+		try {
+			Vehicle v = new Vehicle();
+			DriverVehicle dv = new DriverVehicle();
+			Vehicle v1 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
+			Vehicle v2 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 0);
+			if (v1 != null && v2 == null) { // TH 2
+				System.out.println("VehicleServiceImpl/create/TH2 : v1 = " + v1.toString());
+				return drivervehicleRepository
+						.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v1);
+			} else if (v1 == null && v2 != null) { // TH 1
 
-		Vehicle v = new Vehicle();
-		DriverVehicle dv = new DriverVehicle();
-		List<Vehicle> vList = getAll();
-		for (Vehicle vehicle : vList) {
-			if (vehicle.getLicenseplate().contains(drivervehicle.getLicenseplate())
-					&& vehicle.getVehicletype().getType().contains(drivervehicle.getType())) {
-				dv.setVehicle(vehicle);
-				dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
-				if (drivervehicleRepository.findByDriverAndVehicle(dv.getDriver(), vehicle) != null) {
-					throw new APIException(HttpStatus.CONFLICT, "DriverVehicle is Exist!");
+				v2.setColor(drivervehicle.getColor());
+				v2.setStatus(1);
+				v2.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
+				v2 = update(v2);
+				System.out.println("VehicleServiceImpl/create/TH1 : v2 = " + v2.toString());
+				dv = drivervehicleRepository
+						.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v2);
+				if (dv != null) { // TH4
+					dv.setStatus(1);
+					return drivervehicleRepository.save(dv);
+				} else if (dv == null) { // TH5
+					DriverVehicle dvtemp = new DriverVehicle();
+					dvtemp.setVehicle(v);
+					dvtemp.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
+					dvtemp.setVehicle(v2);
+					dvtemp.setStatus(1);
+					System.out.println("VehicleServiceImpl/create/TH5 : dv = " + dvtemp.toString());
+					return drivervehicleRepository.save(dvtemp);
 				}
+			} else if (v1 == null && v2 == null) { // TH3
+				// else v1== null và v2 == null
+				v.setLicenseplate(drivervehicle.getLicenseplate());
+				v.setColor(drivervehicle.getColor());
+				v.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
+				update(v);
+				System.out.println("VehicleServiceImpl/create/TH5 : v = " + v.toString());
+				dv.setVehicle(v);
+				dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
+				dv.setStatus(1);
 				return drivervehicleRepository.save(dv);
 			}
+		} catch (Exception e) {
+			System.out.println(e);
 		}
-		v.setLicenseplate(drivervehicle.getLicenseplate());
-		v.setColor(drivervehicle.getColor());
-		v.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
-		dv.setVehicle(update(v));
-		dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
-		if (drivervehicleRepository.findByDriverAndVehicle(dv.getDriver(), dv.getVehicle()) != null) {
-			throw new APIException(HttpStatus.CONFLICT, "DriverVehicle is Exist!");
-		}
-		return drivervehicleRepository.save(dv);
+		return null;
 
 	}
 
@@ -89,7 +111,7 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
@@ -132,7 +154,7 @@ public class VehicleServiceImpl implements VehicleService {
 	@Override
 	public Vehicle findByLicenseplateAndStatus(String licenseplate, int status) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		return vehicleRepository.findByLicenseplateAndStatus(licenseplate, status);
 	}
 
@@ -141,7 +163,7 @@ public class VehicleServiceImpl implements VehicleService {
 		// TODO Auto-generated method stub
 		Vehicle v = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
 		System.out.println("VehicleServiceIml/delete : " + v);
-		
+
 		DriverVehicle dv = drivervehicleRepository
 				.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v);
 		System.out.println("DriverVehicleServiceIml/delete : " + dv);
@@ -150,11 +172,11 @@ public class VehicleServiceImpl implements VehicleService {
 		int vehicleExistCount = 0;
 		List<DriverVehicle> dvByvehicleList = drivervehicleRepository.findByVehicle(v);
 		for (DriverVehicle dv2 : dvByvehicleList) {
-			if(dv2.getStatus()==1) {
+			if (dv2.getStatus() == 1) {
 				vehicleExistCount++;
 			}
 		}
-		if(vehicleExistCount==0) {
+		if (vehicleExistCount == 0) {
 			v.setStatus(0);
 			update(v);
 		}
