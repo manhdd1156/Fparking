@@ -51,7 +51,7 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
 //        mAdapter = new MyRecyclerViewAdapter(getDataSet());
 //        mRecyclerView.setAdapter(mAdapter);
 
-        new BookingTask("phone", Session.currentDriver.getPhone(), "", "", this);
+        new BookingTask("phone", Session.currentDriver.getId()+"", "", "", this);
 
     }
 
