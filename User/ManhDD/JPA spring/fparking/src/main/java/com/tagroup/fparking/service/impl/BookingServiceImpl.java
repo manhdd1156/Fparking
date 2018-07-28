@@ -10,8 +10,10 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.BookingRepository;
+import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
+import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.PusherService;
@@ -35,6 +37,10 @@ public class BookingServiceImpl implements BookingService {
 	private TariffService tariffService;
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
+	@Autowired
+	private DriverRepository driverRepository;
+	@Autowired
+	private VehicleRepository vehicleRepository;
 
 	@Override
 	public List<Booking> getAll() {
@@ -55,15 +61,16 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public Booking create(Long drivervehicleid, Long parkingid, int status) throws Exception {
+	public Booking create(Long driverid, Long vehicleid, Long parkingid, int status) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			// driverVehicleid, parkingid, status = 5,
 			Booking bb = new Booking();
 			Parking p = new Parking();
+
 			p.setId(parkingid);
-			DriverVehicle dv = new DriverVehicle();
-			dv.setId(drivervehicleid);
+			DriverVehicle dv = driverVehicleRepository.findByDriverAndVehicle(driverRepository.getOne(driverid),
+					vehicleRepository.getOne(vehicleid));
 			bb.setDrivervehicle(dv);
 			bb.setParking(p);
 			bb.setStatus(5);
@@ -71,7 +78,8 @@ public class BookingServiceImpl implements BookingService {
 			Booking b = bookingRepository.save(bb);
 			if (b != null) {
 				Notification n = new Notification();
-				n.setDrivervehicle_id(b.getDrivervehicle().getId());
+				n.setDriver_id(driverid);
+				n.setVehicle_id(vehicleid);
 				n.setParking_id(b.getParking().getId());
 				n.setEvent("order");
 				n.setType(1); // 1 : driver gửi cho parking
@@ -109,6 +117,35 @@ public class BookingServiceImpl implements BookingService {
 
 	}
 
+	@Override
+	public Booking getByNoti(Notification noti) throws Exception {
+		try {
+			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),
+					1, noti.getEvent(), 0);
+			List<Booking> blist = bookingRepository.findAll();
+			for (Booking booking : blist) {
+				if (booking.getParking().getId() == modelNoti.getParking_id()
+						&& booking.getDrivervehicle().getDriver().getId() == modelNoti.getDriver_id()
+						&& booking.getDrivervehicle().getVehicle().getId() == modelNoti.getVehicle_id()
+						&& booking.getStatus() == 2) {
+					// booking.setStatus(3);
+					System.out.println("booking ===: " + booking.toString());
+					// Date date = new Date();
+					// booking.setTimeout(date);
+					//
+					// System.out.println("BookingServerImp/updatebystatus : " + booking);
+					// pusherService.trigger(n.getDrivervehicle_id() + "channel", n.getEvent(),
+					// "ok");
+					return booking;
+				}
+			}
+			// return null;
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+	}
+
 	// update booking, update noti vs type = 2, đẩy pusher về cho driver là ok.
 	@Override
 	public Booking updateByStatus(Notification noti) throws Exception {
@@ -126,40 +163,47 @@ public class BookingServiceImpl implements BookingService {
 			List<Booking> blist = bookingRepository.findAll();
 			for (Booking booking : blist) {
 				if (booking.getParking().getId() == n.getParking_id()
-						&& booking.getDrivervehicle().getId() == n.getDrivervehicle_id() && booking.getStatus() == 5) {
+						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
+						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
+						&& booking.getStatus() == 5) {
 
 					booking.setStatus(1);
 					System.out.println("booking = " + booking.toString());
-					pusherService.trigger(n.getDrivervehicle_id() + "channel", n.getEvent(), "ok");
+					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
 
 			for (Booking booking : blist) {
 				if (booking.getParking().getId() == n.getParking_id()
-						&& booking.getDrivervehicle().getId() == n.getDrivervehicle_id() && booking.getStatus() == 1) {
+						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
+						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
+						&& booking.getStatus() == 1) {
 					booking.setStatus(2);
 					System.out.println("booking ==: " + booking.toString());
 					Date date = new Date();
 					booking.setTimein(date);
 					System.out.println("BookingServerImp/updatebystatus : " + booking);
-					pusherService.trigger(n.getDrivervehicle_id() + "channel", n.getEvent(), "ok");
+					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(),
+							booking.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
+					booking.setPrice(price);
+					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
 			for (Booking booking : blist) {
 				if (booking.getParking().getId() == n.getParking_id()
-						&& booking.getDrivervehicle().getId() == n.getDrivervehicle_id() && booking.getStatus() == 2) {
+						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
+						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
+						&& booking.getStatus() == 2) {
 					booking.setStatus(3);
 					System.out.println("booking ===: " + booking.toString());
-					Date date = new Date();
-					booking.setTimeout(date);
-					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(), driverVehicleRepository.getOne(n.getDrivervehicle_id()).getVehicle().getVehicletype().getId())
-							.getPrice();
-					booking.setPrice(price);
-					System.out.println("BookingServerImp/updatebystatus : " + booking);
-					pusherService.trigger(n.getDrivervehicle_id() + "channel", n.getEvent(), "ok");
-					return bookingRepository.save(booking);
+					// Date date = new Date();
+					// booking.setTimeout(date);
+					//
+					// System.out.println("BookingServerImp/updatebystatus : " + booking);
+					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
+					return null;
 				}
 			}
 
@@ -205,13 +249,13 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> findByDriverPhone(String phone) throws Exception {
+	public List<Booking> findByDriverId(Long id) throws Exception {
 
 		try {
 			List<Booking> bAll = bookingRepository.findAll();
 			List<Booking> b = new ArrayList<>();
 			for (Booking booking : bAll) {
-				if (booking.getDrivervehicle().getDriver().getPhone().equals(phone)) {
+				if (booking.getDrivervehicle().getDriver().getId() == id) {
 					b.add(booking);
 				}
 			}

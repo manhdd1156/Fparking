@@ -11,11 +11,13 @@ import org.springframework.stereotype.Service;
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.dto.TariffSingle;
+import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
+import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Staff;
@@ -28,6 +30,8 @@ private ParkingRepository parkingRepository;
 private StaffService staffService;
 @Autowired
 private RatingRepository ratingRepository;
+@Autowired
+private OwnerRepository ownerRepository;
 @Autowired
 private TariffRepository tariffRepository;
 	@Override
@@ -132,5 +136,24 @@ private TariffRepository tariffRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 	}
-
+	
+	//get all acount parking by status 0:1
+	@Override
+	public List<Parking> getByStatus(int status) {
+		// TODO Auto-generated method stub
+		try {
+			List<Parking> listParking = parkingRepository.findByStatus(status);
+			return listParking;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+		}
+	}
+	@Override
+	public List<Parking> getByOwnerID(Long id) throws Exception {
+		Owner o = ownerRepository.getOne(id);
+		
+		// TODO Auto-generated method stub
+		return parkingRepository.findByOwner(o);
+	}
+	
 }
