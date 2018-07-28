@@ -8,6 +8,7 @@ import android.support.annotation.RequiresApi;
 import android.util.Log;
 
 import com.example.hung.fparking.config.Constants;
+import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 
@@ -21,7 +22,7 @@ public class BookingTask {
         if (type.equals("bookingID")) {
             new GetBookingTaskByID(data1, action, container).execute((Void) null);
         } else if (type.equals("phone")) {
-            new GetBookingTaskByPhone(data1, action, container).execute((Void) null);
+            new GetBookingTaskByDriverID(data1, action, container).execute((Void) null);
         } else if (type.equals("create")) {
             new CreateBooking(data1, data2, action, container).execute((Void) null);
         } else if (type.equals("getorder")) {
@@ -91,14 +92,14 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
     }
 }
 
-class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
+class GetBookingTaskByDriverID extends AsyncTask<Void, Void, Boolean> {
 
-    private String mphone, action;
+    private String driverID, action;
     private ArrayList<BookingDTO> booking;
     private IAsyncTaskHandler container;
 
-    public GetBookingTaskByPhone(String mphone, String action, IAsyncTaskHandler container) {
-        this.mphone = mphone;
+    public GetBookingTaskByDriverID(String driverID, String action, IAsyncTaskHandler container) {
+        this.driverID = driverID;
         this.action = action;
         this.container = container;
     }
@@ -108,8 +109,8 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/drivers?phone=" + mphone);
-            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers?phone=" + mphone);
+            String json = httpHandler.get(Constants.API_URL + "bookings/drivers/" + driverID);
+            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers/" + driverID);
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -155,12 +156,12 @@ class GetBookingTaskByPhone extends AsyncTask<Void, Void, Boolean> {
 class CreateBooking extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
-    String drivervehicleid, parkingid, action;
+    String vehicleid, parkingid, action;
     boolean success = false;
 
-    public CreateBooking(String drivervehicleid, String parkingid, String action, IAsyncTaskHandler container) {
+    public CreateBooking(String vehicleid, String parkingid, String action, IAsyncTaskHandler container) {
         this.container = container;
-        this.drivervehicleid = drivervehicleid;
+        this.vehicleid = vehicleid;
         this.parkingid = parkingid;
         this.action = action;
     }
@@ -171,8 +172,9 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
+            formData.put("driverid", Session.currentDriver.getId());
+            formData.put("vehicleid", vehicleid);
             formData.put("parkingid", parkingid);
-            formData.put("drivervehicleid", drivervehicleid);
             formData.put("status", 5);
 
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/create", formData.toString(), "POST");

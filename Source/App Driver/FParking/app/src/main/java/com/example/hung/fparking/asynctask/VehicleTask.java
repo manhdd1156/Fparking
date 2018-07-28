@@ -15,12 +15,13 @@ import java.util.ArrayList;
 
 public class VehicleTask extends AsyncTask<Void, Void, Boolean> {
 
-    private String phone, action;
+    private String action;
+    private long driverID;
     private ArrayList<VehicleDTO> vehicle;
     private IAsyncTaskHandler container;
 
-    public VehicleTask(String phone, String action, IAsyncTaskHandler container) {
-        this.phone = phone;
+    public VehicleTask(long driverID, String action, IAsyncTaskHandler container) {
+        this.driverID = driverID;
         this.action = action;
         this.container = container;
     }
@@ -30,8 +31,8 @@ public class VehicleTask extends AsyncTask<Void, Void, Boolean> {
         vehicle = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "vehicles/drivers?phone=" + phone);
-            Log.e("toa do: ", Constants.API_URL + "vehicles/drivers?phone=" + phone);
+            String json = httpHandler.get(Constants.API_URL + "vehicles/drivers/" + driverID);
+            Log.e("toa do: ", Constants.API_URL + "vehicles/drivers/" + driverID);
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
