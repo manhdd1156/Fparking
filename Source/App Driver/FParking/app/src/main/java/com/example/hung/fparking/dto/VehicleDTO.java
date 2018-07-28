@@ -14,16 +14,19 @@ public class VehicleDTO {
 
     private String type;
 
+    private String color;
+
     public VehicleDTO() {
     }
 
-    public VehicleDTO(int driverVehicleID, int status, int vehicleID, String licenseplate, int vehicleTypeID, String type) {
+    public VehicleDTO(int driverVehicleID, int status, int vehicleID, String licenseplate, int vehicleTypeID, String type, String color) {
         this.driverVehicleID = driverVehicleID;
         this.status = status;
         this.vehicleID = vehicleID;
         this.licenseplate = licenseplate;
         this.vehicleTypeID = vehicleTypeID;
         this.type = type;
+        this.color = color;
     }
 
     public int getDriverVehicleID() {
@@ -50,6 +53,10 @@ public class VehicleDTO {
         return type;
     }
 
+    public String getColor() {
+        return color;
+    }
+
     public void setDriverVehicleID(int driverVehicleID) {
         this.driverVehicleID = driverVehicleID;
     }
@@ -72,5 +79,9 @@ public class VehicleDTO {
 
     public void setType(String type) {
         this.type = type;
+    }
+
+    public void setColor(String color) {
+        this.color = color;
     }
 }

@@ -61,7 +61,15 @@ public class ParkingController {
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		
 	}
-
+	// get tariff by parking id = ?
+		@PreAuthorize("hasAnyAuthority('STAFF','ADMIN')")
+		@RequestMapping(path = "/owner/{id}", method = RequestMethod.GET)
+		public ResponseEntity<?> getByOwnerId(@PathVariable Long id)throws Exception {
+			
+				List<Parking> respone = parkingService.getByOwnerID(id);
+				return new ResponseEntity<>(respone, HttpStatus.OK);
+			
+		}
 	// get Rating by parking id
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)

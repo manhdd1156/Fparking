@@ -78,7 +78,8 @@
             android:label="@string/title_activity_direction" />
         <activity android:name=".login.MainActivity" />
         <activity android:name=".ParkingHistory" />
-        <activity android:name=".DetailedHistory"></activity>
+        <activity android:name=".DetailedHistory" />
+        <activity android:name=".CarsList"></activity>
     </application>
 
 </manifest>

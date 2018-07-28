@@ -10,7 +10,6 @@ import android.util.Log;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
-import com.example.hung.fparking.dto.VehicleDTO;
 
 import org.json.JSONArray;
 import org.json.JSONObject;

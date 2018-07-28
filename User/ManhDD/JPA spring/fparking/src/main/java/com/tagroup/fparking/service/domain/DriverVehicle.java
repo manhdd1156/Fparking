@@ -71,5 +71,10 @@ public class DriverVehicle implements Serializable {
 		this.vehicle = vehicle;
 	}
 
+	@Override
+	public String toString() {
+		return "DriverVehicle [id=" + id + ", status=" + status + ", driver=" + driver + ", vehicle=" + vehicle + "]";
+	}
+
 
 }

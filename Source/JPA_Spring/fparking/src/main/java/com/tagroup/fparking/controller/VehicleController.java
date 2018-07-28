@@ -71,7 +71,7 @@ public class VehicleController {
 
 	}
 
-	// create DriverVehicle by licenseplate, type, driverid
+	// create DriverVehicle by licenseplate, type,color, driverid
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
@@ -80,7 +80,7 @@ public class VehicleController {
 
 	}
 
-	// create DriverVehicle by licenseplate, type, driverid
+	// delete DriverVehicle by licenseplate, type, driverid
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {

@@ -36,6 +36,8 @@ public class Vehicle implements Serializable {
 	
 	private String color;
 	
+	private int status;
+	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicletype_id", referencedColumnName = "id")
 	private Vehicletype vehicletype;
@@ -62,6 +64,14 @@ public class Vehicle implements Serializable {
 		this.color = color;
 	}
 
+	public int getStatus() {
+		return status;
+	}
+
+	public void setStatus(int status) {
+		this.status = status;
+	}
+
 	public String getLicenseplate() {
 		return this.licenseplate;
 	}
@@ -77,6 +87,13 @@ public class Vehicle implements Serializable {
 	public void setVehicletype(Vehicletype vehicletype) {
 		this.vehicletype = vehicletype;
 	}
+
+	@Override
+	public String toString() {
+		return "Vehicle [id=" + id + ", licenseplate=" + licenseplate + ", color=" + color + ", status=" + status
+				+ ", vehicletype=" + vehicletype + "]";
+	}
+
 
 
 }

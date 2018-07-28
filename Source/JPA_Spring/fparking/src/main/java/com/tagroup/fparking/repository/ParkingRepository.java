@@ -6,6 +6,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 
 public interface ParkingRepository extends JpaRepository<Parking, Long> {
@@ -14,4 +15,6 @@ public interface ParkingRepository extends JpaRepository<Parking, Long> {
 			@Param("mylongitude") String mylongitude);
 
 	public List<Parking> findByStatus(int status);
+	
+	public List<Parking> findByOwner(Owner o);
 }

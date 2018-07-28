@@ -1,33 +1,28 @@
 package com.tagroup.fparking.dto;
 
-import com.tagroup.fparking.service.domain.Driver;
-
 public class DriverVehicleDTO {
 
+	
+	private Long driverid;
+	private String licenseplate;
+	private String type;
+	private String color;
+
+	
 	public DriverVehicleDTO() {
 		// TODO Auto-generated constructor stub
 	}
 
 
-	public DriverVehicleDTO(Driver driver, String licenseplate, String type) {
+	public DriverVehicleDTO(Long driverid, String licenseplate, String type) {
 		super();
-		this.driver = driver;
+		this.driverid = driverid;
 		this.licenseplate = licenseplate;
 		this.type = type;
 	}
 
 
-	private Driver driver;
-	private String licenseplate;
-	private String type;
 	
-	public Driver getDriver() {
-		return driver;
-	}
-	public void setDriver(Driver driver) {
-		this.driver = driver;
-	}
-
 
 	public String getLicenseplate() {
 		return licenseplate;
@@ -47,6 +42,36 @@ public class DriverVehicleDTO {
 	public void setType(String type) {
 		this.type = type;
 	}
+
+
+	public String getColor() {
+		return color;
+	}
+
+
+	public void setColor(String color) {
+		this.color = color;
+	}
+
+
+	public Long getDriverid() {
+		return driverid;
+	}
+
+
+	public void setDriverid(Long driverid) {
+		this.driverid = driverid;
+	}
+
+
+	@Override
+	public String toString() {
+		return "DriverVehicleDTO [driverid=" + driverid + ", licenseplate=" + licenseplate + ", type=" + type
+				+ ", color=" + color + "]";
+	}
+
+
+
 	
 
 }

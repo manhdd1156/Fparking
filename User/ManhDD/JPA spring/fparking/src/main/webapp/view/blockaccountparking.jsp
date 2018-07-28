@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Tài khoản lái xe</title>
+<title>Tài khoản bãi đỗ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -28,7 +28,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Tài khoản lái xe</h1>
+					<h1 class="page-header">Tài khoản bãi đỗ xe</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -44,21 +44,25 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Họ Tên</th>
-										<th>Số điện thoại</th>
+										<th>Địa chỉ</th>
+										<th>Số chỗ trống</th>
+										<th>Tổng số chỗ đỗ</th>
+										<th>Số dư tài khoản</th>
 										<th></th>
 										<th></th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items= "${ listDriver}" var="driver">
+									<c:forEach items= "${ listParking}" var="parking">
 									<tr class="odd gradeX">
-										<td>${driver.name }</td>
-										<td>${driver.phone }</td>
-										<td class="center"><a href="/account/driver/detail/${driver.id }">Xem</a></td>
-										<td class="center"><a href="/account/driver/blockaccount/${driver.id }">Khóa</a></td>
-										<td class="center" ><a href="/account/driver/editaccount/${driver.id }">Sửa</a></td>
+										<td>${parking.address }</td>
+										<td>${parking.currentspace }</td>
+										<td>${parking.totalspace }</td>
+										<td>${parking.deposits }</td>
+										<td class="center"><a href="">Xem</a></td>
+										<td class="center"><a href="">Mở khóa</a></td>
+										<td class="center"><a href="">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

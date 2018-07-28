@@ -69,6 +69,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
     ArrayList<ParkingDTO> parkingDTOS;
     private boolean userGesture = false;
+    private boolean noti = true;
     private CameraPosition cameraPosition;
     private Location distination;
 
@@ -91,9 +92,10 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
             parkingInforTask.execute();
         }
-        
+
         // Ánh xạ
         buttonCheckin = (Button) findViewById(R.id.buttonCheckin);
+        buttonCheckin.setEnabled(false);
         buttonCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -256,9 +258,13 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         try {
             double distanceValue = distination.distanceTo(location);
 //            Log.e("khoảng cách", distanceValue + "");
-            if (distanceValue <= 40) {
-
-                createNotification("Fparking");
+            if (distanceValue <= 500) {
+                buttonCheckin.setBackground(getResources().getDrawable(R.drawable.button_selector));
+                buttonCheckin.setEnabled(true);
+                if(noti){
+                    createNotification("Fparking");
+                    noti = false;
+                }
             }
         } catch (Exception e) {
             e.printStackTrace();

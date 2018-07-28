@@ -122,8 +122,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     mPreferencesEditor.putString("parkingID", parkingID + "").commit();
                     new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
 
-                    Intent intent = new Intent(OrderParking.this, Notification.class);
-                    startService(intent);
+//                    Intent intent = new Intent(OrderParking.this, Notification.class);
+//                    startService(intent);
                     proD.setCancelable(false);
                     proD.show();
 
@@ -191,7 +191,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                             if (vehicle.get(j).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
                                 textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
                                 driverVehicleID = vehicle.get(j).getDriverVehicleID();
-                                vehicleID =  vehicle.get(j).getVehicleID();
+                                vehicleID = vehicle.get(j).getVehicleID();
                                 Log.e("price", tariffDTOS.get(i).getPrice() + "");
                             }
                         }
@@ -212,8 +212,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
         // gọi vehicletask
 
-        VehicleTask vehicleTask = new VehicleTask(Session.currentDriver.getId(), "vt", this);
-        vehicleTask.execute();
+        VehicleDTO v = new VehicleDTO();
+        new VehicleTask("select", v, "vt", this);
 
         ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
         parkingInforTask.execute();
@@ -257,7 +257,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     textItems.add(new CarouselPicker.TextItem(vehicle.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
                 }
                 driverVehicleID = vehicle.get(0).getDriverVehicleID();
-                vehicleID =  vehicle.get(0).getVehicleID();
+                vehicleID = vehicle.get(0).getVehicleID();
             }
             CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
             carouselPicker.setAdapter(textAdapter);
@@ -286,5 +286,11 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        startActivity(getIntent());
     }
 }
