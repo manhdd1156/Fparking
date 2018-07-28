@@ -80,12 +80,12 @@ class UpdateNotification extends AsyncTask<Void, Void, Boolean> {
 class DeleteNotification extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
-    String drivervehicleid, parkingid, action, event;
+    String vehicleid, parkingid, action, event;
     boolean success = false;
 
-    public DeleteNotification(String drivervehicleid, String parkingid, String action, IAsyncTaskHandler container, String event) {
+    public DeleteNotification(String vehicleid, String parkingid, String action, IAsyncTaskHandler container, String event) {
         this.container = container;
-        this.drivervehicleid = drivervehicleid;
+        this.vehicleid = vehicleid;
         this.parkingid = parkingid;
         this.action = action;
         this.event = event;
@@ -97,8 +97,9 @@ class DeleteNotification extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
+            formData.put("driver_id", Session.currentDriver.getId());
+            formData.put("vehicle_id", vehicleid);
             formData.put("parking_id", parkingid);
-            formData.put("drivervehicle_id", drivervehicleid);
             formData.put("status", 0);
             formData.put("type", 2);
             formData.put("event", event);

@@ -204,7 +204,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
             System.out.println("đăng nhập thành công");
             startActivity( new Intent(this.getContext(), HomeActivity.class));
             getActivity().startService(intent);
-//            getActivity().getFragmentManager().popBackStack();
+            getActivity().getFragmentManager().popBackStack();
 
         } else {
             new CustomToast().Show_Toast(getActivity(), view,
