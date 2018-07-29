@@ -52,4 +52,18 @@ private FineRepository fineRepository;
 		Fine fine = fineRepository.getOne(id);
 		fineRepository.delete(fine);
 	}
+
+	// get fine price of driver when checkin.
+	@Override
+	public double getPriceByDrivervehicleId(Long id) throws Exception {
+		// TODO Auto-generated method stub
+		List<Fine> flist = getAll();
+		double finePrice = 0;
+		for (Fine fine : flist) {
+			if(fine.getDrivervehicle().getId()==id && fine.getType()==1 && fine.getStatus()==0) {
+				finePrice+=fine.getPrice();
+			}
+		}
+		return finePrice;
+	}
 }
