@@ -34,7 +34,7 @@ public class DriverController {
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
-	// update pass for driver
+	// update driver
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.PUT)
 	public ResponseEntity<?> changePassword(@RequestBody Driver driver) throws Exception {

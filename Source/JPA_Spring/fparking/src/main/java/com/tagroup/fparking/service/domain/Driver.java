@@ -11,8 +11,6 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.Proxy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 /**
  * The persistent class for the driver database table.
@@ -32,7 +30,7 @@ public class Driver implements Serializable {
 	private String name;
 	
 	private String phone;
-	@JsonIgnore
+	
 	private String password;
 	
 	private int status;

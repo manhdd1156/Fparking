@@ -124,6 +124,16 @@ public class BookingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+	
+	// getinfo when driver checkout
+		@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+		@RequestMapping(path = "/update/infocheckout", method = RequestMethod.PUT)
+		public ResponseEntity<?> getInfoCheckOut(@RequestBody Notification noti) throws Exception {
+			System.out.println("bookings/update/infocheckout : " + noti.toString());
+			Booking respone = bookingService.getInfoCheckOut(noti);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
+		}
+	
 	
 }
