@@ -70,4 +70,10 @@ public class MainActivity extends AppCompatActivity {
         else
             super.onBackPressed();
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
 }
