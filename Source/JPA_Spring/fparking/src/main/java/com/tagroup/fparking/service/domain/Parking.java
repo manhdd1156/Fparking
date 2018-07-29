@@ -145,6 +145,13 @@ public class Parking implements Serializable {
 	public void setOwner(Owner owner) {
 		this.owner = owner;
 	}
+
+	@Override
+	public String toString() {
+		return "Parking [id=" + id + ", address=" + address + ", currentspace=" + currentspace + ", deposits="
+				+ deposits + ", image=" + image + ", latitude=" + latitude + ", longitude=" + longitude + ", status="
+				+ status + ", timeoc=" + timeoc + ", totalspace=" + totalspace + ", owner=" + owner + "]";
+	}
 	
 
 }
