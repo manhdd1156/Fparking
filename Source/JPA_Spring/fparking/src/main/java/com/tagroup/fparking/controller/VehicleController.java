@@ -35,7 +35,7 @@ public class VehicleController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
-	// get drivervehicles by phone of driver
+	// get drivervehicles by driverid
 	@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN','STAFF')")
 	@RequestMapping(path = "/drivers/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getTypesByDriver(@PathVariable Long id) throws Exception {
