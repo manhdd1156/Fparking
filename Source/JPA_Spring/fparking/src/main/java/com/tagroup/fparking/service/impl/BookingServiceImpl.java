@@ -74,8 +74,9 @@ public class BookingServiceImpl implements BookingService {
 			bb.setDrivervehicle(dv);
 			bb.setParking(p);
 			bb.setStatus(5);
-			System.out.println(bb.toString());
+			
 			Booking b = bookingRepository.save(bb);
+			System.out.println("BookingServiceIml/Create : bb = " + b.toString());
 			if (b != null) {
 				Notification n = new Notification();
 				n.setDriver_id(driverid);
@@ -85,7 +86,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setType(1); // 1 : driver gửi cho parking
 				n.setStatus(0); // 0 : parking chưa nhận.
 				Notification nn = notificationService.create(n);
-				System.out.println("BookingServiceIml/create : " + nn);
+				System.out.println("BookingServiceIml/create noti : " + nn);
 				pusherService.trigger(b.getParking().getId() + "channel", "order", "");
 			}
 			return b;

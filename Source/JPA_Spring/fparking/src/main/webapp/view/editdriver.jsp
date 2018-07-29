@@ -23,45 +23,28 @@
 			<!-- ===============Left End================= -->
 
 		</nav>
-		<!-- ===============Hearder+Left End================= -->
-		<!-- ===============Body Start================= -->
-		<div id="page-wrapper">
-			<div class="row">
-				<div class="col-lg-12">
-					<h1 class="page-header">Sửa thông tin lái xe</h1>
-				</div>
-				<!-- /.col-lg-12 -->
-			</div>
 
-			<div class="row">
-				<div class="col-lg-12">
-					<div class="panel panel-default">
-						<div class="panel-body">
-							<div class="row">
-								<div class="col-lg-12">
-									<form role="form" method="POST" action="">
-										<div class="form-group">
-											<label>Họ Tên:</label> 
-											<input type="text" class="form-control" name="name" value="${name }">
-										</div>
-										<div class="form-group">
-											<label>Số điện thoại:</label> 
-											<input type="text" class="form-control" name="phone" value="${phonenumber }">
-										</div>
-										<button type="submit" class="btn btn-success">Lưu</button>
-										<button type="reset" class="btn btn-success">Đặt lại</button>
-									</form>
-								</div>
-							</div>
-						</div>
-					</div>
+		<!-- ===============Hearder+Left End================= -->
+		<div class="row panel panel-success"
+			style="margin-top: 1%; margin-left: 15%; margin-right: 15%">
+			<form>
+				<div class="form-group">
+					<label for="exampleInputEmail1">Họ Tên</label> <input type="text"
+						class="form-control" id="nameDriver" placeholder="${name }">
 				</div>
-			</div>
+				<div class="form-group">
+					<label for="exampleInputPassword1">Số điện Thoại</label> <input
+						type="text" class="form-control" id="exampleInputPassword1"
+						placeholder="${phonenumber }">
+				</div>
+				<button type="submit" class="btn btn-lg btn-success btn-block">Lưu</button>
+				<button type="reset" class="btn btn-lg btn-success btn-block">Đặt lại</button>
+			</form>
 		</div>
 		<!-- ===============Body End================= -->
-	</div>
-	<!-- ===============FooterJavaScrip Start================= -->
-	<%@include file="footerjavascrip.jsp"%>
-	<!-- ===============FooterJavaScrip End================= -->
+
+		<!-- ===============FooterJavaScrip Start================= -->
+		<%@include file="footerjavascrip.jsp"%>
+		<!-- ===============FooterJavaScrip End================= -->
 </body>
 </html>
