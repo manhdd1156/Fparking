@@ -21,9 +21,13 @@ import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.VehicleTask;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
+import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 
 import java.util.ArrayList;
+import java.util.List;
+
+import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
@@ -35,10 +39,20 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
     ImageView addCar;
     ArrayList<VehicleDTO> vehicle;
 
+    private CarouselPicker carouselPicker;
+    private List<CarouselPicker.PickerItem> textItems;
+    private ArrayList<TypeDTO> typeDTOS;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_car_lists);
+
+        // tạo dialog
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(CarsList.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car,null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
 
         //ánh xạ
         backCarsList = findViewById(R.id.imageViewBackCarsList);
@@ -54,11 +68,8 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         addCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(CarsList.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car,null);
-                mBuilder.setView(mView);
-                final AlertDialog dialog = mBuilder.create();
                 dialog.show();
+                new VehicleTask("type", null, "ty", CarsList.this);
             }
         });
 
@@ -70,10 +81,14 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 //        mAdapter = new MyRecyclerViewAdapter(getDataSet());
 //        mRecyclerView.setAdapter(mAdapter);
 
+        //load carlist
         VehicleDTO v = new VehicleDTO();
         new VehicleTask("select", v, "vt", this);
 
         builder = new AlertDialog.Builder(CarsList.this);
+
+        // load type data
+        carouselPicker = (CarouselPicker) mView.findViewById(R.id.carouselPickerType);
     }
 
     @Override
@@ -100,40 +115,52 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
     @Override
     public void onPostExecute(Object o, String action) {
-        vehicle = (ArrayList<VehicleDTO>) o;
-        mAdapter = new CarsListViewAdapter(vehicle);
-        mRecyclerView.setAdapter(mAdapter);
+        if(action.equals("vt")){
+            vehicle = (ArrayList<VehicleDTO>) o;
+            mAdapter = new CarsListViewAdapter(vehicle);
+            mRecyclerView.setAdapter(mAdapter);
 
-        ((CarsListViewAdapter) mAdapter).setOnItemClickListener(new CarsListViewAdapter
-                .MyClickListener() {
-            @Override
-            public void onItemClick(int position, View v) {
+            ((CarsListViewAdapter) mAdapter).setOnItemClickListener(new CarsListViewAdapter
+                    .MyClickListener() {
+                @Override
+                public void onItemClick(int position, View v) {
 
-            }
+                }
 
-            @Override
-            public void onDeleteItemClick(final String licensePlate, View v) {
+                @Override
+                public void onDeleteItemClick(final String licensePlate, View v) {
 
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialog, int choice) {
-                        switch (choice) {
-                            case DialogInterface.BUTTON_POSITIVE:
-                                VehicleDTO v = new VehicleDTO();
-                                v.setLicenseplate(licensePlate);
-                                DeleteVehicle(v);
-                                break;
-                            case DialogInterface.BUTTON_NEGATIVE:
+                    DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int choice) {
+                            switch (choice) {
+                                case DialogInterface.BUTTON_POSITIVE:
+                                    VehicleDTO v = new VehicleDTO();
+                                    v.setLicenseplate(licensePlate);
+                                    DeleteVehicle(v);
+                                    break;
+                                case DialogInterface.BUTTON_NEGATIVE:
 
-                                break;
+                                    break;
+                            }
                         }
-                    }
-                };
-                builder.setMessage("Bạn có muốn xóa xe này không?")
-                        .setPositiveButton("Đồng Ý", dialogClickListener).setCancelable(false)
-                        .setNegativeButton("Hủy", dialogClickListener).show();
+                    };
+                    builder.setMessage("Bạn có muốn xóa xe này không?")
+                            .setPositiveButton("Đồng Ý", dialogClickListener).setCancelable(false)
+                            .setNegativeButton("Hủy", dialogClickListener).show();
+                }
+            });
+        }else if(action.equals("ty")){
+            typeDTOS = (ArrayList<TypeDTO>) o;
+            textItems = new ArrayList<>();
+            if (typeDTOS.size() > 0) {
+                for (int i = 0; i < typeDTOS.size(); i++) {
+                    textItems.add(new CarouselPicker.TextItem(typeDTOS.get(i).getType(), 6)); // 5 is text size (sp)
+                }
             }
-        });
+            CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
+            carouselPicker.setAdapter(textAdapter);
+        }
     }
 }
 

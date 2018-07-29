@@ -40,7 +40,7 @@ public class VehicleController {
 	}
 	
 	// get all vehicletype
-		@PreAuthorize("hasAnyAuthority('ADMIN')")
+		@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
 		@RequestMapping(path = "/types", method = RequestMethod.GET)
 		public ResponseEntity<?> getAllVehicleType() throws Exception {
 			List<Vehicletype> respone = vehicleTypeService.getAll();
