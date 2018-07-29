@@ -92,6 +92,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
         backOrder = findViewById(R.id.imageViewBackOrder);
+        buttonDat_Cho.setEnabled(false);
 
         // create dialog
         proD = new ProgressDialog(OrderParking.this);
@@ -192,7 +193,14 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                                 textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
                                 driverVehicleID = vehicle.get(j).getDriverVehicleID();
                                 vehicleID = vehicle.get(j).getVehicleID();
+                                buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_selector));
+                                buttonDat_Cho.setEnabled(true);
                                 Log.e("price", tariffDTOS.get(i).getPrice() + "");
+                                break;
+                            }else{
+                                textViewPrice.setText("N/A");
+                                buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_overload));
+                                buttonDat_Cho.setEnabled(false);
                             }
                         }
                     }
