@@ -70,7 +70,7 @@ public class Theme extends AppCompatActivity {
                         startActivity(homeIntent);
                         finish();
                     } else {
-                        new DriverLoginTask("second_time", "", "", new IAsyncTaskHandler() {
+                        new DriverLoginTask("second_time", null, "", new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o, String action) {
                                 Intent myIntent = new Intent(Theme.this, Notification.class);

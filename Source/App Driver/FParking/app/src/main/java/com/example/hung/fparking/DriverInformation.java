@@ -4,12 +4,18 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 
-public class DriverInformation extends AppCompatActivity {
+import com.example.hung.fparking.asynctask.DriverLoginTask;
+import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
+import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.dto.DriverDTO;
+
+public class DriverInformation extends AppCompatActivity implements IAsyncTaskHandler {
 
     ImageView backInformation;
     Button mUpdate, confirm;
@@ -32,7 +38,7 @@ public class DriverInformation extends AppCompatActivity {
         tbName = findViewById(R.id.tbName);
         tbPhone = findViewById(R.id.tbPhone);
         confirm = mView.findViewById(R.id.btnOK);
-        password = mView.findViewById(R.id.tbPass);
+        password = (EditText) mView.findViewById(R.id.tbPassWord);
 
         // listener
         mUpdate.setOnClickListener(new View.OnClickListener() {
@@ -45,7 +51,11 @@ public class DriverInformation extends AppCompatActivity {
         confirm.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                tbPhone.setText(password.getText());
+                DriverDTO driverDTO = new DriverDTO();
+                driverDTO.setPhone(tbPhone.getText().toString());
+                driverDTO.setName(tbName.getText().toString() );
+                String pass = password.getText().toString();
+                new DriverLoginTask("update", driverDTO, pass, DriverInformation.this);
                 dialog.cancel();
             }
         });
@@ -58,11 +68,21 @@ public class DriverInformation extends AppCompatActivity {
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
+
+        tbPhone.setText(Session.currentDriver.getPhone());
+        tbName.setText(Session.currentDriver.getName());
     }
 
     @Override
     public void finish() {
         super.finish();
         overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+    }
+
+    @Override
+    public void onPostExecute(Object o, String action) {
+        password.setText("");
+        tbName.setText(Session.currentDriver.getName());
+        tbPhone.setText(Session.currentDriver.getPhone());
     }
 }

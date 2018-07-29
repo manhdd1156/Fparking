@@ -28,6 +28,7 @@ import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.config.Constants;
+import com.example.hung.fparking.dto.DriverDTO;
 import com.example.hung.fparking.notification.Notification;
 
 import java.util.regex.Matcher;
@@ -190,7 +191,9 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
                     "Số điện thoại không đúng");
             // Else do login and do your stuff
         else {
-            new DriverLoginTask("first_time",getPhone,getPassword,this);
+            DriverDTO driverDTO = new DriverDTO();
+            driverDTO.setPhone(getPhone);
+            new DriverLoginTask("first_time", driverDTO, getPassword, this);
             Toast.makeText(getActivity(), "Do Login.", Toast.LENGTH_SHORT)
                     .show();
         }
@@ -202,7 +205,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 //            Notification notification= new Notification();
             Intent intent = new Intent(view.getContext(), Notification.class);
             System.out.println("đăng nhập thành công");
-            startActivity( new Intent(this.getContext(), HomeActivity.class));
+            startActivity(new Intent(this.getContext(), HomeActivity.class));
             getActivity().startService(intent);
             getActivity().getFragmentManager().popBackStack();
 
