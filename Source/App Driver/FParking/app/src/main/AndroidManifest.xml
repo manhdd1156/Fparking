@@ -80,7 +80,8 @@
         <activity android:name=".ParkingHistory" />
         <activity android:name=".DetailedHistory" />
         <activity android:name=".CarsList" />
-        <activity android:name=".DriverInformation"></activity>
+        <activity android:name=".DriverInformation" />
+        <activity android:name=".DialogConfirmPass"></activity>
     </application>
 
 </manifest>

@@ -19,8 +19,9 @@
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\cancel.png" />
-                                      <entry key="outputName" value="ic_action_cancel" />
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\plus.png" />
+                                      <entry key="outputName" value="ic_action_add" />
+                                      <entry key="theme" value="HOLO_DARK" />
                                     </map>
                                   </option>
                                 </PersistentState>
