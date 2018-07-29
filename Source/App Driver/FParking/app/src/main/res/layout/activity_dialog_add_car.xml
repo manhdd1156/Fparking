@@ -7,6 +7,17 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+    <in.goodiebag.carouselpicker.CarouselPicker
+        android:id="@+id/carouselPickerType"
+        android:layout_width="370dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_below="@+id/imageView23"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        app:items_visible="three" />
+
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="wrap_content"
@@ -42,8 +53,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView21"
-        android:layout_marginTop="20dp"
+        android:layout_alignTop="@+id/carouselPickerType"
+        android:layout_marginTop="80dp"
         android:background="@drawable/button_selector2"
         android:text="THÊM"
         android:textColor="@android:color/white"
@@ -112,24 +123,5 @@
         android:text="Xe con/ Xe khách"
         android:textColor="#FE6621"/>
 
-    <in.goodiebag.carouselpicker.CarouselPicker
-        android:id="@+id/carouselPickerType"
-        android:layout_width="377dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentStart="true"
-        android:layout_marginBottom="164dp"
-        android:background="#ffffff"
-        app:items_visible="three" />
-
-    <ImageView
-        android:id="@+id/imageView21"
-        android:layout_width="match_parent"
-        android:layout_height="56dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView23"
-        android:layout_marginTop="20dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/checkoutinfo" />
 
 </RelativeLayout>
