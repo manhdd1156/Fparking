@@ -83,6 +83,12 @@ public class Driver implements Serializable {
 		this.status = status;
 	}
 
+	@Override
+	public String toString() {
+		return "Driver [id=" + id + ", name=" + name + ", phone=" + phone + ", password=" + password + ", status="
+				+ status + "]";
+	}
+
 //	public List<Vehicle> getVehicles() {
 //		return vehicles;
 //	}

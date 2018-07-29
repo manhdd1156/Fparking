@@ -113,12 +113,12 @@
         android:textColor="#FE6621"/>
 
     <in.goodiebag.carouselpicker.CarouselPicker
-        android:id="@+id/carouselPickerLicensePlates"
+        android:id="@+id/carouselPickerType"
         android:layout_width="377dp"
         android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="236dp"
+        android:layout_marginBottom="164dp"
         android:background="#ffffff"
         app:items_visible="three" />
 

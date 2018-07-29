@@ -16,14 +16,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tagroup.fparking.dto.DriverVehicleDTO;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.VehicletypeService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Vehicle;
+import com.tagroup.fparking.service.domain.Vehicletype;
 
 @RestController
 @RequestMapping("/api/vehicles")
 public class VehicleController {
 	@Autowired
 	private VehicleService vehicleService;
+	@Autowired
+	private VehicletypeService vehicleTypeService;
 	@Autowired
 	private DriverVehicleService drivervehicleService;
 
@@ -34,6 +38,14 @@ public class VehicleController {
 		Vehicle respone = vehicleService.getVehicleByDriverVehicle(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+	
+	// get all vehicletype
+		@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
+		@RequestMapping(path = "/types", method = RequestMethod.GET)
+		public ResponseEntity<?> getAllVehicleType() throws Exception {
+			List<Vehicletype> respone = vehicleTypeService.getAll();
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
 
 	// get drivervehicles by driverid
 	@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN','STAFF')")
