@@ -12,6 +12,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -31,7 +32,7 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     AlertDialog.Builder builder;
-
+    ImageView addCar;
     ArrayList<VehicleDTO> vehicle;
 
     @Override
@@ -47,6 +48,17 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
                 Intent backHistoryIntent = new Intent(CarsList.this, HomeActivity.class);
                 startActivity(backHistoryIntent);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
+        addCar = (ImageView) findViewById(R.id.imageViewAddCar);
+        addCar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(CarsList.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car,null);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
             }
         });
 
