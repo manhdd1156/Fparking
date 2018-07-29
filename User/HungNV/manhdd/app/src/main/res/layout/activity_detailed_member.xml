@@ -39,7 +39,7 @@
 
 
         <ImageView
-            android:id="@+id/imageViewBackInformation"
+            android:id="@+id/imageViewBackHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView9"
@@ -71,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageView2"
             android:layout_marginLeft="33dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="15dp"
             android:text="Họ và tên"
             android:textSize="18sp" />
 
@@ -84,7 +84,6 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:hint="Số điện thoại"
             android:inputType="phone"
             android:padding="10dp"
             android:singleLine="true"
@@ -132,8 +131,41 @@
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbPhone"
+            android:layout_marginTop="10dp"
+            android:text="Địa chỉ"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tbAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:text="sdsdsdsdsdsdsdsds"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbAddress"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
         <Button
-            android:id="@+id/buttonUpdate"
+            android:id="@+id/btnUpdate"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".CarsList">
+    tools:context=".DetailedMember">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -24,13 +24,13 @@
             tools:layout_editor_absoluteY="0dp" />
 
         <TextView
-            android:id="@+id/textView2"
+            android:id="@+id/tvMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
-            android:text="Quản lý xe"
+            android:text="Thông tin chi tiết"
             android:textColor="@color/whitetext"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -39,7 +39,7 @@
 
 
         <ImageView
-            android:id="@+id/imageViewBackCarsList"
+            android:id="@+id/imageViewBackHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView9"
@@ -48,24 +48,16 @@
             android:layout_marginStart="10dp"
             app:srcCompat="@drawable/ic_action_backwhile" />
 
-        <android.support.v7.widget.RecyclerView
-            android:id="@+id/cars_list_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="50dp"
-            android:background="@color/background"
-            app:layout_constraintEnd_toEndOf="parent"
-            tools:layout_editor_absoluteY="0dp" />
-
         <ImageView
-            android:id="@+id/imageView22"
+            android:id="@+id/imgMonth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
+            android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
-            android:layout_marginEnd="13dp"
-            android:layout_marginTop="8dp"
-            android:src="@drawable/ic_action_add" />
+            android:layout_marginStart="153dp"
+            android:layout_marginTop="189dp"
+            app:srcCompat="@drawable/ic_action_info" />
+
 
     </RelativeLayout>
 
