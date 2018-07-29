@@ -31,7 +31,7 @@ public class DriverInformation extends AppCompatActivity {
         mUpdate = (Button) findViewById(R.id.buttonUpdate);
         tbName = findViewById(R.id.tbName);
         tbPhone = findViewById(R.id.tbPhone);
-        confirm = mView.findViewById(R.id.btnLogin);
+        confirm = mView.findViewById(R.id.btnOK);
         password = mView.findViewById(R.id.tbPass);
 
         // listener
