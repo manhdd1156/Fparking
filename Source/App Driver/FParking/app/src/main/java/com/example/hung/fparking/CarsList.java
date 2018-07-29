@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
@@ -13,6 +14,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -36,12 +38,15 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     AlertDialog.Builder builder;
-    ImageView addCar;
     ArrayList<VehicleDTO> vehicle;
 
+    ImageView addCar;
+    Button btnAddCar;
+    EditText editTextLS1, editTextLS2;
     private CarouselPicker carouselPicker;
     private List<CarouselPicker.PickerItem> textItems;
     private ArrayList<TypeDTO> typeDTOS;
+    String type;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,6 +94,33 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
         // load type data
         carouselPicker = (CarouselPicker) mView.findViewById(R.id.carouselPickerType);
+        btnAddCar = mView.findViewById(R.id.btnAddCar);
+        editTextLS1 = mView.findViewById(R.id.editTextLS1);
+        editTextLS2 = mView.findViewById(R.id.editTextLS2);
+
+        btnAddCar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                type = textItems.get(position).getText();
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
     }
 
     @Override
@@ -157,6 +189,7 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
                 for (int i = 0; i < typeDTOS.size(); i++) {
                     textItems.add(new CarouselPicker.TextItem(typeDTOS.get(i).getType(), 6)); // 5 is text size (sp)
                 }
+                type = typeDTOS.get(0).getType();
             }
             CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
             carouselPicker.setAdapter(textAdapter);
