@@ -307,8 +307,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onPostExecute(Object o, String s) {
         nearParkingList = (ArrayList<GetNearPlace>) o;
-        int height = 120;
-        int width = 120;
+        int height = 150;
+        int width = 150;
         BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.parking_icon);
         Bitmap b = bitmapdraw.getBitmap();
         Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);

@@ -83,8 +83,6 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-//        mAdapter = new MyRecyclerViewAdapter(getDataSet());
-//        mRecyclerView.setAdapter(mAdapter);
 
         //load carlist
         VehicleDTO v = new VehicleDTO();
