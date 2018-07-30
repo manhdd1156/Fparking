@@ -45,8 +45,13 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public Driver update(Driver driver) {
 		// TODO Auto-generated method stub
-		
-		return driverRepository.save(driver);
+		List<Driver> dlist = getAll();
+		for (Driver d : dlist) {
+			if(d.getId()==driver.getId() && d.getPassword().equals(driver.getPassword())) {
+				return driverRepository.save(driver);
+			}
+		}
+		return null;
 
 	}
 

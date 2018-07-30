@@ -12,5 +12,6 @@ public interface FineService {
 	public Fine update(Fine fine)throws Exception;
 	public void delete(Long id)throws Exception;
 	public double getPriceByDrivervehicleId(Long id) throws Exception;
+	public List<Fine> getByDriverID(Long id) throws Exception;
 	
 }

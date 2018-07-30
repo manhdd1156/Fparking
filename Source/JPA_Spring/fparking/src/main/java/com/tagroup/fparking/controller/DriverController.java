@@ -13,8 +13,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tagroup.fparking.service.DriverService;
+import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.domain.Driver;
+import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Vehicle;
 
 @RestController
@@ -25,15 +27,25 @@ public class DriverController {
 	@Autowired
 	private VehicleService driverVehicleService;
 
+	@Autowired
+	private FineService fineService;
 	// get driver by id
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getTypesByDrivers(@PathVariable int id) throws Exception {
+	public ResponseEntity<?> getTypesByDrivers(@PathVariable Long id) throws Exception {
 		
 			List<Vehicle> respone = driverVehicleService.getAll();
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-
+	// get fine by driverID
+		@PreAuthorize("hasAnyAuthority('DRIVER')")
+		@RequestMapping(path = "/{id}/fines", method = RequestMethod.GET)
+		public ResponseEntity<?> getFinesByDriverID(@PathVariable Long id) throws Exception {
+			
+				List<Fine> respone = fineService.getByDriverID(id);
+				return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
+	
 	// update driver
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.PUT)

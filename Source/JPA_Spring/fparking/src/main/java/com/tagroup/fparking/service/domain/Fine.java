@@ -14,6 +14,7 @@ import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Proxy;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 
 
@@ -39,12 +40,12 @@ public class Fine implements Serializable {
 	private int type;
 	
 	private double price;
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "drivervehicle_id", referencedColumnName = "id")
 	private DriverVehicle drivervehicle;
 
-	
+	@JsonIgnore
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
 	private Parking parking;
