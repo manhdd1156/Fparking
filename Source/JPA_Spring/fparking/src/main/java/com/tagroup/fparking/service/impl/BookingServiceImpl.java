@@ -111,13 +111,41 @@ public class BookingServiceImpl implements BookingService {
 			Booking b = bookingRepository.getOne(booking.getId());
 			b.setStatus(booking.getStatus());
 			if (booking.getStatus() == 2) {
-
+					
 				b.setTimein(booking.getTimein());
+				
+				b.setStatus(2);
+				System.out.println("booking ==: " + booking.toString());
+				Date date = new Date();
+				b.setTimein(date);
+				b.setComission(commisionService.getCommision());
+				
+				double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
+				b.setTotalfine(finePrice);
+				System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
+				double price = tariffService.findByParkingAndVehicletype(b.getParking().getId(),
+						b.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
+				b.setPrice(price);
+				
+				return bookingRepository.save(b);
 			} else if (booking.getStatus() == 3) {
 				b.setTimeout(booking.getTimeout());
+				
+				Date date = new Date();
+				booking.setTimeout(date);
+				long diff = b.getTimeout().getTime() - b.getTimein().getTime();
+				double diffInHours = diff / ((double) 1000 * 60 * 60);
+				double totalPrice = diffInHours * b.getPrice();
+				if (diffInHours < 1) {
+					totalPrice = b.getPrice();
+				}
+				totalPrice+=b.getTotalfine();
+				b.setAmount(totalPrice);
+				System.out.println("booking ===: khi chua tahy doi status = 3 : " + b.toString());
+				return bookingRepository.save(b);
 			}
 			// TODO Auto-generated method stub
-			return bookingRepository.save(b);
+			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
