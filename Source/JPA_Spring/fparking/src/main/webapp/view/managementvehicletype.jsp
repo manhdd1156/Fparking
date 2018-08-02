@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý bãi đỗ</title>
+<title>Quản lý nghiệp vụ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -28,15 +28,15 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Tài khoản bãi đỗ xe</h1>
+					<h1 class="page-header">Quản lý loại xe</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						<div class="panel-heading">Tổng số tài khoản:
-							${totalAccount}</div>
+						<div class="panel-heading">Tổng số loại xe:
+							${totalType}</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
 							<table width="100%"
@@ -44,30 +44,21 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Địa chỉ</th>
-										<th>Số chỗ trống</th>
-										<th>Tổng số chỗ đỗ</th>
-										<th>Số dư tài khoản</th>
-										<th></th>
-										<th></th>
+										<th>Loại xe</th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items= "${ listParking}" var="parking">
+									<c:forEach items= "${ listVehicletype}" var="listVehicletype">
 									<tr class="odd gradeX">
-										<td>${parking.address }</td>
-										<td>${parking.currentspace }</td>
-										<td>${parking.totalspace }</td>
-										<td>${parking.deposits }</td>
-										<td class="cente"><a href="/account/patking/detail/${parking.id }">Xem</a></td>
-										<td class="center"><a href="/account/parking/blockaccount/${parking.id }">Khóa</a></td>
-										<td class="center"><a href="/account/parking/edit/${parking.id }">Sửa</a></td>
+										<td>${listVehicletype.type }</td>
+										<td class="center"><a href="/business/vehicletype/edit/${listVehicletype.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>
 							</table>
 							<!-- /.table-responsive -->
+							<a href="/business/vehicletype/add">Thêm loại xe</a>
 						</div>
 						<!-- /.panel-body -->
 					</div>
@@ -75,6 +66,7 @@
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
+			
 		</div>
 	</div>
 	<!-- ===============Body End================= -->

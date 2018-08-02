@@ -46,5 +46,11 @@ public class Commision implements Serializable {
 	public void setCommision(double commision) {
 		this.commision = commision;
 	}
+
+	@Override
+	public String toString() {
+		return "Commision [id=" + id + ", commision=" + commision + "]";
+	}
+	
 	
 }

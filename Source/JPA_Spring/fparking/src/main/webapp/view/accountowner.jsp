@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý bãi đỗ</title>
+<title>Quản lý chủ bãi</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -28,7 +28,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Tài khoản bãi đỗ xe</h1>
+					<h1 class="page-header">Tài khoản chủ bãi xe</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -44,25 +44,19 @@
 								id="dataTables-example">
 								<thead>
 									<tr>
-										<th>Địa chỉ</th>
-										<th>Số chỗ trống</th>
-										<th>Tổng số chỗ đỗ</th>
-										<th>Số dư tài khoản</th>
-										<th></th>
+										<th>Họ Tên</th>
+										<th>Số điện thoại</th>
 										<th></th>
 										<th></th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items= "${ listParking}" var="parking">
+									<c:forEach items= "${ listOwner}" var="owner">
 									<tr class="odd gradeX">
-										<td>${parking.address }</td>
-										<td>${parking.currentspace }</td>
-										<td>${parking.totalspace }</td>
-										<td>${parking.deposits }</td>
-										<td class="cente"><a href="/account/patking/detail/${parking.id }">Xem</a></td>
-										<td class="center"><a href="/account/parking/blockaccount/${parking.id }">Khóa</a></td>
-										<td class="center"><a href="/account/parking/edit/${parking.id }">Sửa</a></td>
+										<td>${owner.name }</td>
+										<td>${owner.phone }</td>
+										<td class="center"><a href="/account/owner/detail/${owner.id }">Xem</a></td>
+										<td class="center" ><a href="/account/owner/edit/${owner.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

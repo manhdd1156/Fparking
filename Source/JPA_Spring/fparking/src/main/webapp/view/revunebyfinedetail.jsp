@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý bãi đỗ</title>
+<title>Quản lý nghiệp vụ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -23,62 +23,48 @@
 			<!-- ===============Left End================= -->
 
 		</nav>
-
 		<!-- ===============Hearder+Left End================= -->
+		<!-- ===============Body Start================= -->
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Tài khoản bãi đỗ xe</h1>
+					<h1 class="page-header">Chi tiết doanh thu tiền phạt</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
+
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						<div class="panel-heading">Tổng số tài khoản:
-							${totalAccount}</div>
-						<!-- /.panel-heading -->
-						<div class="panel-body">
-							<table width="100%"
-								class="table table-striped table-bordered table-hover"
-								id="dataTables-example">
+						
+							<table class="table table-bordered">
 								<thead>
 									<tr>
+										<th>Thời gian vào</th>
+										<th>Thời gian ra</th>
 										<th>Địa chỉ</th>
-										<th>Số chỗ trống</th>
-										<th>Tổng số chỗ đỗ</th>
-										<th>Số dư tài khoản</th>
-										<th></th>
-										<th></th>
-										<th></th>
+										<th>Biển số xe</th>
+										<th>Giá</th>
+										<th>Tiền phạt</th>
+										<th>Phần chăm triết khấu</th>
+										<th>Tổng tiền thu</th>
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items= "${ listParking}" var="parking">
-									<tr class="odd gradeX">
-										<td>${parking.address }</td>
-										<td>${parking.currentspace }</td>
-										<td>${parking.totalspace }</td>
-										<td>${parking.deposits }</td>
-										<td class="cente"><a href="/account/patking/detail/${parking.id }">Xem</a></td>
-										<td class="center"><a href="/account/parking/blockaccount/${parking.id }">Khóa</a></td>
-										<td class="center"><a href="/account/parking/edit/${parking.id }">Sửa</a></td>
+									<tr>
+										
+										
 									</tr>
-									</c:forEach>
 								</tbody>
 							</table>
-							<!-- /.table-responsive -->
-						</div>
-						<!-- /.panel-body -->
+
+					
 					</div>
-					<!-- /.panel -->
 				</div>
-				<!-- /.col-lg-12 -->
 			</div>
 		</div>
+		<!-- ===============Body End================= -->
 	</div>
-	<!-- ===============Body End================= -->
-
 	<!-- ===============FooterJavaScrip Start================= -->
 	<%@include file="footerjavascrip.jsp"%>
 	<!-- ===============FooterJavaScrip End================= -->
