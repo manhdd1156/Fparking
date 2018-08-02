@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:keepScreenOn="true"
-    tools:context=".CheckOut">
+    tools:context=".DetailedHistory">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -42,7 +42,7 @@
 
 
         <ImageView
-            android:id="@+id/imageViewBackCheckout"
+            android:id="@+id/imageViewBackDetailedHistory"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView9"

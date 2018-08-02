@@ -5,18 +5,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/background"
     android:orientation="vertical">
-
-    <in.goodiebag.carouselpicker.CarouselPicker
-        android:id="@+id/carouselPickerType"
-        android:layout_width="370dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_below="@+id/imageView23"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:background="#ffffff"
-        app:items_visible="three" />
 
     <ImageView
         android:id="@+id/imageView9"
@@ -54,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/carouselPickerType"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="70dp"
         android:background="@drawable/button_selector2"
         android:text="THÊM"
         android:textColor="@android:color/white"
@@ -82,8 +72,8 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:hint="30Z1"
+        android:inputType="text"
         android:maxLength="4"
-        android:inputType="phone"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
@@ -100,18 +90,41 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:hint="12345"
+        android:inputType="number"
         android:maxLength="5"
-        android:inputType="phone"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
         android:textSize="16sp" />
 
+    <EditText
+        android:id="@+id/editTextColor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/editTextLS2"
+        android:layout_centerHorizontal="true"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="Màu sắc"
+        android:inputType="text"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="250dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/editTextColor"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
+
     <ImageView
         android:id="@+id/imageView23"
         android:layout_width="136dp"
         android:layout_height="100dp"
-        android:layout_below="@+id/editTextLS1"
+        android:layout_below="@+id/editTextColor"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/automobile" />
 
@@ -123,7 +136,17 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="-20dp"
         android:text="Xe con/ Xe khách"
-        android:textColor="#FE6621"/>
+        android:textColor="#FE6621" />
+
+    <in.goodiebag.carouselpicker.CarouselPicker
+        android:id="@+id/carouselPickerType"
+        android:layout_width="356dp"
+        android:layout_height="50dp"
+        android:layout_below="@+id/imageView23"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20dp"
+        android:background="#ffffff"
+        app:items_visible="three" />
 
 
 </RelativeLayout>

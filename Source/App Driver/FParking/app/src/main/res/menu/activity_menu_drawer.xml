@@ -7,14 +7,15 @@
             android:id="@+id/nav_history"
             android:icon="@drawable/ic_menu_history"
             android:title="Lịch sử đỗ xe" />
-    <View
-        android:layout_width="fill_parent"
-        android:layout_height="1px"
-        android:background="@color/white_greyish" />
+    <item
+        android:id="@+id/nav_fine_history"
+        android:icon="@drawable/ic_menu_guide"
+        android:title="Lịch sử phạt" />
         <item
             android:id="@+id/nav_mCar"
             android:icon="@drawable/ic_menu_car"
             android:title="Quản lý xe" />
+
     <item
         android:id="@+id/nav_share"
         android:icon="@drawable/ic_menu_contact"
@@ -25,9 +26,11 @@
         android:icon="@drawable/ic_menu_rules"
         android:title="Điều kiện và điều khoản" />
     <item
-        android:id="@+id/nav_"
+        android:id="@+id/nav_guide"
         android:icon="@drawable/ic_menu_guide"
         android:title="Hướng dẫn sử dụng" />
+
+
 
 
 </menu>

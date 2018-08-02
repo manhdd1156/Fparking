@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".DetailedMember">
+    tools:context=".DriverInformation">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -77,7 +77,7 @@
 
         <EditText
             android:id="@+id/tbName"
-            android:layout_width="match_parent"
+            android:layout_width="342dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
             android:layout_marginLeft="23dp"
@@ -93,7 +93,7 @@
             android:textSize="16sp" />
 
         <View
-            android:layout_width="319dp"
+            android:layout_width="295dp"
             android:layout_height="1px"
             android:layout_below="@+id/tbName"
             android:layout_marginLeft="33dp"
@@ -126,7 +126,7 @@
             android:textSize="16sp" />
 
         <View
-            android:layout_width="319dp"
+            android:layout_width="295dp"
             android:layout_height="1px"
             android:layout_below="@+id/tbPhone"
             android:layout_marginLeft="33dp"
@@ -142,6 +142,39 @@
             android:text="CẬP NHẬT"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbPhone"
+            android:layout_marginTop="10dp"
+            android:text="Mật khẩu:"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tbPass"
+            android:layout_width="361dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tbName"
+            android:layout_below="@+id/textView10"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:inputType="numberPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:text="01647383196"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="295dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbPass"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
 
 
     </RelativeLayout>
