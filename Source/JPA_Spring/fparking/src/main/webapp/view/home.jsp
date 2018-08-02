@@ -154,7 +154,7 @@
 											<tbody>
 												<c:forEach items="${arrayListFeedback}" var="listFeedBack">
 													<tr class="odd gradeX">
-														<td>${listFeedBack.dtaeFeedBack }</td>
+														<td>${listFeedBack.dateFeedBack }</td>
 														<td>${listFeedBack.nameFeedBack}</td>
 														<td>${listFeedBack.content }</td>
 														<td><a href="/home/feedbackdetail/${listFeedBack.id}">Xem</a></td>

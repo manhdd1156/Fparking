@@ -3,7 +3,6 @@ package com.tagroup.fparking.controller.webadmin;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -95,7 +94,7 @@ public class HomeController {
 			HashMap<String, Object> m = new HashMap<>();
 			if (feedback.getStatus() == 0) {
 				m.put("id", feedback.getId());
-				m.put("dateFeedBack", sdf.format(new Date()));
+				m.put("dateFeedBack", sdf.format(feedback.getDate()));
 				String fb = feedback.getContent();
 
 				if (fb.length() > 30) {
@@ -183,7 +182,7 @@ public class HomeController {
 			HashMap<String, Object> m = new HashMap<>();
 			if (feedback.getStatus() == 0) {
 				m.put("id", feedback.getId());
-				m.put("dateFeedBack", sdf.format(new Date()));
+				m.put("dateFeedBack", sdf.format(feedback.getDate()));
 				String fb = feedback.getContent();
 
 				if (fb.length() > 30) {
@@ -283,7 +282,7 @@ public class HomeController {
 			HashMap<String, Object> m = new HashMap<>();
 			if (feedback.getStatus() == 0) {
 				m.put("id", feedback.getId());
-				m.put("dateFeedBack", sdf.format(new Date()));
+				m.put("dateFeedBack", sdf.format(feedback.getDate()));
 				String fb = feedback.getContent();
 
 				if (fb.length() > 30) {
@@ -315,6 +314,7 @@ public class HomeController {
 	@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.GET)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Feedback feedback = new Feedback();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		try {
 			feedback = feedbackService.getById(id);
 		} catch (Exception e) {
@@ -324,6 +324,7 @@ public class HomeController {
 		model.put("id", id);
 		model.put("inforFeedBack", feedback.getName() + "_" + feedback.getPhone());
 		model.put("content", feedback.getContent());
+		model.put("dateFeedBack",sdf.format(feedback.getDate()));
 
 		return "viewdetailfeedback";
 	}
@@ -408,7 +409,7 @@ public class HomeController {
 			HashMap<String, Object> m = new HashMap<>();
 			if (feedback.getStatus() == 0) {
 				m.put("id", feedback.getId());
-				m.put("dateFeedBack", sdf.format(new Date()));
+				m.put("dateFeedBack", sdf.format(feedback.getDate()));
 				String fb = feedback.getContent();
 
 				if (fb.length() > 30) {
