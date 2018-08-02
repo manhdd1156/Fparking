@@ -65,7 +65,6 @@ public class VehicleController {
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/drivervehicles/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> updateDriverVehicle(@PathVariable Long id) throws Exception {
-
 		DriverVehicle respone = drivervehicleService.update(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
