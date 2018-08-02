@@ -195,6 +195,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     startActivity(intentCarsList);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
+                case R.id.nav_contact:
+                    locationManager.removeUpdates(HomeActivity.this);
+                    Intent intentContact = new Intent(HomeActivity.this,Contact.class);
+                    startActivity(intentContact);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
             }
             return true;
         }

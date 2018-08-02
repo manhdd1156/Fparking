@@ -83,7 +83,8 @@
         <activity android:name=".DriverInformation" />
         <activity android:name=".DialogConfirmPass" />
         <activity android:name=".DialogAddCar" />
-        <activity android:name=".ChangePassword"></activity>
+        <activity android:name=".ChangePassword" />
+        <activity android:name=".Contact"></activity>
     </application>
 
 </manifest>

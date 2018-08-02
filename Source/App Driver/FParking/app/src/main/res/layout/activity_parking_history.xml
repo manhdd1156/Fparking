@@ -30,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
-            android:text="Lịch sử đỗ xe"
+            android:text="Lịch Sử Đỗ Xe"
             android:textColor="@color/whitetext"
             android:textSize="15sp"
             android:textStyle="bold"
