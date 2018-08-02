@@ -13,8 +13,6 @@ import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Proxy;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 
 
 /**
@@ -36,7 +34,6 @@ public class Staff implements Serializable {
 	private String name;
 
 	private String phone;
-	@JsonIgnore
 	private String password;
 
 	@ManyToOne(fetch = FetchType.EAGER)

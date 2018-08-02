@@ -11,4 +11,5 @@ public interface CommisionService {
 	public Commision create(Commision commision)throws Exception;
 	public Commision update(Commision commision)throws Exception;
 	public void delete(Long id)throws Exception;
+	public double getCommision() throws Exception;
 }

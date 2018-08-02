@@ -14,6 +14,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -25,6 +26,7 @@ import com.example.hung.fparking.asynctask.VehicleTask;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.dto.TariffDTO;
+import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.notification.Notification;
@@ -57,9 +59,17 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
-    ImageView backOrder;
+    ImageView backOrder, addCarOrder;
     Button buttonDat_Cho;
     TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress;
+
+    //addcar view
+    private CarouselPicker carouselPickerCarType;
+    Button btnAddCar;
+    EditText editTextLS1, editTextLS2;
+    String type;
+    private ArrayList<TypeDTO> typeDTOS;
+    private List<CarouselPicker.PickerItem> textItemsType;
 
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
@@ -80,6 +90,12 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         customCarouselView.setSlideInterval(2500);
         customCarouselView.setViewListener(viewListener);
 
+        // tạo dialog car
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(OrderParking.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
@@ -92,6 +108,17 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         textViewTime = findViewById(R.id.textViewTime);
         buttonDat_Cho = findViewById(R.id.buttonDat_Cho_Ngay);
         backOrder = findViewById(R.id.imageViewBackOrder);
+        addCarOrder = findViewById(R.id.imageViewAddCarOrder);
+
+        // add car event
+        addCarOrder.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.show();
+                new VehicleTask("type", null, "ty", OrderParking.this);
+            }
+        });
+        buttonDat_Cho.setEnabled(false);
 
         // create dialog
         proD = new ProgressDialog(OrderParking.this);
@@ -192,13 +219,50 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                                 textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
                                 driverVehicleID = vehicle.get(j).getDriverVehicleID();
                                 vehicleID = vehicle.get(j).getVehicleID();
+                                buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_selector2));
+                                buttonDat_Cho.setEnabled(true);
                                 Log.e("price", tariffDTOS.get(i).getPrice() + "");
+                                break;
+                            } else {
+                                textViewPrice.setText("N/A");
+                                buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_overload2));
+                                buttonDat_Cho.setEnabled(false);
                             }
                         }
                     }
                 }
 
                 Log.e("postion", textItems.get(position).getText() + "");
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+
+            }
+        });
+
+        // load data addcar view
+//        loadDataAddCar();
+        carouselPickerCarType = (CarouselPicker) mView.findViewById(R.id.carouselPickerType);
+        btnAddCar = mView.findViewById(R.id.btnAddCar);
+        editTextLS1 = mView.findViewById(R.id.editTextLS1);
+        editTextLS2 = mView.findViewById(R.id.editTextLS2);
+
+        btnAddCar.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+        carouselPickerCarType.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+                type = textItemsType.get(position).getText();
             }
 
             @Override
@@ -276,9 +340,22 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 for (int i = 0; i < tariffDTOS.size(); i++) {
                     if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
                         textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                        buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_selector2));
+                        buttonDat_Cho.setEnabled(true);
                     }
                 }
             }
+        } else if (action.equals("ty")) {
+            typeDTOS = (ArrayList<TypeDTO>) o;
+            textItemsType = new ArrayList<>();
+            if (typeDTOS.size() > 0) {
+                for (int i = 0; i < typeDTOS.size(); i++) {
+                    textItemsType.add(new CarouselPicker.TextItem(typeDTOS.get(i).getType(), 6)); // 5 is text size (sp)
+                }
+                type = typeDTOS.get(0).getType();
+            }
+            CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItemsType, 0);
+            carouselPickerCarType.setAdapter(textAdapter);
         }
     }
 

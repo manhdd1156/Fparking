@@ -28,7 +28,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/tbPass"
+        android:id="@+id/tbPassWord"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -39,7 +39,7 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:hint="Mật khẩu"
-        android:inputType="phone"
+        android:inputType="textPassword"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="@color/black"
@@ -47,17 +47,17 @@
     <View
         android:layout_width="319dp"
         android:layout_height="1px"
-        android:layout_below="@+id/tbPass"
+        android:layout_below="@+id/tbPassWord"
         android:layout_marginLeft="33dp"
         android:background="@color/white_greyish" />
 
 
     <Button
-        android:id="@+id/btnLogin"
+        android:id="@+id/btnOK"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tbPass"
+        android:layout_below="@+id/tbPassWord"
         android:layout_marginTop="60dp"
         android:background="@drawable/button_selector2"
         android:text="XÁC NHẬN"

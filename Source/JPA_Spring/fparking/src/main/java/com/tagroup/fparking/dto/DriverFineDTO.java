@@ -10,7 +10,6 @@ public class DriverFineDTO {
 	private double price;
 	private String status;
 
-
 	public DriverFineDTO(String licenseplate, String nameParking, Date date, double price, String status) {
 		super();
 		this.licenseplate = licenseplate;
@@ -18,7 +17,6 @@ public class DriverFineDTO {
 		this.date = date;
 		this.price = price;
 		this.status = status;
-		
 	}
 
 	public String getLicenseplate() {
@@ -60,6 +58,5 @@ public class DriverFineDTO {
 	public void setStatus(String status) {
 		this.status = status;
 	}
-
 
 }

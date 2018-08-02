@@ -49,7 +49,11 @@ public class StaffServiceImpl implements StaffService {
 		// TODO Auto-generated method stub
 		
 		try {
-			return staffRepository.save(staff);
+			Staff s = getById(staff.getId());
+			s.setAddress(staff.getAddress());
+			s.setPhone(staff.getPhone());
+			s.setName(staff.getName());
+			return staffRepository.save(s);
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		}

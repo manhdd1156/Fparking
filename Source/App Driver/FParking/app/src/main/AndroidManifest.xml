@@ -81,7 +81,8 @@
         <activity android:name=".DetailedHistory" />
         <activity android:name=".CarsList" />
         <activity android:name=".DriverInformation" />
-        <activity android:name=".DialogConfirmPass"></activity>
+        <activity android:name=".DialogConfirmPass" />
+        <activity android:name=".DialogAddCar"></activity>
     </application>
 
 </manifest>

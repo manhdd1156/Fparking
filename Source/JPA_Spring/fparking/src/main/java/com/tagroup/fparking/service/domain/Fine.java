@@ -39,12 +39,10 @@ public class Fine implements Serializable {
 	private int type;
 	
 	private double price;
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "drivervehicle_id", referencedColumnName = "id")
 	private DriverVehicle drivervehicle;
 
-	
 	@ManyToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "parking_id", referencedColumnName = "id")
 	private Parking parking;

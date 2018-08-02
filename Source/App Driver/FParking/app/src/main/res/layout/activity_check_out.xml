@@ -187,12 +187,11 @@
 
         <Button
             android:id="@+id/buttonCheckout"
-            android:layout_width="276dp"
+            android:layout_width="match_parent"
             android:layout_height="52dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="66dp"
-            android:background="@drawable/button_selector"
+            android:background="@drawable/button_selector2"
             android:text="THANH TOÁN"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />

@@ -8,7 +8,6 @@ public class DriverDTO {
 
     private String phone;
 
-
     private String status;
 
     public void setId(Long id) {

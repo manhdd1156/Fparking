@@ -259,7 +259,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             double distanceValue = distination.distanceTo(location);
 //            Log.e("khoảng cách", distanceValue + "");
             if (distanceValue <= 500) {
-                buttonCheckin.setBackground(getResources().getDrawable(R.drawable.button_selector));
+                buttonCheckin.setBackground(getResources().getDrawable(R.drawable.button_selector2));
                 buttonCheckin.setEnabled(true);
                 if(noti){
                     createNotification("Fparking");

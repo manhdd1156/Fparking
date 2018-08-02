@@ -15,6 +15,8 @@ import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.BookingService;
+import com.tagroup.fparking.service.CommisionService;
+import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.PusherService;
 import com.tagroup.fparking.service.TariffService;
@@ -36,11 +38,15 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private TariffService tariffService;
 	@Autowired
+	private FineService fineService;
+	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
 	@Autowired
 	private DriverRepository driverRepository;
 	@Autowired
 	private VehicleRepository vehicleRepository;
+	@Autowired
+	private CommisionService commisionService;
 
 	@Override
 	public List<Booking> getAll() {
@@ -74,8 +80,9 @@ public class BookingServiceImpl implements BookingService {
 			bb.setDrivervehicle(dv);
 			bb.setParking(p);
 			bb.setStatus(5);
-			System.out.println(bb.toString());
+
 			Booking b = bookingRepository.save(bb);
+			System.out.println("BookingServiceIml/Create : bb = " + b.toString());
 			if (b != null) {
 				Notification n = new Notification();
 				n.setDriver_id(driverid);
@@ -85,7 +92,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setType(1); // 1 : driver gửi cho parking
 				n.setStatus(0); // 0 : parking chưa nhận.
 				Notification nn = notificationService.create(n);
-				System.out.println("BookingServiceIml/create : " + nn);
+				System.out.println("BookingServiceIml/create noti : " + nn);
 				pusherService.trigger(b.getParking().getId() + "channel", "order", "");
 			}
 			return b;
@@ -104,13 +111,41 @@ public class BookingServiceImpl implements BookingService {
 			Booking b = bookingRepository.getOne(booking.getId());
 			b.setStatus(booking.getStatus());
 			if (booking.getStatus() == 2) {
-
+					
 				b.setTimein(booking.getTimein());
+				
+				b.setStatus(2);
+				System.out.println("booking ==: " + booking.toString());
+				Date date = new Date();
+				b.setTimein(date);
+				b.setComission(commisionService.getCommision());
+				
+				double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
+				b.setTotalfine(finePrice);
+				System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
+				double price = tariffService.findByParkingAndVehicletype(b.getParking().getId(),
+						b.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
+				b.setPrice(price);
+				
+				return bookingRepository.save(b);
 			} else if (booking.getStatus() == 3) {
 				b.setTimeout(booking.getTimeout());
+				
+				Date date = new Date();
+				booking.setTimeout(date);
+				long diff = b.getTimeout().getTime() - b.getTimein().getTime();
+				double diffInHours = diff / ((double) 1000 * 60 * 60);
+				double totalPrice = diffInHours * b.getPrice();
+				if (diffInHours < 1) {
+					totalPrice = b.getPrice();
+				}
+				totalPrice+=b.getTotalfine();
+				b.setAmount(totalPrice);
+				System.out.println("booking ===: khi chua tahy doi status = 3 : " + b.toString());
+				return bookingRepository.save(b);
 			}
 			// TODO Auto-generated method stub
-			return bookingRepository.save(b);
+			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
@@ -159,7 +194,7 @@ public class BookingServiceImpl implements BookingService {
 
 			modelNoti.setType(2);
 			Notification n = notificationService.update(modelNoti);
-			System.out.println("BookingServerImp/updatebystatus =: " + n.toString());
+			System.out.println("BookingServerImp/updatebystatus =:  n = " + n.toString());
 			List<Booking> blist = bookingRepository.findAll();
 			for (Booking booking : blist) {
 				if (booking.getParking().getId() == n.getParking_id()
@@ -183,7 +218,11 @@ public class BookingServiceImpl implements BookingService {
 					System.out.println("booking ==: " + booking.toString());
 					Date date = new Date();
 					booking.setTimein(date);
-					System.out.println("BookingServerImp/updatebystatus : " + booking);
+					booking.setComission(commisionService.getCommision());
+					
+					double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
+					booking.setTotalfine(finePrice);
+					System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
 					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(),
 							booking.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
 					booking.setPrice(price);
@@ -198,12 +237,50 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getStatus() == 2) {
 					booking.setStatus(3);
 					System.out.println("booking ===: " + booking.toString());
-					// Date date = new Date();
-					// booking.setTimeout(date);
-					//
-					// System.out.println("BookingServerImp/updatebystatus : " + booking);
 					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
-					return null;
+					return bookingRepository.save(booking);
+				}
+			}
+
+			// TODO Auto-generated method stub
+
+			return null;
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+		}
+
+	}
+
+	// get thong tin khi driver checkout
+	@Override
+	public Booking getInfoCheckOut(Notification noti) throws Exception {
+		try {
+			if (noti == null) {
+				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
+			}
+
+			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),
+					1, noti.getEvent(), 0);
+			List<Booking> blist = bookingRepository.findAll();
+
+			for (Booking booking : blist) {
+				if (booking.getParking().getId() == modelNoti.getParking_id()
+						&& booking.getDrivervehicle().getDriver().getId() == modelNoti.getDriver_id()
+						&& booking.getDrivervehicle().getVehicle().getId() == modelNoti.getVehicle_id()
+						&& booking.getStatus() == 2) {
+
+					Date date = new Date();
+					booking.setTimeout(date);
+					long diff = booking.getTimeout().getTime() - booking.getTimein().getTime();
+					double diffInHours = diff / ((double) 1000 * 60 * 60);
+					double totalPrice = diffInHours * booking.getPrice();
+					if (diffInHours < 1) {
+						totalPrice = booking.getPrice();
+					}
+					totalPrice+=booking.getTotalfine();
+					booking.setAmount(totalPrice);
+					System.out.println("booking ===: khi chua tahy doi status = 3 : " + booking.toString());
+					return bookingRepository.save(booking);
 				}
 			}
 
