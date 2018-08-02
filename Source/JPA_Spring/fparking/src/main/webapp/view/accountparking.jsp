@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Tài khoản bãi đỗ</title>
+<title>Quản lý bãi đỗ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -62,7 +62,7 @@
 										<td>${parking.deposits }</td>
 										<td class="cente"><a href="/account/patking/detail/${parking.id }">Xem</a></td>
 										<td class="center"><a href="/account/parking/blockaccount/${parking.id }">Khóa</a></td>
-										<td class="center"><a href="/account/patking/detail/${parking.id }">Sửa</a></td>
+										<td class="center"><a href="/account/parking/edit/${parking.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

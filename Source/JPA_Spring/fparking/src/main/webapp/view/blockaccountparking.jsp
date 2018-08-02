@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Tài khoản bãi đỗ</title>
+<title>Quản lý bãi đỗ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->

@@ -1,5 +1,6 @@
 package com.tagroup.fparking.controller.webadmin;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,10 +19,13 @@ import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.ParkingService;
+import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.domain.Driver;
+import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
+import com.tagroup.fparking.service.domain.Tariff;
 import com.tagroup.fparking.service.domain.Vehicle;
 
 @Controller
@@ -47,6 +51,7 @@ public class AccountController {
 	// get all account
 	@RequestMapping(path = "/driver", method = RequestMethod.GET)
 	public String accountDriver(Map<String, Object> model) throws Exception {
+		List<Driver> listDriver;
 		try {
 			listDriver = driverService.getByStatus(1);
 		} catch (Exception e) {

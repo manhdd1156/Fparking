@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Sủa tài khoản lái xe</title>
+<title>Quản lý chủ bãi</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -52,6 +52,7 @@
 											<label>Địa chỉ:</label> 
 											<input type="text" class="form-control" name="address" value="${address }">
 										</div>
+										<p style="color: green;">${messSuss }</p>
 										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>
 									</form>

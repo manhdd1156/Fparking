@@ -29,4 +29,9 @@
             responsive: true
         });
     });
+    $(document).ready(function() {
+        $('#dataTables-example2').DataTable({
+            responsive: true
+        });
+    });
     </script>

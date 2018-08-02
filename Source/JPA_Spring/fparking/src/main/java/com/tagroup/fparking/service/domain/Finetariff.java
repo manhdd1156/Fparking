@@ -1,7 +1,15 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
-import javax.persistence.*;
+
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Proxy;
 
@@ -19,7 +27,7 @@ public class Finetariff implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private int id;
+	private long id;
 
 	private double price;
 
@@ -32,7 +40,7 @@ public class Finetariff implements Serializable {
 	public Finetariff() {
 	}
 
-	public int getId() {
+	public long getId() {
 		return this.id;
 	}
 

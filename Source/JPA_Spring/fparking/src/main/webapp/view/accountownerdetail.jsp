@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Thông tin tài khoản</title>
+<title>Quản lý chủ bãi</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -93,16 +93,25 @@
 																		<th>Tổng số chỗ</th>
 																		<th>Thời gian mở/đóng cửa</th>
 																		<th>Số dư tài khoản</th>
+																		<th></th>
+																		<th></th>
 																	</tr>
 																</thead>
 																<tbody>
-																	<tr>
-																		<td></td>
-																		<td></td>
-																		<td></td>
-																		<td></td>
-																		<td></td>
-																	</tr>
+																	<c:forEach items="${ arrayListParking}"
+																		var="arrayListParking">
+																		<tr>
+																			<td>${arrayListParking.address }</td>
+																			<td>${arrayListParking.currentspace }</td>
+																			<td>${arrayListParking.totalspace }</td>
+																			<td>${arrayListParking.timeoc }</td>
+																			<td>${arrayListParking.desposits }</td>
+																			<td class="center"><a
+																				href="/account/patking/detail/${arrayListParking.id }">Xem</a></td>
+																			<td class="center"><a
+																				href="/account/patking/detail/${arrayListParking.id }">Sửa</a></td>
+																		</tr>
+																	</c:forEach>
 																</tbody>
 															</table>
 															<!-- /.table-responsive -->

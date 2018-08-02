@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Thông tin tài khoản</title>
+<title>Quản lý lái xe</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -103,10 +103,10 @@
 																<tbody>
 																	<c:forEach items="${ driverFine}" var="driverFine">
 																		<tr>
-																			<td>${driverFine.date }</td>
+																			<td>${driverFine.dateFine }</td>
 																			<td>${driverFine.licenseplate }</td>
-																			<td>${driverFine.nameParking }</td>
-																			<td>${driverFine.price }</td>
+																			<td>${driverFine.address }</td>
+																			<td>${driverFine.priceFine }</td>
 																			<td>${driverFine.status }</td>
 																		</tr>
 																	</c:forEach>
