@@ -148,4 +148,21 @@ public class NotificationServiceImpl implements NotificationService {
 
 	}
 
+	@Override
+	public List<Notification> check(Long id, int type) throws Exception {
+		List<Notification> notilst = notificationRepository.findAll();
+		for (Notification noti : notilst) {
+//			if (noti.getDriver_id() == notification.getDriver_id() && noti.getType() == notification.getType()
+//					&& noti.getVehicle_id() == notification.getVehicle_id()
+//					&& noti.getEvent().equals(notification.getEvent())
+//					&& noti.getStatus() == notification.getStatus()) {
+//				System.out.println("NotificationServiceIml/DeleteByNoti : ok");
+//				notificationRepository.delete(noti);
+//				System.out.println("NotificationServiceIml/DeleteByNoti : ok");
+//			}
+		}
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

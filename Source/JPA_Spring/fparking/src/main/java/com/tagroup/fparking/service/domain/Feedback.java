@@ -1,6 +1,7 @@
 package com.tagroup.fparking.service.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -30,11 +31,20 @@ public class Feedback implements Serializable {
 	private String phone;
 	private String content;
 	private int type;
+	private Date date;
 	
 	private int status;
 
 	public Long getId() {
 		return id;
+	}
+
+	public Date getDate() {
+		return date;
+	}
+
+	public void setDate(Date date) {
+		this.date = date;
 	}
 
 	public void setId(Long id) {
@@ -88,9 +98,10 @@ public class Feedback implements Serializable {
 	@Override
 	public String toString() {
 		return "Feedback [id=" + id + ", name=" + name + ", phone=" + phone + ", content=" + content + ", type=" + type
-				+ ", status=" + status + "]";
+				+ ", date=" + date + ", status=" + status + "]";
 	}
 
+	
 	
 	
 	

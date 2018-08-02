@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.InputType;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -19,7 +20,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
 
     ImageView backInformation;
     Button mUpdate, confirm;
-    EditText password, tbName, tbPhone;
+    EditText password, tbName, tbPhone, tbPassword;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -39,6 +40,16 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
         tbPhone = findViewById(R.id.tbPhone);
         confirm = mView.findViewById(R.id.btnOK);
         password = (EditText) mView.findViewById(R.id.tbPassWord);
+        tbPassword = (EditText) findViewById(R.id.tbPass);
+        tbPassword.setFocusable(false);
+        tbPassword.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentChange = new Intent(DriverInformation.this,ChangePassword.class);
+                startActivity(intentChange);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
+        });
 
         // listener
         mUpdate.setOnClickListener(new View.OnClickListener() {
