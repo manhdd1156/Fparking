@@ -47,18 +47,6 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             app:srcCompat="@drawable/ic_action_backwhile" />
-
-        <EditText
-            android:id="@+id/editText4"
-            android:layout_width="wrap_content"
-            android:layout_height="333dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="128dp"
-            android:ems="10"
-            android:inputType="textMultiLine"
-            android:background="@android:color/transparent"/>
-
         <ImageView
             android:id="@+id/imageView25"
             android:layout_width="352dp"
@@ -68,14 +56,28 @@
             android:layout_marginBottom="68dp"
             android:scaleType="fitXY"
             android:src="@drawable/checkoutinfo" />
+
+        <EditText
+            android:id="@+id/editTextFeedback"
+            android:layout_width="wrap_content"
+            android:layout_height="333dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="128dp"
+            android:background="@android:color/transparent"
+            android:ems="10"
+            android:inputType="textMultiLine"
+            android:textColor="@color/common_google_signin_btn_text_dark_focused" />
+
+
         <Button
-            android:id="@+id/buttonFastSearch"
+            android:id="@+id/buttonSendFeedback"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:background="@drawable/button_selector2"
-            android:text="TÌM BÃI XE NHANH"
+            android:text="GỬI"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
