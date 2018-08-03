@@ -3,7 +3,7 @@ package com.example.hung.fparking;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-<<<<<<< HEAD
+
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -31,21 +31,13 @@ public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler 
 
     ArrayList<FineDTO> fineDTOS;
 
-=======
-import android.view.View;
-import android.widget.ImageView;
-
-public class FineHistory extends AppCompatActivity {
-  ImageView backFineHistory;
->>>>>>> 00028c1b1432fd1ec71a6ec449863f65bcc71306
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fine_history);
 
-<<<<<<< HEAD
         //ánh xạ
-        backFineHistory = findViewById(R.id.imageViewBackHistory);
+        backFineHistory = findViewById(R.id.imageViewBackFineList);
         backFineHistory.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,12 +48,12 @@ public class FineHistory extends AppCompatActivity {
         });
 
         //set adapter list
-        mRecyclerView = (RecyclerView) findViewById(R.id.my_recycler_view);
+        mRecyclerView = (RecyclerView) findViewById(R.id.fine_list_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
 
-        new FineTask("select", null, "", FineHistory.this);
+        new FineTask("getall", null, "", FineHistory.this);
 
     }
 
@@ -94,8 +86,8 @@ public class FineHistory extends AppCompatActivity {
                 .MyClickListener() {
             @Override
             public void onItemClick(int position, View v) {
-                Intent intentDetail = new Intent(FineHistory.this, DetailedHistory.class);
-                intentDetail.putExtra("bookingid", fineDTOS.get(position).getFineID());
+                Intent intentDetail = new Intent(FineHistory.this, DetailedFine.class);
+                intentDetail.putExtra("fineID", fineDTOS.get(position).getFineID());
                 startActivity(intentDetail);
             }
         });
@@ -173,17 +165,5 @@ class FinerViewAdapter extends RecyclerView
 
     public interface MyClickListener {
         public void onItemClick(int position, View v);
-=======
-        backFineHistory = findViewById(R.id.imageViewBackFineList);
-
-        backFineHistory.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent backFine = new Intent(FineHistory.this, HomeActivity.class);
-                startActivity(backFine);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
->>>>>>> 00028c1b1432fd1ec71a6ec449863f65bcc71306
     }
 }
