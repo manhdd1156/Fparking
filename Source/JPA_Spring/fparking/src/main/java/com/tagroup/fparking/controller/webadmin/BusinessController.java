@@ -386,6 +386,19 @@ public class BusinessController {
 		return "revenuebyparkingdetail";
 	}
 
-	// get all revenye with fine by id
-
+	//Management FeedBack
+	
+	//get all feedback
+	@RequestMapping(path = "/feedback", method = RequestMethod.GET)
+	public String getAllFeedBack(Map<String, Object> model) throws Exception {
+		return "viewdetailfeedback";
+		
+	}
+	@RequestMapping(path = "/feedback/{id}", method = RequestMethod.GET)
+	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+		return "viewdetailfeedback";
+		
+	}
+	
+	//delete feedback
 }

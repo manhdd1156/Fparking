@@ -22,7 +22,6 @@ public interface NotificationService {
 
 	public Notification cancelNoti(Notification notification) throws Exception;
 
-	// public Notification check(Long parkingid,int type, String event) throws
-	// Exception;
+	 public List<Notification> check(Long id,int type) throws Exception;
 
 }

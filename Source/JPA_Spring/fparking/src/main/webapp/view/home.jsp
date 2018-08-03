@@ -90,7 +90,7 @@
 									<i class="glyphicon glyphicon-stats fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">124</div>
+									<div class="huge">${totalTrasaction }</div>
 									<div>Giao dịch hôm nay</div>
 								</div>
 							</div>
@@ -152,9 +152,13 @@
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach items="${arrayListFine}" var="listFine">
+												<c:forEach items="${arrayListFeedback}" var="listFeedBack">
 													<tr class="odd gradeX">
-
+														<td>${listFeedBack.dateFeedBack }</td>
+														<td>${listFeedBack.nameFeedBack}</td>
+														<td>${listFeedBack.content }</td>
+														<td><a href="/home/feedbackdetail/${listFeedBack.id}">Xem</a></td>
+														<td><a href="/home/feedback/delete/${listFeedBack.id }" onclick="deleteFunction()">Xóa</a></td>
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -208,7 +212,6 @@
 											</tbody>
 										</table>
 										<!-- /.table-responsive -->
-
 									</div>
 									<!-- /.panel-body -->
 								</div>

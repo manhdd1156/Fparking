@@ -1,5 +1,7 @@
 package com.tagroup.fparking.controller;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -7,6 +9,7 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tagroup.fparking.service.NotificationService;
@@ -27,23 +30,18 @@ public class NotificationController {
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 
 	}
+	// get noti when Internet connected
+		@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+		@RequestMapping(path = "/check", method = RequestMethod.GET)
+		public ResponseEntity<?> getNoti(@RequestParam Long id,@RequestParam int type) throws Exception {
+			System.out.println("NotificationController/check");
+			List<Notification> respone = notificationService.check(id,type);
 
-//	// create new noti by booking
-//	@PreAuthorize("hasAnyAuthority('DRIVER')")
-//	@RequestMapping(path = "/bookings", method = RequestMethod.POST)
-//	public ResponseEntity<?> createNotiAndBooking(@RequestBody Booking booking) throws Exception {
-//		Notification noti = new Notification();
-//		noti.setType(1);
-//		noti.setStatus(0);
-//		noti.setEvent("checkin");
-//		noti.setDrivervehicle_id(booking.getDrivervehicle().getId());
-//		noti.setParking_id(booking.getParking().getId());
-//		Notification respone = notificationService.create(noti);
-//
-//		return new ResponseEntity<>(respone, HttpStatus.OK);
-//
-//	}
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
+		}
+	
+	
 	// create new noti
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
