@@ -19,7 +19,7 @@ import java.util.Date;
 
 public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHandler {
 
-    TextView textViewAddress, textViewTime, textViewPrice, textViewLicensePlate, textViewTotalPrice, textViewType;
+    TextView textViewAddress, textViewTime, textViewPrice, textViewLicensePlate, textViewTotalPrice, textViewType, textViewTimeCheckinPH, textViewTimeCheckoutPH;
     ArrayList<BookingDTO> booking;
     ImageView backDetailedHistory;
 
@@ -35,6 +35,8 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
         textViewAddress = findViewById(R.id.textViewAD);
         textViewTime = findViewById(R.id.textViewTotalTimePH);
         backDetailedHistory = findViewById(R.id.imageViewBackDetailedHistory);
+        textViewTimeCheckinPH = findViewById(R.id.textViewTimeCheckinPH);
+        textViewTimeCheckoutPH = findViewById(R.id.textViewTimeCheckoutPH);
 
         backDetailedHistory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -62,7 +64,9 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
             textViewType.setText(myBookingDTO.getType());
             textViewTotalPrice.setText(myBookingDTO.getAmount() + "");
             textViewAddress.setText(myBookingDTO.getAddress());
-            textViewTime.setText(myBookingDTO.getTimeIn() + " - " + myBookingDTO.getTimeOut());
+            textViewTimeCheckinPH.setText(myBookingDTO.getTimeIn());
+            textViewTimeCheckoutPH.setText(myBookingDTO.getTimeOut());
+            textViewTime.setText("");
         }
     }
 }
