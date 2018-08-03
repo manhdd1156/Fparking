@@ -16,19 +16,26 @@
                             <entry key="actionbar">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="15" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-<<<<<<< HEAD
-                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\exchange.png" />
-                                      <entry key="outputName" value="ic_action_change" />
-                                      <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="fe6621" />
-=======
-                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\plus.png" />
-                                      <entry key="outputName" value="ic_action_add" />
-                                      <entry key="theme" value="HOLO_DARK" />
->>>>>>> 207ea94a48e7ad20e481da0003a8457b8a1ffa0c
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\timeout.png" />
+                                      <entry key="outputName" value="ic_checkout_timeout" />
                                     </map>
                                   </option>
                                 </PersistentState>

@@ -41,7 +41,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
 
         // ánh xạ
         textViewAddress = findViewById(R.id.textViewAddress);
-        textViewCheckIn = findViewById(R.id.textViewCheckinTime);
+        textViewCheckIn = findViewById(R.id.textViewTotalTime);
         textViewPrice = findViewById(R.id.textViewPrice);
         textViewLicensePlate = findViewById(R.id.textViewLicensePlate);
         textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
