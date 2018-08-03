@@ -86,9 +86,10 @@
         <activity android:name=".DialogConfirmPass" />
         <activity android:name=".DialogAddCar" />
         <activity android:name=".ChangePassword" />
-        <activity android:name=".Contact" />
+        <activity android:name=".other.Contact" />
         <activity android:name=".FineHistory" />
-        <activity android:name=".DetailedFine"></activity>
+        <activity android:name=".DetailedFine" />
+        <activity android:name=".other.TermsAndConditions"></activity>
     </application>
 
 </manifest>
