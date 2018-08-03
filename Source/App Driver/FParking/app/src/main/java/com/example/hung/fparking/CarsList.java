@@ -42,7 +42,7 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
     ImageView addCar;
     Button btnAddCar;
-    EditText editTextLS1, editTextLS2;
+    EditText editTextLS1, editTextLS2, editTextColor;
     private CarouselPicker carouselPicker;
     private List<CarouselPicker.PickerItem> textItems;
     private ArrayList<TypeDTO> typeDTOS;
@@ -95,11 +95,16 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         btnAddCar = mView.findViewById(R.id.btnAddCar);
         editTextLS1 = mView.findViewById(R.id.editTextLS1);
         editTextLS2 = mView.findViewById(R.id.editTextLS2);
+        editTextColor = mView.findViewById(R.id.editTextColor);
 
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                VehicleDTO addnewcar = new VehicleDTO();
+                addnewcar.setType(type);
+                addnewcar.setColor(editTextColor.getText().toString());
+                addnewcar.setLicenseplate(editTextLS1.getText().toString()+"-"+editTextLS2.getText().toString());
+                new VehicleTask("create", addnewcar, "", CarsList.this);
             }
         });
 
