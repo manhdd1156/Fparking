@@ -33,7 +33,7 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
         textViewType = findViewById(R.id.textViewLS);
         textViewTotalPrice = findViewById(R.id.textViewAM);
         textViewAddress = findViewById(R.id.textViewAD);
-        textViewTime = findViewById(R.id.textViewTM);
+        textViewTime = findViewById(R.id.textViewTotalTimePH);
         backDetailedHistory = findViewById(R.id.imageViewBackDetailedHistory);
 
         backDetailedHistory.setOnClickListener(new View.OnClickListener() {
