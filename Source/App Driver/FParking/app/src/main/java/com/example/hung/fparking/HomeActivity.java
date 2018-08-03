@@ -40,6 +40,7 @@ import com.example.hung.fparking.asynctask.ParkingTask;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.model.GPSTracker;
+import com.example.hung.fparking.other.Feedback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -209,6 +210,12 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     locationManager.removeUpdates(HomeActivity.this);
                     Intent intentFineHistory = new Intent(HomeActivity.this,FineHistory.class);
                     startActivity(intentFineHistory);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.nav_feedback:
+                    locationManager.removeUpdates(HomeActivity.this);
+                    Intent intentFeedback = new Intent(HomeActivity.this,Feedback.class);
+                    startActivity(intentFeedback);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
             }
