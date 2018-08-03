@@ -110,7 +110,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intentDriverInfo);
             }
         });
-        imageViewFParking=headerView.findViewById(R.id.imageViewFParking);
+        imageViewFParking = headerView.findViewById(R.id.imageViewFParking);
         imageViewFParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,20 +184,26 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.nav_history:
-                    locationManager.removeUpdates(HomeActivity.this);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
                     Intent intentParkingHistory = new Intent(HomeActivity.this, ParkingHistory.class);
                     startActivity(intentParkingHistory);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_mCar:
-                    locationManager.removeUpdates(HomeActivity.this);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
                     Intent intentCarsList = new Intent(HomeActivity.this, CarsList.class);
                     startActivity(intentCarsList);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_contact:
-                    locationManager.removeUpdates(HomeActivity.this);
-                    Intent intentContact = new Intent(HomeActivity.this,Contact.class);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
+                    Intent intentContact = new Intent(HomeActivity.this, Contact.class);
                     startActivity(intentContact);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;

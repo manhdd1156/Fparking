@@ -66,10 +66,11 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     //addcar view
     private CarouselPicker carouselPickerCarType;
     Button btnAddCar;
-    EditText editTextLS1, editTextLS2;
+    EditText editTextLS1, editTextLS2, editTextColor;
     String type;
     private ArrayList<TypeDTO> typeDTOS;
     private List<CarouselPicker.PickerItem> textItemsType;
+    AlertDialog dialog;
 
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
@@ -94,7 +95,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(OrderParking.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car, null);
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
+        dialog = mBuilder.create();
 
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
@@ -248,11 +249,16 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         btnAddCar = mView.findViewById(R.id.btnAddCar);
         editTextLS1 = mView.findViewById(R.id.editTextLS1);
         editTextLS2 = mView.findViewById(R.id.editTextLS2);
+        editTextColor = mView.findViewById(R.id.editTextColor);
 
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                VehicleDTO addnewcar = new VehicleDTO();
+                addnewcar.setType(type);
+                addnewcar.setColor(editTextColor.getText().toString());
+                addnewcar.setLicenseplate(editTextLS1.getText().toString()+"-"+editTextLS2.getText().toString());
+                new VehicleTask("create", addnewcar, "add", OrderParking.this);
             }
         });
         carouselPickerCarType.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
@@ -263,7 +269,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
             @Override
             public void onPageSelected(int position) {
-                type = textItemsType.get(position).getText();
+                type = textItemsType.get(position).getText().toString();
             }
 
             @Override
@@ -357,6 +363,9 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
             }
             CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItemsType, 0);
             carouselPickerCarType.setAdapter(textAdapter);
+        } else if (action.equals("add")) {
+            dialog.cancel();
+            startActivity(getIntent());
         }
     }
 

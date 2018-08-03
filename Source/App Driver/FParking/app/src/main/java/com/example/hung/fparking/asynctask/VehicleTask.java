@@ -24,6 +24,8 @@ public class VehicleTask {
             new DeleteVehicle(vehicleDTO, action, container).execute((Void) null);
         } else if (type.equals("type")) {
             new GetVehicleType(action, container).execute((Void) null);
+        }else if (type.equals("create")) {
+            new AddVehicle(vehicleDTO,action, container).execute((Void) null);
         }
     }
 
