@@ -49,9 +49,7 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
         try {
             String json = httpHandler.get(Constants.API_URL + "bookings/" + bookingID);
             Log.e("Get Booking By ID: ", Constants.API_URL + "bookings/" + bookingID);
-//            JSONArray jsonArray = new JSONArray(json);
 
-//            for (int i = 0; i < jsonArray.length(); i++) {
             JSONObject c = new JSONObject(json);
             int bookingID = c.getInt("id");
             Double price = c.getDouble("price");

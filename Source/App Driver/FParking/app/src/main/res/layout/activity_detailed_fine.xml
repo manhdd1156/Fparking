@@ -70,7 +70,7 @@
             app:srcCompat="@drawable/logo_profile" />
 
         <TextView
-            android:id="@+id/textBS"
+            android:id="@+id/textBSDF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView19"
@@ -83,7 +83,7 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textViewLS"
+            android:id="@+id/textViewLSDF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView19"
@@ -102,7 +102,7 @@
             android:text="Tiền phạt:" />
 
         <TextView
-            android:id="@+id/textViewAM"
+            android:id="@+id/textViewAMDF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView9"

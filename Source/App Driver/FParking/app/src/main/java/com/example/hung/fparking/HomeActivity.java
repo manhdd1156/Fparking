@@ -207,7 +207,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_fine_history:
-                    locationManager.removeUpdates(HomeActivity.this);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
                     Intent intentFineHistory = new Intent(HomeActivity.this,FineHistory.class);
                     startActivity(intentFineHistory);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
