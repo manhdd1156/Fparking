@@ -99,7 +99,7 @@
             android:layout_alignBottom="@+id/imageView8"
             android:layout_alignEnd="@+id/imageView19"
             android:layout_marginBottom="20dp"
-            android:text="Thành tiền:" />
+            android:text="Tiền phạt:" />
 
         <TextView
             android:id="@+id/textViewAM"
@@ -115,14 +115,14 @@
         <ImageView
             android:id="@+id/imageView20"
             android:layout_width="wrap_content"
-            android:layout_height="143dp"
+            android:layout_height="83dp"
             android:layout_below="@+id/imageView8"
             android:layout_marginTop="20dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/info" />
 
         <TextView
-            android:id="@+id/textViewAD"
+            android:id="@+id/textViewAddressDF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView9"
@@ -134,55 +134,15 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/textViewTotalTimePH"
+            android:id="@+id/textViewTotalTimeDF"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView9"
-            android:layout_marginBottom="227dp"
+            android:layout_below="@+id/textViewAddressDF"
             android:drawableLeft="@drawable/ic_action_timeoc"
-            android:layout_below="@+id/textViewTimeCheckoutPH"
             android:gravity="center_vertical"
             android:text="N/A"
             android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/textViewTimeCheckoutPH"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView9"
-            android:layout_below="@+id/textViewTimeCheckinPH"
-            android:drawableLeft="@drawable/ic_checkout_timeout"
-            android:gravity="center_vertical"
-            android:text="N/A"
-            android:textSize="13sp" />
-
-        <TextView
-            android:id="@+id/textViewTimeCheckinPH"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView9"
-            android:layout_below="@+id/textViewAD"
-            android:drawableLeft="@drawable/ic_checkout_timein"
-            android:gravity="center_vertical"
-            android:text="N/A"
-            android:textSize="13sp" />
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="135dp" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="154dp"
-            android:text="Đã được hủy" />
 
     </RelativeLayout>
 

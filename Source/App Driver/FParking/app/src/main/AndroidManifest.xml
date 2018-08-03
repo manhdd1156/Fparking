@@ -87,7 +87,8 @@
         <activity android:name=".DialogAddCar" />
         <activity android:name=".ChangePassword" />
         <activity android:name=".Contact" />
-        <activity android:name=".FineHistory"></activity>
+        <activity android:name=".FineHistory" />
+        <activity android:name=".DetailedFine"></activity>
     </application>
 
 </manifest>

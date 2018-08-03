@@ -97,7 +97,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mPreferencesEditor = mPreferences.edit();
         // ánh xạ button
         imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
-        imageViewMute = findViewById(R.id.imageViewMute);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
