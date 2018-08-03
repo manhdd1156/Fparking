@@ -135,6 +135,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
             public void onClick(View v) {
                 Intent backOrderIntent = new Intent(OrderParking.this, HomeActivity.class);
                 startActivity(backOrderIntent);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
         buttonDat_Cho.setOnClickListener(new View.OnClickListener() {

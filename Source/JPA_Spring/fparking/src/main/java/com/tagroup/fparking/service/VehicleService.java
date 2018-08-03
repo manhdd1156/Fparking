@@ -11,7 +11,6 @@ public interface VehicleService {
 	public List<Vehicle> getAll();
 	public Vehicle getById(Long id)throws Exception;
 	public DriverVehicle create(DriverVehicleDTO drivervehicle)throws Exception;
-	
 	public void delete(DriverVehicleDTO drivervehicle)throws Exception;
 	public Vehicle update(Vehicle vehicle)throws Exception;
 	public void delete(Long id)throws Exception;

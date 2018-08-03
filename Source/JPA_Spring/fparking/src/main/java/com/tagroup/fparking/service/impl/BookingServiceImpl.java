@@ -10,12 +10,12 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.BookingRepository;
-import com.tagroup.fparking.repository.CommisionRepository;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.BookingService;
+import com.tagroup.fparking.service.CommisionService;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.PusherService;
@@ -46,7 +46,7 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	@Autowired
-	private CommisionRepository commisionRepository;
+	private CommisionService commisionService;
 
 	@Override
 	public List<Booking> getAll() {
@@ -111,13 +111,41 @@ public class BookingServiceImpl implements BookingService {
 			Booking b = bookingRepository.getOne(booking.getId());
 			b.setStatus(booking.getStatus());
 			if (booking.getStatus() == 2) {
-
+					
 				b.setTimein(booking.getTimein());
+				
+				b.setStatus(2);
+				System.out.println("booking ==: " + booking.toString());
+				Date date = new Date();
+				b.setTimein(date);
+				b.setComission(commisionService.getCommision());
+				
+				double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
+				b.setTotalfine(finePrice);
+				System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
+				double price = tariffService.findByParkingAndVehicletype(b.getParking().getId(),
+						b.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
+				b.setPrice(price);
+				
+				return bookingRepository.save(b);
 			} else if (booking.getStatus() == 3) {
 				b.setTimeout(booking.getTimeout());
+				
+				Date date = new Date();
+				booking.setTimeout(date);
+				long diff = b.getTimeout().getTime() - b.getTimein().getTime();
+				double diffInHours = diff / ((double) 1000 * 60 * 60);
+				double totalPrice = diffInHours * b.getPrice();
+				if (diffInHours < 1) {
+					totalPrice = b.getPrice();
+				}
+				totalPrice+=b.getTotalfine();
+				b.setAmount(totalPrice);
+				System.out.println("booking ===: khi chua tahy doi status = 3 : " + b.toString());
+				return bookingRepository.save(b);
 			}
 			// TODO Auto-generated method stub
-			return bookingRepository.save(b);
+			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
 		}
@@ -166,7 +194,7 @@ public class BookingServiceImpl implements BookingService {
 
 			modelNoti.setType(2);
 			Notification n = notificationService.update(modelNoti);
-			System.out.println("BookingServerImp/updatebystatus =: " + n.toString());
+			System.out.println("BookingServerImp/updatebystatus =:  n = " + n.toString());
 			List<Booking> blist = bookingRepository.findAll();
 			for (Booking booking : blist) {
 				if (booking.getParking().getId() == n.getParking_id()
@@ -190,10 +218,11 @@ public class BookingServiceImpl implements BookingService {
 					System.out.println("booking ==: " + booking.toString());
 					Date date = new Date();
 					booking.setTimein(date);
-					booking.setComission(commisionRepository.getOne((long) 1).getCommision());
+					booking.setComission(commisionService.getCommision());
+					
 					double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
 					booking.setTotalfine(finePrice);
-					System.out.println("BookingServerImp/updatebystatus : " + booking);
+					System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
 					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(),
 							booking.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
 					booking.setPrice(price);

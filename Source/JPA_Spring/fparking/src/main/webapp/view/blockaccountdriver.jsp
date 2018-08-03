@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý tài khoản</title>
+<title>Quản lý lái xe</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -58,7 +58,7 @@
 										<td>${driver.phone }</td>
 										<td class="center"><a href="/account/driver/detail/${driver.id }">Xem</a></td>
 										<td class="center"><a href="/account/driver/unblockaccount/${driver.id }">Mở Khóa</a></td>
-										<td class="center"><a href="">Sửa</a></td>
+										<td class="center"><a href="/account/driver/editaccount/${driver.id }">Sửa</a></td>
 									</tr>
 									</c:forEach>
 								</tbody>

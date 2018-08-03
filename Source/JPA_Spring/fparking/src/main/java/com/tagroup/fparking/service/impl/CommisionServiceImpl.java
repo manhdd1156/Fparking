@@ -45,6 +45,16 @@ private CommisionRepository commisionRepository;
 		Commision commision = commisionRepository.getOne(id);
 		commisionRepository.delete(commision);
 	}
+
+	@Override
+	public double getCommision() throws Exception {
+		// TODO Auto-generated method stub
+		List<Commision> clist = getAll();
+		for (Commision commision : clist) {
+			return commision.getCommision();
+		}
+		return 0;
+	}
 	
 
 }

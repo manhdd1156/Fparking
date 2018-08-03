@@ -30,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
-            android:text="Quản lý xe"
+            android:text="Quản Lý Xe"
             android:textColor="@color/whitetext"
             android:textSize="15sp"
             android:textStyle="bold"

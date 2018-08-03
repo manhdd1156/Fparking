@@ -185,14 +185,20 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             switch (item.getItemId()) {
                 case R.id.nav_history:
                     locationManager.removeUpdates(HomeActivity.this);
-                    Intent intent = new Intent(HomeActivity.this, ParkingHistory.class);
-                    startActivity(intent);
+                    Intent intentParkingHistory = new Intent(HomeActivity.this, ParkingHistory.class);
+                    startActivity(intentParkingHistory);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_mCar:
                     locationManager.removeUpdates(HomeActivity.this);
-                    Intent intent1 = new Intent(HomeActivity.this, CarsList.class);
-                    startActivity(intent1);
+                    Intent intentCarsList = new Intent(HomeActivity.this, CarsList.class);
+                    startActivity(intentCarsList);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.nav_contact:
+                    locationManager.removeUpdates(HomeActivity.this);
+                    Intent intentContact = new Intent(HomeActivity.this,Contact.class);
+                    startActivity(intentContact);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
             }

@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Sủa tài khoản lái xe</title>
+<title>Quản lý lái xe</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -23,28 +23,45 @@
 			<!-- ===============Left End================= -->
 
 		</nav>
-
 		<!-- ===============Hearder+Left End================= -->
-		<div class="row panel panel-success"
-			style="margin-top: 1%; margin-left: 15%; margin-right: 15%">
-			<form>
-				<div class="form-group">
-					<label for="exampleInputEmail1">Họ Tên</label> <input type="text"
-						class="form-control" id="nameDriver" placeholder="${name }">
+		<!-- ===============Body Start================= -->
+		<div id="page-wrapper">
+			<div class="row">
+				<div class="col-lg-12">
+					<h1 class="page-header">Sửa thông tin lái xe</h1>
 				</div>
-				<div class="form-group">
-					<label for="exampleInputPassword1">Số điện Thoại</label> <input
-						type="text" class="form-control" id="exampleInputPassword1"
-						placeholder="${phonenumber }">
+				<!-- /.col-lg-12 -->
+			</div>
+
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-default">
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<form role="form" method="POST" action="">
+										<div class="form-group">
+											<label>Họ Tên:</label> 
+											<input type="text" class="form-control" name="name" value="${name }">
+										</div>
+										<div class="form-group">
+											<label>Số điện thoại:</label> 
+											<input type="text" class="form-control" name="phone" value="${phonenumber }">
+										</div>
+										<button type="submit" class="btn btn-success">Lưu</button>
+										<button type="reset" class="btn btn-success">Đặt lại</button>
+									</form>
+								</div>
+							</div>
+						</div>
+					</div>
 				</div>
-				<button type="submit" class="btn btn-lg btn-success btn-block">Lưu</button>
-				<button type="reset" class="btn btn-lg btn-success btn-block">Đặt lại</button>
-			</form>
+			</div>
 		</div>
 		<!-- ===============Body End================= -->
-
-		<!-- ===============FooterJavaScrip Start================= -->
-		<%@include file="footerjavascrip.jsp"%>
-		<!-- ===============FooterJavaScrip End================= -->
+	</div>
+	<!-- ===============FooterJavaScrip Start================= -->
+	<%@include file="footerjavascrip.jsp"%>
+	<!-- ===============FooterJavaScrip End================= -->
 </body>
 </html>

@@ -1,5 +1,5 @@
+<%@page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
-<base href="http://localhost:9000/">
     <!-- jQuery -->
     <script src="assets/vendor/jquery/jquery.min.js"></script>
 
@@ -29,4 +29,19 @@
             responsive: true
         });
     });
+    $(document).ready(function() {
+        $('#dataTables-example2').DataTable({
+            responsive: true
+        });
+    });
+    
+    function deleteFunction() {
+        var txt;
+        if (confirm("Bạn có muốn xóa?")) {
+            txt = "You pressed OK!";
+        } else {
+            txt = "You pressed Cancel!";
+        }
+        document.getElementById("demo").innerHTML = txt;
+    }
     </script>

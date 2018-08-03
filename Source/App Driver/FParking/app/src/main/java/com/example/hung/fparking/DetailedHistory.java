@@ -3,6 +3,8 @@ package com.example.hung.fparking;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.BookingTask;
@@ -19,6 +21,7 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
 
     TextView textViewAddress, textViewTime, textViewPrice, textViewLicensePlate, textViewTotalPrice, textViewType;
     ArrayList<BookingDTO> booking;
+    ImageView backDetailedHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,7 +34,16 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
         textViewTotalPrice = findViewById(R.id.textViewAM);
         textViewAddress = findViewById(R.id.textViewAD);
         textViewTime = findViewById(R.id.textViewTM);
+        backDetailedHistory = findViewById(R.id.imageViewBackDetailedHistory);
 
+        backDetailedHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentHistory = new Intent(DetailedHistory.this, ParkingHistory.class);
+                startActivity(intentHistory);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
         // get data intent
         Intent intent = getIntent();
         int bookingid = intent.getIntExtra("bookingid", 0);
