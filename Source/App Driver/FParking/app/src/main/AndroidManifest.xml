@@ -89,7 +89,8 @@
         <activity android:name=".other.Contact" />
         <activity android:name=".FineHistory" />
         <activity android:name=".DetailedFine" />
-        <activity android:name=".other.TermsAndConditions"></activity>
+        <activity android:name=".other.TermsAndConditions" />
+        <activity android:name=".other.Feedback"></activity>
     </application>
 
 </manifest>
