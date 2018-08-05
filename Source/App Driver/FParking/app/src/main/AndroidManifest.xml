@@ -93,6 +93,7 @@
 <<<<<<< HEAD
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
         <activity android:name=".other.Feedback" />
         <activity android:name=".OTP"></activity>
         <activity android:name=".login.SignUp_Fragment"></activity>
@@ -111,6 +112,9 @@
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
         <activity android:name=".Contact"></activity>
+=======
+        <activity android:name=".other.Feedback"></activity>
+>>>>>>> parent of 9db67726... KhoiND
 =======
         <activity android:name=".other.Feedback"></activity>
 >>>>>>> parent of 9db67726... KhoiND
