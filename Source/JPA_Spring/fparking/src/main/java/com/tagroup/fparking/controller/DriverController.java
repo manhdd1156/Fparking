@@ -68,7 +68,6 @@ public class DriverController {
 	}
 
 	// create driver
-	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
 
