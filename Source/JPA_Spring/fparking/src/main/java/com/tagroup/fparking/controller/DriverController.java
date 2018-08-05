@@ -61,14 +61,12 @@ public class DriverController {
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.PUT)
 	public ResponseEntity<?> changePassword(@RequestBody Driver driver) throws Exception {
-
 		Driver respone = driverService.update(driver);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
 
 	// create driver
-	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
 
