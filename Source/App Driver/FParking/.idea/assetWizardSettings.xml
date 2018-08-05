@@ -16,12 +16,26 @@
                             <entry key="actionbar">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="10" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\ic_my_location_48px-512.png" />
-                                      <entry key="outputName" value="ic_action_mylocation" />
-                                      <entry key="theme" value="CUSTOM" />
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\microphone.png" />
+                                      <entry key="outputName" value="ic_action_micro" />
                                       <entry key="themeColor" value="fe6621" />
                                     </map>
                                   </option>

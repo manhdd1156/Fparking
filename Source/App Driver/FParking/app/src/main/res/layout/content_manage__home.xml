@@ -29,18 +29,20 @@
         <fragment
             android:id="@+id/place_autocomplete_fragment_home"
             android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
-            android:layout_width="274dp"
+            android:layout_width="280dp"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_centerVertical="true" />
 
         <ImageView
             android:id="@+id/imageView_search_voice"
-            android:layout_width="44dp"
-            android:layout_height="wrap_content"
+            android:layout_width="51dp"
+            android:layout_height="match_parent"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
-            android:src="@drawable/voice_recoder_icon" />
+            android:layout_marginEnd="1dp"
+            android:layout_marginTop="0dp"
+            android:src="@drawable/ic_action_micro" />
 
 
     </RelativeLayout>

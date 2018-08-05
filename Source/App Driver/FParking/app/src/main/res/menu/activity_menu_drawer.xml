@@ -26,7 +26,7 @@
         android:title="Phản hồi" />
 
     <item
-        android:id="@+id/nav_send"
+        android:id="@+id/nav_DK"
         android:icon="@drawable/ic_menu_rules"
         android:title="Điều kiện và điều khoản" />
     <item
