@@ -9,24 +9,19 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
-import com.tagroup.fparking.dto.BookingDTO;
 import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
-import com.tagroup.fparking.repository.NotificationRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.CommisionService;
 import com.tagroup.fparking.service.FineService;
-import com.tagroup.fparking.service.FineTariffService;
 import com.tagroup.fparking.service.NotificationService;
-import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.PusherService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.DriverVehicle;
-import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Notification;
 import com.tagroup.fparking.service.domain.Parking;
 
@@ -41,15 +36,9 @@ public class BookingServiceImpl implements BookingService {
 	@Autowired
 	private NotificationService notificationService;
 	@Autowired
-	private NotificationRepository notificationRepository;
-	
-	@Autowired
 	private TariffService tariffService;
 	@Autowired
 	private FineService fineService;
-	@Autowired
-	private ParkingService parkingService;
-	
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
 	@Autowired
@@ -58,14 +47,11 @@ public class BookingServiceImpl implements BookingService {
 	private VehicleRepository vehicleRepository;
 	@Autowired
 	private CommisionService commisionService;
-	@Autowired
-	private FineTariffService fineTariffService;
-	
 
 	@Override
 	public List<Booking> getAll() {
 		// TODO Auto-generated method stub
-//		pusherService.trigger("channel", "event", "dataa");
+		pusherService.trigger("channel", "event", "dataa");
 		return bookingRepository.findAll();
 
 	}
@@ -107,7 +93,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setStatus(0); // 0 : parking chưa nhận.
 				Notification nn = notificationService.create(n);
 				System.out.println("BookingServiceIml/create noti : " + nn);
-//				pusherService.trigger(b.getParking().getId() + "channel", "order", "");
+				pusherService.trigger(b.getParking().getId() + "channel", "order", "");
 			}
 			return b;
 		} catch (Exception e) {
@@ -123,41 +109,42 @@ public class BookingServiceImpl implements BookingService {
 				throw new APIException(HttpStatus.NO_CONTENT, "The Booking was not content");
 			}
 			Booking b = bookingRepository.getOne(booking.getId());
-			Notification n = new Notification();
-			n.setDriver_id(b.getDrivervehicle().getDriver().getId());
-			n.setVehicle_id(b.getDrivervehicle().getVehicle().getId());
-			n.setParking_id(b.getParking().getId());
-			n.setType(1); // 1 : driver gửi cho parking
-			n.setStatus(0); // 0 : parking chưa nhận.
-//			b.setStatus(booking.getStatus());
+			b.setStatus(booking.getStatus());
 			if (booking.getStatus() == 2) {
+					
+				b.setTimein(booking.getTimein());
 				
-				n.setEvent("checkin");
-				Notification nn = notificationRepository.save(n);
-				return updateByStatus(nn);
+				b.setStatus(2);
+				System.out.println("booking ==: " + booking.toString());
+				Date date = new Date();
+				b.setTimein(date);
+				b.setComission(commisionService.getCommision());
+				
+				double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
+				b.setTotalfine(finePrice);
+				System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
+				double price = tariffService.findByParkingAndVehicletype(b.getParking().getId(),
+						b.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
+				b.setPrice(price);
+				
+				return bookingRepository.save(b);
 			} else if (booking.getStatus() == 3) {
-				n.setEvent("checkout");
-				Notification nn = notificationRepository.save(n);
-				return null;
-			}else if(booking.getStatus()==0) {
-				b.setStatus(0);
-				Fine f = new Fine();
-				f.setDrivervehicle(b.getDrivervehicle());
-				f.setParking(b.getParking());
-				f.setDate(new Date());
-				f.setType(1);
-				f.setStatus(0);
-				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype()).getPrice());
-				f = fineService.create(f);
-				b.setStatus(0);
-				n.setEvent("cancel");
-				n.setType(2);
-				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()-1);
-				pusherService.trigger(nn.getDriver_id() + "channel", "cancel", "order");
+				b.setTimeout(booking.getTimeout());
+				
+				Date date = new Date();
+				booking.setTimeout(date);
+				long diff = b.getTimeout().getTime() - b.getTimein().getTime();
+				double diffInHours = diff / ((double) 1000 * 60 * 60);
+				double totalPrice = diffInHours * b.getPrice();
+				if (diffInHours < 1) {
+					totalPrice = b.getPrice();
+				}
+				totalPrice+=b.getTotalfine();
+				b.setAmount(totalPrice);
+				System.out.println("booking ===: khi chua tahy doi status = 3 : " + b.toString());
 				return bookingRepository.save(b);
 			}
-			
+			// TODO Auto-generated method stub
 			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
@@ -216,7 +203,6 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getStatus() == 5) {
 
 					booking.setStatus(1);
-					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()+1);
 					System.out.println("booking = " + booking.toString());
 					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
@@ -250,7 +236,8 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 2) {
 					booking.setStatus(3);
-					
+					System.out.println("booking ===: " + booking.toString());
+					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
@@ -266,7 +253,7 @@ public class BookingServiceImpl implements BookingService {
 
 	// get thong tin khi driver checkout
 	@Override
-	public Booking getInfoCheckOutByNoti(Notification noti) throws Exception {
+	public Booking getInfoCheckOut(Notification noti) throws Exception {
 		try {
 			if (noti == null) {
 				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
@@ -292,13 +279,7 @@ public class BookingServiceImpl implements BookingService {
 					}
 					totalPrice+=booking.getTotalfine();
 					booking.setAmount(totalPrice);
-					booking.setStatus(3);
-					modelNoti.setType(2);
-					modelNoti = notificationService.update(modelNoti);
 					System.out.println("booking ===: khi chua tahy doi status = 3 : " + booking.toString());
-					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace()-1);
-					pusherService.trigger(modelNoti.getDriver_id() + "channel", modelNoti.getEvent(), "ok");
-					
 					return bookingRepository.save(booking);
 				}
 			}
@@ -351,7 +332,7 @@ public class BookingServiceImpl implements BookingService {
 			List<Booking> bAll = bookingRepository.findAll();
 			List<Booking> b = new ArrayList<>();
 			for (Booking booking : bAll) {
-				if (booking.getDrivervehicle().getDriver().getId() == id && booking.getStatus()==3) {
+				if (booking.getDrivervehicle().getDriver().getId() == id) {
 					b.add(booking);
 				}
 			}
@@ -374,57 +355,6 @@ public class BookingServiceImpl implements BookingService {
 			}
 		}
 		return null;
-	}
-
-	
-	@Override
-	public void cancel(BookingDTO bb) throws Exception {
-		// TODO Auto-generated method stub
-		List<Booking> bAll = bookingRepository.findAll();
-		// driver cancel when preorder
-		for (Booking booking : bAll) {
-			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid() &&
-					booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid() &&
-					booking.getParking().getId() == bb.getParkingid()
-					&& booking.getStatus() == 5) {
-				Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(),
-						1, "order", 0);
-				notificationRepository.delete(modelNoti);
-				pusherService.trigger(booking.getParking().getId() + "channel", "cancel", "preorder");
-				bookingRepository.delete(booking);
-				return;
-			}
-		}
-		// driver cancel when ordered
-		for (Booking booking : bAll) {
-			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid() &&
-					booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid() &&
-					booking.getParking().getId() == bb.getParkingid()
-					&& booking.getStatus() == 1) {
-				Notification n = new Notification();
-				n.setDriver_id(booking.getDrivervehicle().getDriver().getId());
-				n.setVehicle_id(booking.getDrivervehicle().getVehicle().getId());
-				n.setParking_id(booking.getParking().getId());
-				n.setType(1); // 1 : driver gửi cho parking
-				n.setStatus(0); // 0 : parking chưa nhận.
-				Fine f = new Fine();
-				f.setDrivervehicle(booking.getDrivervehicle());
-				f.setParking(booking.getParking());
-				f.setDate(new Date());
-				f.setType(0);
-				f.setStatus(0);
-				f.setPrice(fineTariffService.getByVehicleType(booking.getDrivervehicle().getVehicle().getVehicletype()).getPrice());
-				f = fineService.create(f);
-				booking.setStatus(0);
-				n.setEvent("cancel");
-				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace()-1);
-				pusherService.trigger(nn.getParking_id() + "channel", "cancel", "order");
-				bookingRepository.save(booking);
-			}
-		}
-	
-			
 	}
 
 }

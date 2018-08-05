@@ -40,7 +40,7 @@
 							<div class="row">
 								<div class="col-lg-12">
 									<div>
-										<label>Ngày:</label>
+										<label>Ngày: ${dateFeedBack }</label>
 									</div>
 									<div class="form-group">
 										<label>Nội dung:</label>

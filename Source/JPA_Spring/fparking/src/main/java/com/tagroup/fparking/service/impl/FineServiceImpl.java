@@ -82,7 +82,7 @@ private DriverRepository driverRepository;
 		List<Fine> flist = new ArrayList<>();
 			List<Fine> flstTemp = getAll();
 			for (Fine fine : flstTemp) {
-				if(fine.getDrivervehicle().getDriver().getId()==id && fine.getType()==1) {
+				if(fine.getDrivervehicle().getDriver().getId()==id) {
 					flist.add(fine);
 				}
 			}

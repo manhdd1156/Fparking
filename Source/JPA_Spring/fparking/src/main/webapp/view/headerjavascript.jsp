@@ -6,7 +6,7 @@
     <meta name="author" content="">
 
     <!-- Bootstrap Core CSS -->
-    <base href="http://52.148.83.12:8080/">
+    <base href="http://192.168.119.226:9000/">
     
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 

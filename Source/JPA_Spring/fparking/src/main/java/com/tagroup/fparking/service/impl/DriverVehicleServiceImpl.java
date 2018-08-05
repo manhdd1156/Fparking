@@ -123,7 +123,7 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		List<DriverVehicle> dvlist = driverVehicleRepository.findAll();
 		List<DriverVehicle> dvreturn = new ArrayList<>();
 		for (DriverVehicle driverVehicle : dvlist) {
-			if(driverVehicle.getDriver().getId()==id && driverVehicle.getStatus()==1) {
+			if(driverVehicle.getDriver().getId()==id && driverVehicle.getVehicle().getStatus()==1 && driverVehicle.getStatus()==1) {
 				dvreturn.add(driverVehicle);
 			}
 		}

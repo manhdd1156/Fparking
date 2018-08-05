@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.tagroup.fparking.repository.FinetariffRepository;
 import com.tagroup.fparking.service.FineTariffService;
 import com.tagroup.fparking.service.domain.Finetariff;
-import com.tagroup.fparking.service.domain.Vehicletype;
 @Service
 public class FinetariffServiceImpl implements FineTariffService{
 @Autowired
@@ -46,13 +45,6 @@ private FinetariffRepository finetariffRepository;
 		// TODO Auto-generated method stub
 		Finetariff finetariff = finetariffRepository.getOne(id);
 		finetariffRepository.delete(finetariff);
-	}
-
-	@Override
-	public Finetariff getByVehicleType(Vehicletype vehicletype) {
-		// TODO Auto-generated method stub
-		
-		return finetariffRepository.findByVehicletype(vehicletype);
 	}
 	
 
