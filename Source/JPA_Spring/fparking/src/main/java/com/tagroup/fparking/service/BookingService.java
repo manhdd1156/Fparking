@@ -2,6 +2,7 @@ package com.tagroup.fparking.service;
 
 import java.util.List;
 
+import com.tagroup.fparking.dto.BookingDTO;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Notification;
 import com.tagroup.fparking.service.domain.Parking;
@@ -25,12 +26,13 @@ public interface BookingService {
 
 	public Booking updateByStatus(Notification noti) throws Exception;
 	
-	public Booking getInfoCheckOut(Notification noti) throws Exception;
+	public Booking getInfoCheckOutByNoti(Notification noti) throws Exception;
 	
 	
 	public Booking findByParkingIDAndDriverVehicleIDAndStatus(Long parkingid, Long drivervehicleid,int status);
 	
 	public Booking getByNoti(Notification noti) throws Exception;
 	
+	public void cancel(BookingDTO booking) throws Exception;
 	
 }

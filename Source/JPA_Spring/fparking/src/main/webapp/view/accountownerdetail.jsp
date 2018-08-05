@@ -48,7 +48,7 @@
 												Thông tin tài khoản</a></li>
 										<li><a data-toggle="tab" href="#FineHistory"
 											class="text-success"><i class="fa fa-info"></i> Bãi xe
-												quản lý</a></li>
+												của bạn</a></li>
 									</ul>
 
 									<div class="tab-content">
@@ -81,12 +81,8 @@
 												<div class="col-lg-12">
 													<div class="panel panel-default">
 														<div class="panel-heading">Tổng số bãi:
-															${toatalParking }</div>
+															${totalPriceFine }</div>
 														<div class="panel-body">
-															<div>
-																<b>Tổng tiền tài khoản bãi: ${totalDeposit } </b>
-															</div>
-															<br>
 															<table width="100%"
 																class="table table-striped table-bordered table-hover"
 																id="dataTables-example">

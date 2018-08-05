@@ -42,7 +42,7 @@
 									<form role="form" method="POST" action="">
 										<div class="form-group">
 											<label>Loại xe:</label> 
-											<input type="number" class="form-control" name="vehicletype" min="1" step="1" max="45" required>
+											<input type="number" class="form-control" name="vehicletype" min="1" step="1" required>
 										</div>
 										<div class="form-group">
 											<label>Mức tiền phạt:</label> 

@@ -15,8 +15,9 @@ import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Proxy;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 
 /**
  * The persistent class for the booking database table.
@@ -31,7 +32,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
 
 @NamedQuery(name = "Booking.findAll", query = "SELECT b FROM Booking b")
-public class Booking implements Serializable {
+public class Booking  implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
@@ -41,9 +42,9 @@ public class Booking implements Serializable {
 	
 	@Column
 	private int status;
-	
+	@JsonSerialize(using = SerializeDate.class)
 	private Date timein;
-
+	@JsonSerialize(using = SerializeDate.class)
 	private Date timeout;
 	
 	private double price;
@@ -113,7 +114,7 @@ public class Booking implements Serializable {
 	public void setStatus(int status) {
 		this.status = status;
 	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss dd-MM-yyyy", timezone="UTC")
+
 	public Date getTimein() {
 		return this.timein;
 	}
@@ -121,7 +122,7 @@ public class Booking implements Serializable {
 	public void setTimein(Date timein) {
 		this.timein = timein;
 	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss dd-MM-yyyy", timezone="UTC")
+	
 	public Date getTimeout() {
 		return this.timeout;
 	}
@@ -162,3 +163,4 @@ public class Booking implements Serializable {
 	}
 
 }
+

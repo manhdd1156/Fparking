@@ -15,6 +15,7 @@ import javax.persistence.NamedQuery;
 import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
 /**
@@ -57,7 +58,7 @@ public class Fine implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-
+	@JsonSerialize(using = SerializeDate.class)
 	public Date getDate() {
 		return this.date;
 	}

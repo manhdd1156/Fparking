@@ -39,10 +39,6 @@
 							${totalAccount}</div>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
-							<div>
-								<b>Tổng tiền tài khoản bãi: ${totalDeposit } </b>
-							</div>
-							<br>
 							<table width="100%"
 								class="table table-striped table-bordered table-hover"
 								id="dataTables-example">
@@ -58,20 +54,16 @@
 									</tr>
 								</thead>
 								<tbody>
-									<c:forEach items="${ listParking}" var="parking">
-										<tr class="odd gradeX">
-											<td>${parking.address }</td>
-											<td>${parking.currentspace }</td>
-											<td>${parking.totalspace }</td>
-											<td>${parking.deposits }</td>
-											<td class="cente"><a
-												href="/account/patking/detail/${parking.id }">Xem</a></td>
-											<td class="center"><a
-												href="/account/parking/unblockaccount/${parking.id }">Mở
-													Khóa</a></td>
-											<td class="center"><a
-												href="/account/patking/detail/${parking.id }">Sửa</a></td>
-										</tr>
+									<c:forEach items= "${ listParking}" var="parking">
+									<tr class="odd gradeX">
+										<td>${parking.address }</td>
+										<td>${parking.currentspace }</td>
+										<td>${parking.totalspace }</td>
+										<td>${parking.deposits }</td>
+										<td class="cente"><a href="/account/patking/detail/${parking.id }">Xem</a></td>
+										<td class="center"><a href="/account/parking/unblockaccount/${parking.id }">Mở Khóa</a></td>
+										<td class="center"><a href="/account/patking/detail/${parking.id }">Sửa</a></td>
+									</tr>
 									</c:forEach>
 								</tbody>
 							</table>
