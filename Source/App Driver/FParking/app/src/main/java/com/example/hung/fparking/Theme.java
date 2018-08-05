@@ -48,7 +48,7 @@ public class Theme extends AppCompatActivity {
 
         Session.spref = getSharedPreferences("intro", 0);
         mPreferencesEditor = Session.spref.edit();
-        mPreferencesEditor.clear().commit();
+//        mPreferencesEditor.clear().commit();
 
         // khởi tạo fragment
         fragmentManager = getSupportFragmentManager();
