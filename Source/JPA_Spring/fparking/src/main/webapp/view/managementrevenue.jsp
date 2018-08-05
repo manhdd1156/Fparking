@@ -123,6 +123,7 @@
 												<tr>
 													<th>Ngày</th>
 													<th>Địa chỉ</th>
+													<th>Tỉnh/Thành Phố</th>
 													<th>Tổng hóa đơn</th>
 													<th>Tiền triết khấu</th>
 													<th></th>
@@ -133,6 +134,7 @@
 													<tr class="odd gradeX">
 														<td>${booking.timeout }</td>
 														<td>${booking.address }</td>
+														<th>Tỉnh/Thành Phố</th>
 														<td>${ booking.amount}</td>
 														<td>${booking.totalCommission }</td>
 														<td class="center"><a
