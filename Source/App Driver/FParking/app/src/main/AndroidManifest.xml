@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hung.fparking">
 
     <!--
@@ -90,10 +91,7 @@
         <activity android:name=".FineHistory" />
         <activity android:name=".DetailedFine" />
         <activity android:name=".other.TermsAndConditions" />
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
-<<<<<<< HEAD
+
         <activity android:name=".other.Feedback" />
         <activity android:name=".OTP"></activity>
         <activity android:name=".login.SignUp_Fragment"></activity>
@@ -111,19 +109,6 @@
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
-        <activity android:name=".Contact"></activity>
-=======
-        <activity android:name=".other.Feedback"></activity>
->>>>>>> parent of 9db67726... KhoiND
-=======
-        <activity android:name=".other.Feedback"></activity>
->>>>>>> parent of 9db67726... KhoiND
-=======
-        <activity android:name=".other.Feedback"></activity>
->>>>>>> parent of 9db67726... KhoiND
-=======
-        <activity android:name=".other.Feedback"></activity>
->>>>>>> parent of 9db67726... KhoiND
     </application>
 
 </manifest>
