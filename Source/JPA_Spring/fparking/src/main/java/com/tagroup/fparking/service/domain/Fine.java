@@ -14,8 +14,8 @@ import javax.persistence.NamedQuery;
 
 import org.hibernate.annotations.Proxy;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 
 /**
@@ -58,7 +58,7 @@ public class Fine implements Serializable {
 	public void setId(Long id) {
 		this.id = id;
 	}
-	@JsonFormat(shape=JsonFormat.Shape.STRING, pattern="HH:mm:ss dd-MM-yyyy", timezone="UTC")
+	@JsonSerialize(using = SerializeDate.class)
 	public Date getDate() {
 		return this.date;
 	}

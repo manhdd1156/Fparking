@@ -47,15 +47,15 @@ public class DriverController {
 		List<Fine> respone = fineService.getByDriverID(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-	
-	// get fine by fineID
-		@PreAuthorize("hasAnyAuthority('DRIVER')")
-		@RequestMapping(path = "/fines/{id}", method = RequestMethod.GET)
-		public ResponseEntity<?> getFinesByID(@PathVariable Long id) throws Exception {
 
-			Fine respone = fineService.getById(id);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
-		}
+	// get fine by fineID
+	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@RequestMapping(path = "/fines/{id}", method = RequestMethod.GET)
+	public ResponseEntity<?> getFinesByID(@PathVariable Long id) throws Exception {
+
+		Fine respone = fineService.getById(id);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
 
 	// update driver
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
@@ -67,6 +67,17 @@ public class DriverController {
 
 	}
 
+	// create driver
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
+
+		Driver respone = driverService.create(driver);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
+	// get profile
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/profile", method = RequestMethod.GET)
 	public ResponseEntity<?> getProfile() throws Exception {

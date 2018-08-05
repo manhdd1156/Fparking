@@ -155,5 +155,20 @@ private TariffRepository tariffRepository;
 		// TODO Auto-generated method stub
 		return parkingRepository.findByOwner(o);
 	}
+	@Override
+	public Parking changeSpace(Long parkingid, int space) {
+		Parking p;
+		try {
+			p = getById(parkingid);
+			p.setCurrentspace(space);
+			return update(p);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
+		// TODO Auto-generated method stub
+		return null;
+	}
 	
 }
