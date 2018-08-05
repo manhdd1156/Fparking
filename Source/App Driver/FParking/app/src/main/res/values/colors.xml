@@ -11,5 +11,7 @@
     <color name="background_color">#327b90</color>
     <color name="background">#f7f7f7</color>
     <color name="edittext_floating">#B0BEC5</color>
+
+    <color name="colorBackground">#0097E3</color>
 </resources>
 

@@ -4,8 +4,11 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.widget.LinearLayout;
 
 import com.example.hung.fparking.login.SignUp_Fragment;
+import com.facebook.accountkit.AccountKit;
 import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
@@ -22,7 +25,12 @@ public class OTP extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_otp);
 
-        LoginType loginType = LoginType.PHONE;
+        goToLogin(true);
+    }
+    
+    public void goToLogin(boolean isSMSLogin) {
+        LoginType loginType = isSMSLogin ? LoginType.PHONE : LoginType.EMAIL;
+
         Intent intent = new Intent(getApplicationContext(), AccountKitActivity.class);
         AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
                 new AccountKitConfiguration.AccountKitConfigurationBuilder(
@@ -32,7 +40,7 @@ public class OTP extends AppCompatActivity {
 
         configurationBuilder.setUIManager(new SkinManager(
                         SkinManager.Skin.CONTEMPORARY,
-                        getResources().getColor(R.color.colorAccent),
+                        getResources().getColor(R.color.colorBackground),
                         R.drawable.car,
                         SkinManager.Tint.BLACK,
                         0.10
@@ -90,4 +98,5 @@ public class OTP extends AppCompatActivity {
     private void log(String msj) {
         Log.println(Log.DEBUG, APP_TAG, msj);
     }
+
 }

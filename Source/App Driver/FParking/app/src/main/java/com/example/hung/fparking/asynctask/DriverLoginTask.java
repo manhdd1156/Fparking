@@ -24,6 +24,8 @@ public class DriverLoginTask {
             new GetProfileTask(container).execute((Void) null);
         } else if (type.equals("update")) {
             new UpdateProfileTask(driverDTO, password, container).execute((Void) null);
+        }else if (type.equals("create")) {
+            new RegisterTask(driverDTO, password, container).execute((Void) null);
         }
     }
 }
