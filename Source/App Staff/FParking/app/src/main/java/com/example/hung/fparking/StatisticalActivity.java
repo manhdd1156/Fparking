@@ -21,6 +21,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -57,6 +58,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     TextView tvTotalCar;
     TextView tvTotalMoney;
     TextView tvDateError;
+    ImageView backStatistical;
     Button btnShow;
     Date fromDate;
     Date toDate;
@@ -78,6 +80,15 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         tvTotalMoney = (TextView) findViewById(R.id.tvMoney);
         tvDateError = (TextView) findViewById(R.id.tvDateError);
         btnShow = (Button) findViewById(R.id.btnStat);
+        backStatistical = findViewById(R.id.imageViewBackStatistical);
+        backStatistical.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Session.homeActivity.recreate();
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
         BookingDTO b = new BookingDTO();
         b.setParkingID(Session.currentStaff.getParking_id());
         new ManagerBookingTask("statisticget", b, StatisticalActivity.this);

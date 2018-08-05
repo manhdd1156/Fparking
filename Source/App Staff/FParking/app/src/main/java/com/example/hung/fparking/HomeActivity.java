@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -45,9 +46,11 @@ import static com.example.hung.fparking.config.Constants.PICK_CONTACT_REQUEST;
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IAsyncTaskHandler {
     ListView lv;
-    TextView tvSpace;
+    TextView tvSpace, textViewMPhone;
     TextView tvAddress;
-
+    NavigationView navigationView;
+    View headerView;
+    ImageView imageViewFParking;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,6 +95,27 @@ public class HomeActivity extends AppCompatActivity
                 startActivityForResult(intent, PICK_CONTACT_REQUEST);
 //                startActivity(intent);
                 // TODO Auto-generated method stub
+            }
+        });
+
+
+        navigationView = (NavigationView) findViewById(R.id.nav_view);
+        headerView = navigationView.getHeaderView(0);
+        textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
+        textViewMPhone.setText(Session.currentStaff.getPhone());
+        textViewMPhone.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDriverInfo = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intentDriverInfo);
+            }
+        });
+        imageViewFParking = headerView.findViewById(R.id.imageViewFParking);
+        imageViewFParking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentDriverInfo = new Intent(HomeActivity.this, ProfileActivity.class);
+                startActivity(intentDriverInfo);
             }
         });
     }
@@ -192,14 +216,13 @@ public class HomeActivity extends AppCompatActivity
             // Handle the camera action
             Intent intent = new Intent(HomeActivity.this, StatisticalActivity.class);
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
-        } else if (id == R.id.nav_mAccount) {
-            Intent intent = new Intent(HomeActivity.this, ProfileActivity.class);
+        } else if (id == R.id.nav_contact) {
+
+            Intent intent = new Intent(HomeActivity.this, Contact.class);
             startActivity(intent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else if (id == R.id.nav_view) {
 
         }

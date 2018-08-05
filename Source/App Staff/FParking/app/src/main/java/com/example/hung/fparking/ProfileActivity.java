@@ -1,12 +1,14 @@
 package com.example.hung.fparking;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -21,10 +23,12 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     EditText phone;
     EditText address;
     EditText password;
+    EditText changePass;
     TextView tvError;
     TextView tvSuccess;
     Button btnConfirm;
     AlertDialog dialog;
+    ImageView backProfile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,38 +39,48 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         phone = (EditText) findViewById(R.id.tbPhone);
         address = (EditText) findViewById(R.id.tbAddress);
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
+        changePass = findViewById(R.id.tbPass);
+        changePass.setFocusable(false);
+        changePass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intentChangePass = new Intent(ProfileActivity.this, ChangePassword.class);
+                startActivity(intentChangePass);
+            }
+        });
+        backProfile = findViewById(R.id.imageViewBackProfile);
+        backProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Session.homeActivity.recreate();
+                finish();
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+            }
+        });
         setText();
         mUpdate.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
-                if ((name.getText().toString().isEmpty() || name.getText().toString().equals("")) &&
-                        (address.getText().toString().isEmpty() || address.getText().toString().equals("")) &&
-                (phone.getText().toString().isEmpty() || phone.getText().toString().equals(""))) {
-                    tvSuccess.setText("Hãy nhập nội dung muốn cập nhật");
-                    tvSuccess.setTextColor(android.R.color.holo_red_dark);
-                    tvSuccess.setVisibility(View.VISIBLE);
-                } else {
-                    tvSuccess.setVisibility(View.INVISIBLE);
-                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
-                    View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                    mBuilder.setView(mView);
-                    dialog = mBuilder.create();
-                    dialog.show();
-                    btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
-                    btnConfirm.setOnClickListener(
-                            new View.OnClickListener() {
-                                @Override
-                                public void onClick(View v) {
-                                    checkValidation();
-                                }
-                            });
-                    tvError = (TextView) mView.findViewById(R.id.tvError);
-                    password = (EditText) mView.findViewById(R.id.tbPass);
-                }
 
-
+                tvSuccess.setVisibility(View.INVISIBLE);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                mBuilder.setView(mView);
+                dialog = mBuilder.create();
+                dialog.show();
+                btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
+                btnConfirm.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                checkValidation();
+                            }
+                        });
+                tvError = (TextView) mView.findViewById(R.id.tvError);
+                password = (EditText) mView.findViewById(R.id.tbPassword);
             }
+
         });
     }
 
