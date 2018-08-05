@@ -51,7 +51,20 @@ public class ParkingController {
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 		
 	}
+	
+	// get parkings sort by latitude and longitude
+		@PreAuthorize("hasAnyAuthority('DRIVER')")
+		@RequestMapping(value = "/sort", params = { "latitude", "longitude" }, method = RequestMethod.GET)
+		@ResponseBody
+		public ResponseEntity<?> getSortParkingByLocation(@RequestParam("latitude") String latitude,
+				@RequestParam("longitude") String longitude) throws Exception {
+			
+				List<Parking> respone = parkingService.findSortByLatitudeANDLongitude(latitude, longitude);
+				return new ResponseEntity<>(respone, HttpStatus.OK);
+			
+		}
 
+	
 	// get tariff by parking id = ?
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)

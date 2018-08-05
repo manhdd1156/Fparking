@@ -332,7 +332,7 @@ public class BookingServiceImpl implements BookingService {
 			List<Booking> bAll = bookingRepository.findAll();
 			List<Booking> b = new ArrayList<>();
 			for (Booking booking : bAll) {
-				if (booking.getDrivervehicle().getDriver().getId() == id && booking.getStatus()==4) {
+				if (booking.getDrivervehicle().getDriver().getId() == id) {
 					b.add(booking);
 				}
 			}

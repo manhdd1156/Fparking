@@ -47,7 +47,7 @@ private TariffRepository tariffRepository;
 	}
 
 	@Override
-	public Tariff findByParkingAndVehicletype(Long parkingid, Long vehicleTypeid) {
+	public Tariff findByParkingAndVehicletype(Long parkingid, int vehicleTypeid) {
 		// TODO Auto-generated method stub
 		List<Tariff> tariffList = tariffRepository.findAll();
 		for (Tariff tariff : tariffList) {

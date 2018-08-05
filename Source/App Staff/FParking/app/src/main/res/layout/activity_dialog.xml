@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/dialog_bg"
+    android:orientation="horizontal">
+
+    <ScrollView
+        android:layout_width="330dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/relativelayout1">
+
+        <android.support.constraint.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/title"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:gravity="center"
+                android:text="Có xe vào bãi!!!"
+                android:textAlignment="center"
+                android:textColor="#000000"
+                android:textSize="24sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:id="@+id/lbLicensePlate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="32dp"
+                android:layout_marginTop="24dp"
+                android:text="Biển số :"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <TextView
+                android:id="@+id/lbType"
+                android:layout_width="wrap_content"
+                android:layout_height="25dp"
+                android:layout_marginStart="36dp"
+                android:layout_marginTop="8dp"
+                android:text="Loại xe :"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbLicensePlate" />
+
+            <TextView
+                android:id="@+id/lbColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="52dp"
+                android:layout_marginTop="8dp"
+                android:text="Màu : "
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbType" />
+
+            <TextView
+                android:id="@+id/lbRating"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="24dp"
+                android:layout_marginTop="8dp"
+                android:text="Đánh giá :"
+                android:textAppearance="?android:attr/textAppearanceLarge"
+                android:textSize="17sp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbColor" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:layout_marginEnd="8dp"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="8dp"
+                android:orientation="horizontal"
+                android:paddingBottom="10dp"
+                android:paddingLeft="10dp"
+                android:paddingRight="10dp"
+                android:weightSum="100"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lbRating"
+                app:layout_constraintVertical_bias="0.0">
+
+                <Button
+                    android:id="@+id/ok_btn_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="50"
+                    android:background="@drawable/button_selector"
+                    android:text="Đồng ý"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+
+                <Button
+                    android:id="@+id/cancel_btn_id"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="16dp"
+                    android:layout_weight="50"
+                    android:background="@drawable/button_overload"
+                    android:text="Hủy"
+                    android:textAllCaps="false"
+                    android:textColor="#ffffff" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tvLP"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="24dp"
+                android:text="BAD395847"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
+                app:layout_constraintTop_toBottomOf="@+id/title" />
+
+            <TextView
+                android:id="@+id/tvType"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Xe con/khách 2 chỗ"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
+                app:layout_constraintTop_toBottomOf="@+id/tvLP" />
+
+            <TextView
+                android:id="@+id/tvColor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Trắng"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
+                app:layout_constraintTop_toBottomOf="@+id/lbType" />
+
+            <TextView
+                android:id="@+id/tvRate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Tốt"
+                android:textSize="17sp"
+                app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
+                app:layout_constraintTop_toBottomOf="@+id/lbColor" />
+        </android.support.constraint.ConstraintLayout>
+    </ScrollView>
+
+
+</RelativeLayout>
