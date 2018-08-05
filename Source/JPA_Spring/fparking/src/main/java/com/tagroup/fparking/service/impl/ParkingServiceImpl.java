@@ -170,6 +170,7 @@ private TariffRepository tariffRepository;
 		// TODO Auto-generated method stub
 		return null;
 	}
+	
 	@Override
 	public List<Parking> findSortByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
 		// TODO Auto-generated method stub
