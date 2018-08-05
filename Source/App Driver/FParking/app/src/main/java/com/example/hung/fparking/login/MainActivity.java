@@ -34,21 +34,21 @@ public class MainActivity extends AppCompatActivity {
                         Utils.Login_Fragment).commit();
     }
     // Replace SignUp Fragment with animation
-    protected void replaceSignUpFragment() {
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                .replace(R.id.frameContainer, new SignUp_Fragment(),
-                        Utils.SignUp_Fragment).commit();
-    }
-    // Replace Forgot Password Fragment with animation
-    protected void replaceForgotPasswordFragment() {
-        fragmentManager
-                .beginTransaction()
-                .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
-                .replace(R.id.frameContainer, new ForgotPassword_Fragment(),
-                        Utils.ForgotPassword_Fragment).commit();
-    }
+//    protected void replaceSignUpFragment() {
+//        fragmentManager
+//                .beginTransaction()
+//                .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
+//                .replace(R.id.frameContainer, new SignUp_Fragment(),
+//                        Utils.SignUp_Fragment).commit();
+//    }
+//    // Replace Forgot Password Fragment with animation
+//    protected void replaceForgotPasswordFragment() {
+//        fragmentManager
+//                .beginTransaction()
+//                .setCustomAnimations(R.anim.left_enter, R.anim.right_out)
+//                .replace(R.id.frameContainer, new ForgotPassword_Fragment(),
+//                        Utils.ForgotPassword_Fragment).commit();
+//    }
 
     @Override
     public void onBackPressed() {

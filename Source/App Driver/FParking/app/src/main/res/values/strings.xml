@@ -33,4 +33,8 @@
     <string name="notiOtp">Một mã xác thực đã được gửi đến</string>
     <string name="reSentOtp">GỬI LẠI OTP</string>
     <string name="changePhoneNumber">ĐỔI SĐT</string>
+
+    <string name="app_id">482599222202957</string>
+    <string name="ACCOUNT_KIT_CLIENT_TOKEN">0f97a316c95c7ff1e124eb6fb833c233</string>
+    <string name="ak_login_protocol_scheme">ak465871913602533</string>
 </resources>
