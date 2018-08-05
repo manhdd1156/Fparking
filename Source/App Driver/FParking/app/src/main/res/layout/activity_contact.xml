@@ -99,49 +99,6 @@
             android:layout_marginBottom="30dp"
             android:text="Phiên bản 1.1.1" />
 
-        <ImageView
-            android:id="@+id/imageView26"
-            android:layout_width="26dp"
-            android:layout_height="22dp"
-            android:layout_alignTop="@+id/imageView13"
-            android:layout_marginEnd="6dp"
-            android:layout_marginTop="20dp"
-            android:layout_toStartOf="@+id/imageView21"
-            app:srcCompat="@drawable/ic_action_mail" />
-
-        <ImageView
-            android:id="@+id/imageView27"
-            android:layout_width="28dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView26"
-            android:layout_marginEnd="4dp"
-            android:layout_marginTop="10dp"
-            android:layout_toStartOf="@+id/imageView21"
-            app:srcCompat="@drawable/ic_action_mylocation" />
-
-        <TextView
-            android:id="@+id/textView12"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView26"
-            android:layout_marginBottom="4dp"
-            android:layout_toEndOf="@+id/imageView26"
-            android:text="contact@fparking.com"
-            android:textColor="@color/white_greyish"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView15"
-            android:layout_width="242dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/imageView21"
-            android:layout_alignTop="@+id/imageView27"
-            android:text="Trường Đại học FPT, KM29 Đại Lộ Thăng Long, Thạch Hoà, Thạch Thất, Hà Nội"
-            android:textColor="@color/white_greyish"
-            android:textSize="12sp"
-            android:textStyle="bold" />
-
     </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -41,7 +41,6 @@ import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.model.GPSTracker;
 import com.example.hung.fparking.other.Feedback;
-import com.example.hung.fparking.other.TermsAndConditions;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -216,19 +215,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_feedback:
-                    if (locationManager != null) {
-                        locationManager.removeUpdates(HomeActivity.this);
-                    }
+                    locationManager.removeUpdates(HomeActivity.this);
                     Intent intentFeedback = new Intent(HomeActivity.this,Feedback.class);
                     startActivity(intentFeedback);
-                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-                    break;
-                case R.id.nav_DK:
-                    if (locationManager != null) {
-                        locationManager.removeUpdates(HomeActivity.this);
-                    }
-                    Intent intentDK = new Intent(HomeActivity.this,TermsAndConditions.class);
-                    startActivity(intentDK);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
             }
