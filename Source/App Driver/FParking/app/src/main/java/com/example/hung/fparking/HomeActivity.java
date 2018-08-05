@@ -1,9 +1,7 @@
 package com.example.hung.fparking;
 
 import android.Manifest;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -36,11 +34,13 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hung.fparking.other.Contact;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ParkingTask;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.model.GPSTracker;
+import com.example.hung.fparking.other.Feedback;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
 import com.google.android.gms.location.places.Place;
@@ -97,7 +97,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mPreferencesEditor = mPreferences.edit();
         // ánh xạ button
         imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
-        imageViewMute = findViewById(R.id.imageViewMute);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
@@ -110,7 +109,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intentDriverInfo);
             }
         });
-        imageViewFParking=headerView.findViewById(R.id.imageViewFParking);
+        imageViewFParking = headerView.findViewById(R.id.imageViewFParking);
         imageViewFParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -184,21 +183,41 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             final FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
             switch (item.getItemId()) {
                 case R.id.nav_history:
-                    locationManager.removeUpdates(HomeActivity.this);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
                     Intent intentParkingHistory = new Intent(HomeActivity.this, ParkingHistory.class);
                     startActivity(intentParkingHistory);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_mCar:
-                    locationManager.removeUpdates(HomeActivity.this);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
                     Intent intentCarsList = new Intent(HomeActivity.this, CarsList.class);
                     startActivity(intentCarsList);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
                 case R.id.nav_contact:
-                    locationManager.removeUpdates(HomeActivity.this);
-                    Intent intentContact = new Intent(HomeActivity.this,Contact.class);
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
+                    Intent intentContact = new Intent(HomeActivity.this, Contact.class);
                     startActivity(intentContact);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.nav_fine_history:
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
+                    Intent intentFineHistory = new Intent(HomeActivity.this,FineHistory.class);
+                    startActivity(intentFineHistory);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.nav_feedback:
+                    locationManager.removeUpdates(HomeActivity.this);
+                    Intent intentFeedback = new Intent(HomeActivity.this,Feedback.class);
+                    startActivity(intentFeedback);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
             }

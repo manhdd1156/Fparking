@@ -115,7 +115,7 @@
         <ImageView
             android:id="@+id/imageView20"
             android:layout_width="wrap_content"
-            android:layout_height="81dp"
+            android:layout_height="143dp"
             android:layout_below="@+id/imageView8"
             android:layout_marginTop="20dp"
             android:scaleType="fitXY"
@@ -134,13 +134,35 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/textViewTM"
+            android:id="@+id/textViewTotalTimePH"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView20"
             android:layout_alignStart="@+id/textView9"
-            android:layout_marginBottom="6dp"
+            android:layout_marginBottom="227dp"
             android:drawableLeft="@drawable/ic_action_timeoc"
+            android:layout_below="@+id/textViewTimeCheckoutPH"
+            android:gravity="center_vertical"
+            android:text="N/A"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textViewTimeCheckoutPH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView9"
+            android:layout_below="@+id/textViewTimeCheckinPH"
+            android:drawableLeft="@drawable/ic_checkout_timeout"
+            android:gravity="center_vertical"
+            android:text="N/A"
+            android:textSize="13sp" />
+
+        <TextView
+            android:id="@+id/textViewTimeCheckinPH"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView9"
+            android:layout_below="@+id/textViewAD"
+            android:drawableLeft="@drawable/ic_checkout_timein"
             android:gravity="center_vertical"
             android:text="N/A"
             android:textSize="13sp" />

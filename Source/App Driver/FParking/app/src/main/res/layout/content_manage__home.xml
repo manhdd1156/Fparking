@@ -42,16 +42,20 @@
             android:layout_alignParentTop="true"
             android:src="@drawable/voice_recoder_icon" />
 
-    </RelativeLayout>
 
-    <ImageView
-        android:id="@+id/imageViewMute"
-        android:layout_width="30dp"
-        android:layout_height="30dp"
+    </RelativeLayout>
+    <Button
+        android:id="@+id/buttonFastSearch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginBottom="194dp"
-        android:layout_marginEnd="13dp"
-        android:src="@drawable/volume_mute" />
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/button_selector2"
+        android:text="TÌM BÃI XE NHANH"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
+
+
+
 
 </RelativeLayout>

@@ -42,11 +42,13 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
     ImageView addCar;
     Button btnAddCar;
-    EditText editTextLS1, editTextLS2;
+    EditText editTextLS1, editTextLS2, editTextColor;
     private CarouselPicker carouselPicker;
     private List<CarouselPicker.PickerItem> textItems;
     private ArrayList<TypeDTO> typeDTOS;
     String type;
+
+    AlertDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,9 +57,9 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
         // tạo dialog
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(CarsList.this);
-        View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car,null);
+        View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car, null);
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
+        dialog = mBuilder.create();
 
         //ánh xạ
         backCarsList = findViewById(R.id.imageViewBackCarsList);
@@ -95,11 +97,16 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         btnAddCar = mView.findViewById(R.id.btnAddCar);
         editTextLS1 = mView.findViewById(R.id.editTextLS1);
         editTextLS2 = mView.findViewById(R.id.editTextLS2);
+        editTextColor = mView.findViewById(R.id.editTextColor);
 
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                VehicleDTO addnewcar = new VehicleDTO();
+                addnewcar.setType(type);
+                addnewcar.setColor(editTextColor.getText().toString());
+                addnewcar.setLicenseplate(editTextLS1.getText().toString() + "-" + editTextLS2.getText().toString());
+                new VehicleTask("create", addnewcar, "add", CarsList.this);
             }
         });
 
@@ -111,7 +118,7 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
             @Override
             public void onPageSelected(int position) {
-                type = textItems.get(position).getText();
+                type = textItems.get(position).getText().toString();
             }
 
             @Override
@@ -139,13 +146,13 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 //        });
     }
 
-    private void DeleteVehicle(VehicleDTO v){
+    private void DeleteVehicle(VehicleDTO v) {
         new VehicleTask("delete", v, "vt", this);
     }
 
     @Override
     public void onPostExecute(Object o, String action) {
-        if(action.equals("vt")){
+        if (action.equals("vt")) {
             vehicle = (ArrayList<VehicleDTO>) o;
             mAdapter = new CarsListViewAdapter(vehicle);
             mRecyclerView.setAdapter(mAdapter);
@@ -180,7 +187,7 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
                             .setNegativeButton("Hủy", dialogClickListener).show();
                 }
             });
-        }else if(action.equals("ty")){
+        } else if (action.equals("ty")) {
             typeDTOS = (ArrayList<TypeDTO>) o;
             textItems = new ArrayList<>();
             if (typeDTOS.size() > 0) {
@@ -191,6 +198,9 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
             }
             CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
             carouselPicker.setAdapter(textAdapter);
+        } else if (action.equals("add")) {
+            dialog.cancel();
+            startActivity(getIntent());
         }
     }
 }
