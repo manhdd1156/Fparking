@@ -1,7 +1,5 @@
 package com.tagroup.fparking.service.impl;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,39 +37,11 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public Driver create(Driver driver) {
-		try {
-		Driver d = new Driver();
-		d.setPhone(driver.getPhone());
-		d.setName(driver.getName());
-		d.setStatus(1);
-			d.setPassword(getMD5Hex(driver.getPassword()));
-			return driverRepository.save(d);
-		} catch (NoSuchAlgorithmException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		return null;
+		// TODO Auto-generated method stub
+		return driverRepository.save(driver);
 
 	}
-	public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(inputString.getBytes());
-
-        byte[] digest = md.digest();
-
-        return convertByteToHex(digest);
-    }
-
-    private static String convertByteToHex(byte[] byteData) {
-
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < byteData.length; i++) {
-            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
-
-        return sb.toString();
-    }
 	@Override
 	public Driver update(Driver driver) {
 		// TODO Auto-generated method stub

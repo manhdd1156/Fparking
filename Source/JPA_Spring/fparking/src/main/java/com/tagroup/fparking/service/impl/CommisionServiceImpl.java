@@ -51,7 +51,6 @@ private CommisionRepository commisionRepository;
 		// TODO Auto-generated method stub
 		List<Commision> clist = getAll();
 		for (Commision commision : clist) {
-			System.out.println("commision = " + commision.getCommision());
 			return commision.getCommision();
 		}
 		return 0;

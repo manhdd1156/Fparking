@@ -45,8 +45,6 @@ public class NotificationServiceImpl implements NotificationService {
 		// TODO Auto-generated method stub
 		try {
 			pusherService.trigger(notification.getParking_id() + "channel", notification.getEvent(), "");
-			
-			
 			return notificationRepository.save(notification);
 
 		} catch (Exception e) {

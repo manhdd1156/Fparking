@@ -93,4 +93,10 @@ public class Admin implements Serializable {
 		this.username = username;
 	}
 
+	@Override
+	public String toString() {
+		return "Admin [password=" + password + ", username=" + username + "]";
+	}
+	
+
 }

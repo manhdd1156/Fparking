@@ -23,13 +23,13 @@
 
     <application
         android:allowBackup="true"
-        android:hardwareAccelerated="false"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
-        android:largeHeap="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:hardwareAccelerated="false"
+        android:largeHeap="true">
         <activity android:name=".Theme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -86,11 +86,7 @@
         <activity android:name=".DialogConfirmPass" />
         <activity android:name=".DialogAddCar" />
         <activity android:name=".ChangePassword" />
-        <activity android:name=".other.Contact" />
-        <activity android:name=".FineHistory" />
-        <activity android:name=".DetailedFine" />
-        <activity android:name=".other.TermsAndConditions" />
-        <activity android:name=".other.Feedback"></activity>
+        <activity android:name=".Contact"></activity>
     </application>
 
 </manifest>

@@ -32,7 +32,6 @@ public class BookingController {
 	@RequestMapping(path = "/", method = RequestMethod.GET)
 	public ResponseEntity<?> getall() throws Exception {
 		List<Booking> respone = bookingService.getAll();
-		
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
@@ -55,48 +54,32 @@ public class BookingController {
 
 	}
 
-	// get booking by parking id, drivervehicleid , status ?
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
-	@RequestMapping(path = "/drivervehicle", method = RequestMethod.GET)
-	public ResponseEntity<?> getBookingByPId(@RequestParam("parkingid") Long parkingid,
-			@RequestParam("drivervehicleid") Long drivervehicleid, @RequestParam("status") int status)
-			throws Exception {
+	// get booking by parking id,  drivervehicleid , status ?
+		@PreAuthorize("hasAnyAuthority('DRIVER')")
+		@RequestMapping(path = "/drivervehicle", method = RequestMethod.GET)
+		public ResponseEntity<?> getBookingByPId(@RequestParam("parkingid") Long parkingid,@RequestParam("drivervehicleid") Long drivervehicleid,@RequestParam("status") int status) throws Exception {
 
-		Booking respone = bookingService.findByParkingIDAndDriverVehicleIDAndStatus(parkingid, drivervehicleid, status);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
+			Booking respone = bookingService.findByParkingIDAndDriverVehicleIDAndStatus(parkingid,drivervehicleid,status);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
-	}
+		}
+	
+		// get booking by notification.
+		@PreAuthorize("hasAnyAuthority('STAFF')")
+		@RequestMapping(path = "/notifications", method = RequestMethod.PUT)
+		public ResponseEntity<?> getByNotification(@RequestBody Notification noti) throws Exception {
+//			System.out.println("bookings/update/status : " + noti.toString());
+			Booking respone = bookingService.getByNoti(noti);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
-	// get booking by notification.
-	@PreAuthorize("hasAnyAuthority('STAFF')")
-	@RequestMapping(path = "/notifications", method = RequestMethod.PUT)
-	public ResponseEntity<?> getByNotification(@RequestBody Notification noti) throws Exception {
-		// System.out.println("bookings/update/status : " + noti.toString());
-		Booking respone = bookingService.getByNoti(noti);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-
-	}
-
-	// cancel booking from driver.
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
-	@RequestMapping(path = "/drivers/cancel", method = RequestMethod.PUT)
-	public ResponseEntity<?> cancelBooking(@RequestBody BookingDTO booking) throws Exception {
-		// System.out.println("bookings/update/status : " + noti.toString());
-		bookingService.cancel(booking);
-		return new ResponseEntity<>("OK", HttpStatus.OK);
-
-	}
-
+		}
+		
 	// get booking by parking id = ?
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getBookingByPId(@PathVariable Long id) throws Exception {
 
 		List<Booking> respone = bookingService.findByParking(parkingService.getById(id));
-		for (Booking booking : respone) {
-			System.out.println("Booking ====== "  + booking.toString() );
-		}
-		System.out.println("respone ==== "  + respone.toString());
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
@@ -116,8 +99,8 @@ public class BookingController {
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody BookingDTO bookingDTO) throws Exception {
 		System.out.println("=============");
-		Booking respone = bookingService.create(bookingDTO.getDriverid(), bookingDTO.getVehicleid(),
-				bookingDTO.getParkingid(), bookingDTO.getStatus());
+		Booking respone = bookingService.create(bookingDTO.getDriverid(),bookingDTO.getVehicleid(), bookingDTO.getParkingid(),
+				bookingDTO.getStatus());
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
@@ -132,7 +115,7 @@ public class BookingController {
 
 	}
 
-	// // update booking by status booking.
+	// // update booking by status booking. 
 	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
 	@RequestMapping(path = "/update/status", method = RequestMethod.PUT)
 	public ResponseEntity<?> updateByStatus(@RequestBody Notification noti) throws Exception {
@@ -141,15 +124,16 @@ public class BookingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
-
+	
 	// getinfo when driver checkout
-	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
-	@RequestMapping(path = "/update/infockbynoti", method = RequestMethod.PUT)
-	public ResponseEntity<?> getInfoCheckOut(@RequestBody Notification noti) throws Exception {
-		System.out.println("bookings/update/infocheckout : " + noti.toString());
-		Booking respone = bookingService.getInfoCheckOutByNoti(noti);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
+		@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
+		@RequestMapping(path = "/update/infocheckout", method = RequestMethod.PUT)
+		public ResponseEntity<?> getInfoCheckOut(@RequestBody Notification noti) throws Exception {
+			System.out.println("bookings/update/infocheckout : " + noti.toString());
+			Booking respone = bookingService.getInfoCheckOut(noti);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
-	}
-
+		}
+	
+	
 }

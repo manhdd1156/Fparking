@@ -51,7 +51,7 @@
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
-									<div class="panel-heading">Tổng doanh thu: ${revenueFine } VND</div>
+									<div class="panel-heading">Tổng doanh thu: ${revenueFine } </div>
 									<div class="panel-body">
 										<table width="100%"
 											class="table table-striped table-bordered table-hover"
@@ -113,7 +113,7 @@
 							<div class="col-lg-12">
 								<div class="panel panel-default">
 									<div class="panel-heading">Tổng doanh thu: ${totalRevenue }
-										VND</div>
+										</div>
 									<!-- /.panel-heading -->
 									<div class="panel-body">
 										<table width="100%"

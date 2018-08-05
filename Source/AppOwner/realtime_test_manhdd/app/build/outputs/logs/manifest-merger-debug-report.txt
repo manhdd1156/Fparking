@@ -1,0 +1,127 @@
+-- Merging decision tree log ---
+manifest
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\94f25b4c166a6e11733733db7ef9c989\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.0.aar\ec99f8e74063baf49f7cf05347de30c1\AndroidManifest.xml:2:1-11:12
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\9e6e22c68f2a7dc529a3534186028c75\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\262516baccda2889c0598369d05e0e15\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\983e2283216ff551a1cec14e43bd3538\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\be223df4b9727580c68453e4ceac065e\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\40f29e540c096c5a409310f22fcf4414\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\9deb502716355843c5d8defa44817a56\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\e4ecb54b0c7760f5805f8d6fe4cd81af\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\521345e1c7111a8794bbc21cf5fbff2e\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\e1cdc42716f7095557ffb2a5680925af\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\63b874cee73c5b9c444615a05cef0a50\AndroidManifest.xml:17:1-22:12
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+	package
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:3:5-38
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:1-28:12
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.GET_ACCOUNTS
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:5:5-71
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:5:22-68
+uses-permission#android.permission.READ_PROFILE
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:6:5-71
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:6:22-68
+uses-permission#android.permission.READ_CONTACTS
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:7:5-72
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:7:22-69
+uses-permission#android.permission.INTERNET
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:8:5-67
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:8:22-64
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:9:5-75
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:9:22-72
+application
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:11:5-26:19
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.0.aar\ec99f8e74063baf49f7cf05347de30c1\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.0.aar\ec99f8e74063baf49f7cf05347de30c1\AndroidManifest.xml:9:5-20
+	android:supportsRtl
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:16:9-35
+	android:label
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:14:9-41
+	android:roundIcon
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:15:9-54
+	android:icon
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:13:9-43
+	android:allowBackup
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:12:9-35
+	android:theme
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:17:9-40
+activity#com.fparking.pushertest.MainActivity
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:18:9-24:20
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:18:19-47
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:19:13-23:29
+action#android.intent.action.MAIN
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:20:17-69
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:20:25-66
+category#android.intent.category.LAUNCHER
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:22:17-77
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:22:27-74
+activity#com.fparking.pushertest.Main2Activity
+ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:25:9-60
+	android:name
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml:25:19-48
+uses-sdk
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\94f25b4c166a6e11733733db7ef9c989\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\94f25b4c166a6e11733733db7ef9c989\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.0.aar\ec99f8e74063baf49f7cf05347de30c1\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.0.aar\ec99f8e74063baf49f7cf05347de30c1\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\9e6e22c68f2a7dc529a3534186028c75\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\9e6e22c68f2a7dc529a3534186028c75\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\262516baccda2889c0598369d05e0e15\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\262516baccda2889c0598369d05e0e15\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\983e2283216ff551a1cec14e43bd3538\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\983e2283216ff551a1cec14e43bd3538\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\be223df4b9727580c68453e4ceac065e\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\be223df4b9727580c68453e4ceac065e\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\40f29e540c096c5a409310f22fcf4414\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\40f29e540c096c5a409310f22fcf4414\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\9deb502716355843c5d8defa44817a56\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\9deb502716355843c5d8defa44817a56\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\e4ecb54b0c7760f5805f8d6fe4cd81af\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\e4ecb54b0c7760f5805f8d6fe4cd81af\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\521345e1c7111a8794bbc21cf5fbff2e\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\521345e1c7111a8794bbc21cf5fbff2e\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\e1cdc42716f7095557ffb2a5680925af\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\e1cdc42716f7095557ffb2a5680925af\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\63b874cee73c5b9c444615a05cef0a50\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\NghiLan\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\63b874cee73c5b9c444615a05cef0a50\AndroidManifest.xml:20:5-44
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		ADDED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml
+		INJECTED from D:\Fparking\Source\AppOwner\realtime_test_manhdd\app\src\main\AndroidManifest.xml

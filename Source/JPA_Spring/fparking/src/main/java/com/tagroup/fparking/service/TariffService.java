@@ -11,5 +11,5 @@ public interface TariffService {
 	public Tariff create(Tariff tariff)throws Exception;
 	public Tariff update(Tariff tariff)throws Exception;
 	public void delete(Long id)throws Exception;
-	public Tariff findByParkingAndVehicletype(Long parkingid, Long vehicleTypeid);
+	public Tariff findByParkingAndVehicletype(Long parkingid, int vehicleTypeid);
 }

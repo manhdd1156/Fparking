@@ -66,34 +66,24 @@
                 android:text="Biển số xe" />
 
             <TextView
-                android:id="@+id/textViewFine"
+                android:id="@+id/textViewAmount"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView11"
                 android:layout_marginLeft="15dp"
                 android:layout_marginTop="7dp"
                 android:layout_toEndOf="@+id/imageView11"
-                android:text="Tiền phạt" />
+                android:text="Giá tiền" />
 
             <TextView
-                android:id="@+id/textViewUnpaid"
+                android:id="@+id/textView"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentTop="true"
                 android:layout_alignStart="@+id/imageView10"
-                android:text="Chưa thanh toán"
+                android:text="Đã hủy"
                 android:textColor="#ff0000"
                 android:textStyle="bold" />
-            <TextView
-                android:id="@+id/textViewPaid"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/imageView10"
-                android:text="Đã thanh toán"
-                android:textColor="#027b00"
-                android:textStyle="bold" />
-
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
