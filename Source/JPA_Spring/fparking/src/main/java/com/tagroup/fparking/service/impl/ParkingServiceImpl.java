@@ -22,28 +22,31 @@ import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Staff;
 import com.tagroup.fparking.service.domain.Tariff;
+
 @Service
-public class ParkingServiceImpl implements ParkingService{
-@Autowired
-private ParkingRepository parkingRepository;
-@Autowired
-private StaffService staffService;
-@Autowired
-private RatingRepository ratingRepository;
-@Autowired
-private OwnerRepository ownerRepository;
-@Autowired
-private TariffRepository tariffRepository;
+public class ParkingServiceImpl implements ParkingService {
+	@Autowired
+	private ParkingRepository parkingRepository;
+	@Autowired
+	private StaffService staffService;
+	@Autowired
+	private RatingRepository ratingRepository;
+	@Autowired
+	private OwnerRepository ownerRepository;
+	@Autowired
+	private TariffRepository tariffRepository;
+
 	@Override
 	public List<Parking> getAll() {
 		// TODO Auto-generated method stub
 		return parkingRepository.findAll();
-		
+
 	}
+
 	@Override
 	public Parking getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			return parkingRepository.getOne(id);
 		} catch (Exception e) {
@@ -55,20 +58,20 @@ private TariffRepository tariffRepository;
 	public Parking create(Parking parking) {
 		// TODO Auto-generated method stub
 		return parkingRepository.save(parking);
-	
+
 	}
 
 	@Override
 	public Parking update(Parking parking) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			if(parking==null) {
+			if (parking == null) {
 				throw new APIException(HttpStatus.NO_CONTENT, "Parking was not content");
 			}
 			Parking p = new Parking();
 			try {
-			p = parkingRepository.save(parking);
-			}catch(Exception e) {
+				p = parkingRepository.save(parking);
+			} catch (Exception e) {
 				System.out.println("lỗi");
 				p = parkingRepository.getOne(parking.getId());
 				p.setCurrentspace(parking.getCurrentspace());
@@ -86,6 +89,7 @@ private TariffRepository tariffRepository;
 		Parking parking = parkingRepository.getOne(id);
 		parkingRepository.delete(parking);
 	}
+
 	@Override
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
 		// TODO Auto-generated method stub
@@ -94,41 +98,42 @@ private TariffRepository tariffRepository;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
-		
+
 	}
+
 	@Override
 	public String getRatingByPid(Long parkingId) throws Exception {
 		try {
 			Parking p = parkingRepository.getOne(parkingId);
 			List<Staff> staffs = staffService.findByParking(parkingRepository.getOne(parkingId));
 			double totalPoint = 0;
-			double totalRating =0;
+			double totalRating = 0;
 			for (Staff staff : staffs) {
 				List<Rating> ratings = ratingRepository.findByStaff(staff);
-				
+
 				for (Rating rating : ratings) {
-					if(rating.getType()==1) {
-					totalPoint+=rating.getPoint();
-					totalRating++;
+					if (rating.getType() == 1) {
+						totalPoint += rating.getPoint();
+						totalRating++;
 					}
 				}
 			}
 			// TODO Auto-generated method stub
-			return new DecimalFormat("#0.00").format(totalPoint/totalRating);
+			return new DecimalFormat("#0.00").format(totalPoint / totalRating);
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Rating was not found");
 		}
 	}
-	
+
 	@Override
-	public ParkingTariffDTO getTariffByPid(Parking parking) throws Exception  {
+	public ParkingTariffDTO getTariffByPid(Parking parking) throws Exception {
 		try {
 			List<Tariff> tarifflst = tariffRepository.findByParking(parking);
 			ParkingTariffDTO ptDTO = new ParkingTariffDTO();
 			ptDTO.setParking(parking);
 			List<TariffSingle> ts = new ArrayList<>();
 			for (Tariff tariff : tarifflst) {
-				ts.add(new TariffSingle(tariff.getId(),tariff.getPrice(),tariff.getVehicletype()));
+				ts.add(new TariffSingle(tariff.getId(), tariff.getPrice(), tariff.getVehicletype()));
 			}
 			ptDTO.setTariffList(ts);
 			return ptDTO;
@@ -136,8 +141,8 @@ private TariffRepository tariffRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 	}
-	
-	//get all acount parking by status 0:1
+
+	// get all acount parking by status 0:1
 	@Override
 	public List<Parking> getByStatus(int status) {
 		// TODO Auto-generated method stub
@@ -148,14 +153,16 @@ private TariffRepository tariffRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 	}
+
 	@Override
 	public List<Parking> getByOwnerID(Long id) throws Exception {
 		Owner o = ownerRepository.getOne(id);
-		
+
 		// TODO Auto-generated method stub
 		return parkingRepository.findByOwner(o);
 	}
 
+	@Override
 	public Parking changeSpace(Long parkingid, int space) {
 		Parking p;
 		try {
@@ -166,30 +173,31 @@ private TariffRepository tariffRepository;
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		// TODO Auto-generated method stub
 		return null;
 	}
-	
+
 	@Override
 	public List<Parking> findSortByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
 		// TODO Auto-generated method stub
 		List<Parking> plist = getAll();
 		Parking ptemp = plist.get(0);
-		for(int i=0;i<plist.size()-1;i++) {
-			for(int j=i+1;j<plist.size();j++) {
-				if(Math.abs(Double.parseDouble(plist.get(i).getLatitude())-Double.parseDouble(latitude))+
-						(Math.abs(Double.parseDouble(plist.get(i).getLongitude())-Double.parseDouble(longitude))) >
-						Math.abs(Double.parseDouble(plist.get(j).getLatitude())-Double.parseDouble(latitude))+
-						(Math.abs(Double.parseDouble(plist.get(j).getLongitude())-Double.parseDouble(longitude)))) {
+		for (int i = 0; i < plist.size() - 1; i++) {
+			for (int j = i + 1; j < plist.size(); j++) {
+				if (Math.abs(Double.parseDouble(plist.get(i).getLatitude()) - Double.parseDouble(latitude)) + (Math
+						.abs(Double.parseDouble(plist.get(i).getLongitude()) - Double.parseDouble(longitude))) > Math
+								.abs(Double.parseDouble(plist.get(j).getLatitude()) - Double.parseDouble(latitude))
+								+ (Math.abs(Double.parseDouble(plist.get(j).getLongitude())
+										- Double.parseDouble(longitude)))) {
 					ptemp = plist.get(j);
-					
+
 				}
 			}
-			
+
 		}
-		
+
 		return null;
 	}
-	
+
 }
