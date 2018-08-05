@@ -55,7 +55,7 @@ public class ConfirmRegister_Fragment extends Fragment implements OnClickListene
         switch (v.getId()) {
             // Replace SignUp Fragment on Back Presses
             case R.id.backToLoginBtn:
-//                new MainActivity().replaceSignUpFragment();
+                new MainActivity().replaceSignUpFragment();
                 break;
 
             case R.id.nextBtn:

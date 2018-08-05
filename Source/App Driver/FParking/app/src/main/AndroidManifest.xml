@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hung.fparking">
 
     <!--
@@ -17,8 +16,6 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.RECEIVE_SMS" />
-    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
 
     <uses-feature
         android:name="android.hardware.location.gps"
@@ -93,6 +90,7 @@
         <activity android:name=".FineHistory" />
         <activity android:name=".DetailedFine" />
         <activity android:name=".other.TermsAndConditions" />
+<<<<<<< HEAD
         <activity android:name=".other.Feedback" />
         <activity android:name=".OTP"></activity>
         <activity android:name=".login.SignUp_Fragment"></activity>
@@ -111,6 +109,9 @@
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
         <activity android:name=".Contact"></activity>
+=======
+        <activity android:name=".other.Feedback"></activity>
+>>>>>>> parent of 9db67726... KhoiND
     </application>
 
 </manifest>

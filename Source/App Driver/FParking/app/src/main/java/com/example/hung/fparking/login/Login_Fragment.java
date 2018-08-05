@@ -6,6 +6,9 @@ import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.text.InputType;
+import android.text.method.HideReturnsTransformationMethod;
+import android.text.method.PasswordTransformationMethod;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -14,13 +17,13 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.HomeActivity;
-import com.example.hung.fparking.OTP;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -139,16 +142,21 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
             case R.id.forgot_password:
 
                 // Replace forgot password fragment with animation
-                Intent intentForgot = new Intent(getActivity(), OTP.class);
-                intentForgot.putExtra("action","forgot");
-                startActivity(intentForgot);
+                fragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+                        .replace(R.id.frameContainer,
+                                new ForgotPassword_Fragment(),
+                                Utils.ForgotPassword_Fragment).commit();
                 break;
             case R.id.createAccount:
 
                 // Replace signup frgament with animation
-                Intent intentCreate = new Intent(getActivity(), OTP.class);
-                intentCreate.putExtra("action","register");
-                startActivity(intentCreate);
+                fragmentManager
+                        .beginTransaction()
+                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+                        .replace(R.id.frameContainer, new SignUp_Fragment(),
+                                Utils.SignUp_Fragment).commit();
                 break;
         }
     }
