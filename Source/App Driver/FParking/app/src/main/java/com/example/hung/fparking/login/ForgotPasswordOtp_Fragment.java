@@ -54,7 +54,7 @@ public class ForgotPasswordOtp_Fragment extends Fragment implements OnClickListe
         switch (v.getId()) {
             // Replace SignUp Fragment on Back Presses
             case R.id.back:
-                new MainActivity().replaceForgotPasswordFragment();
+//                new MainActivity().replaceForgotPasswordFragment();
                 break;
 
             case R.id.confirmBtn:
