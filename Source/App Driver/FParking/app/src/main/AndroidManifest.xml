@@ -96,7 +96,6 @@
         <activity android:name=".other.Feedback" />
         <activity android:name=".OTP"></activity>
         <activity android:name=".login.SignUp_Fragment"></activity>
-        <activity android:name=".Contact"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -111,7 +110,7 @@
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
-
+        <activity android:name=".Contact"></activity>
     </application>
 
 </manifest>
