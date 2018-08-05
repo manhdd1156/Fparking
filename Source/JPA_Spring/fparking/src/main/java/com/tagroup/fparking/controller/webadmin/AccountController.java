@@ -1,12 +1,9 @@
 package com.tagroup.fparking.controller.webadmin;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tagroup.fparking.dto.DriverFineDTO;
-import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.FineService;
@@ -25,7 +21,6 @@ import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
-import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Owner;
@@ -50,14 +45,11 @@ public class AccountController {
 	private OwnerService ownerService;
 	@Autowired
 	private TariffService tariffService;
-	@Autowired
-	private BookingService bookingService;
 
 	// Management Drivers Account
 
 	// get all account
 	@RequestMapping(path = "/driver", method = RequestMethod.GET)
-
 	public String accountDriver(Map<String, Object> model) throws Exception {
 		List<Driver> listDriver;
 		try {
@@ -97,7 +89,7 @@ public class AccountController {
 	// get detail account by id
 	@RequestMapping(path = "/driver/detail/{id}", method = RequestMethod.GET)
 	public String getInforDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+
 		Driver driver;
 		try {
 			driver = driverService.getById(id);
@@ -150,7 +142,11 @@ public class AccountController {
 			m.put("licenseplate", driverFineDTO.getLicenseplate());
 			m.put("address", driverFineDTO.getNameParking());
 			m.put("status", driverFineDTO.getStatus());
-			m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
+			if (driverFineDTO.getPrice() % 1 == 0) {
+				m.put("priceFine", (int) driverFineDTO.getPrice());
+			} else {
+				m.put("priceFine", driverFineDTO.getPrice());
+			}
 
 			if (driverFineDTO.getStatus() == "Chưa thu") {
 				totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
@@ -159,7 +155,12 @@ public class AccountController {
 			arrayListdriverVehiclet.add(m);
 		}
 		model.put("driverFine", arrayListdriverVehiclet);
-		model.put("totalPriceFine", currencyVN.format(totalPriceFine));
+
+		if (totalPriceFine % 1 == 0) {
+			model.put("totalPriceFine", (int) totalPriceFine);
+		} else {
+			model.put("totalPriceFine", totalPriceFine);
+		}
 
 		return "acountdriverdetail";
 	}
@@ -234,11 +235,13 @@ public class AccountController {
 		driver.setName(name);
 		driver.setPhone(phone);
 		try {
-			driverService.update(driver);
+			driverService.update(driver);	
 		} catch (Exception e) {
 			model.put("messError", "Sửa không thành công!");
 			return "editdriver";
 		}
+		
+		
 
 		Driver driver2;
 		try {
@@ -260,7 +263,6 @@ public class AccountController {
 	// get all account parking by id with status =1
 	@RequestMapping(path = "/parking", method = RequestMethod.GET)
 	public String accountParking(Map<String, Object> model) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		List<Parking> listParking;
 		try {
 			listParking = parkingService.getByStatus(1);
@@ -269,7 +271,6 @@ public class AccountController {
 			return "error";
 		}
 		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
-		double totalDeposit = 0;
 		if (listParking != null && listParking.size() > 0) {
 			for (Parking parking : listParking) {
 				HashMap<String, Object> m = new HashMap<>();
@@ -278,13 +279,10 @@ public class AccountController {
 				m.put("currentspace", parking.getCurrentspace());
 				m.put("totalspace", parking.getTotalspace());
 				if (parking.getDeposits() % 1 == 0) {
-					m.put("deposits", currencyVN.format((int) parking.getDeposits()));
-					totalDeposit += (int) parking.getDeposits();
+					m.put("deposits", (int) parking.getDeposits());
 				} else {
-					m.put("deposits", currencyVN.format(parking.getDeposits()));
-					totalDeposit += parking.getDeposits();
+					m.put("deposits", parking.getDeposits());
 				}
-
 				arrayListParking.add(m);
 			}
 			model.put("listParking", arrayListParking);
@@ -292,14 +290,12 @@ public class AccountController {
 		} else {
 			model.put("totalAccount", 0);
 		}
-		model.put("totalDeposit", currencyVN.format(totalDeposit));
 		return "accountparking";
 	}
 
 	// get all blockaccount parking by id with status = 0
 	@RequestMapping(path = "/parking/block", method = RequestMethod.GET)
 	public String blockAccountParking(Map<String, Object> model) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		List<Parking> listParking;
 		try {
 			listParking = parkingService.getByStatus(0);
@@ -309,7 +305,6 @@ public class AccountController {
 		}
 
 		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
-		double totalDeposit = 0;
 		if (listParking != null && listParking.size() > 0) {
 			for (Parking parking : listParking) {
 				HashMap<String, Object> m = new HashMap<>();
@@ -318,13 +313,10 @@ public class AccountController {
 				m.put("currentspace", parking.getCurrentspace());
 				m.put("totalspace", parking.getTotalspace());
 				if (parking.getDeposits() % 1 == 0) {
-					m.put("deposits", currencyVN.format((int) parking.getDeposits()));
-					totalDeposit += (int) parking.getDeposits();
+					m.put("deposits", (int) parking.getDeposits());
 				} else {
-					m.put("deposits", currencyVN.format(parking.getDeposits()));
-					totalDeposit += parking.getDeposits();
+					m.put("deposits", parking.getDeposits());
 				}
-
 				arrayListParking.add(m);
 			}
 			model.put("listParking", arrayListParking);
@@ -332,37 +324,35 @@ public class AccountController {
 		} else {
 			model.put("totalAccount", 0);
 		}
-		model.put("totalDeposit", currencyVN.format(totalDeposit));
+
 		return "blockaccountparking";
 	}
 
 	// get detail parking by id
 	@RequestMapping(path = "/patking/detail/{id}", method = RequestMethod.GET)
 	public String accountDriverDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-		String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+
 		Parking parking;
 		List<Tariff> listTariff;
 		List<Fine> listFine;
-		List<Booking> listBooking;
 		try {
 			parking = parkingService.getById(id);
 			listTariff = tariffService.getAll();
 			listFine = fineService.getAll();
-			listBooking = bookingService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
 		// tab information parking
-		model.put("idOwner", parking.getOwner().getId());
 		model.put("nameOwner", parking.getOwner().getName());
 		model.put("phoneOwner", parking.getOwner().getPhone());
 		model.put("addressParking", parking.getAddress());
 		model.put("timeoc", parking.getTimeoc());
 		model.put("totalSpace", parking.getTotalspace());
-		model.put("latitude", parking.getLatitude());
-		model.put("longitude", parking.getLongitude());
-		model.put("deposits", currencyVN.format(parking.getDeposits()));
+		if (parking.getDeposits() % 1 == 0) {
+			model.put("deposits", (int) parking.getDeposits());
+		} else {
+			model.put("deposits", parking.getDeposits());
+		}
 
 		// tab information price by type car
 		ArrayList<Map<String, Object>> arrayListVehicletype = new ArrayList<>();
@@ -370,7 +360,11 @@ public class AccountController {
 			HashMap<String, Object> m = new HashMap<>();
 			if (tariff.getParking().getId() == id) {
 				m.put("typeCar", tariff.getVehicletype().getType());
-				m.put("priceType", currencyVN.format(tariff.getPrice()));
+				if (tariff.getPrice() % 1 == 0) {
+					m.put("priceType", (int) tariff.getPrice());
+				} else {
+					m.put("priceType", tariff.getPrice());
+				}
 				arrayListVehicletype.add(m);
 			}
 		}
@@ -384,51 +378,15 @@ public class AccountController {
 				m.put("dateFine", sdf.format(fine.getDate()));
 				m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
 				m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-				m.put("priceFine", currencyVN.format(fine.getPrice()));
+				if (fine.getPrice() % 1 == 0) {
+					m.put("priceFine", (int) fine.getPrice());
+				} else {
+					m.put("priceFine", fine.getPrice());
+				}
 				arrayListFine.add(m);
 			}
 		}
 		model.put("arrayListFine", arrayListFine);
-		// tab transaction history
-		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
-		for (Booking booking : listBooking) {
-			HashMap<String, Object> m = new HashMap<>();
-			if (booking.getParking().getId() == id) {
-				m.put("timein", sdf.format(booking.getTimein()));
-				m.put("timeout", sdf.format(booking.getTimeout()));
-				m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
-				double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime()) / (60 * 60 * 1000);
-				if (totalTime % 1 == 0) {
-					m.put("totalTime", (int) totalTime);
-				} else {
-					m.put("totalTime", (int) totalTime + 1);
-				}
-				m.put("address", booking.getParking().getAddress());
-				m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
-
-				if (booking.getPrice() % 1 == 0) {
-					m.put("price", currencyVN.format((int) booking.getPrice()));
-				} else {
-					m.put("price", currencyVN.format((booking.getPrice())));
-				}
-
-				if (booking.getTotalfine() % 1 == 0) {
-					m.put("totalFine", currencyVN.format((int) booking.getTotalfine()));
-				} else {
-					m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-				}
-
-				m.put("commssion", booking.getComission());
-
-				if (booking.getAmount() % 1 == 0) {
-					m.put("amount", currencyVN.format((int) booking.getAmount()));
-				} else {
-					m.put("amount", currencyVN.format(booking.getAmount()));
-				}
-				arrayListBooking.add(m);
-			}
-		}
-		model.put("arrayListBooking", arrayListBooking);
 		return "accountparkingdetail";
 	}
 
@@ -450,8 +408,13 @@ public class AccountController {
 			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
 			return "error";
 		}
-
-		return "redirect:/account/parking";
+		if (listParking != null && listParking.size() > 0) {
+			model.put("listParking", listParking);
+			model.put("totalAccount", listParking.size());
+		} else {
+			model.put("totalAccount", 0);
+		}
+		return "accountparking";
 	}
 
 	// unblock account parking by id
@@ -460,13 +423,25 @@ public class AccountController {
 		Parking parking;
 		try {
 			parking = parkingService.getById(id);
-			parking.setStatus(1);
-			parkingService.update(parking);
 		} catch (Exception e) {
 			return "404";
 		}
-
-		return "redirect:/account/parking/block";
+		parking.setStatus(1);
+		parkingService.update(parking);
+		List<Parking> listParking;
+		try {
+			listParking = parkingService.getByStatus(0);
+		} catch (Exception e) {
+			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
+			return "error";
+		}
+		if (listParking != null && listParking.size() > 0) {
+			model.put("listParking", listParking);
+			model.put("totalAccount", listParking.size());
+		} else {
+			model.put("totalAccount", 0);
+		}
+		return "blockaccountparking";
 	}
 
 	// go to edit form parking
@@ -520,7 +495,7 @@ public class AccountController {
 			return "editparking";
 		}
 		model.put("messSuss", "Sửa thành công!");
-
+		
 		Parking parking2;
 		try {
 			parking2 = parkingService.getById(id);
@@ -538,7 +513,7 @@ public class AccountController {
 		} else {
 			model.put("deposits", parking2.getDeposits());
 		}
-
+		
 		return "editparking";
 	}
 
@@ -567,7 +542,6 @@ public class AccountController {
 	// get detail owner by id
 	@RequestMapping(path = "/owner/detail/{id}", method = RequestMethod.GET)
 	public String accountOwnerDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		Owner owner;
 		try {
 			owner = ownerService.getById(id);
@@ -588,7 +562,6 @@ public class AccountController {
 			return "404";
 		}
 		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
-		double totalDeposit = 0;
 		for (Parking parking : respone) {
 			HashMap<String, Object> m = new HashMap<>();
 			m.put("id", parking.getId());
@@ -607,8 +580,11 @@ public class AccountController {
 //				m.put("image" + i + 1, jo.getString("link"));
 //			}
 
-			m.put("desposits", currencyVN.format(parking.getDeposits()));
-			totalDeposit += parking.getDeposits();
+			if (parking.getDeposits() % 1 == 0) {
+				m.put("desposits", (int) parking.getDeposits());
+			} else {
+				m.put("desposits", parking.getDeposits());
+			}
 			if (parking.getStatus() == 1) {
 				m.put("status", "Hoạt động");
 			} else if (parking.getStatus() == 2) {
@@ -616,8 +592,6 @@ public class AccountController {
 			}
 			arrayListParking.add(m);
 		}
-		model.put("totalDeposit", currencyVN.format(totalDeposit));
-		model.put("toatalParking", respone.size());
 		model.put("arrayListParking", arrayListParking);
 		return "accountownerdetail";
 	}

@@ -11,7 +11,6 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
-import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Proxy;
 
@@ -38,6 +37,7 @@ public class Parking implements Serializable {
 
 	private int currentspace;
 
+	
 	private double deposits;
 	@Lob
 	private String image;
@@ -56,7 +56,6 @@ public class Parking implements Serializable {
 	@JoinColumn(name = "owner_id", referencedColumnName = "id")
 	private Owner owner;
 	
-	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "city_id", referencedColumnName = "id")
 	private City city;
 	
@@ -69,6 +68,14 @@ public class Parking implements Serializable {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public City getCity() {
+		return city;
+	}
+
+	public void setCity(City city) {
+		this.city = city;
 	}
 
 	public String getAddress() {
@@ -155,7 +162,8 @@ public class Parking implements Serializable {
 	public String toString() {
 		return "Parking [id=" + id + ", address=" + address + ", currentspace=" + currentspace + ", deposits="
 				+ deposits + ", image=" + image + ", latitude=" + latitude + ", longitude=" + longitude + ", status="
-				+ status + ", timeoc=" + timeoc + ", totalspace=" + totalspace + ", owner=" + owner + "]";
+				+ status + ", timeoc=" + timeoc + ", totalspace=" + totalspace + ", owner=" + owner + ", city=" + city
+				+ "]";
 	}
 	
 

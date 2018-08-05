@@ -54,9 +54,6 @@
 										<li><a data-toggle="tab" href="#FineHistory"
 											class="text-success"><i class="fa fa-info"></i> Lịch sử
 												phạt</a></li>
-										<li><a data-toggle="tab" href="#TransactionHistory"
-											class="text-success"><i class="fa fa-info"></i> Lịch sử
-												giao dịch</a></li>
 									</ul>
 
 									<div class="tab-content">
@@ -67,7 +64,7 @@
 														<tr>
 															<td class="text-success"><i class="fa fa-user"></i>
 																Chủ bãi</td>
-															<td><a href="/account/owner/detail/${idOwner }">${nameOwner}</a></td>
+															<td>${nameOwner}</td>
 														</tr>
 														<tr>
 															<td class="text-success"><i
@@ -98,34 +95,6 @@
 													</tbody>
 												</table>
 											</div>
-											<div id="map"></div>
-											<script>
-												// Initialize and add the map
-												function initMap() {
-													// The location of Uluru
-													var uluru = {
-														lat : ${latitude},
-														lng : ${longitude}
-													};
-													// The map, centered at Uluru
-													var map = new google.maps.Map(
-															document
-																	.getElementById('map'),
-															{
-																zoom : 15,
-																center : uluru
-															});
-													// The marker, positioned at Uluru
-													var marker = new google.maps.Marker(
-															{
-																position : uluru,
-																map : map
-															});
-												};
-											</script>
-											<script async defer
-												src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB6VP6es3xh6cWa9-Hl4XeO6wLyybG3HX8&callback=initMap">
-											</script>
 										</div>
 
 										<div id="PriceType" class="tab-pane fade">
@@ -166,15 +135,6 @@
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="panel panel-default">
-														<form action="" method="GET">
-															<div>
-																<br>
-																<p class="col-lg-12">
-																	Từ <input type="date"> đến <input type="date">
-																	<input type="submit" value="Tìm">
-																</p>
-															</div>
-														</form>
 														<div class="panel-body">
 															<table width="100%"
 																class="table table-striped table-bordered table-hover"
@@ -208,62 +168,8 @@
 											</div>
 										</div>
 
-										<div id="TransactionHistory" class="tab-pane fade">
-											<div class="row">
-												<div class="col-lg-12">
-													<div class="panel panel-default">
-														<div>
-															<br>
-															<p class="col-lg-12">
-																Từ <input type="date" id="min" name="min"> đến
-																<input type="date" id="max" name="max">
-															</p>
-														</div>
-														<div class="panel-body">
-															<table width="100%"
-																class="table table-striped table-bordered table-hover"
-																id="dataTables-example4">
-																<thead>
-																	<tr>
-																		<th>Thời gian vào</th>
-																		<th>Thời gian ra</th>
-																		<th>Tổng thời gian đỗ</th>
-																		<th>Biển số xe</th>
-																		<th>Loại xe</th>
-																		<th>Giá</th>
-																		<th>Tiền phạt lái xe</th>
-																		<th>Phần trăm chiết khấu</th>
-																		<th>Tổng tiền</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<c:forEach items="${ arrayListBooking}"
-																		var="transactionParking">
-																		<tr>
-																			<td>${transactionParking.timein }</td>
-																			<td>${transactionParking.timeout }</td>
-																			<td>${transactionParking.totalTime }</td>
-																			<td>${transactionParking.licenseplate }</td>
-																			<td>${transactionParking.type }</td>
-																			<td>${transactionParking.price }</td>
-																			<td>${transactionParking.totalFine }</td>
-																			<td>${transactionParking.commssion }</td>
-																			<td>${transactionParking.amount }</td>
-																		</tr>
-																	</c:forEach>
-																</tbody>
-															</table>
-															<!-- /.table-responsive -->
-														</div>
-														<!-- /.panel-body -->
-													</div>
-													<!-- /.panel -->
-												</div>
-												<!-- /.col-lg-12 -->
-											</div>
-										</div>
-
 									</div>
+
 								</div>
 							</div>
 						</div>

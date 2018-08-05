@@ -1,11 +1,9 @@
 package com.tagroup.fparking.controller.webadmin;
 
-import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,13 +15,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.CommisionService;
-import com.tagroup.fparking.service.FeedbackService;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.FineTariffService;
 import com.tagroup.fparking.service.VehicletypeService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Commision;
-import com.tagroup.fparking.service.domain.Feedback;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Finetariff;
 import com.tagroup.fparking.service.domain.Vehicletype;
@@ -42,12 +38,9 @@ public class BusinessController {
 	private BookingService bookingService;
 	@Autowired
 	private FineService fineService;
-	@Autowired
-	private FeedbackService feedbackService;
+
 	// Commission
 	// get commission
-	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-
 	@RequestMapping(path = "/commission", method = RequestMethod.GET)
 	public String commissiomDetail(Map<String, Object> model) throws Exception {
 		List<Commision> listCommission;
@@ -276,16 +269,29 @@ public class BusinessController {
 					m.put("timeout", strDate);
 					m.put("address", booking.getParking().getAddress());
 
-					m.put("amount", currencyVN.format(booking.getAmount()));
+					if (booking.getAmount() % 1 == 0) {
+						m.put("amount", (int) booking.getAmount());
+					} else {
+						m.put("amount", booking.getAmount());
+					}
+
 					double totalCommission = booking.getComission() * booking.getAmount();
 					revenue = revenue + totalCommission;
-					m.put("totalCommission", currencyVN.format(totalCommission));
+					if (totalCommission % 1 == 0) {
+						m.put("totalCommission", (int) totalCommission);
+					} else {
+						m.put("totalCommission", totalCommission);
+					}
 					arrayListBooking.add(m);
 				}
 			}
-
+		
 		}
-		model.put("totalRevenue", currencyVN.format(revenue));
+		if (revenue % 1 == 0) {
+			model.put("totalRevenue", (int) revenue);
+		} else {
+			model.put("totalRevenue", Math.round(revenue*100)/100.f);
+		}
 		model.put("arrayListBooking", arrayListBooking);
 
 		// get fine
@@ -313,12 +319,22 @@ public class BusinessController {
 					m.put("objectFine", "Bãi xe");
 				}
 
-				revenueFine = revenueFine + fine.getPrice();
-				m.put("priceFine", currencyVN.format(fine.getPrice()));
+				if (fine.getPrice() % 1 == 0) {
+					m.put("priceFine", (int) fine.getPrice());
+					revenueFine = revenueFine + (int) fine.getPrice();
+				} else {
+					m.put("priceFine", fine.getPrice());
+					revenueFine = revenueFine + fine.getPrice();
+				}
 				arrayListFine.add(m);
 			}
 		}
-		model.put("revenueFine", currencyVN.format(revenueFine));
+		if (revenueFine % 1 == 0) {
+			model.put("revenueFine", (int) revenueFine);
+		} else {
+			model.put("revenueFine", revenueFine);
+		}
+
 		model.put("arrayListFine", arrayListFine);
 
 		return "managementrevenue";
@@ -370,81 +386,19 @@ public class BusinessController {
 		return "revenuebyparkingdetail";
 	}
 
-	// Management FeedBack
-
-	// get all feedback
+	//Management FeedBack
+	
+	//get all feedback
 	@RequestMapping(path = "/feedback", method = RequestMethod.GET)
 	public String getAllFeedBack(Map<String, Object> model) throws Exception {
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
-		List<Feedback> listFeedback;
-		try {
-			listFeedback = feedbackService.getAll();
-			ArrayList<Map<String, Object>> arrayListFeedback = new ArrayList<>();
-			for (Feedback feedback : listFeedback) {
-				HashMap<String, Object> m = new HashMap<>();
-				if (feedback.getStatus() == 0 || feedback.getStatus()==1) {
-					m.put("id", feedback.getId());
-					m.put("dateFeedBack", sdf.format(feedback.getDate()));
-					String fb = feedback.getContent();
-
-					if (fb.length() > 30) {
-						m.put("content", fb.substring(0, 30) + "...");
-					} else {
-						m.put("content", fb);
-					}
-
-					m.put("nameFeedBack", feedback.getName());
-
-					arrayListFeedback.add(m);
-				}
-			}
-			model.put("arrayListFeedback", arrayListFeedback);
-		} catch (Exception e) {
-			return "404";
-		}
-
-		return "managementfeedback";
-
-	}
-
-	// view feedback
-	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.GET)
-	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
-		Feedback feedback = new Feedback();
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-		try {
-			feedback = feedbackService.getById(id);
-		} catch (Exception e) {
-			return "404";
-		}
-
-		feedback.setStatus(1);
-		try {
-			feedbackService.update(feedback);
-		} catch (Exception e) {
-			return "404";
-		}
-		model.put("id", id);
-		model.put("inforFeedBack", feedback.getName() + "_" + feedback.getPhone());
-		model.put("content", feedback.getContent());
-		model.put("dateFeedBack", sdf.format(feedback.getDate()));
 		return "viewdetailfeedback";
+		
+	}
+	@RequestMapping(path = "/feedback/{id}", method = RequestMethod.GET)
+	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+		return "viewdetailfeedback";
+		
 	}
 	
-	// delete feedback
-	@RequestMapping(path = "/feedback/delete/{id}", method = RequestMethod.GET)
-	public String deleteFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {
-		try {
-			Feedback feedbackupdate = new Feedback();
-
-			feedbackupdate = feedbackService.getById(id);
-			feedbackupdate.setStatus(2);
-			feedbackService.update(feedbackupdate);
-		} catch (Exception e) {
-			return "404";
-		}
-
-		return "redirect:/business/feedback";
-	}
-
+	//delete feedback
 }

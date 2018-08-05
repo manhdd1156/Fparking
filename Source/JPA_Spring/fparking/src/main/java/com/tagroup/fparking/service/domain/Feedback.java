@@ -12,6 +12,7 @@ import javax.persistence.NamedQuery;
 import org.hibernate.annotations.Proxy;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
 /**
  * The persistent class for the booking database table.
@@ -31,6 +32,7 @@ public class Feedback implements Serializable {
 	private String phone;
 	private String content;
 	private int type;
+	@JsonSerialize(using = SerializeDate.class)
 	private Date date;
 	
 	private int status;
