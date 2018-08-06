@@ -7,21 +7,27 @@
             android:id="@+id/nav_statistical"
             android:icon="@drawable/ic_menu_history"
             android:title="Thống kê" />
-
-    <item
-        android:id="@+id/nav_contact"
-        android:icon="@drawable/ic_menu_contact"
-        android:title="Liên hệ" />
-    <item
-        android:id="@+id/nav_send"
-        android:icon="@drawable/ic_menu_rules"
-        android:title="Điều kiện và điều khoản" />
-    <item
-        android:id="@+id/nav_guide"
-        android:icon="@drawable/ic_menu_guide"
-        android:title="Hướng dẫn sử dụng" />
+        <item
+            android:id="@+id/nav_mAccount"
+            android:icon="@drawable/ic_menu_account"
+            android:title="Tài khoản" />
 
 
-
+    <item android:title="01647383196">
+        <menu>
+            <item
+                android:id="@+id/nav_share"
+                android:icon="@drawable/ic_menu_contact"
+                android:title="Liên hệ" />
+            <item
+                android:id="@+id/nav_send"
+                android:icon="@drawable/ic_menu_rules"
+                android:title="Điều kiện và điều khoản" />
+            <item
+                android:id="@+id/nav_"
+                android:icon="@drawable/ic_menu_guide"
+                android:title="Hướng dẫn sử dụng" />
+        </menu>
+    </item>
 
 </menu>

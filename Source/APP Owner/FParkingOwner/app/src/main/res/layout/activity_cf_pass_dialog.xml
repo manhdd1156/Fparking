@@ -29,7 +29,7 @@
         android:textStyle="bold" />
 
     <EditText
-        android:id="@+id/tbPassword"
+        android:id="@+id/tbPass"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -48,7 +48,7 @@
     <View
         android:layout_width="319dp"
         android:layout_height="1px"
-        android:layout_below="@+id/tbPassword"
+        android:layout_below="@+id/tbPass"
         android:layout_marginLeft="33dp"
         android:background="@color/white_greyish" />
 
@@ -58,7 +58,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_below="@+id/tbPassword"
+        android:layout_below="@+id/tbPass"
         android:layout_marginTop="60dp"
         android:background="@drawable/button_selector2"
         android:text="XÁC NHẬN"

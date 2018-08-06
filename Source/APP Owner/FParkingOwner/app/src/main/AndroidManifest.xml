@@ -27,6 +27,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+
         <service
             android:name=".notification.Notification"
             android:enabled="true"
@@ -43,16 +44,18 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".StatisticalActivity" />
+            android:label="@string/title_activity_home"></activity>
+        <activity
+            android:name=".ProfileActivity"></activity>
+        <activity
+            android:name=".StatisticalActivity"></activity>
         <activity
             android:name=".change_space.NumberPickerActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".CheckOutActivity" />
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"></activity>
+        <activity android:name=".CheckOutActivity"></activity>
         <activity
             android:name=".dialog.DialogActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"></activity>
         <activity android:name=".login.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -60,12 +63,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ChangePassword"
-            android:noHistory="true" />
-        <activity android:name=".AlertDialog" />
-        <activity android:name=".Contact" />
-        <activity android:name=".Login"></activity>
+
     </application>
 
 </manifest>
