@@ -174,22 +174,25 @@ private TariffRepository tariffRepository;
 	public List<Parking> findSortByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
 		// TODO Auto-generated method stub
 		List<Parking> plist = getAll();
-		Parking ptemp = plist.get(0);
+		Parking ptemp = new Parking();
+		
 		for(int i=0;i<plist.size()-1;i++) {
+			
 			for(int j=i+1;j<plist.size();j++) {
 				if(Math.abs(Double.parseDouble(plist.get(i).getLatitude())-Double.parseDouble(latitude))+
 						(Math.abs(Double.parseDouble(plist.get(i).getLongitude())-Double.parseDouble(longitude))) >
 						Math.abs(Double.parseDouble(plist.get(j).getLatitude())-Double.parseDouble(latitude))+
 						(Math.abs(Double.parseDouble(plist.get(j).getLongitude())-Double.parseDouble(longitude)))) {
 					ptemp = plist.get(j);
-					
+					plist.set(j, plist.get(i));
+					plist.set(i, ptemp);
 					
 				}
 			}
 			
 		}
 		
-		return null;
+		return plist;
 	}
 	
 }
