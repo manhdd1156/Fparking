@@ -44,9 +44,9 @@ public class DriverServiceImpl implements DriverService {
 		d.setPhone(driver.getPhone());
 		d.setName(driver.getName());
 		d.setStatus(1);
-			d.setPassword(getMD5Hex(driver.getPassword()));
+			d.setPassword(driver.getPassword());
 			return driverRepository.save(d);
-		} catch (NoSuchAlgorithmException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
