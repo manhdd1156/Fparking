@@ -74,17 +74,6 @@
             android:paddingBottom="5dp"
             android:paddingTop="8dp">
 
-            <TextView
-                android:id="@+id/forgot_password"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="10dp"
-                android:layout_weight="1"
-                android:gravity="end"
-                android:padding="5dp"
-                android:text="@string/forgot"
-                android:textColor="@color/white_greyish"
-                android:textSize="14sp" />
         </LinearLayout>
 
         <Button
@@ -100,18 +89,5 @@
             android:textStyle="bold" />
 
     </LinearLayout>
-
-    <TextView
-        android:id="@+id/createAccount"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="102dp"
-        android:gravity="center"
-        android:padding="5dp"
-        android:text="@string/newUser"
-        android:textColor="@color/white"
-        android:textSize="15sp" />
 
 </RelativeLayout>

@@ -8,75 +8,91 @@
     tools:context=".StatisticalActivity">
 
     <ImageView
-        android:id="@+id/imgHeader"
+        android:id="@+id/imageView9"
         android:layout_width="wrap_content"
-        android:layout_height="39dp"
-        android:contentDescription="TODO"
+        android:layout_height="50dp"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/header"
         tools:layout_editor_absoluteX="0dp"
         tools:layout_editor_absoluteY="0dp" />
+    <ImageView
+        android:id="@+id/imageViewBackStatistical"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/imageView9"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="10dp"
+        app:srcCompat="@drawable/ic_action_backwhile"/>
+
+    <ImageView
+        android:id="@+id/imageView4"
+        android:layout_width="match_parent"
+        android:layout_height="138dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/imageView9"
+        android:layout_marginTop="23dp"
+        android:paddingLeft="10dp"
+        android:paddingRight="10dp"
+        android:scaleType="fitXY"
+        app:srcCompat="@drawable/checkoutinfo" />
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="11dp"
-        android:text="Thống kê"
+        android:layout_marginTop="14dp"
+        android:text="Thống Kê"
         android:textColor="@color/whitetext"
         android:textSize="15sp"
-        android:textStyle="bold" />
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="16dp" />
 
     <ImageView
         android:id="@+id/imgInfor1"
         android:layout_width="match_parent"
-        android:layout_height="323dp"
-        android:layout_alignParentBottom="true"
+        android:layout_height="450dp"
         android:layout_alignParentStart="true"
-        android:layout_marginBottom="13dp"
+        android:layout_below="@+id/imageView4"
+        android:layout_marginTop="20dp"
         android:paddingLeft="10dp"
         android:paddingRight="10dp"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/checkoutinfo" />
 
-    <ImageView
-        android:id="@+id/imageView15"
-        android:layout_width="330dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/imgInfor1"
-        android:layout_centerHorizontal="true"
-        app:srcCompat="@drawable/line_orange" />
 
     <TextView
         android:id="@+id/tvFromDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="35dp"
-        android:layout_marginTop="67dp"
+        android:layout_alignTop="@+id/imageView4"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Từ ngày"
-        android:textSize="15sp" />
+        android:textSize="15sp"
+        android:textStyle="bold"
+        android:textColor="#000000"/>
 
     <ListView
         android:id="@+id/cars_list2"
-        android:layout_width="300dp"
-        android:layout_height="285dp"
+        android:layout_width="356dp"
+        android:layout_height="400dp"
         android:layout_alignTop="@+id/imgInfor1"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="25dp"
         android:cacheColorHint="@color/black"
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="291dp" />
 
     <Button
         android:id="@+id/btnStat"
-        android:layout_width="182dp"
-        android:layout_height="42dp"
-        android:layout_above="@+id/imageView15"
+        android:layout_width="match_parent"
+        android:layout_height="52dp"
+        android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_selector"
+        android:background="@drawable/button_selector2"
         android:text="THỐNG KÊ"
         android:textColor="#FFFFFF" />
 
@@ -86,25 +102,28 @@
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/cars_list2"
         android:layout_alignTop="@+id/tvFromDate"
-        android:text="Đến ngày" />
+        android:layout_marginRight="20dp"
+        android:text="Đến ngày"
+        android:textColor="#000000"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/lbTotalCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvFromDate"
-        android:layout_marginTop="113dp"
-        android:text="Số lượng xe " />
+        android:layout_below="@+id/tvDateError"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/imageViewBackStatistical"
+        android:text="Số lượng xe:" />
 
     <TextView
         android:id="@+id/lbMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignStart="@+id/tvFromDate"
-        android:layout_marginTop="149dp"
-        android:text="Tổng tiền" />
+        android:layout_below="@+id/lbTotalCar"
+        android:layout_marginTop="10dp"
+        android:layout_toEndOf="@+id/imageViewBackStatistical"
+        android:text="Tổng tiền:" />
 
     <TextView
         android:id="@+id/tvMoney"
@@ -112,16 +131,18 @@
         android:layout_height="wrap_content"
         android:layout_alignStart="@+id/tvTotalCar"
         android:layout_alignTop="@+id/lbMoney"
-        android:text="Tổng tiền" />
+        android:text="NA"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvTotalCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_alignTop="@+id/lbTotalCar"
-        android:layout_marginStart="124dp"
-        android:text="Số lượng xe " />
+        android:layout_marginLeft="20dp"
+        android:layout_toEndOf="@+id/lbTotalCar"
+        android:text="NA"
+        android:textStyle="bold" />
 
     <TextView
         android:id="@+id/tvDateError"
@@ -132,4 +153,14 @@
         android:text="Hãy chọn ngày lớn hơn"
         android:textColor="@android:color/holo_red_light"
         android:visibility="invisible" />
+
+    <ImageView
+        android:id="@+id/imageView5"
+        android:layout_width="343dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFromDate"
+        android:layout_centerHorizontal="true"
+        app:srcCompat="@drawable/line" />
+
+
 </RelativeLayout>
