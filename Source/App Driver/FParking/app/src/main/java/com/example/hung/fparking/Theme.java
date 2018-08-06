@@ -20,7 +20,6 @@ import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
-import com.example.hung.fparking.login.Login_Fragment;
 import com.example.hung.fparking.login.MainActivity;
 import com.example.hung.fparking.model.CheckNetwork;
 import com.example.hung.fparking.model.GPSTracker;
