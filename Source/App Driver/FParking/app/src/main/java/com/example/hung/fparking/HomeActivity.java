@@ -30,6 +30,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -77,6 +78,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     View mMapView;
     ImageView imageViewVoiceSearch, imageViewMute, imageViewFParking;
     TextView textViewMPhone;
+    Button quickBooking;
 
     ArrayList<GetNearPlace> nearParkingList;
     private DrawerLayout mDrawerLayout;
@@ -100,11 +102,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         mPreferencesEditor = mPreferences.edit();
         // ánh xạ button
         imageViewVoiceSearch = findViewById(R.id.imageView_search_voice);
-
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
         textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
         textViewMPhone.setText(Session.currentDriver.getPhone());
+        quickBooking = findViewById(R.id.buttonFastSearch);
+
+        // sự kiện click vào số điện thoại
         textViewMPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -112,6 +116,8 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intentDriverInfo);
             }
         });
+
+        // sự kiện click vào profile
         imageViewFParking = headerView.findViewById(R.id.imageViewFParking);
         imageViewFParking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -120,6 +126,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 startActivity(intentDriverInfo);
             }
         });
+
+        // sự kiện click vào đặt chỗ nhanh
+        quickBooking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         // gọi hàm search theo địa chỉ
         searchPlace();
 
@@ -132,7 +147,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlp.setMargins(0, 1500, 0, 0);
 
-        // event button
+        // event button giọng nói
         imageViewVoiceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -140,12 +155,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 speechToText();
             }
         });
-//        imageViewMute.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                onStopSpeech();
-//            }
-//        });
 
         //Menu
         mToolbar = (Toolbar) findViewById(R.id.toolbar);
