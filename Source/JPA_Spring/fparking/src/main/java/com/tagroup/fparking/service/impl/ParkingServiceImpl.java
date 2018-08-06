@@ -175,7 +175,7 @@ private TariffRepository tariffRepository;
 		// TODO Auto-generated method stub
 		List<Parking> plist = getAll();
 		Parking ptemp = new Parking();
-		
+		List<Parking> returnList = new ArrayList<Parking>();
 		for(int i=0;i<plist.size()-1;i++) {
 			
 			for(int j=i+1;j<plist.size();j++) {
@@ -191,8 +191,14 @@ private TariffRepository tariffRepository;
 			}
 			
 		}
+		for (Parking parking : plist) {
+			if(Math.abs(Double.parseDouble(parking.getLatitude())-Double.parseDouble(latitude))+
+						(Math.abs(Double.parseDouble(parking.getLongitude())-Double.parseDouble(longitude)))<0.028324) {
+				returnList.add(parking);
+			}
+		}
 		
-		return plist;
+		return returnList;
 	}
 	
 }
