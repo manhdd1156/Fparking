@@ -22,12 +22,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="16dp"
                 android:gravity="center"
                 android:text="Có xe vào bãi!!!"
                 android:textAlignment="center"
-                android:textColor="#000000"
+                android:textColor="@color/white_greyish"
                 android:textSize="24sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
 
@@ -47,7 +48,7 @@
                 android:id="@+id/lbType"
                 android:layout_width="wrap_content"
                 android:layout_height="25dp"
-                android:layout_marginStart="36dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:text="Loại xe :"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -59,7 +60,7 @@
                 android:id="@+id/lbColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="52dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:text="Màu : "
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -71,7 +72,7 @@
                 android:id="@+id/lbRating"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="24dp"
+                android:layout_marginStart="32dp"
                 android:layout_marginTop="8dp"
                 android:text="Đánh giá :"
                 android:textAppearance="?android:attr/textAppearanceLarge"
@@ -80,12 +81,13 @@
                 app:layout_constraintTop_toBottomOf="@+id/lbColor" />
 
             <LinearLayout
+                android:id="@+id/linearLayout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
+                android:layout_marginBottom="1dp"
                 android:layout_marginEnd="8dp"
                 android:layout_marginStart="20dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginTop="15dp"
                 android:orientation="horizontal"
                 android:paddingBottom="10dp"
                 android:paddingLeft="10dp"
@@ -96,12 +98,12 @@
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lbRating"
-                app:layout_constraintVertical_bias="0.0">
+                app:layout_constraintVertical_bias="1.0">
 
                 <Button
                     android:id="@+id/ok_btn_id"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_weight="50"
                     android:background="@drawable/button_selector"
                     android:text="Đồng ý"
@@ -111,7 +113,7 @@
                 <Button
                     android:id="@+id/cancel_btn_id"
                     android:layout_width="0dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="40dp"
                     android:layout_marginLeft="16dp"
                     android:layout_weight="50"
                     android:background="@drawable/button_overload"
@@ -124,10 +126,11 @@
                 android:id="@+id/tvLP"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="24dp"
                 android:text="BAD395847"
                 android:textSize="17sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
                 app:layout_constraintTop_toBottomOf="@+id/title" />
 
@@ -135,10 +138,11 @@
                 android:id="@+id/tvType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:text="Xe con/khách 2 chỗ"
                 android:textSize="17sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
                 app:layout_constraintTop_toBottomOf="@+id/tvLP" />
 
@@ -146,21 +150,23 @@
                 android:id="@+id/tvColor"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginStart="43dp"
+                android:layout_marginTop="10dp"
                 android:text="Trắng"
                 android:textSize="17sp"
-                app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
-                app:layout_constraintTop_toBottomOf="@+id/lbType" />
+                android:textStyle="bold"
+                app:layout_constraintStart_toEndOf="@+id/lbColor"
+                app:layout_constraintTop_toBottomOf="@+id/tvType" />
 
             <TextView
                 android:id="@+id/tvRate"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
+                android:layout_marginStart="24dp"
                 android:layout_marginTop="8dp"
                 android:text="Tốt"
                 android:textSize="17sp"
+                android:textStyle="bold"
                 app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
                 app:layout_constraintTop_toBottomOf="@+id/lbColor" />
         </android.support.constraint.ConstraintLayout>
