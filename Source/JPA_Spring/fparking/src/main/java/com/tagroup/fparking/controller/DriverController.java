@@ -72,6 +72,9 @@ public class DriverController {
 	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
 
 		Driver respone = driverService.create(driver);
+		if(respone == null) {
+			return new ResponseEntity<>("phone exist", HttpStatus.OK);
+		}
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
