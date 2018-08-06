@@ -1,6 +1,5 @@
 package com.example.hung.fparking.notification;
 
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -8,15 +7,11 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
-import android.os.Handler;
-import android.os.HandlerThread;
 import android.os.IBinder;
 import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
-import com.example.hung.fparking.dialog.DialogActivity;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.config.Constants;
@@ -24,8 +19,6 @@ import com.example.hung.fparking.config.Session;
 import com.pusher.client.Pusher;
 import com.pusher.client.PusherOptions;
 import com.pusher.client.channel.SubscriptionEventListener;
-
-import org.json.JSONException;
 
 public class Notification extends Service implements SubscriptionEventListener {
 
@@ -133,10 +126,10 @@ public class Notification extends Service implements SubscriptionEventListener {
 
     public void createDialog(String evenName, String data) {
 
-        Intent i = new Intent(Notification.this, DialogActivity.class);
-        i.putExtra("eventName",evenName);
-        i.putExtra("data",data);
-        startActivity(i);
+//        Intent i = new Intent(Notification.this, DialogActivity.class);
+//        i.putExtra("eventName",evenName);
+//        i.putExtra("data",data);
+//        startActivity(i);
 
     }
 }
