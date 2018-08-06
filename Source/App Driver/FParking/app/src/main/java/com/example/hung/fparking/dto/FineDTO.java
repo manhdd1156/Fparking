@@ -1,5 +1,7 @@
 package com.example.hung.fparking.dto;
 
+import java.util.Comparator;
+
 public class FineDTO {
 
     private int fineID;
@@ -138,4 +140,14 @@ public class FineDTO {
     public void setAddress(String address) {
         this.address = address;
     }
+
+    public static Comparator<FineDTO> fineDTOComparator = new Comparator<FineDTO>() {
+
+        @Override
+        public int compare(FineDTO o1, FineDTO o2) {
+            int id1 = o1.fineID;
+            int id2 = o2.fineID;
+            return id2 - id1;
+        }
+    };
 }

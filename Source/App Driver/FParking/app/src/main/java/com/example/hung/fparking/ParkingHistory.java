@@ -19,6 +19,7 @@ import com.example.hung.fparking.dto.BookingDTO;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandler {
@@ -79,6 +80,7 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
     @Override
     public void onPostExecute(Object o, String action) {
         booking = (ArrayList<BookingDTO>) o;
+        Collections.sort(booking, BookingDTO.bookingDTOComparator);
         mAdapter = new MyRecyclerViewAdapter(booking);
         mRecyclerView.setAdapter(mAdapter);
 

@@ -1,5 +1,7 @@
 package com.example.hung.fparking.dto;
 
+import java.util.Comparator;
+
 public class BookingDTO {
 
     private int bookingID;
@@ -161,4 +163,16 @@ public class BookingDTO {
     public void setColor(String color) {
         this.color = color;
     }
+
+    /*Comparator for sorting the list by roll no*/
+    public static Comparator<BookingDTO> bookingDTOComparator = new Comparator<BookingDTO>() {
+
+        @Override
+        public int compare(BookingDTO o1, BookingDTO o2) {
+            int id1 = o1.bookingID;
+            int id2 = o2.bookingID;
+            return id2 - id1;
+        }
+
+    };
 }

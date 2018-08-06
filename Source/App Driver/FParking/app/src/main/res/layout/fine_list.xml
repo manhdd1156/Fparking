@@ -29,7 +29,7 @@
                 app:srcCompat="@drawable/line" />
 
             <TextView
-                android:id="@+id/textViewTime"
+                android:id="@+id/textViewTimeFH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/imageView10"
@@ -57,7 +57,7 @@
                 app:srcCompat="@drawable/ic_menu_car" />
 
             <TextView
-                android:id="@+id/textViewHLicenseplate"
+                android:id="@+id/textViewHLicenseplateFH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
@@ -66,7 +66,7 @@
                 android:text="Biển số xe" />
 
             <TextView
-                android:id="@+id/textViewFine"
+                android:id="@+id/textViewFineFH"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView11"
@@ -83,6 +83,7 @@
                 android:layout_alignStart="@+id/imageView10"
                 android:text="Chưa thanh toán"
                 android:textColor="#ff0000"
+                android:visibility="invisible"
                 android:textStyle="bold" />
             <TextView
                 android:id="@+id/textViewPaid"
@@ -92,6 +93,7 @@
                 android:layout_alignStart="@+id/imageView10"
                 android:text="Đã thanh toán"
                 android:textColor="#027b00"
+                android:visibility="invisible"
                 android:textStyle="bold" />
 
         </RelativeLayout>

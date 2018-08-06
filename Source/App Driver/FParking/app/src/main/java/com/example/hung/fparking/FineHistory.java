@@ -22,6 +22,7 @@ import com.example.hung.fparking.dto.FineDTO;
 
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler {
@@ -81,6 +82,7 @@ public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler 
     @Override
     public void onPostExecute(Object o, String action) {
         fineDTOS = (ArrayList<FineDTO>) o;
+        Collections.sort(fineDTOS, FineDTO.fineDTOComparator);
         mAdapter = new FinerViewAdapter(fineDTOS);
         mRecyclerView.setAdapter(mAdapter);
 
@@ -109,12 +111,15 @@ class FinerViewAdapter extends RecyclerView
         TextView label;
         TextView amount;
         TextView time;
+        TextView textViewUnpaid, textViewPaid;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            label = (TextView) itemView.findViewById(R.id.textViewHLicenseplate);
-            amount = (TextView) itemView.findViewById(R.id.textViewAmount);
-            time = (TextView) itemView.findViewById(R.id.textViewTime);
+            label = (TextView) itemView.findViewById(R.id.textViewHLicenseplateFH);
+            amount = (TextView) itemView.findViewById(R.id.textViewFineFH);
+            time = (TextView) itemView.findViewById(R.id.textViewTimeFH);
+            textViewUnpaid = (TextView) itemView.findViewById(R.id.textViewUnpaid);
+            textViewPaid = (TextView) itemView.findViewById(R.id.textViewPaid);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -137,7 +142,7 @@ class FinerViewAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.history_list, parent, false);
+                .inflate(R.layout.fine_list, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -145,6 +150,11 @@ class FinerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
+        if(mDataset.get(position).getStatus() == 0){
+            holder.textViewUnpaid.setVisibility(View.VISIBLE);
+        }else if(mDataset.get(position).getStatus() == 1){
+            holder.textViewPaid.setVisibility(View.VISIBLE);
+        }
         holder.label.setText(mDataset.get(position).getLicenseplate());
         NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
         holder.amount.setText(currencyVN.format(mDataset.get(position).getPrice()).toString());

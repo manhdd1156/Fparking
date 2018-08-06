@@ -75,15 +75,6 @@ android:orientation="vertical">
                 android:layout_toEndOf="@+id/imageView11"
                 android:text="Giá tiền" />
 
-            <TextView
-                android:id="@+id/textView"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/imageView10"
-                android:text="Đã hủy"
-                android:textColor="#ff0000"
-                android:textStyle="bold" />
         </RelativeLayout>
     </android.support.v7.widget.CardView>
 
