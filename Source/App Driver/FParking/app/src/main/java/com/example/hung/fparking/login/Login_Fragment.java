@@ -140,14 +140,14 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 
                 // Replace forgot password fragment with animation
                 Intent intentForgot = new Intent(getActivity(), OTP.class);
-                intentForgot.putExtra("action", "forgot");
+                intentForgot.putExtra("action","forgot");
                 startActivity(intentForgot);
                 break;
             case R.id.createAccount:
 
                 // Replace signup frgament with animation
                 Intent intentCreate = new Intent(getActivity(), OTP.class);
-                intentCreate.putExtra("action", "register");
+                intentCreate.putExtra("action","register");
                 startActivity(intentCreate);
                 break;
         }
@@ -200,7 +200,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
             startActivity(new Intent(this.getContext(), HomeActivity.class));
             getActivity().startService(intent);
             getActivity().getFragmentManager().popBackStack();
-            getActivity().finish();
+
         } else {
             new CustomToast().Show_Toast(getActivity(), view,
                     "Số điện thoại hoặc mật khẩu không đúng");

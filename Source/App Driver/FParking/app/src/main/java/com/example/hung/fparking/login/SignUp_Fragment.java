@@ -23,7 +23,6 @@ import android.widget.Toast;
 
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
-import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.dto.DriverDTO;
 import com.facebook.accountkit.Account;
@@ -35,7 +34,7 @@ import com.facebook.accountkit.PhoneNumber;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHandler {
+public class SignUp_Fragment extends AppCompatActivity {
 
     TextView phone, already_user;
     EditText password, confirmPassword;
@@ -58,7 +57,15 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
         signUpBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                checkValidation();
+                if (getIntent() != null) {
+                    Intent intent = getIntent();
+                    String action = intent.getStringExtra("action");
+                    if (action.equals("forgot")) {
+
+                    } else if (action.equals("register")) {
+                        checkValidation();
+                    }
+                }
             }
         });
         setUserInformation();
@@ -101,47 +108,27 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
 
     // Check Validation before login
     private void checkValidation() {
-        // Get password and phone
-        String mphone = phone.getText().toString();
+        // Get password
+
         String getPassword = password.getText().toString();
         String getConfirmPassword = confirmPassword.getText().toString();
 
         if (getPassword.equals("") || getPassword.isEmpty()) {
             Toast.makeText(getApplicationContext(), "Hãy nhập mật khẩu", Toast.LENGTH_SHORT)
                     .show();
-        } else if (!getPassword.equals(getConfirmPassword)) {
+        }
+
+        if (!getPassword.equals(getConfirmPassword)) {
             Toast.makeText(getApplicationContext(), "Mật khẩu không trùng nhau", Toast.LENGTH_SHORT)
                     .show();
         }
         // Check if email id is valid or not
 
         else {
-            if (getIntent() != null) {
-                Intent intent = getIntent();
-                String action = intent.getStringExtra("action");
-                if (action.equals("forgot")) {
 
-                } else if (action.equals("register")) {
-                    DriverDTO driverDTO = new DriverDTO();
-                    driverDTO.setPhone(mphone);
-                    new DriverLoginTask("create", driverDTO, getPassword, SignUp_Fragment.this);
-                    Toast.makeText(getApplicationContext(), "Do Login.", Toast.LENGTH_SHORT)
-                            .show();
-                }else if (action.equals("forgot")) {
-                    DriverDTO driverDTO = new DriverDTO();
-                    driverDTO.setPhone(mphone);
-                    new DriverLoginTask("create", driverDTO, getPassword, SignUp_Fragment.this);
-                    Toast.makeText(getApplicationContext(), "Do Login.", Toast.LENGTH_SHORT)
-                            .show();
-                }
-            }
+            Toast.makeText(getApplicationContext(), "Do Login.", Toast.LENGTH_SHORT)
+                    .show();
         }
-    }
-
-    @Override
-    public void onPostExecute(Object o, String action) {
-        Toast.makeText(getApplicationContext(), "Tạo tài khoản thành công", Toast.LENGTH_SHORT)
-                .show();
     }
 }
 
