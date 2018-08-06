@@ -40,45 +40,78 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public Driver create(Driver driver) {
 		try {
-		Driver d = new Driver();
-		d.setPhone(driver.getPhone());
-		d.setName(driver.getName());
-		d.setStatus(1);
-			d.setPassword(driver.getPassword());
-			return driverRepository.save(d);
+			System.out.println("driver = " + driver);
+			List<Driver> dlist = getAll();
+			boolean flag = false;
+			for (Driver driver2 : dlist) {
+				if (driver2.getPhone().equals(driver.getPhone())) {
+					flag = true;
+				}
+			}
+			System.out.println("flag = " + flag);
+			if (!flag) {
+				
+				Driver d = new Driver();
+				d.setPhone(driver.getPhone());
+				d.setName(driver.getName());
+				d.setStatus(1);
+				d.setPassword(driver.getPassword());
+				System.out.println("driver = " + d);
+				return driverRepository.save(d);
+			}
+//			}else {
+//				throw new APIException(HttpStatus.CONFLICT, "Phone is exist!");
+//			}
+			throw new APIException(HttpStatus.CONFLICT, "Phone is exist!");
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			
 		}
 		return null;
 
 	}
+
 	public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
-        MessageDigest md = MessageDigest.getInstance("MD5");
-        md.update(inputString.getBytes());
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(inputString.getBytes());
 
-        byte[] digest = md.digest();
+		byte[] digest = md.digest();
 
-        return convertByteToHex(digest);
-    }
+		return convertByteToHex(digest);
+	}
 
-    private static String convertByteToHex(byte[] byteData) {
+	private static String convertByteToHex(byte[] byteData) {
 
-        StringBuilder sb = new StringBuilder();
-        for (int i = 0; i < byteData.length; i++) {
-            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
-        }
+		StringBuilder sb = new StringBuilder();
+		for (int i = 0; i < byteData.length; i++) {
+			sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+		}
 
-        return sb.toString();
-    }
+		return sb.toString();
+	}
+
 	@Override
 	public Driver update(Driver driver) {
 		// TODO Auto-generated method stub
 		List<Driver> dlist = getAll();
 		for (Driver d : dlist) {
-			if(d.getId()==driver.getId() && d.getPassword().equals(driver.getPassword())) {
-				return driverRepository.save(driver);
+			if (d.getId() == driver.getId() && d.getPassword().equals(driver.getPassword())) {
+				List<Driver> dlist2 = getAll();
+				boolean flag = false;
+				for (Driver driver2 : dlist) {
+					if (driver2.getPhone().equals(driver.getPhone())) {
+						flag = true;
+					}
+				}
+				if (!flag) {
+					
+					return driverRepository.save(driver);
+				}else {
+					throw new APIException(HttpStatus.CONFLICT, "Phone is exist!");
+				}
+				
 			}
 		}
 		return null;
