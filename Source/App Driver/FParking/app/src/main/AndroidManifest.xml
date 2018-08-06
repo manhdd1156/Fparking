@@ -94,7 +94,6 @@
         <activity android:name=".DetailedFine" />
         <activity android:name=".other.TermsAndConditions" />
         <activity android:name=".other.Feedback" />
-        <activity android:name=".OTP" />
         <activity android:name=".login.SignUp_Fragment" />
 
         <meta-data

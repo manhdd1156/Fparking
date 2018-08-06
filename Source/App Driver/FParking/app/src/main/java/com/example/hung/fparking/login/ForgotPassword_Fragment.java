@@ -56,7 +56,7 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
             case R.id.backToLoginBtn:
 
                 // Replace Login Fragment on Back Presses
-                new MainActivity().replaceLoginFragment();
+//                new MainActivity().replaceLoginFragment();
                 break;
 
             case R.id.nextBtn:

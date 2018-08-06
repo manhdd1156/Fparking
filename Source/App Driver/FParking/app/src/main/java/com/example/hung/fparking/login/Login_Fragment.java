@@ -20,7 +20,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.HomeActivity;
-import com.example.hung.fparking.OTP;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
