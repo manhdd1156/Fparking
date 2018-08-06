@@ -13,7 +13,9 @@ import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.dto.FineDTO;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class DetailedFine extends AppCompatActivity implements IAsyncTaskHandler {
 
@@ -60,7 +62,8 @@ public class DetailedFine extends AppCompatActivity implements IAsyncTaskHandler
 
             textViewLicensePlate.setText(fineDTO.getLicenseplate());
             textViewType.setText(fineDTO.getVehicletype());
-            textViewTotalPrice.setText(fineDTO.getPrice() + "");
+            NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            textViewTotalPrice.setText(currencyVN.format(fineDTO.getPrice()).toString());
             textViewAddress.setText(fineDTO.getAddress());
             textViewTime.setText(fineDTO.getDate());
         }

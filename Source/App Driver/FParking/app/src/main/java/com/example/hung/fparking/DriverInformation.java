@@ -13,8 +13,13 @@ import android.widget.ImageView;
 
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
+import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.DriverDTO;
+import com.example.hung.fparking.login.CustomToast;
+
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class DriverInformation extends AppCompatActivity implements IAsyncTaskHandler {
 
@@ -45,7 +50,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
         tbPassword.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentChange = new Intent(DriverInformation.this,ChangePassword.class);
+                Intent intentChange = new Intent(DriverInformation.this, ChangePassword.class);
                 startActivity(intentChange);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
@@ -55,7 +60,16 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
         mUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                dialog.show();
+                Pattern p = Pattern.compile(Constants.regEx);
+
+                Matcher m = p.matcher(tbPhone.getText().toString());
+                if (!m.find()) {
+                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.profile_layout),
+                            "Số điện thoại không đúng");
+                } else {
+                    dialog.show();
+                }
+
             }
         });
 
@@ -64,7 +78,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             public void onClick(View v) {
                 DriverDTO driverDTO = new DriverDTO();
                 driverDTO.setPhone(tbPhone.getText().toString());
-                driverDTO.setName(tbName.getText().toString() );
+                driverDTO.setName(tbName.getText().toString());
                 String pass = password.getText().toString();
                 new DriverLoginTask("update", driverDTO, pass, DriverInformation.this);
                 dialog.cancel();

@@ -20,7 +20,9 @@ import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.dto.FineDTO;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Locale;
 
 public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler {
 
@@ -144,7 +146,8 @@ class FinerViewAdapter extends RecyclerView
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.label.setText(mDataset.get(position).getLicenseplate());
-        holder.amount.setText(mDataset.get(position).getPrice() + "");
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        holder.amount.setText(currencyVN.format(mDataset.get(position).getPrice()).toString());
         holder.time.setText(mDataset.get(position).getDate().substring(8));
     }
 

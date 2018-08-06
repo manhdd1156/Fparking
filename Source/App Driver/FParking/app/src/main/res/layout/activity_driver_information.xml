@@ -8,6 +8,7 @@
     tools:context=".DriverInformation">
 
     <RelativeLayout
+        android:id="@+id/profile_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
@@ -85,8 +86,7 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:hint="Số điện thoại"
-            android:inputType="phone"
+            android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
             android:text="Nguyễn Văn Hưng"

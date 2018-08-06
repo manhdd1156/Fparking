@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
+import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.dto.DriverDTO;
 import com.facebook.accountkit.Account;
@@ -34,7 +35,7 @@ import com.facebook.accountkit.PhoneNumber;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignUp_Fragment extends AppCompatActivity {
+public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHandler{
 
     TextView phone, already_user;
     EditText password, confirmPassword;
@@ -125,10 +126,17 @@ public class SignUp_Fragment extends AppCompatActivity {
         // Check if email id is valid or not
 
         else {
-
+            DriverDTO driverDTO = new DriverDTO();
+            driverDTO.setPhone(phone.getText().toString());
+            new DriverLoginTask("create", driverDTO, password.getText().toString(), SignUp_Fragment.this);
             Toast.makeText(getApplicationContext(), "Do Login.", Toast.LENGTH_SHORT)
                     .show();
         }
+    }
+
+    @Override
+    public void onPostExecute(Object o, String action) {
+
     }
 }
 

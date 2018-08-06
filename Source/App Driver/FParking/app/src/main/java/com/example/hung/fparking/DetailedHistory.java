@@ -12,10 +12,12 @@ import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.dto.BookingDTO;
 
 import java.text.DateFormat;
+import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
+import java.util.Locale;
 
 public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHandler {
 
@@ -62,11 +64,22 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
 
             textViewLicensePlate.setText(myBookingDTO.getLicenseplate());
             textViewType.setText(myBookingDTO.getType());
-            textViewTotalPrice.setText(myBookingDTO.getAmount() + "");
+            NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+            textViewTotalPrice.setText( currencyVN.format(myBookingDTO.getAmount()).toString());
             textViewAddress.setText(myBookingDTO.getAddress());
             textViewTimeCheckinPH.setText(myBookingDTO.getTimeIn());
             textViewTimeCheckoutPH.setText(myBookingDTO.getTimeOut());
-            textViewTime.setText("");
+
+            final DateFormat df = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+            try {
+                Date date1 = df.parse(myBookingDTO.getTimeIn());
+                Date date2 = df.parse(myBookingDTO.getTimeOut());
+                long diff = date2.getTime() - date1.getTime();
+                textViewTime.setText(diff/(60*60*1000)+" Giờ");
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+
         }
     }
 }
