@@ -1,0 +1,302 @@
+-- Merging decision tree log ---
+manifest
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+MERGED from [com.android.support:design:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\373ef96a4d6d8fc951dd83d64e15f81a\AndroidManifest.xml:17:1-22:12
+MERGED from [com.yinglan.shadowimageview:shadowimageview:1.0.4] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\shadowimageview-1.0.4.aar\6704a0f154135b54c70410cc16f84bee\AndroidManifest.xml:2:1-17:12
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\3f0ee31095bf05589171381275ff4b78\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\9357b03bf2683a4a2044c89835bcd8b8\AndroidManifest.xml:2:1-11:12
+MERGED from [com.google.android.gms:play-services-places:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.1.aar\6c074086dcc434c7224cc798c4283aaf\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-location:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.1.aar\ef9e79f17804dca161edf2206740cf10\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:17:1-32:12
+MERGED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:17:1-29:12
+MERGED from [com.google.android.gms:play-services-places-placereport:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.1.aar\d4da2e1668636844dc31452c5601e296\AndroidManifest.xml:17:1-24:12
+MERGED from [com.google.android.gms:play-services-tasks:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.1.aar\6506a465567f48ab83ba8bb59ae490f0\AndroidManifest.xml:2:1-9:12
+MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:17:1-28:12
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\478d4647d8764d55034ab01c34984cb5\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\503420cc5b9fc9ff30f79909b7d34f6a\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:recyclerview-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.1.aar\cd7ec0bb1909f9e733a20d236c982630\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\47c4cc0eb2d8ed50f106298251057faa\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\2cf9b31c0c93cdb6670aae23811abab0\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\b49c39a3279aff3c5b4b604d10bb76e4\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:transition:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\3420fa3c48ff4dffddd29cc7a8375489\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\3277f67705d1023f91a611c4be5e84c9\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:palette-v7:25.0.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\palette-v7-25.0.0.aar\50991ab833890b0c95a7a716aba2dd85\AndroidManifest.xml:17:1-25:12
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\da497c9a2f08d9357eddf5b416e40733\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\5b02171e186943e0674cb00064d9002f\AndroidManifest.xml:17:1-22:12
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\61c8bae1764228428b72540d19eed53a\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\ff46aaad793569b10f9008fe1481632f\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\fa7fd4532fc8049dd94bb2f4a32d58a6\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\fd5e40dcf670119fa42dc7914d6e073a\AndroidManifest.xml:17:1-22:12
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\862cc74883fc5e5fe1525dd590e77133\AndroidManifest.xml:17:1-22:12
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+	package
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:3:5-40
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+	android:versionName
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+	android:versionCode
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:1-71:12
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+	xmlns:android
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:2:11-69
+uses-permission#android.permission.ACCESS_FINE_LOCATION
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:10:5-79
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:10:22-76
+uses-permission#android.permission.INTERNET
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:11:5-67
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:24:5-67
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:24:5-67
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:11:22-64
+uses-permission#android.permission.ACCESS_NETWORK_STATE
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:12:5-79
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:23:5-79
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:23:5-79
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:12:22-76
+uses-permission#android.permission.ACCESS_WIFI_STATE
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:13:5-76
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:13:22-73
+uses-permission#android.permission.WRITE_EXTERNAL_STORAGE
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:14:5-81
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:14:22-78
+uses-permission#android.permission.ACCESS_COARSE_LOCATION
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:15:5-81
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:15:22-78
+uses-permission#android.permission.READ_PHONE_STATE
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:16:5-75
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:16:22-72
+uses-permission#android.permission.RECEIVE_BOOT_COMPLETED
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:17:5-81
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:17:22-78
+uses-feature#android.hardware.location.gps
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:19:5-21:36
+	android:required
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:21:9-33
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:20:9-53
+application
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:23:5-69:19
+MERGED from [com.yinglan.shadowimageview:shadowimageview:1.0.4] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\shadowimageview-1.0.4.aar\6704a0f154135b54c70410cc16f84bee\AndroidManifest.xml:11:5-15:19
+MERGED from [com.yinglan.shadowimageview:shadowimageview:1.0.4] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\shadowimageview-1.0.4.aar\6704a0f154135b54c70410cc16f84bee\AndroidManifest.xml:11:5-15:19
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\9357b03bf2683a4a2044c89835bcd8b8\AndroidManifest.xml:9:5-20
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\9357b03bf2683a4a2044c89835bcd8b8\AndroidManifest.xml:9:5-20
+MERGED from [com.google.android.gms:play-services-places:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.1.aar\6c074086dcc434c7224cc798c4283aaf\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-places:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.1.aar\6c074086dcc434c7224cc798c4283aaf\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-location:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.1.aar\ef9e79f17804dca161edf2206740cf10\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-location:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.1.aar\ef9e79f17804dca161edf2206740cf10\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:30:5-20
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:30:5-20
+MERGED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:22:5-27:19
+MERGED from [com.google.android.gms:play-services-places-placereport:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.1.aar\d4da2e1668636844dc31452c5601e296\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-places-placereport:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.1.aar\d4da2e1668636844dc31452c5601e296\AndroidManifest.xml:22:5-20
+MERGED from [com.google.android.gms:play-services-tasks:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.1.aar\6506a465567f48ab83ba8bb59ae490f0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-tasks:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.1.aar\6506a465567f48ab83ba8bb59ae490f0\AndroidManifest.xml:7:5-20
+MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:22:5-26:19
+MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:22:5-26:19
+MERGED from [com.android.support:palette-v7:25.0.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\palette-v7-25.0.0.aar\50991ab833890b0c95a7a716aba2dd85\AndroidManifest.xml:22:5-23:19
+MERGED from [com.android.support:palette-v7:25.0.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\palette-v7-25.0.0.aar\50991ab833890b0c95a7a716aba2dd85\AndroidManifest.xml:22:5-23:19
+	android:supportsRtl
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:28:9-35
+	android:label
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:26:9-41
+	android:roundIcon
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:27:9-54
+	android:icon
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:25:9-43
+	android:allowBackup
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:24:9-35
+	android:theme
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:29:9-40
+service#com.example.hung.fparking.notification.Notification
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:30:9-33:39
+	android:enabled
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:32:13-35
+	android:exported
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:33:13-36
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:31:13-54
+receiver#com.example.hung.fparking.notification.CheckNetworkReciever
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:35:9-42:20
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:35:19-68
+intent-filter#action:name:android.intent.action.BOOT_COMPLETED+action:name:android.net.conn.CONNECTIVITY_CHANGE+category:name:android.intent.category.DEFAULT
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:36:13-41:29
+action#android.net.conn.CONNECTIVITY_CHANGE
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:37:17-79
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:37:25-76
+action#android.intent.action.BOOT_COMPLETED
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:38:17-79
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:38:25-76
+category#android.intent.category.DEFAULT
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:40:17-76
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:40:27-73
+activity#com.example.hung.fparking.HomeActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:44:9-46:59
+	android:label
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:46:13-56
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:45:13-41
+activity#com.example.hung.fparking.ProfileActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:47:9-53
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:47:19-50
+activity#com.example.hung.fparking.StatisticalActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:48:9-57
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:48:19-54
+activity#com.example.hung.fparking.change_space.NumberPickerActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:49:9-51:91
+	android:theme
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:51:13-88
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:50:13-62
+activity#com.example.hung.fparking.CheckOutActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:52:9-54
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:52:19-51
+activity#com.example.hung.fparking.dialog.DialogActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:53:9-55:82
+	android:theme
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:55:13-79
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:54:13-50
+activity#com.example.hung.fparking.login.MainActivity
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:56:9-62:20
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:56:19-53
+intent-filter#action:name:android.intent.action.MAIN+category:name:android.intent.category.LAUNCHER
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:57:13-61:29
+action#android.intent.action.MAIN
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:58:17-69
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:58:25-66
+category#android.intent.category.LAUNCHER
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:60:17-77
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:60:27-74
+activity#com.example.hung.fparking.ChangePassword
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:63:9-65:40
+	android:noHistory
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:65:13-37
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:64:13-43
+activity#com.example.hung.fparking.AlertDialog
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:66:9-49
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:66:19-46
+activity#com.example.hung.fparking.Contact
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:67:9-45
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:67:19-42
+activity#com.example.hung.fparking.Login
+ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:68:9-52
+	android:name
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml:68:19-40
+uses-sdk
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml reason: use-sdk injection requested
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+MERGED from [com.android.support:design:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\373ef96a4d6d8fc951dd83d64e15f81a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:design:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\design-27.1.1.aar\373ef96a4d6d8fc951dd83d64e15f81a\AndroidManifest.xml:20:5-44
+MERGED from [com.yinglan.shadowimageview:shadowimageview:1.0.4] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\shadowimageview-1.0.4.aar\6704a0f154135b54c70410cc16f84bee\AndroidManifest.xml:7:5-9:41
+MERGED from [com.yinglan.shadowimageview:shadowimageview:1.0.4] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\shadowimageview-1.0.4.aar\6704a0f154135b54c70410cc16f84bee\AndroidManifest.xml:7:5-9:41
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\3f0ee31095bf05589171381275ff4b78\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:appcompat-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\appcompat-v7-27.1.1.aar\3f0ee31095bf05589171381275ff4b78\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\9357b03bf2683a4a2044c89835bcd8b8\AndroidManifest.xml:5:5-7:41
+MERGED from [com.android.support.constraint:constraint-layout:1.1.2] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\constraint-layout-1.1.2.aar\9357b03bf2683a4a2044c89835bcd8b8\AndroidManifest.xml:5:5-7:41
+MERGED from [com.google.android.gms:play-services-places:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.1.aar\6c074086dcc434c7224cc798c4283aaf\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-15.0.1.aar\6c074086dcc434c7224cc798c4283aaf\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-location:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.1.aar\ef9e79f17804dca161edf2206740cf10\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-location:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-location-15.0.1.aar\ef9e79f17804dca161edf2206740cf10\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places-placereport:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.1.aar\d4da2e1668636844dc31452c5601e296\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-places-placereport:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-places-placereport-15.0.1.aar\d4da2e1668636844dc31452c5601e296\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-tasks:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.1.aar\6506a465567f48ab83ba8bb59ae490f0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-tasks:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-tasks-15.0.1.aar\6506a465567f48ab83ba8bb59ae490f0\AndroidManifest.xml:5:5-44
+MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:20:5-44
+MERGED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\478d4647d8764d55034ab01c34984cb5\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-v4:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-v4-27.1.1.aar\478d4647d8764d55034ab01c34984cb5\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\503420cc5b9fc9ff30f79909b7d34f6a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:cardview-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\cardview-v7-27.1.1.aar\503420cc5b9fc9ff30f79909b7d34f6a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.1.aar\cd7ec0bb1909f9e733a20d236c982630\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:recyclerview-v7:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\recyclerview-v7-27.1.1.aar\cd7ec0bb1909f9e733a20d236c982630\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\47c4cc0eb2d8ed50f106298251057faa\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-fragment:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-fragment-27.1.1.aar\47c4cc0eb2d8ed50f106298251057faa\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\2cf9b31c0c93cdb6670aae23811abab0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:animated-vector-drawable:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\animated-vector-drawable-27.1.1.aar\2cf9b31c0c93cdb6670aae23811abab0\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\b49c39a3279aff3c5b4b604d10bb76e4\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-ui:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-core-ui-27.1.1.aar\b49c39a3279aff3c5b4b604d10bb76e4\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\3420fa3c48ff4dffddd29cc7a8375489\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:transition:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\transition-27.1.1.aar\3420fa3c48ff4dffddd29cc7a8375489\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\3277f67705d1023f91a611c4be5e84c9\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-vector-drawable:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-vector-drawable-27.1.1.aar\3277f67705d1023f91a611c4be5e84c9\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:palette-v7:25.0.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\palette-v7-25.0.0.aar\50991ab833890b0c95a7a716aba2dd85\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:palette-v7:25.0.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\palette-v7-25.0.0.aar\50991ab833890b0c95a7a716aba2dd85\AndroidManifest.xml:20:5-43
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\da497c9a2f08d9357eddf5b416e40733\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-core-utils:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-core-utils-27.1.1.aar\da497c9a2f08d9357eddf5b416e40733\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\5b02171e186943e0674cb00064d9002f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-media-compat:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-media-compat-27.1.1.aar\5b02171e186943e0674cb00064d9002f\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\61c8bae1764228428b72540d19eed53a\AndroidManifest.xml:20:5-44
+MERGED from [com.android.support:support-compat:27.1.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\support-compat-27.1.1.aar\61c8bae1764228428b72540d19eed53a\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\ff46aaad793569b10f9008fe1481632f\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:livedata-core:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\livedata-core-1.1.0.aar\ff46aaad793569b10f9008fe1481632f\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\fa7fd4532fc8049dd94bb2f4a32d58a6\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:viewmodel:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\viewmodel-1.1.0.aar\fa7fd4532fc8049dd94bb2f4a32d58a6\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\fd5e40dcf670119fa42dc7914d6e073a\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.lifecycle:runtime:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\fd5e40dcf670119fa42dc7914d6e073a\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\862cc74883fc5e5fe1525dd590e77133\AndroidManifest.xml:20:5-44
+MERGED from [android.arch.core:runtime:1.1.0] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\runtime-1.1.0.aar\862cc74883fc5e5fe1525dd590e77133\AndroidManifest.xml:20:5-44
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+	android:targetSdkVersion
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+	android:minSdkVersion
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		ADDED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+		INJECTED from C:\Fparking\Source\App Staff\FParking\app\src\main\AndroidManifest.xml
+uses-feature#0x00020000
+ADDED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:26:5-28:35
+	android:glEsVersion
+		ADDED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:27:9-41
+	android:required
+		ADDED from [com.google.android.gms:play-services-maps:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-maps-15.0.1.aar\8e367a600d08f668bef9e237bbf81a20\AndroidManifest.xml:28:9-32
+activity#com.google.android.gms.common.api.GoogleApiActivity
+ADDED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:23:9-26:75
+	android:exported
+		ADDED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:25:13-37
+	android:theme
+		ADDED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:26:13-72
+	android:name
+		ADDED from [com.google.android.gms:play-services-base:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-base-15.0.1.aar\0e15623e54ee904036ea4c56b7186a32\AndroidManifest.xml:24:13-79
+meta-data#com.google.android.gms.version
+ADDED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:23:9-25:69
+	android:value
+		ADDED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:25:13-66
+	android:name
+		ADDED from [com.google.android.gms:play-services-basement:15.0.1] C:\Users\Hung\.gradle\caches\transforms-1\files-1.1\play-services-basement-15.0.1.aar\503eb08757f7745c52c27bf88766ee05\AndroidManifest.xml:24:13-58
