@@ -75,8 +75,9 @@ public class BookingServiceImpl implements BookingService {
 		// TODO Auto-generated method stub
 		try {
 			return bookingRepository.getOne(id);
+			
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found " + e);
 		}
 	}
 

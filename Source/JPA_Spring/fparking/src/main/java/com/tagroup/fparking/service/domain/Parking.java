@@ -11,6 +11,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
 import javax.persistence.ManyToOne;
 import javax.persistence.NamedQuery;
+import javax.persistence.OneToOne;
 
 import org.hibernate.annotations.Proxy;
 
@@ -56,6 +57,7 @@ public class Parking implements Serializable {
 	@JoinColumn(name = "owner_id", referencedColumnName = "id")
 	private Owner owner;
 	
+	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "city_id", referencedColumnName = "id")
 	private City city;
 	
