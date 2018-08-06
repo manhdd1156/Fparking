@@ -26,6 +26,8 @@ public class BookingTask {
             new CreateBooking(data1, data2, action, container).execute((Void) null);
         } else if (type.equals("getorder")) {
             new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
+        } else if (type.equals("cancel")) {
+            new CancelBooking(data1, data2, action, container).execute((Void) null);
         }
     }
 }
@@ -260,4 +262,54 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
     }
 }
 
+class CancelBooking extends AsyncTask<Void, Void, Boolean> {
 
+    IAsyncTaskHandler container;
+    String vehicleid, parkingid, action;
+    boolean success = false;
+
+    public CancelBooking(String vehicleid, String parkingid, String action, IAsyncTaskHandler container) {
+        this.container = container;
+        this.vehicleid = vehicleid;
+        this.parkingid = parkingid;
+        this.action = action;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+            JSONObject formData = new JSONObject();
+            formData.put("driverid", Session.currentDriver.getId());
+            formData.put("vehicleid", vehicleid);
+            formData.put("parkingid", parkingid);
+            if (action.equals("cancel")) {
+                formData.put("status", 1);
+            } else if (action.equals("timeout")) {
+                formData.put("status", 1);
+            }
+
+            String json = httpHandler.requestMethod(Constants.API_URL + "bookings/drivers/cancel", formData.toString(), "PUT");
+            JSONObject jsonObj = new JSONObject(json);
+            if (jsonObj != null) {
+                success = true;
+            }
+        } catch (Exception ex) {
+            Log.e("Error CreateBooking:", ex.getMessage());
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+//        Intent intent = new Intent();
+//        if(success)
+//            intent.putExtra("result", "success!");
+//        else
+//            intent.putExtra("result", "failed");
+//        this.activity.setResult(RESULT_OK, intent);
+//        this.activity.finish();
+    }
+}

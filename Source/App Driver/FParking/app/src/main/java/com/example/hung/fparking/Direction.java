@@ -82,6 +82,9 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        progressDialog = ProgressDialog.show(this, "Please wait.",
+                "Đang tìm đường đi..!", true);
+
         // khởi tạo shareRePreference
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
@@ -93,19 +96,28 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             parkingInforTask.execute();
         }
 
-        // Ánh xạ
+        // Button Checkin
         buttonCheckin = (Button) findViewById(R.id.buttonCheckin);
         buttonCheckin.setEnabled(false);
         buttonCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 locationManager.removeUpdates(Direction.this);
-                new NotificationTask("checkin", mPreferences.getString("vehicleID",""), parkingID, "",Direction.this);
+                new NotificationTask("checkin", mPreferences.getString("vehicleID", ""), parkingID, "", Direction.this);
                 Intent checkOutIntent = new Intent(Direction.this, CheckOut.class);
                 startActivity(checkOutIntent);
             }
         });
+
+        // Button Hủy đặt chỗ
+        final String vehicleID = mPreferences.getString("vehicleID", "");
         buttonHuy = (Button) findViewById(R.id.buttonHuy);
+        buttonHuy.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new BookingTask("cancel", vehicleID + "", parkingID + "", "cancel", Direction.this);
+            }
+        });
 
         // đặt vị trí nút mylocation
         mMapView = mapFragment.getView();
@@ -158,9 +170,6 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
     @Override
     public void onDirectionFinderStart() {
-        progressDialog = ProgressDialog.show(this, "Please wait.",
-                "Finding direction..!", true);
-
         if (originMarkers != null) {
             for (Marker marker : originMarkers) {
                 marker.remove();
@@ -215,20 +224,22 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
     @Override
     public void onPostExecute(Object o, String action) {
-        parkingDTOS = (ArrayList<ParkingDTO>) o;
-        ParkingDTO parkingDTO = parkingDTOS.get(0);
+        if (action.equals("pi")) {
+            parkingDTOS = (ArrayList<ParkingDTO>) o;
+            ParkingDTO parkingDTO = parkingDTOS.get(0);
 
-        //  tạo điểm đến
-        distination = new Location("distination");
-        distination.setLatitude(parkingDTO.getLatitude());
-        distination.setLongitude(parkingDTO.getLongitude());
+            //  tạo điểm đến
+            distination = new Location("distination");
+            distination.setLatitude(parkingDTO.getLatitude());
+            distination.setLongitude(parkingDTO.getLongitude());
 
-        GPSTracker gps = new GPSTracker(this);
+            GPSTracker gps = new GPSTracker(this);
 
-        try {
-            new DirectionFinder(this, gps.getLatitude() + "," + gps.getLongitude(), parkingDTO.getLatitude() + "," + parkingDTO.getLongitude()).execute();
-        } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            try {
+                new DirectionFinder(this, gps.getLatitude() + "," + gps.getLongitude(), parkingDTO.getLatitude() + "," + parkingDTO.getLongitude()).execute();
+            } catch (UnsupportedEncodingException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -261,7 +272,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             if (distanceValue <= 500) {
                 buttonCheckin.setBackground(getResources().getDrawable(R.drawable.button_selector2));
                 buttonCheckin.setEnabled(true);
-                if(noti){
+                if (noti) {
                     createNotification("Fparking");
                     noti = false;
                 }

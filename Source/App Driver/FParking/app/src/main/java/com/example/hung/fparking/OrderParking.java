@@ -38,8 +38,10 @@ import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
 import com.synnapps.carouselview.ViewListener;
 
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 import in.goodiebag.carouselpicker.CarouselPicker;
 
@@ -218,7 +220,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     if (vehicle.get(j).getLicenseplate().equals(lis)) {
                         for (int i = 0; i < tariffDTOS.size(); i++) {
                             if (vehicle.get(j).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
-                                textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                                NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                                textViewPrice.setText(currencyVN.format(tariffDTOS.get(i).getPrice()).toString());
                                 driverVehicleID = vehicle.get(j).getDriverVehicleID();
                                 vehicleID = vehicle.get(j).getVehicleID();
                                 buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_selector2));
@@ -346,7 +349,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 tariffDTOS = (ArrayList<TariffDTO>) o;
                 for (int i = 0; i < tariffDTOS.size(); i++) {
                     if (vehicle.get(0).getVehicleTypeID() == tariffDTOS.get(i).getVehicleTypeID()) {
-                        textViewPrice.setText(tariffDTOS.get(i).getPrice() + "");
+                        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                        textViewPrice.setText(currencyVN.format(tariffDTOS.get(i).getPrice()).toString());
                         buttonDat_Cho.setBackground(getResources().getDrawable(R.drawable.button_selector2));
                         buttonDat_Cho.setEnabled(true);
                     }
