@@ -48,6 +48,7 @@ public class DirectionFinder {
         String urlOrigin = URLEncoder.encode(origin, "utf-8");
         String urlDestination = URLEncoder.encode(destination, "utf-8");
 
+        Log.e("chi duong",Direction_Url + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + Google_API_Key);
         return Direction_Url + "origin=" + urlOrigin + "&destination=" + urlDestination + "&key=" + Google_API_Key;
     }
 

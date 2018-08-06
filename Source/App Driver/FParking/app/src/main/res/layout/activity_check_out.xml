@@ -87,7 +87,7 @@
             android:textSize="13sp" />
 
         <TextView
-            android:id="@+id/textViewPrice"
+            android:id="@+id/textViewPriceTT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textViewAddressTT"
@@ -141,7 +141,7 @@
             app:srcCompat="@drawable/line" />
 
         <TextView
-            android:id="@+id/textViewTotalPrice"
+            android:id="@+id/textViewTotalPriceTT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView17"
@@ -175,7 +175,7 @@
             app:srcCompat="@drawable/ic_action_car" />
 
         <TextView
-            android:id="@+id/textViewLicensePlate"
+            android:id="@+id/textViewLicensePlateTT"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView18"

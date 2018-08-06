@@ -28,6 +28,8 @@ public class BookingTask {
             new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
         } else if (type.equals("cancel")) {
             new CancelBooking(data1, data2, action, container).execute((Void) null);
+        }else if (type.equals("timeout")) {
+            new CancelBooking(data1, data2, action, container).execute((Void) null);
         }
     }
 }
@@ -287,10 +289,11 @@ class CancelBooking extends AsyncTask<Void, Void, Boolean> {
             if (action.equals("cancel")) {
                 formData.put("status", 1);
             } else if (action.equals("timeout")) {
-                formData.put("status", 1);
+                formData.put("status", 5);
             }
 
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/drivers/cancel", formData.toString(), "PUT");
+            Log.e("Hủy đặt chỗ: ",Constants.API_URL + "bookings/drivers/cancel");
             JSONObject jsonObj = new JSONObject(json);
             if (jsonObj != null) {
                 success = true;

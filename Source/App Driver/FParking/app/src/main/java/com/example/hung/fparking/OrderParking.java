@@ -157,43 +157,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 //                    startService(intent);
                     proD.setCancelable(false);
                     proD.show();
-
-                    new CountDownTimer(3000, 1000) {
-                        boolean checkOwer = true;
-
-                        public void onTick(long millisUntilFinished) {
-                            proD.setMessage("\tĐang đợi chủ bãi đỗ xác nhận ... " + millisUntilFinished / 1000);
-                            if (checkOwer) {
-//                                new pushToOwner("2", "order").execute((Void) null);
-                                checkOwer = false;
-                            }
-                        }
-
-                        public void onFinish() {
-
-//                            new pushToOwnerOverTime("2", "cancel").execute((Void) null);
-                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int choice) {
-                                    switch (choice) {
-                                        case DialogInterface.BUTTON_POSITIVE:
-
-                                            break;
-                                        case DialogInterface.BUTTON_NEGATIVE:
-
-                                            break;
-                                    }
-                                }
-                            };
-                            try {
-                                proD.dismiss();
-                                builder.setMessage("Chủ bãi đỗ đang bận!")
-                                        .setPositiveButton("Chấp Nhận", dialogClickListener).setCancelable(false).show();
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }.start();
+                    counttime();
                 }
             }
         });
@@ -280,6 +244,45 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 
             }
         });
+    }
+
+    public void counttime(){
+        new CountDownTimer(3000, 1000) {
+            boolean checkOwer = true;
+
+            public void onTick(long millisUntilFinished) {
+                proD.setMessage("\tĐang đợi chủ bãi đỗ xác nhận ... " + millisUntilFinished / 1000);
+                if (checkOwer) {
+//                                new pushToOwner("2", "order").execute((Void) null);
+                    checkOwer = false;
+                }
+            }
+
+            public void onFinish() {
+                new BookingTask("timeout", vehicleID + "", parkingID + "", "timeout", OrderParking.this);
+//                            new pushToOwnerOverTime("2", "cancel").execute((Void) null);
+                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int choice) {
+                        switch (choice) {
+                            case DialogInterface.BUTTON_POSITIVE:
+
+                                break;
+                            case DialogInterface.BUTTON_NEGATIVE:
+
+                                break;
+                        }
+                    }
+                };
+                try {
+                    proD.dismiss();
+                    builder.setMessage("Chủ bãi đỗ đang bận!")
+                            .setPositiveButton("Chấp Nhận", dialogClickListener).setCancelable(false).show();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     public void licensePlates(String parkingID) {

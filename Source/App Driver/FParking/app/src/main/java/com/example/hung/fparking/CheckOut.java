@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -22,7 +23,7 @@ import java.util.Date;
 
 public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
 
-    TextView textViewAddress, textViewCheckIn, textViewPrice, textViewLicensePlate, textViewTotalPrice;
+    TextView textViewAddress, textViewCheckIn, textViewPrice, textViewLicensePlate, textViewTotalPrice, textViewTimeCheckoutTT, textViewTotalTimeTT;
     Button buttonCheckOut;
 
     private SharedPreferences mPreferences;
@@ -41,10 +42,12 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
 
         // ánh xạ
         textViewAddress = findViewById(R.id.textViewAddressTT);
-        textViewCheckIn = findViewById(R.id.textViewTotalTimeTT);
-        textViewPrice = findViewById(R.id.textViewPrice);
-        textViewLicensePlate = findViewById(R.id.textViewLicensePlate);
-        textViewTotalPrice = findViewById(R.id.textViewTotalPrice);
+        textViewCheckIn = findViewById(R.id.textViewTimeCheckinTT);
+        textViewTimeCheckoutTT = findViewById(R.id.textViewTimeCheckoutTT);
+        textViewTotalTimeTT = findViewById(R.id.textViewTotalTimeTT);
+        textViewPrice = findViewById(R.id.textViewPriceTT);
+        textViewLicensePlate = findViewById(R.id.textViewLicensePlateTT);
+        textViewTotalPrice = findViewById(R.id.textViewTotalPriceTT);
         buttonCheckOut = findViewById(R.id.buttonCheckout);
 
         // set text cho button theo data
@@ -75,17 +78,20 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
         if (booking.size() > 0) {
             BookingDTO myBookingDTO = booking.get(0);
 
+            textViewAddress.setText(myBookingDTO.getAddress());
+            textViewCheckIn.setText(myBookingDTO.getTimeIn());
             final DateFormat df = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
             try {
                 Date date1 = df.parse(myBookingDTO.getTimeIn());
-                Date date2 = df.parse(myBookingDTO.getTimeOut());
-                long diff = date2.getTime() - date1.getTime();
-                textViewCheckIn.setText(myBookingDTO.getTimeIn() + " - " + myBookingDTO.getTimeOut());
+                if (!myBookingDTO.getTimeOut().equals("null")) {
+                    Date date2 = df.parse(myBookingDTO.getTimeOut());
+                    long diff = date2.getTime() - date1.getTime();
+                    textViewTimeCheckoutTT.setText(myBookingDTO.getTimeOut());
+                    textViewTotalTimeTT.setText(diff / (60 * 60 * 1000) + " Giờ");
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
-            textViewAddress.setText(myBookingDTO.getAddress());
             textViewTotalPrice.setText(myBookingDTO.getAmount() + "");
             textViewPrice.setText(myBookingDTO.getPrice() + "");
             textViewLicensePlate.setText(myBookingDTO.getLicenseplate());
