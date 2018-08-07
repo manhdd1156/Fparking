@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.OwnerRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.domain.Owner;
 @Service
@@ -42,7 +44,29 @@ private OwnerRepository ownerRepository;
 	@Override
 	public Owner update(Owner owner) {
 		// TODO Auto-generated method stub
-		return ownerRepository.save(owner);
+		// TODO Auto-generated method stub
+				try {
+					List<Owner> olist = getAll();
+					for (Owner o : olist) {
+						if (o.getId() == owner.getId()) {
+							List<Owner> olist2 = getAll();
+							boolean flag = false;
+							for (Owner owner2 : olist) {
+								if (owner2.getPhone().equals(owner.getPhone())) {
+									flag = true;
+								}
+							}
+							if (!flag) {
+
+								return ownerRepository.save(owner);
+							}
+
+						}
+					}
+				} catch (Exception e) {
+					System.out.println(e);
+				}
+				return null;
 		
 	}
 
@@ -51,6 +75,25 @@ private OwnerRepository ownerRepository;
 		// TODO Auto-generated method stub
 		Owner owner = ownerRepository.getOne(id);
 		ownerRepository.delete(owner);
+	}
+
+	@Override
+	public Owner findByPhoneAndPassword(String phone, String password) throws Exception {
+		// TODO Auto-generated method stub
+		try {
+			if(ownerRepository.findByPhoneAndPassword(phone, password)!=null)
+			return ownerRepository.findByPhoneAndPassword(phone, password);
+			else throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+		}
+	}
+
+	@Override
+	public Owner getProfile() throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
+		return ownerRepository.getOne(t.getId());
 	}
 	
 

@@ -4,18 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f6f6f6"
-    tools:context=".HomeActivity">
+    android:background="@color/background"
+    tools:context=".ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
-        tools:layout_editor_absoluteX="103dp"
+        app:layout_constraintEnd_toEndOf="parent"
         tools:layout_editor_absoluteY="0dp">
 
         <ImageView
-            android:id="@+id/imgHeader"
+            android:id="@+id/imageView9"
             android:layout_width="wrap_content"
             android:layout_height="50dp"
             android:scaleType="fitXY"
@@ -23,172 +23,202 @@
             tools:layout_editor_absoluteX="0dp"
             tools:layout_editor_absoluteY="0dp" />
 
-        <ImageView
-            android:id="@+id/imgInfor1"
-            android:layout_width="match_parent"
-            android:layout_height="152dp"
-            android:layout_below="@+id/imgHeader"
-            android:layout_marginTop="30dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/checkoutinfo" />
-
-        <ImageView
-            android:id="@+id/imgInfor2"
-            android:layout_width="match_parent"
-            android:layout_height="483dp"
-            android:layout_below="@+id/imgInfor1"
-            android:layout_marginBottom="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/checkoutinfo" />
-
-        <TextView
-            android:id="@+id/textView5"
-            android:layout_width="151dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/imageView19"
-            android:layout_alignTop="@+id/imgInfor1"
-
-            android:layout_marginTop="8dp"
-            android:drawableLeft="@drawable/ic_action_info"
-            android:gravity="center_vertical"
-            android:text="Thông tin"
-            android:textColor="@color/white_greyish"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="151dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView5"
-            android:layout_alignTop="@+id/imgInfor2"
-            android:layout_marginTop="19dp"
-            android:drawableLeft="@drawable/ic_action_car"
-            android:gravity="center_vertical"
-            android:text="Các xe hiện tại"
-            android:textColor="@color/white_greyish"
-            android:textSize="16sp"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/imageView15"
-            android:layout_width="307dp"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/textView5"
-            android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/line" />
-
-
         <TextView
             android:id="@+id/textView2"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="11dp"
-            android:text="Quản lý bãi đỗ"
+            android:layout_marginTop="14dp"
+            android:text="Thông Tin Cá Nhân"
             android:textColor="@color/whitetext"
             android:textSize="15sp"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="141dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+
+        <ImageView
+            android:id="@+id/imageViewBackProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView9"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            app:srcCompat="@drawable/ic_action_backwhile" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_below="@+id/imageView9"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/infodetail" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="178dp"
+            android:layout_height="117dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            app:srcCompat="@drawable/logo_profile2" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/cars_list"
-            android:layout_below="@+id/imageView15"
-            android:layout_marginLeft="9dp"
-            android:text="Bãi đỗ:"
-            android:textSize="15sp" />
+            android:layout_below="@+id/imageView2"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="15dp"
+            android:text="Họ và tên"
+            android:textSize="18sp" />
 
-        <ImageView
-            android:id="@+id/imageView19"
-            android:layout_width="307dp"
+        <EditText
+            android:id="@+id/tbName"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView18"
-            android:layout_centerHorizontal="true"
-            app:srcCompat="@drawable/line" />
+            android:layout_below="@+id/textView3"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Nguyễn Văn Hưng"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbName"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/textView3"
-            android:layout_marginTop="8dp"
-            android:text="Sức chứa:"
-            android:textSize="15sp" />
+            android:layout_below="@+id/tbName"
+            android:layout_marginTop="10dp"
+            android:text="Số điện thoại"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tbPhone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="01647383196"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbPhone"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
 
         <TextView
-            android:id="@+id/textView6"
+            android:id="@+id/textView5"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/textView4"
-            android:layout_marginTop="8dp"
-            android:text="Được đánh giá:"
-            android:textSize="15sp" />
+            android:layout_below="@+id/tbPhone"
+            android:layout_marginTop="10dp"
+            android:text="Địa chỉ"
+            android:textSize="18sp" />
 
-        <TextView
-            android:id="@+id/tvAddress"
-            android:layout_width="wrap_content"
+        <EditText
+            android:id="@+id/tbAddress"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/imageView15"
-            android:layout_marginLeft="20dp"
-            android:layout_toEndOf="@+id/textView3"
-            android:text="Khâm Thiên - Hà Nội"
-            android:textSize="15sp" />
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="sdsdsdsdsdsdsdsds"
+            android:inputType="textPostalAddress"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
 
-        <TextView
-            android:id="@+id/tvSpace"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView4"
-            android:layout_marginLeft="20dp"
-            android:layout_toEndOf="@+id/textView4"
-            android:text="3/30"
-            android:textSize="15sp" />
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbAddress"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
 
         <Button
-            android:id="@+id/btnChange"
-            android:layout_width="54dp"
-            android:layout_height="23dp"
-            android:layout_below="@+id/textView3"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
-            android:layout_toEndOf="@+id/tvSpace"
-            android:background="@drawable/button_selector"
-            android:onClick="changeSpaceButtonClick"
-            android:text="THAY ĐỔI"
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_selector2"
+            android:text="CẬP NHẬT"
             android:textColor="#FFFFFF"
-            android:textSize="7sp" />
+            android:textStyle="bold" />
 
-        <RatingBar
-            android:id="@+id/ratingBar2"
-            style="@style/Widget.AppCompat.RatingBar.Small"
+        <TextView
+            android:id="@+id/tvSuccess"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView6"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@+id/textView6"
-            android:rating="3" />
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="64dp"
+            android:layout_toEndOf="@+id/imageViewBackHistory"
+            android:text="Cập nhật thông tin thành công"
+            android:textColor="@android:color/holo_green_dark"
+            android:visibility="invisible" />
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbAddress"
+            android:layout_marginTop="10dp"
+            android:text="Mật khẩu:"
+            android:textSize="18sp" />
 
-        <ListView
-            android:id="@+id/cars_list"
-            android:layout_width="300dp"
-            android:layout_height="318dp"
-            android:layout_below="@+id/imageView19"
-            android:layout_centerHorizontal="true"
-            android:cacheColorHint="@color/black"
-            android:clickable="true"
-            tools:layout_editor_absoluteX="42dp"
-            tools:layout_editor_absoluteY="291dp" />
+        <EditText
+            android:id="@+id/tbPassHP"
+            android:layout_width="361dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tbName"
+            android:layout_below="@+id/textView10"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:inputType="numberPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:text="01647383196"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbPassHP"
+            android:background="@color/white_greyish" />
+
+
     </RelativeLayout>
-
 
 </android.support.constraint.ConstraintLayout>

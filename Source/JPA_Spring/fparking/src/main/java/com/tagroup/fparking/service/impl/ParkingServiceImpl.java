@@ -50,7 +50,19 @@ private TariffRepository tariffRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 	}
-
+	
+	// get parking by Owner ID
+	@Override
+	public List<Parking> getByOId(Long id) throws Exception {
+		List<Parking> plist = getAll();
+		List<Parking> returnList = new ArrayList<>();
+		for (Parking parking : plist) {
+			if(parking.getOwner().getId() == id) {
+				returnList.add(parking);
+			}
+		}
+		return returnList;
+	}
 	@Override
 	public Parking create(Parking parking) {
 		// TODO Auto-generated method stub
@@ -193,8 +205,7 @@ private TariffRepository tariffRepository;
 		}
 		for (Parking parking : plist) {
 			if(Math.abs(Double.parseDouble(parking.getLatitude())-Double.parseDouble(latitude))+
-						(Math.abs(Double.parseDouble(parking.getLongitude())-Double.parseDouble(longitude)))<0.028324 &&
-						parking.getCurrentspace()<parking.getTotalspace() && parking.getStatus()==1) {
+						(Math.abs(Double.parseDouble(parking.getLongitude())-Double.parseDouble(longitude)))<0.028324) {
 				returnList.add(parking);
 			}
 		}

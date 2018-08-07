@@ -11,4 +11,6 @@ public interface OwnerService {
 	public Owner create(Owner owner)throws Exception;
 	public Owner update(Owner owner)throws Exception;
 	public void delete(Long id)throws Exception;
+	public Owner findByPhoneAndPassword(String phone, String password) throws Exception;
+	public Owner getProfile() throws Exception;
 }

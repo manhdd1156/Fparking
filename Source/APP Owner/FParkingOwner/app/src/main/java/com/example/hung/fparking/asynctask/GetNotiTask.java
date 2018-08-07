@@ -38,8 +38,8 @@ private int parkingid;
             if(json.contains("NaN")) {
                 json = "3";
             }
-            RatingBar ratingbar = (RatingBar) activity.findViewById(R.id.ratingBar2);
-            ratingbar.setRating(Float.parseFloat(json));
+//            RatingBar ratingbar = (RatingBar) activity.findViewById(R.id.ratingBar2);
+//            ratingbar.setRating(Float.parseFloat(json));
         } catch (Exception e) {
             Log.e("Exception", " get rating fail in GetRateTask" + e);
         }

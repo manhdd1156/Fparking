@@ -196,7 +196,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPass"
+            android:id="@+id/tbPassHP"
             android:layout_width="361dp"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/tbName"
@@ -215,7 +215,7 @@
             android:layout_width="319dp"
             android:layout_height="1px"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPass"
+            android:layout_below="@+id/tbPassHP"
             android:background="@color/white_greyish" />
 
 

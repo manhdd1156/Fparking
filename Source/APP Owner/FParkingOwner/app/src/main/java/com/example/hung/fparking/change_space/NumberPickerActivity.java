@@ -22,44 +22,44 @@ public class NumberPickerActivity extends Activity implements IAsyncTaskHandler{
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout_change_dialog);
-        NumberPicker np = (NumberPicker) findViewById(R.id.number_picker);
-
-        if (Session.currentParking != null) {
-
-            oldValue=0;
-            newValue=0;
-            np.setMinValue(0);// restricted number to minimum value i.e 1
-            np.setMaxValue(Session.currentParking.getTotalspace());// restricked number to maximum value i.e. 31
-        }
-        np.setWrapSelectorWheel(true);
-
-        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
-
-            @Override
-            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
-
-                // TODO Auto-generated method stub
-            oldVal = oldVal;
-            newValue = newVal;
-
-            }
-        });
-
-        Log.d("NumberPicker", "NumberPicker");
-        Button btnChangeSpace = (Button) findViewById(R.id.apply_button);
-        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if(Session.currentParking!=null) {
-                    Session.currentParking.setCurrentspace(newValue);
-                    new ManagerParkingTask("update", Session.currentParking, NumberPickerActivity.this);
-                    Intent _result = new Intent();
-//                    _result.setData(Session.current);
-                    setResult(Activity.RESULT_OK, _result);
-                    finish();
-                }
-            }
-        });
+//        setContentView(R.layout.layout_change_dialog);
+//        NumberPicker np = (NumberPicker) findViewById(R.id.number_picker);
+//
+//        if (Session.currentParking != null) {
+//
+//            oldValue=0;
+//            newValue=0;
+//            np.setMinValue(0);// restricted number to minimum value i.e 1
+//            np.setMaxValue(Session.currentParking.getTotalspace());// restricked number to maximum value i.e. 31
+//        }
+//        np.setWrapSelectorWheel(true);
+//
+//        np.setOnValueChangedListener(new NumberPicker.OnValueChangeListener() {
+//
+//            @Override
+//            public void onValueChange(NumberPicker picker, int oldVal, int newVal) {
+//
+//                // TODO Auto-generated method stub
+//            oldVal = oldVal;
+//            newValue = newVal;
+//
+//            }
+//        });
+//
+//        Log.d("NumberPicker", "NumberPicker");
+//        Button btnChangeSpace = (Button) findViewById(R.id.apply_button);
+//        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                if(Session.currentParking!=null) {
+//                    Session.currentParking.setCurrentspace(newValue);
+//                    new ManagerParkingTask("update", Session.currentParking, NumberPickerActivity.this);
+//                    Intent _result = new Intent();
+////                    _result.setData(Session.current);
+//                    setResult(Activity.RESULT_OK, _result);
+//                    finish();
+//                }
+//            }
+//        });
     }
 
 

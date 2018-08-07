@@ -40,7 +40,14 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+	// get parking by owner id
+		@PreAuthorize("hasAnyAuthority('OWNER')")
+		@RequestMapping(path = "/owners/{id}", method = RequestMethod.GET)
+		public ResponseEntity<?> getbyOid(@PathVariable Long id) throws Exception {
+			List<Parking> respone = parkingService.getByOId(id);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
+		}
 	// get parkings by latitude and longitude
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(value = "", params = { "latitude", "longitude" }, method = RequestMethod.GET)
