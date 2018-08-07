@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
+import com.tagroup.fparking.dto.DriverDTO;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.DriverService;
@@ -90,10 +91,11 @@ public class DriverServiceImpl implements DriverService {
 	@Override
 	public Driver update(Driver driver) {
 		// TODO Auto-generated method stub
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			List<Driver> dlist = getAll();
 			for (Driver d : dlist) {
-				if (d.getId() == driver.getId() && d.getPassword().equals(driver.getPassword())) {
+				if (d.getId() == t.getId() && d.getPassword().equals(driver.getPassword())) {
 					List<Driver> dlist2 = getAll();
 					boolean flag = false;
 					for (Driver driver2 : dlist) {
@@ -151,6 +153,24 @@ public class DriverServiceImpl implements DriverService {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 
 		return driverRepository.getOne(t.getId());
+	}
+
+	@Override
+	public Driver changepassword(DriverDTO driver) throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Driver d = getById(t.getId());
+		System.out.println("driver = " + d);
+		if(driver.getNewpassword()!=null && d.getPassword().equals(driver.getPassword())) {
+		
+			d.setPassword(driver.getNewpassword());
+			return driverRepository.save(d);
+		
+		}else if(driver.getNewpassword()==null) {
+			d.setPassword(driver.getPassword());
+			return driverRepository.save(d);
+		}
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

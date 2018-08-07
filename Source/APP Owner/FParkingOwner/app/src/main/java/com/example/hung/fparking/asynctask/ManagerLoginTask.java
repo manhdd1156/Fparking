@@ -1,20 +1,16 @@
 package com.example.hung.fparking.asynctask;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.dto.OwnerDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
-import com.example.hung.fparking.dto.StaffDTO;
 
 import org.json.JSONObject;
 
@@ -89,7 +85,7 @@ class StaffLoginTask extends AsyncTask<Void, Void, Boolean> {
 
             String jsonGetInfo = httpHandler.get(Constants.API_URL + "staffs/profile");
                 JSONObject jsonObj2 = new JSONObject(jsonGetInfo);
-            Session.currentStaff = new StaffDTO();
+            Session.currentStaff = new OwnerDTO();
             Session.currentParking = new ParkingDTO();
             Session.currentStaff.setId(jsonObj2.getLong("id"));
             Session.currentStaff.setAddress(jsonObj2.getString("address"));
@@ -168,7 +164,7 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
 
             JSONObject jsonObj = new JSONObject(json);
             System.out.println(jsonObj);
-            Session.currentStaff = new StaffDTO();
+            Session.currentStaff = new OwnerDTO();
             Session.currentParking = new ParkingDTO();
             Session.currentStaff.setId(jsonObj.getLong("id"));
             Session.currentStaff.setAddress(jsonObj.getString("address"));

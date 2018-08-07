@@ -205,7 +205,8 @@ private TariffRepository tariffRepository;
 		}
 		for (Parking parking : plist) {
 			if(Math.abs(Double.parseDouble(parking.getLatitude())-Double.parseDouble(latitude))+
-						(Math.abs(Double.parseDouble(parking.getLongitude())-Double.parseDouble(longitude)))<0.028324) {
+						(Math.abs(Double.parseDouble(parking.getLongitude())-Double.parseDouble(longitude)))<0.028324 &&
+						parking.getStatus()==1) {
 				returnList.add(parking);
 			}
 		}

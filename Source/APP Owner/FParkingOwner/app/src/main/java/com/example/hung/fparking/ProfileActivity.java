@@ -88,29 +88,29 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         name.setText("");
         phone.setText("");
         address.setText("");
-        name.setHint(Session.currentStaff.getName());
-        phone.setHint(Session.currentStaff.getPhone());
-        address.setHint(Session.currentStaff.getAddress());
+        name.setHint(Session.currentOwner.getName());
+        phone.setHint(Session.currentOwner.getPhone());
+        address.setHint(Session.currentOwner.getAddress());
     }
 
     public void checkValidation() {
         try {
             String passMD5 = getMD5Hex(password.getText().toString());
-            if (passMD5.equals(Session.currentStaff.getPass())) {
+            if (passMD5.equals(Session.currentOwner.getPass())) {
                 if (name.getText().toString().isEmpty() || name.getText().toString().equals("")) {
-                    Session.currentStaff.setName(name.getHint().toString());
+                    Session.currentOwner.setName(name.getHint().toString());
                 } else {
-                    Session.currentStaff.setName(name.getText().toString());
+                    Session.currentOwner.setName(name.getText().toString());
                 }
                 if (address.getText().toString().isEmpty() || address.getText().toString().equals("")) {
-                    Session.currentStaff.setAddress(address.getHint().toString());
+                    Session.currentOwner.setAddress(address.getHint().toString());
                 } else {
-                    Session.currentStaff.setAddress(address.getText().toString());
+                    Session.currentOwner.setAddress(address.getText().toString());
                 }
                 if (phone.getText().toString().isEmpty() || phone.getText().toString().equals("")) {
-                    Session.currentStaff.setPhone(phone.getHint().toString());
+                    Session.currentOwner.setPhone(phone.getHint().toString());
                 } else {
-                    Session.currentStaff.setPhone(phone.getText().toString());
+                    Session.currentOwner.setPhone(phone.getText().toString());
                 }
                 new ManagerLoginTask("updateProfile", "", "", ProfileActivity.this);
             } else {
