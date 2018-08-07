@@ -39,7 +39,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         phone = (EditText) findViewById(R.id.tbPhone);
         address = (EditText) findViewById(R.id.tbAddress);
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
-        changePass = findViewById(R.id.tbPass);
+        changePass = findViewById(R.id.tbPassHP);
         changePass.setFocusable(false);
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override

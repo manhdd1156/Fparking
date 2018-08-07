@@ -51,20 +51,18 @@
             </intent-filter>
         </activity>
         <activity android:name=".ProfileActivity" />
-
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-
-        <activity android:name=".login.MainActivity">
-
-        </activity>
+        <activity android:name=".login.MainActivity" />
         <activity
             android:name=".ChangePassword"
             android:noHistory="true" />
         <activity android:name=".AlertDialog" />
         <activity android:name=".Contact" />
-        <activity android:name=".Login"></activity>
+        <activity android:name=".Login" />
+        <activity android:name=".ParkingManagement" />
+        <activity android:name=".StaffManagement"></activity>
     </application>
 
 </manifest>

@@ -18,6 +18,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
@@ -49,12 +50,36 @@ public class HomeActivity extends AppCompatActivity
     NavigationView navigationView;
     View headerView;
     ImageView imageViewFParking;
-
+    EditText tbPass;
+    Button update;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 //        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+        //Ánh xạ
+        tbPass = findViewById(R.id.tbPassHP);
+        tbPass.setFocusable(false);
+        update = findViewById(R.id.btnUpdate);
+        tbPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          Intent intentChangePass = new Intent(HomeActivity.this,ChangePassword.class);
+          startActivity(intentChangePass);
+            }
+        });
+        //Gọi alertDialog
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+                        View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                        mBuilder.setView(mView);
+                        final AlertDialog dialog = mBuilder.create();
+                        dialog.show();
+            }
+        });
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -210,11 +235,11 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_contact) {
+        if (id == R.id.nav_parking) {
             // Handle the camera action
-//            Intent intent = new Intent(HomeActivity.this, StatisticalActivity.class);
-//            startActivity(intent);
-//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            Intent intentParking = new Intent(HomeActivity.this, ParkingManagement.class);
+            startActivity(intentParking);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         } else if (id == R.id.nav_contact) {
 
