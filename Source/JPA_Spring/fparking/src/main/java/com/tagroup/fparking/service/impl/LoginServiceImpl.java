@@ -11,6 +11,7 @@ import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.security.TokenProvider;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.LoginService;
+import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Admin;
 import com.tagroup.fparking.service.domain.Driver;
@@ -25,6 +26,8 @@ public class LoginServiceImpl implements LoginService {
 	private DriverService driverService;
 	@Autowired
 	private StaffService staffService;
+	@Autowired
+	private OwnerService ownerService;
 
 	@Override
 	public LoginResponseDTO login(LoginRequestDTO loginRequestDTO) throws Exception {
@@ -83,7 +86,13 @@ public class LoginServiceImpl implements LoginService {
 	}
 
 	private Owner loginByOwner(String phone, String password) throws Exception {
-		return null;
+		
+		try {
+			return ownerService.findByPhoneAndPassword(phone, password);
+		} catch (Exception e) {
+			System.out.println(e);
+			throw new APIException(HttpStatus.UNAUTHORIZED, "Wrong password or username");
+		}
 	}
 
 	private Admin loginByAdmin(String phone, String password) throws Exception {

@@ -47,17 +47,29 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public Staff update(Staff staff) throws Exception{
 		// TODO Auto-generated method stub
-		
 		try {
-			Staff s = getById(staff.getId());
-			s.setAddress(staff.getAddress());
-			s.setPhone(staff.getPhone());
-			s.setName(staff.getName());
-			return staffRepository.save(s);
-		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
-		}
+			List<Staff> slist = getAll();
+			for (Staff s : slist) {
+				if (s.getId() == staff.getId()) {
+					List<Staff> slist2 = getAll();
+					boolean flag = false;
+					for (Staff staff2 : slist) {
+						if (staff2.getPhone().equals(staff.getPhone())) {
+							flag = true;
+						}
+					}
+					if (!flag) {
 
+						return staffRepository.save(staff);
+					}
+
+				}
+			}
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		return null;
+		
 	}
 
 	@Override

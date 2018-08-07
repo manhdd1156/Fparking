@@ -50,7 +50,19 @@ private TariffRepository tariffRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 	}
-
+	
+	// get parking by Owner ID
+	@Override
+	public List<Parking> getByOId(Long id) throws Exception {
+		List<Parking> plist = getAll();
+		List<Parking> returnList = new ArrayList<>();
+		for (Parking parking : plist) {
+			if(parking.getOwner().getId() == id) {
+				returnList.add(parking);
+			}
+		}
+		return returnList;
+	}
 	@Override
 	public Parking create(Parking parking) {
 		// TODO Auto-generated method stub
