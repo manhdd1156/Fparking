@@ -71,7 +71,7 @@ public class DriverController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
-	// update driver
+	// change password driver
 		@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 		@RequestMapping(path = "/password", method = RequestMethod.PUT)
 		public ResponseEntity<?> changepassword(@RequestBody DriverDTO driver) throws Exception {

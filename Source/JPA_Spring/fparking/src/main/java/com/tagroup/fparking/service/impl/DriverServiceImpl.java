@@ -157,17 +157,22 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public Driver changepassword(DriverDTO driver) throws Exception {
-		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Driver d = getById(t.getId());
-		System.out.println("driver = " + d);
-		if(driver.getNewpassword()!=null && d.getPassword().equals(driver.getPassword())) {
-		
-			d.setPassword(driver.getNewpassword());
-			return driverRepository.save(d);
-		
-		}else if(driver.getNewpassword()==null) {
+		if (driver.getNewpassword() == null) {
+			Driver d = driverRepository.findByPhone(driver.getPhone());
+			if(d==null) {
+				throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
+			}
 			d.setPassword(driver.getPassword());
 			return driverRepository.save(d);
+			
+		} else {
+			Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Driver d = getById(t.getId());
+			System.out.println("driver = " + d);
+			if (driver.getNewpassword() != null && d.getPassword().equals(driver.getPassword())) {
+				d.setPassword(driver.getNewpassword());
+				return driverRepository.save(d);
+			}
 		}
 		// TODO Auto-generated method stub
 		return null;
