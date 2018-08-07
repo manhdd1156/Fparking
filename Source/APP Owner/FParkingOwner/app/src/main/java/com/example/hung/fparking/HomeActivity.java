@@ -18,11 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.hung.fparking.adapter.ListBookingHomeAdapter;
 import com.example.hung.fparking.asynctask.GetRateTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
@@ -31,7 +31,6 @@ import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
-import com.example.hung.fparking.notification.CheckNetworkReciever;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -51,12 +50,36 @@ public class HomeActivity extends AppCompatActivity
     NavigationView navigationView;
     View headerView;
     ImageView imageViewFParking;
-
+    EditText tbPass;
+    Button update;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 //        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+
+        //Ánh xạ
+        tbPass = findViewById(R.id.tbPassHP);
+        tbPass.setFocusable(false);
+        update = findViewById(R.id.btnUpdate);
+        tbPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+          Intent intentChangePass = new Intent(HomeActivity.this,ChangePassword.class);
+          startActivity(intentChangePass);
+            }
+        });
+        //Gọi alertDialog
+        update.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+                        View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                        mBuilder.setView(mView);
+                        final AlertDialog dialog = mBuilder.create();
+                        dialog.show();
+            }
+        });
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -70,13 +93,13 @@ public class HomeActivity extends AppCompatActivity
         Session.container = this;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        lv = (ListView) findViewById(R.id.cars_list);
+//        lv = (ListView) findViewById(R.id.cars_list);
         if (Session.currentStaff != null) {
             if (Session.currentParking == null) {
                 new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
             } else {
-                tvSpace = (TextView) findViewById(R.id.tvSpace);
-                tvAddress = (TextView) findViewById(R.id.tvAddress);
+//                tvSpace = (TextView) findViewById(R.id.tvSpace);
+//                tvAddress = (TextView) findViewById(R.id.tvAddress);
                 setText(tvAddress, Session.currentParking.getAddress());
                 setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
@@ -88,21 +111,21 @@ public class HomeActivity extends AppCompatActivity
             new ManagerBookingTask("homeget", b, this);
         }
 
-        Button btnChangeSpace = (Button) findViewById(R.id.btnChange);
-        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                Intent intent = new Intent(HomeActivity.this, NumberPickerActivity.class);
-                startActivityForResult(intent, PICK_CONTACT_REQUEST);
-//                startActivity(intent);
-                // TODO Auto-generated method stub
-            }
-        });
+//        Button btnChangeSpace = (Button) findViewById(R.id.btnChange);
+//        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
+//            public void onClick(View v) {
+//                Intent intent = new Intent(HomeActivity.this, NumberPickerActivity.class);
+//                startActivityForResult(intent, PICK_CONTACT_REQUEST);
+////                startActivity(intent);
+//                // TODO Auto-generated method stub
+//            }
+//        });
 
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
         textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
-        textViewMPhone.setText(Session.currentStaff.getPhone());
+//        textViewMPhone.setText(Session.currentStaff.getPhone());
         textViewMPhone.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -212,10 +235,10 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_statistical) {
+        if (id == R.id.nav_parking) {
             // Handle the camera action
-            Intent intent = new Intent(HomeActivity.this, StatisticalActivity.class);
-            startActivity(intent);
+            Intent intentParking = new Intent(HomeActivity.this, ParkingManagement.class);
+            startActivity(intentParking);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
         } else if (id == R.id.nav_contact) {
@@ -239,8 +262,8 @@ public class HomeActivity extends AppCompatActivity
             if (o instanceof List) {
                 List<BookingDTO> lstBooking = (List<BookingDTO>) o;
                 Log.d("HomeActivity_onPost: ", lstBooking.toString());
-                ListBookingHomeAdapter arrayAdapter = new ListBookingHomeAdapter(HomeActivity.this, lstBooking, this);
-                lv.setAdapter(arrayAdapter);
+//                ListBookingHomeAdapter arrayAdapter = new ListBookingHomeAdapter(HomeActivity.this, lstBooking, this);
+//                lv.setAdapter(arrayAdapter);
             } else if(o instanceof String) {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override

@@ -139,7 +139,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginBtn:
-                checkValidation();
+//                checkValidation();
                 break;
 
             case R.id.forgot_password:
@@ -165,42 +165,42 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     }
 
     // Check Validation before login
-    private void checkValidation() {
-        // Get phone and password
-        String getPhone = phoneNumber.getText().toString();
-        String getPassword = password.getText().toString();
-        if(getPhone.contains("+84")) {
-            getPhone = getPhone.replace("+84","0");
-        }
-        // Check patter for email id
-        Pattern p = Pattern.compile(Constants.regEx);
-
-        Matcher m = p.matcher(getPhone);
-
-        // Check for both field is empty or not
-        if (getPhone.equals("") || getPhone.isEmpty()) {
-            loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Hãy nhập số điện thoại");
-        }
-        if (getPassword.equals("") || getPassword.isEmpty()) {
-            loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Hãy nhập mật khẩu");
-        }
-        // Check if email id is valid or not
-        else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Số điện thoại không đúng");
-            // Else do login and do your stuff
-        else {
-            new ManagerLoginTask("first_time",getPhone,getPassword, this);
-//            mStaffLoginTask = new StaffLoginTask(getPhone, getPassword, this);
-//            mStaffLoginTask.execute((Void) null);
-//            Toast.makeText(getActivity(), "Vui lòng đợi xíu.", Toast.LENGTH_SHORT)
-//                    .show();
-        }
-    }
+//    private void checkValidation() {
+//        // Get phone and password
+//        String getPhone = phoneNumber.getText().toString();
+//        String getPassword = password.getText().toString();
+//        if(getPhone.contains("+84")) {
+//            getPhone = getPhone.replace("+84","0");
+//        }
+//        // Check patter for email id
+//        Pattern p = Pattern.compile(Constants.regEx);
+//
+//        Matcher m = p.matcher(getPhone);
+//
+//        // Check for both field is empty or not
+//        if (getPhone.equals("") || getPhone.isEmpty()) {
+//            loginLayout.startAnimation(shakeAnimation);
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Hãy nhập số điện thoại");
+//        }
+//        if (getPassword.equals("") || getPassword.isEmpty()) {
+//            loginLayout.startAnimation(shakeAnimation);
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Hãy nhập mật khẩu");
+//        }
+//        // Check if email id is valid or not
+//        else if (!m.find())
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Số điện thoại không đúng");
+//            // Else do login and do your stuff
+//        else {
+//            new ManagerLoginTask("first_time",getPhone,getPassword, this);
+////            mStaffLoginTask = new StaffLoginTask(getPhone, getPassword, this);
+////            mStaffLoginTask.execute((Void) null);
+////            Toast.makeText(getActivity(), "Vui lòng đợi xíu.", Toast.LENGTH_SHORT)
+////                    .show();
+//        }
+//    }
 
     @Override
     public void onPostExecute(Object o) {
@@ -212,8 +212,8 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
             getActivity().startService(intent);
 
         } else {
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Số điện thoại hoặc mật khẩu không đúng");
+//            new CustomToast().Show_Toast(getActivity(), view,
+//                    "Số điện thoại hoặc mật khẩu không đúng");
         }
     }
 }

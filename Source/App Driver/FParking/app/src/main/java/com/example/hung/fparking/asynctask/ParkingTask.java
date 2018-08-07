@@ -11,16 +11,26 @@ import org.json.JSONObject;
 
 import java.util.ArrayList;
 
-public class ParkingTask extends AsyncTask<Void, Void, Boolean> {
+public class ParkingTask {
+    public ParkingTask(String type, double lat, double lng, String action, IAsyncTaskHandler container) {
+        if (type.equals("list")) {
+            new GetParking(lat, lng, action, container).execute((Void) null);
+        }else if (type.equals("order")) {
+            new GetParking(lat, lng, action, container).execute((Void) null);
+        }
+    }
+}
+
+class GetParking extends AsyncTask<Void, Void, Boolean> {
     private double lat, lng;
     private IAsyncTaskHandler container;
     private ArrayList<GetNearPlace> nearParkingList;
     private String action;
-    private String strJSON = null;
 
-    public ParkingTask(double lat, double lng, IAsyncTaskHandler container) {
+    public GetParking(double lat, double lng, String action, IAsyncTaskHandler container) {
         this.lat = lat;
         this.lng = lng;
+        this.action = action;
         this.container = container;
     }
 
