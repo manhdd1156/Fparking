@@ -147,10 +147,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             @Override
             public void onClick(View v) {
                 LatLng cameraLatLng = mMap.getCameraPosition().target;
-
                 double lat = cameraLatLng.latitude;
                 double lng = cameraLatLng.longitude;
-                new ParkingTask("list", lat, lng, "list", HomeActivity.this);
+                new ParkingTask("order", lat, lng, "order", HomeActivity.this);
             }
         });
 
@@ -220,13 +219,6 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             }
         });
 
-        // sự kiện nút ok dialog
-        buttonOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-            }
-        });
     }
 
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
@@ -419,11 +411,32 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
             }
         } else if (s.equals("order")) {
-            ParkingDTO parkingDTO = new ParkingDTO();
-//            parkingDTO = ;
-//            textViewAddressQB = dialogView.findViewById(R.id.textViewAddressQB);
-//            textViewTotalTimeQB = dialogView.findViewById(R.id.textViewTotalTimeQB);
-//            textViewPriceQB = dialogView.findViewById(R.id.textViewPriceQB);
+            ArrayList<ParkingDTO> parkingDTOS;
+            parkingDTOS = (ArrayList<ParkingDTO>) o;
+            if (parkingDTOS.size() > 0) {
+                dialog.show();
+                textViewAddressQB.setText(parkingDTOS.get(0).getAddress());
+                textViewTotalTimeQB.setText(parkingDTOS.get(0).getTimeoc());
+                textViewPriceQB.setText(parkingDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+                final String parkingID = parkingDTOS.get(0).getParkingID() + "";
+
+                buttonOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mPreferences.getInt("status", 8) == 8) {
+                            mPreferencesEditor.putString("parkingID", parkingID);
+                            mPreferencesEditor.commit();
+                            if (locationManager != null) {
+                                locationManager.removeUpdates(HomeActivity.this);
+                            }
+                            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+                            startActivity(intentOrderFlagment);
+                        }
+                    }
+                });
+            } else {
+
+            }
         }
     }
 
