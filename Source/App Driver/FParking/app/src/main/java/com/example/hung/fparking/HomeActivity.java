@@ -149,6 +149,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng cameraLatLng = mMap.getCameraPosition().target;
                 double lat = cameraLatLng.latitude;
                 double lng = cameraLatLng.longitude;
+                mPreferencesEditor.putFloat("quicklat", (float) lat);
+                mPreferencesEditor.putFloat("quicklng", (float) lng);
+                mPreferencesEditor.commit();
                 new ParkingTask("order", lat, lng, "order", HomeActivity.this);
             }
         });
@@ -435,7 +438,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                 });
             } else {
-
+// thông báo không tìm thấy bãi xe nào
             }
         }
     }
@@ -569,6 +572,11 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         marker.hideInfoWindow();
         if (mPreferences.getInt("status", 8) == 8) {
             mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
+            LatLng cameraLatLng = mMap.getCameraPosition().target;
+            double lat = cameraLatLng.latitude;
+            double lng = cameraLatLng.longitude;
+            mPreferencesEditor.putFloat("quicklat", (float) lat);
+            mPreferencesEditor.putFloat("quicklng", (float) lng);
             mPreferencesEditor.commit();
             if (locationManager != null) {
                 locationManager.removeUpdates(HomeActivity.this);
