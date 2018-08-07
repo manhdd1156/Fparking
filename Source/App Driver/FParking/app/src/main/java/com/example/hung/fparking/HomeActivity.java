@@ -25,17 +25,20 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.other.Contact;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ParkingTask;
@@ -87,10 +90,22 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Toolbar mToolbar;
     boolean doubleBackToExitPressedOnce = false;
 
+    AlertDialog dialog;
+    Button buttonOK, buttonCancel;
+    TextView textViewAddressQB, textViewTotalTimeQB, textViewPriceQB;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
+
+        // dialog đặt chỗ nhanh
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.quick_booking_layout, null);
+        mBuilder.setView(mView);
+        dialog = mBuilder.create();
+
+        setDialogProperties(mView);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -131,7 +146,13 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         quickBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                LatLng cameraLatLng = mMap.getCameraPosition().target;
+                double lat = cameraLatLng.latitude;
+                double lng = cameraLatLng.longitude;
+                mPreferencesEditor.putFloat("quicklat", (float) lat);
+                mPreferencesEditor.putFloat("quicklng", (float) lng);
+                mPreferencesEditor.commit();
+                new ParkingTask("order", lat, lng, "order", HomeActivity.this);
             }
         });
 
@@ -186,6 +207,23 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
+    private void setDialogProperties(View dialogView) {
+        textViewAddressQB = dialogView.findViewById(R.id.textViewAddressQB);
+        textViewTotalTimeQB = dialogView.findViewById(R.id.textViewTotalTimeQB);
+        textViewPriceQB = dialogView.findViewById(R.id.textViewPriceQB);
+        buttonOK = dialogView.findViewById(R.id.btnOKQB);
+        buttonCancel = dialogView.findViewById(R.id.btnCancelQB);
+
+        // sự kiện nút cancel dialog
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+
+    }
+
     NavigationView.OnNavigationItemSelectedListener navigationItemSelectedListener = new NavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(MenuItem item) {
@@ -222,7 +260,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (locationManager != null) {
                         locationManager.removeUpdates(HomeActivity.this);
                     }
-                    Intent intentFineHistory = new Intent(HomeActivity.this,FineHistory.class);
+                    Intent intentFineHistory = new Intent(HomeActivity.this, FineHistory.class);
                     startActivity(intentFineHistory);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
@@ -230,7 +268,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (locationManager != null) {
                         locationManager.removeUpdates(HomeActivity.this);
                     }
-                    Intent intentFeedback = new Intent(HomeActivity.this,Feedback.class);
+                    Intent intentFeedback = new Intent(HomeActivity.this, Feedback.class);
                     startActivity(intentFeedback);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
@@ -238,7 +276,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     if (locationManager != null) {
                         locationManager.removeUpdates(HomeActivity.this);
                     }
-                    Intent intentDK = new Intent(HomeActivity.this,TermsAndConditions.class);
+                    Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
                     startActivity(intentDK);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;
@@ -319,7 +357,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onPlaceSelected(Place place) {
-                locationManager.removeUpdates(HomeActivity.this);
+                if (locationManager != null) {
+                    locationManager.removeUpdates(HomeActivity.this);
+                }
                 if (marker != null) {
                     marker.remove();
                 }
@@ -347,30 +387,58 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void doSearchAsyncTask(double lat, double lng) {
-        ParkingTask parkingTask = new ParkingTask(lat, lng, this);
-        parkingTask.execute();
+        new ParkingTask("list", lat, lng, "list", this);
     }
 
     @Override
     public void onPostExecute(Object o, String s) {
-        nearParkingList = (ArrayList<GetNearPlace>) o;
-        int height = 150;
-        int width = 150;
-        BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.parking_icon);
-        Bitmap b = bitmapdraw.getBitmap();
-        Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
+        if (s.equals("list")) {
+            nearParkingList = (ArrayList<GetNearPlace>) o;
+            int height = 150;
+            int width = 150;
+            BitmapDrawable bitmapdraw = (BitmapDrawable) getResources().getDrawable(R.drawable.parking_icon);
+            Bitmap b = bitmapdraw.getBitmap();
+            Bitmap smallMarker = Bitmap.createScaledBitmap(b, width, height, false);
 
-        BitmapDrawable bitmapPark = (BitmapDrawable) getResources().getDrawable(R.drawable.parking_icon_green);
-        Bitmap p = bitmapPark.getBitmap();
-        Bitmap parkMarker = Bitmap.createScaledBitmap(p, width, height, false);
+            BitmapDrawable bitmapPark = (BitmapDrawable) getResources().getDrawable(R.drawable.parking_icon_green);
+            Bitmap p = bitmapPark.getBitmap();
+            Bitmap parkMarker = Bitmap.createScaledBitmap(p, width, height, false);
 
-        if (nearParkingList.size() > 0) {
-            mMap.clear();
-            for (int i = 0; i < nearParkingList.size(); i++) {
-                LatLng latLng = new LatLng(nearParkingList.get(i).getLattitude(), nearParkingList.get(i).getLongitude());
+            if (nearParkingList.size() > 0) {
+                mMap.clear();
+                for (int i = 0; i < nearParkingList.size(); i++) {
+                    LatLng latLng = new LatLng(nearParkingList.get(i).getLattitude(), nearParkingList.get(i).getLongitude());
 
-                mMap.addMarker(new MarkerOptions()
-                        .position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(nearParkingList.get(i).getId() + ""));
+                    mMap.addMarker(new MarkerOptions()
+                            .position(latLng).icon(BitmapDescriptorFactory.fromBitmap(smallMarker)).title(nearParkingList.get(i).getId() + ""));
+                }
+            }
+        } else if (s.equals("order")) {
+            ArrayList<ParkingDTO> parkingDTOS;
+            parkingDTOS = (ArrayList<ParkingDTO>) o;
+            if (parkingDTOS.size() > 0) {
+                dialog.show();
+                textViewAddressQB.setText(parkingDTOS.get(0).getAddress());
+                textViewTotalTimeQB.setText(parkingDTOS.get(0).getTimeoc());
+                textViewPriceQB.setText(parkingDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+                final String parkingID = parkingDTOS.get(0).getParkingID() + "";
+
+                buttonOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (mPreferences.getInt("status", 8) == 8) {
+                            mPreferencesEditor.putString("parkingID", parkingID);
+                            mPreferencesEditor.commit();
+                            if (locationManager != null) {
+                                locationManager.removeUpdates(HomeActivity.this);
+                            }
+                            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+                            startActivity(intentOrderFlagment);
+                        }
+                    }
+                });
+            } else {
+// thông báo không tìm thấy bãi xe nào
             }
         }
     }
@@ -378,7 +446,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     public void onCameraMoveStarted(int reason) {
         if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
-            locationManager.removeUpdates(HomeActivity.this);
+            if (locationManager != null) {
+                locationManager.removeUpdates(HomeActivity.this);
+            }
             LatLng cameraLatLng = mMap.getCameraPosition().target;
 
             double lat = cameraLatLng.latitude;
@@ -480,7 +550,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (addressList.size() > 0) {
             Address address = addressList.get(0);
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(address.getLatitude(), address.getLongitude()), 15));
-            locationManager.removeUpdates(HomeActivity.this);
+            if (locationManager != null) {
+                locationManager.removeUpdates(HomeActivity.this);
+            }
             double voiceLatitude = address.getLatitude();
             double voiceLongitude = address.getLongitude();
             doSearchAsyncTask(voiceLatitude, voiceLongitude);
@@ -500,8 +572,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         marker.hideInfoWindow();
         if (mPreferences.getInt("status", 8) == 8) {
             mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
+            LatLng cameraLatLng = mMap.getCameraPosition().target;
+            double lat = cameraLatLng.latitude;
+            double lng = cameraLatLng.longitude;
+            mPreferencesEditor.putFloat("quicklat", (float) lat);
+            mPreferencesEditor.putFloat("quicklng", (float) lng);
             mPreferencesEditor.commit();
-            locationManager.removeUpdates(HomeActivity.this);
+            if (locationManager != null) {
+                locationManager.removeUpdates(HomeActivity.this);
+            }
             Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
             startActivity(intentOrderFlagment);
         }
@@ -522,7 +601,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void run() {
-                doubleBackToExitPressedOnce=false;
+                doubleBackToExitPressedOnce = false;
             }
         }, 2000);
     }
