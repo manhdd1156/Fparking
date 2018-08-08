@@ -8,6 +8,7 @@ import android.content.res.XmlResourceParser;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,8 +29,13 @@ import com.example.hung.fparking.notification.Notification;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+import com.facebook.accountkit.AccountKitLoginResult;
+import com.facebook.accountkit.ui.AccountKitActivity;
+import com.facebook.accountkit.ui.AccountKitConfiguration;
+import com.facebook.accountkit.ui.LoginType;
+import com.facebook.accountkit.ui.SkinManager;
 
-public class Login_Fragment extends Fragment implements OnClickListener, IAsyncTaskHandler {
+public class Login_Fragment extends AppCompatActivity implements OnClickListener, IAsyncTaskHandler {
     private static View view;
 
     private static EditText phoneNumber, password;
@@ -39,168 +45,158 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
     private FragmentManager fragmentManager;
-
+    public static int APP_REQUEST_CODE = 3301;
+    public static String APP_TAG = "AccountKit";
+    private String event;
 //    private StaffLoginTask mStaffLoginTask = null;
     private SharedPreferences spref;
     private Login_Fragment login_Fragment;
     private SharedPreferences.Editor editor;
 //    private String getPhone;
 //    private String getPassword;
-    public Login_Fragment() {
-    }
-
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_login, container, false);
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.layout_login);
+        // ánh xạ
+        phoneNumber = (EditText) findViewById(R.id.phone);
+        password = (EditText) findViewById(R.id.login_password);
+        loginButton = (Button) findViewById(R.id.loginBtn);
+        forgotPassword = (TextView) findViewById(R.id.forgot_password);
+        signUp = (TextView) findViewById(R.id.createAccount);
 
-        initViews();
         setListeners();
-        return view;
     }
 
-
-    // Initiate Views
-    private void initViews() {
-        try {
-            fragmentManager = getActivity().getSupportFragmentManager();
-            spref = getActivity().getSharedPreferences("info",0);
-            editor = spref.edit();
-            phoneNumber = (EditText) view.findViewById(R.id.phone);
-            password = (EditText) view.findViewById(R.id.login_password);
-            loginButton = (Button) view.findViewById(R.id.loginBtn);
-            forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
-            signUp = (TextView) view.findViewById(R.id.createAccount);
-//        show_hide_password = (CheckBox) view
-//                .findViewById(R.id.show_hide_password);
-            loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
-
-            // Load ShakeAnimation
-            shakeAnimation = AnimationUtils.loadAnimation(getActivity(),
-                    R.anim.shake);
-
-            // Setting text selector over textviews
-            @SuppressLint("ResourceType") XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
-
-            ColorStateList csl = ColorStateList.createFromXml(getResources(),
-                    xrp);
-
-            forgotPassword.setTextColor(csl);
-//            show_hide_password.setTextColor(csl);
-            signUp.setTextColor(csl);
-        } catch (Exception e) {
-            System.out.println("lỗi ở login_fragment : " + e);
-        }
-    }
 
     // Set Listeners
     private void setListeners() {
         loginButton.setOnClickListener(this);
         forgotPassword.setOnClickListener(this);
         signUp.setOnClickListener(this);
-
-//        // Set check listener over checkbox for showing and hiding password
-//        show_hide_password
-//                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton button,
-//                                                 boolean isChecked) {
-//
-//                        // If it is checked then show password else hide
-//                        // password
-//                        if (isChecked) {
-//
-//                            show_hide_password.setText(R.string.hide_pwd);// change
-//                            // checkbox
-//                            // text
-//
-//                            password.setInputType(InputType.TYPE_CLASS_TEXT);
-//                            password.setTransformationMethod(HideReturnsTransformationMethod
-//                                    .getInstance());// show password
-//                        } else {
-//                            show_hide_password.setText(R.string.show_pwd);// change
-//                            // checkbox
-//                            // text
-//
-//                            password.setInputType(InputType.TYPE_CLASS_TEXT
-//                                    | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//                            password.setTransformationMethod(PasswordTransformationMethod
-//                                    .getInstance());// hide password
-//
-//                        }
-//
-//                    }
-//                });
     }
-
     @Override
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.loginBtn:
-//                checkValidation();
+                checkValidation();
+
                 break;
 
             case R.id.forgot_password:
+                otp();
+                event = "forgot";
 
-                // Replace forgot password fragment with animation
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
-                                new ForgotPassword_Fragment(),
-                                Constants.ForgotPassword_Fragment).commit();
                 break;
             case R.id.createAccount:
+                otp();
+                event = "register";
 
-                // Replace signup frgament with animation
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer, new SignUp_Fragment(),
-                                Constants.SignUp_Fragment).commit();
                 break;
         }
     }
+    private void otp() {
+        LoginType loginType = LoginType.PHONE;
+        Intent intent = new Intent(getApplicationContext(), AccountKitActivity.class);
+        AccountKitConfiguration.AccountKitConfigurationBuilder configurationBuilder =
+                new AccountKitConfiguration.AccountKitConfigurationBuilder(
+                        loginType,
+                        AccountKitActivity.ResponseType.TOKEN
+                );
 
+        configurationBuilder.setUIManager(new SkinManager(
+                        SkinManager.Skin.CONTEMPORARY,
+                        getResources().getColor(R.color.white_greyish),
+                        R.drawable.car,
+                        SkinManager.Tint.WHITE,
+                        0.0
+                )
+        );
+
+        intent.putExtra(
+                AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
+                configurationBuilder.build());
+        startActivityForResult(intent, APP_REQUEST_CODE);
+    }
+    @Override
+    protected void onActivityResult(final int requestCode, final int resultCode, final Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == APP_REQUEST_CODE) { // confirm that this response matches your request
+            AccountKitLoginResult loginResult = data.getParcelableExtra(AccountKitLoginResult.RESULT_KEY);
+            String responseMessage;
+            if (loginResult.getError() != null) {
+                responseMessage = loginResult.getError().getErrorType().getMessage();
+            } else if (loginResult.wasCancelled()) {
+                responseMessage = "Login Cancelled";
+            } else {
+                if (loginResult.getAccessToken() != null) {
+                    responseMessage = "Success: " + loginResult.getAccessToken().getAccountId();
+                } else {
+                    responseMessage = String.format(
+                            "Success:%s...",
+                            loginResult.getAuthorizationCode().substring(0, 10));
+                }
+
+                // If you have an authorization code, retrieve it from
+                // loginResult.getAuthorizationCode()
+                // and pass it to your server and exchange it for an access token.
+
+                // Success! Start your next activity...
+                goToMyLoggedInActivity();
+            }
+            log(responseMessage);
+        }
+    }
+    private void goToMyLoggedInActivity() {
+        if (event.equals("forgot")) {
+            Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
+            intentSignup.putExtra("action", "forgot");
+            startActivity(intentSignup);
+        } else if(event.equals("register")){
+            Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
+            intentSignup.putExtra("action", "register");
+            startActivity(intentSignup);
+        }
+
+    }
     // Check Validation before login
-//    private void checkValidation() {
-//        // Get phone and password
-//        String getPhone = phoneNumber.getText().toString();
-//        String getPassword = password.getText().toString();
-//        if(getPhone.contains("+84")) {
-//            getPhone = getPhone.replace("+84","0");
-//        }
-//        // Check patter for email id
-//        Pattern p = Pattern.compile(Constants.regEx);
-//
-//        Matcher m = p.matcher(getPhone);
-//
-//        // Check for both field is empty or not
-//        if (getPhone.equals("") || getPhone.isEmpty()) {
-//            loginLayout.startAnimation(shakeAnimation);
-//            new CustomToast().Show_Toast(getActivity(), view,
-//                    "Hãy nhập số điện thoại");
-//        }
-//        if (getPassword.equals("") || getPassword.isEmpty()) {
-//            loginLayout.startAnimation(shakeAnimation);
-//            new CustomToast().Show_Toast(getActivity(), view,
-//                    "Hãy nhập mật khẩu");
-//        }
-//        // Check if email id is valid or not
-//        else if (!m.find())
-//            new CustomToast().Show_Toast(getActivity(), view,
-//                    "Số điện thoại không đúng");
-//            // Else do login and do your stuff
-//        else {
-//            new ManagerLoginTask("first_time",getPhone,getPassword, this);
-////            mStaffLoginTask = new StaffLoginTask(getPhone, getPassword, this);
-////            mStaffLoginTask.execute((Void) null);
-////            Toast.makeText(getActivity(), "Vui lòng đợi xíu.", Toast.LENGTH_SHORT)
-////                    .show();
-//        }
-//    }
+    private void checkValidation() {
+        // Get phone and password
+        String getPhone = phoneNumber.getText().toString();
+        String getPassword = password.getText().toString();
+        if(getPhone.contains("+84")) {
+            getPhone = getPhone.replace("+84","0");
+        }
+        // Check patter for email id
+        Pattern p = Pattern.compile(Constants.regEx);
+
+        Matcher m = p.matcher(getPhone);
+
+        // Check for both field is empty or not
+        if (getPhone.equals("") || getPhone.isEmpty()) {
+            loginLayout.startAnimation(shakeAnimation);
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Hãy nhập số điện thoại");
+        }
+        if (getPassword.equals("") || getPassword.isEmpty()) {
+            loginLayout.startAnimation(shakeAnimation);
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Hãy nhập mật khẩu");
+        }
+        // Check if email id is valid or not
+        else if (!m.find())
+            new CustomToast().Show_Toast(getActivity(), view,
+                    "Số điện thoại không đúng");
+            // Else do login and do your stuff
+        else {
+            new ManagerLoginTask("first_time",getPhone,getPassword, this);
+//            mStaffLoginTask = new StaffLoginTask(getPhone, getPassword, this);
+//            mStaffLoginTask.execute((Void) null);
+//            Toast.makeText(getActivity(), "Vui lòng đợi xíu.", Toast.LENGTH_SHORT)
+//                    .show();
+        }
+    }
 
     @Override
     public void onPostExecute(Object o) {
