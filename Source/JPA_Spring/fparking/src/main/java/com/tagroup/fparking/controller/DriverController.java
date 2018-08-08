@@ -84,7 +84,7 @@ public class DriverController {
 	}
 
 	// change password when forgot password driver
-	@RequestMapping(path = "/password", method = RequestMethod.PUT)
+	@RequestMapping(path = "/forgotpassword", method = RequestMethod.PUT)
 	public ResponseEntity<?> forgotpassword(@RequestBody DriverDTO driver) throws Exception {
 
 		Driver respone = driverService.changepassword(driver);
