@@ -1,6 +1,7 @@
 package com.example.hung.fparking.asynctask;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -22,6 +23,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by klot on 3/7/2018.
@@ -32,7 +34,7 @@ public class ManagerParkingTask {
     public ManagerParkingTask(String method,ParkingDTO parkingDTO,IAsyncTaskHandler container) {
 
         if (method.equals("getbyowner")) {
-//            new GetParkingTask(OwnerDTO.getId(),container).execute((Void) null);
+            new GetParkingTask(container).execute((Void) null);
         }else if(method.equals("update")) {
             new UpdateParkingTask(container,parkingDTO).execute((Void) null);
         }
@@ -40,62 +42,63 @@ public class ManagerParkingTask {
 
 }
 
-class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
+class GetParkingTask extends AsyncTask<Void, Void, List> {
 
-    int id;
     IAsyncTaskHandler container;
     private SharedPreferences spref;
     Activity activity;
     ArrayList<ParkingDTO> parkinglist;
-    public GetParkingTask(int ownerID,IAsyncTaskHandler container) {
-        this.id = ownerID;
+    ProgressDialog pdLoading;
+    public GetParkingTask(IAsyncTaskHandler container) {
         this.container = container;
         this.activity = (Activity)container;
     }
     @Override
     protected void onPreExecute() {
         super.onPreExecute();
+        pdLoading = new ProgressDialog(activity);
+        //this method will be running on UI thread
+        pdLoading.setMessage("\tĐợi xíu...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
 
     }
 
     @Override
-    protected Boolean doInBackground(Void... voids) {
+    protected List doInBackground(Void... voids) {
         HttpHandler httpHandler = new HttpHandler();
         try {
             parkinglist = new ArrayList<>();
-            String json = httpHandler.get(Constants.API_URL + "parkings/owners" + id );
-//            JSONArray parkings = jsonObj.getJSONArray("parkingInfor");
-//            oneParking = jsonObj;
-
-
+            String json = httpHandler.get(Constants.API_URL + "parkings/owners");
             JSONArray jsonArray = new JSONArray(json);
 
-//            for (int i = 0; i < jsonArray.length(); i++) {
-//                JSONObject c = jsonArray.getJSONObject(i);
-//
-//                int id = c.getInt("id");
-//
-//                Session.currentParking.setAddress(jsonObj.getString("address"));
-//                Session.currentParking.setCurrentspace(jsonObj.getInt("currentspace"));
-//                Session.currentParking.setDeposits(jsonObj.getDouble("deposits"));
-//                Session.currentParking.setImage(jsonObj.getString("image"));
-//                Session.currentParking.setLatitude(jsonObj.getString("latitude"));
-//                Session.currentParking.setLongitude(jsonObj.getString("longitude"));
-//                Session.currentParking.setStatus(jsonObj.getInt("status"));
-//                Session.currentParking.setTimeoc(jsonObj.getString("timeoc"));
-//                Session.currentParking.setTotalspace(jsonObj.getInt("totalspace"));
-//
-//                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
-//            }
+            for (int i = 0; i < jsonArray.length(); i++) {
+                JSONObject p = jsonArray.getJSONObject(i);
 
+                int id = p.getInt("id");
+                String address = p.getString("address");
+                int currentspace= p.getInt("currentspace");
+                Double deposits= p.getDouble("deposits");
+                String image= p.getString("image");
+                String latitude= p.getString("latitude");
+                String longitude= p.getString("longitude");
+                int status= p.getInt("status");
+                String timeoc= p.getString("timeoc");
+                int totalspace= p.getInt("totalspace");
+
+                parkinglist.add(new ParkingDTO(id, address,currentspace,deposits, image, latitude, longitude, status, timeoc, totalspace));
+            }
+            return parkinglist;
         } catch (Exception ex) {
             Log.e("Error:", ex.getMessage());
         }
         return null;
     }
     @Override
-    protected void onPostExecute(Boolean aBoolean) {
-        super.onPostExecute(aBoolean);
+    protected void onPostExecute(List list) {
+        super.onPostExecute(list);
+        pdLoading.dismiss();
+        container.onPostExecute(list);
     }
 
 

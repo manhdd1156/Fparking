@@ -1,19 +1,13 @@
 package com.example.hung.fparking.login;
 
-import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.res.ColorStateList;
-import android.content.res.XmlResourceParser;
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -25,32 +19,35 @@ import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerLoginTask;
 import com.example.hung.fparking.config.Constants;
-import com.example.hung.fparking.notification.Notification;
+import com.example.hung.fparking.config.Session;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
 import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
 import com.facebook.accountkit.ui.LoginType;
 import com.facebook.accountkit.ui.SkinManager;
 
-public class Login_Fragment extends AppCompatActivity implements OnClickListener, IAsyncTaskHandler {
+public class LoginActivity extends AppCompatActivity implements OnClickListener, IAsyncTaskHandler {
     private static View view;
 
     private static EditText phoneNumber, password;
     private static Button loginButton;
-    private static TextView forgotPassword, signUp;
+    private static TextView forgotPassword, signUp,error;
     //    private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
     private FragmentManager fragmentManager;
-    public static int APP_REQUEST_CODE = 3301;
-    public static String APP_TAG = "AccountKit";
+    Button btnOK;
     private String event;
+    public static int APP_REQUEST_CODE = 3301;
+
+    public static String APP_TAG = "AccountKit";
+
 //    private StaffLoginTask mStaffLoginTask = null;
     private SharedPreferences spref;
-    private Login_Fragment login_Fragment;
     private SharedPreferences.Editor editor;
 //    private String getPhone;
 //    private String getPassword;
@@ -59,6 +56,8 @@ public class Login_Fragment extends AppCompatActivity implements OnClickListener
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
+        Session.spref = getSharedPreferences("intro", 0);
+        Session.homeActivity = LoginActivity.this;
         // ánh xạ
         phoneNumber = (EditText) findViewById(R.id.phone);
         password = (EditText) findViewById(R.id.login_password);
@@ -104,7 +103,6 @@ public class Login_Fragment extends AppCompatActivity implements OnClickListener
                         loginType,
                         AccountKitActivity.ResponseType.TOKEN
                 );
-
         configurationBuilder.setUIManager(new SkinManager(
                         SkinManager.Skin.CONTEMPORARY,
                         getResources().getColor(R.color.white_greyish),
@@ -145,11 +143,13 @@ public class Login_Fragment extends AppCompatActivity implements OnClickListener
                 // Success! Start your next activity...
                 goToMyLoggedInActivity();
             }
-            log(responseMessage);
+            System.out.println(responseMessage);
+//            log(responseMessage);
         }
     }
     private void goToMyLoggedInActivity() {
         if (event.equals("forgot")) {
+
             Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
             intentSignup.putExtra("action", "forgot");
             startActivity(intentSignup);
@@ -176,19 +176,15 @@ public class Login_Fragment extends AppCompatActivity implements OnClickListener
         // Check for both field is empty or not
         if (getPhone.equals("") || getPhone.isEmpty()) {
             loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Hãy nhập số điện thoại");
+            showDialog("Hãy nhập số điện thoại");
         }
         if (getPassword.equals("") || getPassword.isEmpty()) {
             loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Hãy nhập mật khẩu");
+            showDialog("Hãy nhập mật khẩu");
         }
         // Check if email id is valid or not
         else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Số điện thoại không đúng");
-            // Else do login and do your stuff
+            showDialog("Số điện thoại hoặc mật khẩu không đúng");
         else {
             new ManagerLoginTask("first_time",getPhone,getPassword, this);
 //            mStaffLoginTask = new StaffLoginTask(getPhone, getPassword, this);
@@ -197,19 +193,30 @@ public class Login_Fragment extends AppCompatActivity implements OnClickListener
 //                    .show();
         }
     }
-
+    public void showDialog(String text) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(LoginActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
     @Override
     public void onPostExecute(Object o) {
         if (Boolean.TRUE.equals(o)) {
-            Intent intent = new Intent(view.getContext(), Notification.class);
             System.out.println("đăng nhập thành công");
-            startActivity( new Intent(this.getContext(), HomeActivity.class));
-            getActivity().finish();
-            getActivity().startService(intent);
-
+            startActivity( new Intent(this, HomeActivity.class));
+            finish();
         } else {
-//            new CustomToast().Show_Toast(getActivity(), view,
-//                    "Số điện thoại hoặc mật khẩu không đúng");
+            showDialog("Số điện thoại hoặc không đúng");
         }
     }
 }

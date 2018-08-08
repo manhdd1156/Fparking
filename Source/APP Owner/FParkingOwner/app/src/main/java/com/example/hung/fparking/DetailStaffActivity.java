@@ -1,16 +1,14 @@
 package com.example.hung.fparking;
 
-import android.content.DialogInterface;
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.NavigationView;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -20,40 +18,36 @@ import com.example.hung.fparking.config.Session;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHandler {
-    ListView lv;
-    TextView tvSpace, textViewMPhone;
-    TextView tvAddress;
-    NavigationView navigationView;
-    View headerView;
-    ImageView imageViewFParking;
-    EditText tbPass;
-    Button update;
+public class DetailStaffActivity extends AppCompatActivity implements IAsyncTaskHandler {
     EditText name;
     EditText phone;
     EditText address;
     EditText password;
     EditText changePass;
     TextView tvError;
-    TextView tvSuccess,error;
-    Button btnConfirm,btnOK;
+    TextView tvSuccess;
+    Button btnConfirm;
     AlertDialog dialog;
     ImageView backProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_profile);
-        tbPass = findViewById(R.id.tbPassHP);
-        tbPass.setFocusable(false);
-        update = findViewById(R.id.btnUpdate);
-        tbPass.setOnClickListener(new View.OnClickListener() {
+        setContentView(R.layout.activity_staff_detail);
+        Button mUpdate = (Button) findViewById(R.id.btnUpdate);
+        name = (EditText) findViewById(R.id.tbName);
+        phone = (EditText) findViewById(R.id.tbPhone);
+        address = (EditText) findViewById(R.id.tbAddress);
+        tvSuccess = (TextView) findViewById(R.id.tvSuccess);
+        changePass = findViewById(R.id.tbPassHP);
+        changePass.setFocusable(false);
+        changePass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentChangePass = new Intent(ProfileActivity.this, ChangePassword.class);
+                Intent intentChangePass = new Intent(DetailStaffActivity.this, ChangePassword.class);
                 startActivity(intentChangePass);
             }
         });
-        //Gọi alertDialog
         backProfile = findViewById(R.id.imageViewBackProfile);
         backProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -64,11 +58,13 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
             }
         });
         setText();
-        update.setOnClickListener(new View.OnClickListener() {
+        mUpdate.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
 
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
+                tvSuccess.setVisibility(View.INVISIBLE);
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailStaffActivity.this);
                 View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
                 mBuilder.setView(mView);
                 dialog = mBuilder.create();
@@ -83,11 +79,11 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                         });
                 tvError = (TextView) mView.findViewById(R.id.tvError);
                 password = (EditText) mView.findViewById(R.id.tbPassword);
-                final AlertDialog dialog = mBuilder.create();
-                dialog.show();
             }
+
         });
     }
+
     public void setText() {
         name.setText("");
         phone.setText("");
@@ -96,22 +92,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         phone.setHint(Session.currentOwner.getPhone());
         address.setHint(Session.currentOwner.getAddress());
     }
-    public void showDialog(String text) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
-        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        error = (TextView) mView.findViewById(R.id.tvAlert);
-        btnOK = (Button) mView.findViewById(R.id.btnOK);
-        error.setText(text);
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
-    }
+
     public void checkValidation() {
         try {
             String passMD5 = getMD5Hex(password.getText().toString());
@@ -131,39 +112,16 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                 } else {
                     Session.currentOwner.setPhone(phone.getText().toString());
                 }
-                new ManagerLoginTask("updateProfile", "", "", new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        if((boolean)o) {
-                            DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int choice) {
-                                    switch (choice) {
-                                        case DialogInterface.BUTTON_POSITIVE:
-                                            break;
-                                    }
-                                }
-                            };
-                            AlertDialog.Builder builder = new AlertDialog.Builder(ProfileActivity.this);
-                            try {
-
-                                builder.setMessage("Số điện thoại đã tồn tại")
-                                        .setPositiveButton("Yes", dialogClickListener).setCancelable(false).show();
-
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                });
+                new ManagerLoginTask("updateProfile", "", "", DetailStaffActivity.this);
             } else {
-                showDialog("Mật khẩu không đúng");
+                tvError.setVisibility(View.VISIBLE);
             }
 
         } catch (Exception e) {
             System.out.println("Lỗi ProfileActivity/checkValidation : " + e);
         }
     }
+
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -184,9 +142,13 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         return sb.toString();
     }
 
-
+    @SuppressLint("ResourceAsColor")
     @Override
     public void onPostExecute(Object o) {
-
+        setText();
+        tvSuccess.setText("Cập nhật thông tin thành công");
+        tvSuccess.setTextColor(android.R.color.holo_green_light);
+        tvSuccess.setVisibility(View.VISIBLE);
+        dialog.cancel();
     }
 }

@@ -56,19 +56,19 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
         switch (v.getId()) {
             case R.id.backToLoginBtn:
                 // Replace Login Fragment on Back Presses
-                new MainActivity().replaceLoginFragment();
+//                new MainActivity().replaceLoginFragment();
                 break;
 
             case R.id.nextBtn:
 
                 // Call Submit button task
                 submitButtonTask();
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
-                                new ForgotPasswordOtp_Fragment(),
-                                Constants.ForgotPasswordOtp_Fragment).commit();
+//                fragmentManager
+//                        .beginTransaction()
+//                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
+//                        .replace(R.id.frameContainer,
+//                                new ForgotPasswordOtp_Fragment(),
+//                                Constants.ForgotPasswordOtp_Fragment).commit();
                 break;
 
         }
