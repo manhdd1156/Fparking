@@ -27,10 +27,11 @@ import com.example.hung.fparking.asynctask.GetRateTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
 import com.example.hung.fparking.asynctask.ManagerParkingTask;
-import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
+import com.example.hung.fparking.other.Contact;
+import com.example.hung.fparking.other.TermsAndConditions;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -52,6 +53,7 @@ public class HomeActivity extends AppCompatActivity
     ImageView imageViewFParking;
     EditText tbPass;
     Button update;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -65,19 +67,19 @@ public class HomeActivity extends AppCompatActivity
         tbPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          Intent intentChangePass = new Intent(HomeActivity.this,ChangePassword.class);
-          startActivity(intentChangePass);
+                Intent intentChangePass = new Intent(HomeActivity.this, ChangePassword.class);
+                startActivity(intentChangePass);
             }
         });
         //Gọi alertDialog
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
-                        View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                        mBuilder.setView(mView);
-                        final AlertDialog dialog = mBuilder.create();
-                        dialog.show();
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
             }
         });
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -94,22 +96,22 @@ public class HomeActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 //        lv = (ListView) findViewById(R.id.cars_list);
-        if (Session.currentStaff != null) {
-            if (Session.currentParking == null) {
-                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-            } else {
-//                tvSpace = (TextView) findViewById(R.id.tvSpace);
-//                tvAddress = (TextView) findViewById(R.id.tvAddress);
-                setText(tvAddress, Session.currentParking.getAddress());
-                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
-
-            }
-
-            BookingDTO b = new BookingDTO();
-            b.setParkingID(Session.currentStaff.getParking_id());
-            new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
-            new ManagerBookingTask("homeget", b, this);
-        }
+//        if (Session.currentStaff != null) {
+//            if (Session.currentParking == null) {
+//                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
+//            } else {
+////                tvSpace = (TextView) findViewById(R.id.tvSpace);
+////                tvAddress = (TextView) findViewById(R.id.tvAddress);
+//                setText(tvAddress, Session.currentParking.getAddress());
+//                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+//
+//            }
+//
+//            BookingDTO b = new BookingDTO();
+////            b.setParkingID(Session.currentStaff.getParking_id());
+//            new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
+//            new ManagerBookingTask("homeget", b, this);
+//        }
 
 //        Button btnChangeSpace = (Button) findViewById(R.id.btnChange);
 //        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +144,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
     }
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -169,9 +172,9 @@ public class HomeActivity extends AppCompatActivity
 //
 //            }
         new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-            BookingDTO b = new BookingDTO();
-            b.setParkingID(Session.currentStaff.getParking_id());
-            new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
+        BookingDTO b = new BookingDTO();
+//            b.setParkingID(Session.currentStaff.getParking_id());
+        new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
         new ManagerBookingTask("homeget", b, this);
 
     }
@@ -243,12 +246,19 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_contact) {
 
-            Intent intent = new Intent(HomeActivity.this, Contact.class);
-            startActivity(intent);
+            Intent intentContact = new Intent(HomeActivity.this, Contact.class);
+            startActivity(intentContact);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else if (id == R.id.nav_view) {
-
+        } else if (id == R.id.nav_members) {
+            Intent intentStaff = new Intent(HomeActivity.this, StaffManagement.class);
+            startActivity(intentStaff);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else if (id == R.id.nav_DK) {
+            Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
+            startActivity(intentDK);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -264,7 +274,7 @@ public class HomeActivity extends AppCompatActivity
                 Log.d("HomeActivity_onPost: ", lstBooking.toString());
 //                ListBookingHomeAdapter arrayAdapter = new ListBookingHomeAdapter(HomeActivity.this, lstBooking, this);
 //                lv.setAdapter(arrayAdapter);
-            } else if(o instanceof String) {
+            } else if (o instanceof String) {
                 DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int choice) {
@@ -305,7 +315,7 @@ public class HomeActivity extends AppCompatActivity
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-            }else if(o instanceof Boolean) {
+            } else if (o instanceof Boolean) {
 
             }
         } catch (Exception e) {
