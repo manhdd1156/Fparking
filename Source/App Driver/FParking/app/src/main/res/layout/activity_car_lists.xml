@@ -8,6 +8,7 @@
     tools:context=".CarsList">
 
     <RelativeLayout
+        android:id="@+id/list_car_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"

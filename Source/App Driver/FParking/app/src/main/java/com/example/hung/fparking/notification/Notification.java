@@ -19,7 +19,9 @@ import com.example.hung.fparking.Direction;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.OrderParking;
 import com.example.hung.fparking.R;
+import com.example.hung.fparking.Theme;
 import com.example.hung.fparking.asynctask.BookingTask;
+import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.config.Constants;
@@ -60,25 +62,40 @@ public class Notification extends Service implements SubscriptionEventListener, 
 
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
+        Session.spref = getSharedPreferences("intro", 0);
 
         //        Bundle extras = intent.getExtras();
-        PusherOptions options = new PusherOptions();
+        final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
         if (Session.currentDriver != null) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
             Session.channel = Session.pusher.subscribe(Session.currentDriver.getId() + "channel");
-            Log.e("Notification: ",Session.currentDriver.getId() + "channel");
+            Log.e("Notification: ", Session.currentDriver.getId() + "channel");
+
 //            System.out.println("channel : " + Session.currentParking.getId() + "channel");
+
+            Session.channel.bind(Constants.PUSHER_ORDER_FOR_BOOKING, this);
+            Session.channel.bind(Constants.PUSHER_CHECKIN_FOR_BOOKING, this);
+            Session.channel.bind(Constants.PUSHER_CHECKOUT_FOR_BOOKING, this);
+            connect();
+        }else if(!Session.spref.getBoolean("first_time", true)) {
+            new DriverLoginTask("second_time", null, "", new IAsyncTaskHandler() {
+                @Override
+                public void onPostExecute(Object o, String action) {
+                    Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
+                    Session.channel = Session.pusher.subscribe(Session.currentDriver.getId() + "channel");
+                    Log.e("Notification: ", Session.currentDriver.getId() + "channel");
+
+//            System.out.println("channel : " + Session.currentParking.getId() + "channel");
+
+                    Session.channel.bind(Constants.PUSHER_ORDER_FOR_BOOKING, Notification.this);
+                    Session.channel.bind(Constants.PUSHER_CHECKIN_FOR_BOOKING, Notification.this);
+                    Session.channel.bind(Constants.PUSHER_CHECKOUT_FOR_BOOKING, Notification.this);
+                    connect();
+                }
+            });
         }
 
-//        Session.channel.bind(extras.getString("eventName"), this);
-        Session.channel.bind(Constants.PUSHER_ORDER_FOR_BOOKING, this);
-        Session.channel.bind(Constants.PUSHER_CHECKIN_FOR_BOOKING, this);
-        Session.channel.bind(Constants.PUSHER_CHECKOUT_FOR_BOOKING, this);
-        connect();
-
-
-//        return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
 

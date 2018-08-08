@@ -21,13 +21,17 @@ import android.widget.TextView;
 import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.VehicleTask;
+import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
+import com.example.hung.fparking.login.CustomToast;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import in.goodiebag.carouselpicker.CarouselPicker;
 
@@ -102,11 +106,18 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VehicleDTO addnewcar = new VehicleDTO();
-                addnewcar.setType(type);
-                addnewcar.setColor(editTextColor.getText().toString());
-                addnewcar.setLicenseplate(editTextLS1.getText().toString() + "-" + editTextLS2.getText().toString());
-                new VehicleTask("create", addnewcar, "add", CarsList.this);
+                Pattern p = Pattern.compile(Constants.regBs);
+                Matcher m = p.matcher(editTextLS1.getText().toString());
+                if (!m.find() || editTextLS2.getText().toString().length() < 4) {
+                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.list_car_layout),
+                            "Biển số xe không hợp lệ!");
+                } else {
+                    VehicleDTO addnewcar = new VehicleDTO();
+                    addnewcar.setType(type);
+                    addnewcar.setColor(editTextColor.getText().toString());
+                    addnewcar.setLicenseplate(editTextLS1.getText().toString().toUpperCase() + "-" + editTextLS2.getText().toString());
+                    new VehicleTask("create", addnewcar, "add", CarsList.this);
+                }
             }
         });
 
@@ -148,6 +159,12 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
     private void DeleteVehicle(VehicleDTO v) {
         new VehicleTask("delete", v, "vt", this);
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
     }
 
     @Override

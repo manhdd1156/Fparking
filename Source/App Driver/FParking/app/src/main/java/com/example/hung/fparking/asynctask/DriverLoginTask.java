@@ -26,6 +26,10 @@ public class DriverLoginTask {
             new UpdateProfileTask(driverDTO, password, container).execute((Void) null);
         }else if (type.equals("create")) {
             new RegisterTask(driverDTO, password, container).execute((Void) null);
+        }else if (type.equals("newpass")) {
+            new ChangePassByPassTask(driverDTO, password, container).execute((Void) null);
+        }else if (type.equals("phone")) {
+            new ChangePassByPhoneTask(driverDTO, password, container).execute((Void) null);
         }
     }
 }
@@ -281,13 +285,164 @@ class RegisterTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        container.onPostExecute(aBoolean, action);
+        container.onPostExecute(aBoolean, "create");
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        container.onPostExecute(false, action);
+        container.onPostExecute(false, "create");
+    }
+
+    public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(inputString.getBytes());
+
+        byte[] digest = md.digest();
+
+        return convertByteToHex(digest);
+    }
+
+    private static String convertByteToHex(byte[] byteData) {
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
+    }
+}
+
+class ChangePassByPassTask extends AsyncTask<Void, Void, Boolean> {
+
+    private DriverDTO driverDTO;
+    private final String mPassword;
+    private final IAsyncTaskHandler container;
+    private SharedPreferences.Editor editor;
+    private String action;
+
+    public ChangePassByPassTask(DriverDTO driverDTO, String mPassword, IAsyncTaskHandler container) {
+        this.driverDTO = driverDTO;
+        this.mPassword = mPassword;
+        this.container = container;
+        editor = Session.spref.edit();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... params) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+            JSONObject formData = new JSONObject();
+
+            String oldpass = getMD5Hex(driverDTO.getPassword().toString());
+            formData.put("password", oldpass);
+            String newpass = getMD5Hex(mPassword);
+            formData.put("newpassword", newpass);
+            String json = httpHandler.requestMethod(Constants.API_URL + "drivers/password", formData.toString(), "PUT");
+            // Check Json token
+            if (json != null) {
+                JSONObject jsonObj = new JSONObject(json);
+                Session.currentDriver = new DriverDTO();
+                Session.currentDriver.setId(jsonObj.getLong("id"));
+                Session.currentDriver.setName(jsonObj.getString("name"));
+                Session.currentDriver.setPhone(jsonObj.getString("phone"));
+                Session.currentDriver.setStatus(jsonObj.getString("status"));
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean, "pass");
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        container.onPostExecute(false, "pass");
+    }
+
+    public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
+
+        MessageDigest md = MessageDigest.getInstance("MD5");
+        md.update(inputString.getBytes());
+
+        byte[] digest = md.digest();
+
+        return convertByteToHex(digest);
+    }
+
+    private static String convertByteToHex(byte[] byteData) {
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < byteData.length; i++) {
+            sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
+        }
+
+        return sb.toString();
+    }
+}
+
+class ChangePassByPhoneTask extends AsyncTask<Void, Void, Boolean> {
+
+    private DriverDTO driverDTO;
+    private final String mPassword;
+    private final IAsyncTaskHandler container;
+    private SharedPreferences.Editor editor;
+    private String action;
+
+    public ChangePassByPhoneTask(DriverDTO driverDTO, String mPassword, IAsyncTaskHandler container) {
+        this.driverDTO = driverDTO;
+        this.mPassword = mPassword;
+        this.container = container;
+        editor = Session.spref.edit();
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... params) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+            JSONObject formData = new JSONObject();
+
+            formData.put("phone", driverDTO.getPhone().toString());
+            String newpass = getMD5Hex(mPassword);
+            formData.put("password", newpass);
+            String json = httpHandler.requestMethod(Constants.API_URL + "drivers/password", formData.toString(), "PUT");
+            // Check Json token
+            if (json != null) {
+                JSONObject jsonObj = new JSONObject(json);
+                Session.currentDriver = new DriverDTO();
+                Session.currentDriver.setId(jsonObj.getLong("id"));
+                Session.currentDriver.setName(jsonObj.getString("name"));
+                Session.currentDriver.setPhone(jsonObj.getString("phone"));
+                Session.currentDriver.setStatus(jsonObj.getString("status"));
+                return true;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean, "phone");
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        container.onPostExecute(false, "phone");
     }
 
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {

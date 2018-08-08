@@ -42,6 +42,7 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
             public void onClick(View v) {
                 Intent backHistoryIntent = new Intent(ParkingHistory.this, HomeActivity.class);
                 startActivity(backHistoryIntent);
+                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -68,13 +69,13 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
     @Override
     protected void onResume() {
         super.onResume();
-//        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
-//                .MyClickListener() {
-//            @Override
-//            public void onItemClick(int position, View v) {
-//                Log.i("adsdasdasdasdas", " Clicked on Item " + position);
-//            }
-//        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
 
     @Override
@@ -91,6 +92,7 @@ public class ParkingHistory extends AppCompatActivity implements IAsyncTaskHandl
                 Intent intentDetail = new Intent(ParkingHistory.this, DetailedHistory.class);
                 intentDetail.putExtra("bookingid", booking.get(position).getBookingID());
                 startActivity(intentDetail);
+                finish();
             }
         });
     }

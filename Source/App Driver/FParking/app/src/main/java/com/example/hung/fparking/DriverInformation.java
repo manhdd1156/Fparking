@@ -52,6 +52,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             public void onClick(View v) {
                 Intent intentChange = new Intent(DriverInformation.this, ChangePassword.class);
                 startActivity(intentChange);
+                finish();
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             }
         });
@@ -90,6 +91,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             public void onClick(View v) {
                 Intent intentInformation = new Intent(DriverInformation.this, HomeActivity.class);
                 startActivity(intentInformation);
+                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -109,5 +111,12 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
         password.setText("");
         tbName.setText(Session.currentDriver.getName());
         tbPhone.setText(Session.currentDriver.getPhone());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
 }
