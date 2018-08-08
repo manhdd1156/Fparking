@@ -22,10 +22,12 @@ import com.example.hung.fparking.asynctask.ParkingInforTask;
 import com.example.hung.fparking.asynctask.ParkingTask;
 import com.example.hung.fparking.asynctask.TariffTask;
 import com.example.hung.fparking.asynctask.VehicleTask;
+import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.dto.TariffDTO;
 import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
+import com.example.hung.fparking.login.CustomToast;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -35,6 +37,8 @@ import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import in.goodiebag.carouselpicker.CarouselPicker;
 
@@ -225,11 +229,18 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         btnAddCar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VehicleDTO addnewcar = new VehicleDTO();
-                addnewcar.setType(type);
-                addnewcar.setColor(editTextColor.getText().toString());
-                addnewcar.setLicenseplate(editTextLS1.getText().toString() + "-" + editTextLS2.getText().toString());
-                new VehicleTask("create", addnewcar, "add", OrderParking.this);
+                Pattern p = Pattern.compile(Constants.regBs);
+                Matcher m = p.matcher(editTextLS1.getText().toString());
+                if (!m.find() || editTextLS2.getText().toString().length() < 4) {
+                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.list_car_layout),
+                            "Biển số xe không hợp lệ!");
+                } else {
+                    VehicleDTO addnewcar = new VehicleDTO();
+                    addnewcar.setType(type);
+                    addnewcar.setColor(editTextColor.getText().toString());
+                    addnewcar.setLicenseplate(editTextLS1.getText().toString().toUpperCase() + "-" + editTextLS2.getText().toString());
+                    new VehicleTask("create", addnewcar, "add", OrderParking.this);
+                }
             }
         });
         carouselPickerCarType.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

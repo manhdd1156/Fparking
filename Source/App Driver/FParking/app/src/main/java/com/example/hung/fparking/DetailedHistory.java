@@ -45,6 +45,7 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
             public void onClick(View v) {
                 Intent intentHistory = new Intent(DetailedHistory.this, ParkingHistory.class);
                 startActivity(intentHistory);
+                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -81,5 +82,12 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
             }
 
         }
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, ParkingHistory.class));
+        finish();
     }
 }

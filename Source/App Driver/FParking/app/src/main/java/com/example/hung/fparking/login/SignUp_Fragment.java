@@ -1,5 +1,6 @@
 package com.example.hung.fparking.login;
 
+import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
@@ -21,6 +22,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.hung.fparking.ChangePassword;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -35,11 +37,12 @@ import com.facebook.accountkit.PhoneNumber;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHandler{
+public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHandler {
 
-    TextView phone, already_user;
+    TextView phone, already_user, textViewAlert;
     EditText password, confirmPassword;
-    Button signUpBtn;
+    Button signUpBtn, btnOK;
+    AlertDialog dialog;
 
     public static String APP_TAG = "AccountKit";
 
@@ -48,28 +51,40 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_layout);
 
+        setUserInformation();
+        setProperties();
+    }
+
+    private void setProperties() {
+        //tạo dialog
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(SignUp_Fragment.this);
+        View mView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        mBuilder.setView(mView);
+        dialog = mBuilder.create();
+        textViewAlert = mView.findViewById(R.id.textViewAlert);
+        btnOK = mView.findViewById(R.id.btnOK);
+
+
         //Ánh xạ
-        phone = findViewById(R.id.phone);
-        password = findViewById(R.id.password);
-        confirmPassword = findViewById(R.id.confirmPassword);
+        phone = findViewById(R.id.phoneDK);
+        password = findViewById(R.id.passwordDK);
+        confirmPassword = findViewById(R.id.confirmPasswordDK);
         signUpBtn = findViewById(R.id.signUpBtn);
         already_user = findViewById(R.id.already_user);
 
         signUpBtn.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (getIntent() != null) {
-                    Intent intent = getIntent();
-                    String action = intent.getStringExtra("action");
-                    if (action.equals("forgot")) {
-
-                    } else if (action.equals("register")) {
-                        checkValidation();
-                    }
-                }
+                checkValidation();
             }
         });
-        setUserInformation();
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 
     public void setUserInformation() {
@@ -109,34 +124,62 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
 
     // Check Validation before login
     private void checkValidation() {
-        // Get password
+        // Get phone and password
+        String newPass = password.getText().toString();
+        String cfPassword = confirmPassword.getText().toString();
 
-        String getPassword = password.getText().toString();
-        String getConfirmPassword = confirmPassword.getText().toString();
-
-        if (getPassword.equals("") || getPassword.isEmpty()) {
-            Toast.makeText(getApplicationContext(), "Hãy nhập mật khẩu", Toast.LENGTH_SHORT)
-                    .show();
+        // Check for both field is empty or not
+        if (newPass.isEmpty() || cfPassword.isEmpty()) {
+            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
+                    "Hãy nhập đủ thông tin");
         }
-
-        if (!getPassword.equals(getConfirmPassword)) {
-            Toast.makeText(getApplicationContext(), "Mật khẩu không trùng nhau", Toast.LENGTH_SHORT)
-                    .show();
+        // Check lengh of pass
+        else if (newPass.length() < 6 || newPass.length() > 24) {
+            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
+                    "Mật khẩu mới phải từ 6 đến 24 ký tự");
         }
-        // Check if email id is valid or not
-
+        // Check if old pass and new pass not match
+        else if (!newPass.equals(cfPassword))
+            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
+                    "Mật khẩu mới và xác nhận mật khẩu không trùng nhau");
+            // Else do login and do your stuff
         else {
-            DriverDTO driverDTO = new DriverDTO();
-            driverDTO.setPhone(phone.getText().toString());
-            new DriverLoginTask("create", driverDTO, password.getText().toString(), SignUp_Fragment.this);
-            Toast.makeText(getApplicationContext(), "Do Login.", Toast.LENGTH_SHORT)
-                    .show();
+
+            if (getIntent() != null) {
+                Intent intent = getIntent();
+                String action = intent.getStringExtra("action");
+                if (action.equals("forgot")) {
+                    DriverDTO driverDTO = new DriverDTO();
+                    driverDTO.setPhone(phone.getText().toString());
+                    new DriverLoginTask("phone", driverDTO, password.getText().toString(), SignUp_Fragment.this);
+                } else if (action.equals("register")) {
+                    DriverDTO driverDTO = new DriverDTO();
+                    driverDTO.setPhone(phone.getText().toString());
+                    new DriverLoginTask("create", driverDTO, password.getText().toString(), SignUp_Fragment.this);
+                }
+            }
         }
     }
 
     @Override
     public void onPostExecute(Object o, String action) {
-
+        if (Boolean.TRUE.equals(o)) {
+            if (action.equals("create")) {
+                textViewAlert.setText("Tạo tài khoản thành công!");
+                dialog.show();
+            } else if (action.equals("phone")) {
+                textViewAlert.setText("Mật khẩu đã được đổi thành công!");
+                dialog.show();
+            }
+        } else {
+            if (action.equals("create")) {
+                textViewAlert.setText("Tài khoản này đã tồn tại!");
+                dialog.show();
+            } else if (action.equals("phone")) {
+                textViewAlert.setText("Đổi mật khẩu không thành công!");
+                dialog.show();
+            }
+        }
     }
 }
 

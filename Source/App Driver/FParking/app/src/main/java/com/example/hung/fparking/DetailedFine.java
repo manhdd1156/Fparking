@@ -55,6 +55,12 @@ public class DetailedFine extends AppCompatActivity implements IAsyncTaskHandler
     }
 
     @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, FineHistory.class));
+    }
+
+    @Override
     public void onPostExecute(Object o, String action) {
         fineDTOS = (ArrayList<FineDTO>) o;
         if (fineDTOS.size() > 0) {

@@ -10,6 +10,8 @@ public class DriverDTO {
 
     private String status;
 
+    private String password;
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -24,6 +26,10 @@ public class DriverDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
     }
 
     public Long getId() {
@@ -43,6 +49,10 @@ public class DriverDTO {
         return status;
     }
 
+    public String getPassword() {
+        return password;
+    }
+
     public DriverDTO() {
 
     }
@@ -53,5 +63,13 @@ public class DriverDTO {
         this.name = name;
         this.phone = phone;
         this.status = status;
+    }
+
+    public DriverDTO(Long id, String name, String phone, String status, String password) {
+        this.id = id;
+        this.name = name;
+        this.phone = phone;
+        this.status = status;
+        this.password = password;
     }
 }

@@ -27,4 +27,10 @@ ImageView backDK;
             }
         });
     }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
+    }
 }

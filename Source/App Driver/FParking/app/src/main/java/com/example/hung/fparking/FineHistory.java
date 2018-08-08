@@ -70,13 +70,12 @@ public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler 
     @Override
     protected void onResume() {
         super.onResume();
-//        ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
-//                .MyClickListener() {
-//            @Override
-//            public void onItemClick(int position, View v) {
-//                Log.i("adsdasdasdasdas", " Clicked on Item " + position);
-//            }
-//        });
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        startActivity(new Intent(this, HomeActivity.class));
     }
 
     @Override
