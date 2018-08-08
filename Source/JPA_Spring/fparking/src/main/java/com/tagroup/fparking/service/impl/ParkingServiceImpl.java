@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
@@ -15,6 +16,7 @@ import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.TariffRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Owner;
@@ -53,11 +55,12 @@ private TariffRepository tariffRepository;
 	
 	// get parking by Owner ID
 	@Override
-	public List<Parking> getByOId(Long id) throws Exception {
+	public List<Parking> getByOId() throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<Parking> plist = getAll();
 		List<Parking> returnList = new ArrayList<>();
 		for (Parking parking : plist) {
-			if(parking.getOwner().getId() == id) {
+			if(parking.getOwner().getId() == t.getId() && parking.getStatus()==1 || parking.getStatus()==3) {
 				returnList.add(parking);
 			}
 		}
@@ -102,7 +105,14 @@ private TariffRepository tariffRepository;
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			return parkingRepository.findByLatitudeANDLongitude(latitude, longitude);
+			List<Parking> returnlist = new ArrayList<>();
+			List<Parking> plist = parkingRepository.findByLatitudeANDLongitude(latitude, longitude);
+			for (Parking parking : plist) {
+				if(parking.getStatus()==1 && parking.getCurrentspace()>0) {
+					returnlist.add(parking);
+				}
+			}
+			return returnlist;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
@@ -162,6 +172,7 @@ private TariffRepository tariffRepository;
 	}
 	@Override
 	public List<Parking> getByOwnerID(Long id) throws Exception {
+		
 		Owner o = ownerRepository.getOne(id);
 		
 		// TODO Auto-generated method stub
@@ -206,7 +217,7 @@ private TariffRepository tariffRepository;
 		for (Parking parking : plist) {
 			if(Math.abs(Double.parseDouble(parking.getLatitude())-Double.parseDouble(latitude))+
 						(Math.abs(Double.parseDouble(parking.getLongitude())-Double.parseDouble(longitude)))<0.028324 &&
-						parking.getStatus()==1) {
+						parking.getStatus()==1 && parking.getCurrentspace()>0) {
 				returnList.add(parking);
 			}
 		}
