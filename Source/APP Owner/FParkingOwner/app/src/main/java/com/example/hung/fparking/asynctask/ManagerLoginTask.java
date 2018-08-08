@@ -85,15 +85,15 @@ class StaffLoginTask extends AsyncTask<Void, Void, Boolean> {
 
             String jsonGetInfo = httpHandler.get(Constants.API_URL + "staffs/profile");
                 JSONObject jsonObj2 = new JSONObject(jsonGetInfo);
-            Session.currentStaff = new OwnerDTO();
+//            Session.currentStaff = new OwnerDTO();
             Session.currentParking = new ParkingDTO();
-            Session.currentStaff.setId(jsonObj2.getLong("id"));
-            Session.currentStaff.setAddress(jsonObj2.getString("address"));
-            Session.currentStaff.setName(jsonObj2.getString("name"));
-            Session.currentStaff.setPhone(jsonObj2.getString("phone"));
-            Session.currentStaff.setPass(jsonObj2.getString("password"));
+//            Session.currentStaff.setId(jsonObj2.getLong("id"));
+//            Session.currentStaff.setAddress(jsonObj2.getString("address"));
+//            Session.currentStaff.setName(jsonObj2.getString("name"));
+//            Session.currentStaff.setPhone(jsonObj2.getString("phone"));
+//            Session.currentStaff.setPass(jsonObj2.getString("password"));
             JSONObject parking = jsonObj2.getJSONObject("parking");
-            Session.currentStaff.setParking_id(parking.getInt("id"));
+//            Session.currentStaff.setParking_id(parking.getInt("id"));
             Session.currentParking.setId(parking.getInt("id"));
             Session.currentParking.setAddress(parking.getString("address"));
             Session.currentParking.setCurrentspace(parking.getInt("currentspace"));
@@ -164,15 +164,15 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
 
             JSONObject jsonObj = new JSONObject(json);
             System.out.println(jsonObj);
-            Session.currentStaff = new OwnerDTO();
+//            Session.currentStaff = new OwnerDTO();
             Session.currentParking = new ParkingDTO();
-            Session.currentStaff.setId(jsonObj.getLong("id"));
-            Session.currentStaff.setAddress(jsonObj.getString("address"));
-            Session.currentStaff.setName(jsonObj.getString("name"));
-            Session.currentStaff.setPhone(jsonObj.getString("phone"));
-            Session.currentStaff.setPass(jsonObj.getString("password"));
+//            Session.currentStaff.setId(jsonObj.getLong("id"));
+//            Session.currentStaff.setAddress(jsonObj.getString("address"));
+//            Session.currentStaff.setName(jsonObj.getString("name"));
+//            Session.currentStaff.setPhone(jsonObj.getString("phone"));
+//            Session.currentStaff.setPass(jsonObj.getString("password"));
             JSONObject parking = jsonObj.getJSONObject("parking");
-            Session.currentStaff.setParking_id(parking.getInt("id"));
+//            Session.currentStaff.setParking_id(parking.getInt("id"));
             Session.currentParking.setId(parking.getInt("id"));
             Session.currentParking.setAddress(parking.getString("address"));
             Session.currentParking.setCurrentspace(parking.getInt("currentspace"));
@@ -219,10 +219,10 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
         try {
 
             JSONObject formData = new JSONObject();
-            formData.put("id", Session.currentStaff.getId());
-            formData.put("name", Session.currentStaff.getName());
-            formData.put("phone", Session.currentStaff.getPhone());
-            formData.put("address", Session.currentStaff.getAddress());
+//            formData.put("id", Session.currentStaff.getId());
+//            formData.put("name", Session.currentStaff.getName());
+//            formData.put("phone", Session.currentStaff.getPhone());
+//            formData.put("address", Session.currentStaff.getAddress());
 
 
             String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "staffs/update", formData.toString(),"PUT");
