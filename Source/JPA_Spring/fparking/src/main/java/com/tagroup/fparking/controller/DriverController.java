@@ -71,38 +71,52 @@ public class DriverController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+
 	// change password driver
-		@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-		@RequestMapping(path = "/password", method = RequestMethod.PUT)
-		public ResponseEntity<?> changepassword(@RequestBody DriverDTO driver) throws Exception {
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
+	@RequestMapping(path = "/password", method = RequestMethod.PUT)
+	public ResponseEntity<?> changepassword(@RequestBody DriverDTO driver) throws Exception {
 
-			Driver respone = driverService.changepassword(driver);
-			
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+		Driver respone = driverService.changepassword(driver);
 
-		}
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
+	// change password when forgot password driver
+	@RequestMapping(path = "/password", method = RequestMethod.PUT)
+	public ResponseEntity<?> forgotpassword(@RequestBody DriverDTO driver) throws Exception {
+
+		Driver respone = driverService.changepassword(driver);
+
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// create driver
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
 
 		Driver respone = driverService.create(driver);
-		if(respone == null) {
+		if (respone == null) {
 			return new ResponseEntity<>("phone exist", HttpStatus.OK);
 		}
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+
 	// create feedback from driver
-		@RequestMapping(path = "/feedbacks", method = RequestMethod.POST)
-		public ResponseEntity<?> createFeedback(@RequestBody Feedback feedback) throws Exception {
+	@RequestMapping(path = "/feedbacks", method = RequestMethod.POST)
+	public ResponseEntity<?> createFeedback(@RequestBody Feedback feedback) throws Exception {
 
-			Feedback respone = feedbackService.create(feedback);
-			if(respone == null) {
-				return new ResponseEntity<>("phone exist", HttpStatus.OK);
-			}
-			return new ResponseEntity<>(respone, HttpStatus.OK);
-
+		Feedback respone = feedbackService.create(feedback);
+		if (respone == null) {
+			return new ResponseEntity<>("phone exist", HttpStatus.OK);
 		}
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// get profile
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/profile", method = RequestMethod.GET)
