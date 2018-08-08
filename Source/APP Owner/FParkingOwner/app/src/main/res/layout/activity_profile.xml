@@ -72,11 +72,11 @@
             android:layout_below="@+id/imageView2"
             android:layout_marginLeft="33dp"
             android:layout_marginTop="15dp"
-            android:text="Họ và tên"
+            android:text="Họ và tên:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbName"
+            android:id="@+id/tbAddressDP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
@@ -94,7 +94,7 @@
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbName"
+            android:layout_below="@+id/tbAddressDP"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -103,13 +103,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbName"
+            android:layout_below="@+id/tbAddressDP"
             android:layout_marginTop="10dp"
-            android:text="Số điện thoại"
+            android:text="Số điện thoại:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPhone"
+            android:id="@+id/tbOpenTimeDP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
@@ -127,7 +127,7 @@
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbPhone"
+            android:layout_below="@+id/tbOpenTimeDP"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -136,13 +136,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPhone"
+            android:layout_below="@+id/tbOpenTimeDP"
             android:layout_marginTop="10dp"
-            android:text="Địa chỉ"
+            android:text="Địa chỉ:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbAddress"
+            android:id="@+id/tbCloseTimeDP"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView5"
@@ -160,7 +160,7 @@
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbAddress"
+            android:layout_below="@+id/tbCloseTimeDP"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -185,21 +185,22 @@
             android:text="Cập nhật thông tin thành công"
             android:textColor="@android:color/holo_green_dark"
             android:visibility="invisible" />
+
         <TextView
             android:id="@+id/textView10"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbAddress"
+            android:layout_below="@+id/tbCloseTimeDP"
             android:layout_marginTop="10dp"
             android:text="Mật khẩu:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPassHP"
+            android:id="@+id/tvMoneyDP"
             android:layout_width="361dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tbName"
+            android:layout_alignStart="@+id/tbAddressDP"
             android:layout_below="@+id/textView10"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
@@ -215,7 +216,7 @@
             android:layout_width="319dp"
             android:layout_height="1px"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPassHP"
+            android:layout_below="@+id/tvMoneyDP"
             android:background="@color/white_greyish" />
 
 

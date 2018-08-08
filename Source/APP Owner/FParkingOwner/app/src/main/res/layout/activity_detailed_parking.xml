@@ -5,6 +5,207 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ChangePassword">
+    tools:context=".ProfileActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="0dp">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/header"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:text="Thông Tin Bãi Xe"
+            android:textColor="@color/whitetext"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="141dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+
+        <ImageView
+            android:id="@+id/imageViewBackProfile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/imageView9"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="10dp"
+            app:srcCompat="@drawable/ic_action_backwhile" />
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_below="@+id/imageView9"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/infodetail" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="171dp"
+            android:layout_height="143dp"
+            android:layout_below="@+id/textView2"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="30dp"
+            app:srcCompat="@drawable/parkinglist" />
+
+        <TextView
+            android:id="@+id/textView3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginLeft="33dp"
+            android:layout_marginTop="15dp"
+            android:text="Địa chỉ"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tbAddressDP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView3"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Nguyễn Văn Hưng"
+            android:inputType="textPersonName"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbAddressDP"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+        <TextView
+            android:id="@+id/textView4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbAddressDP"
+            android:layout_marginTop="10dp"
+            android:text="Giờ mở cửa"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tbOpenTimeDP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView4"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="01647383196"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbOpenTimeDP"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+        <TextView
+            android:id="@+id/textView5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbOpenTimeDP"
+            android:layout_marginTop="10dp"
+            android:text="Giờ đóng cửa"
+            android:textSize="18sp" />
+
+        <EditText
+            android:id="@+id/tbCloseTimeDP"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/textView5"
+            android:layout_marginLeft="23dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="sdsdsdsdsdsdsdsds"
+            android:inputType="textPostalAddress"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbCloseTimeDP"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_selector2"
+            android:text="CẬP NHẬT"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="64dp"
+            android:layout_toEndOf="@+id/imageViewBackHistory"
+            android:text="Cập nhật thông tin thành công"
+            android:textColor="@android:color/holo_green_dark"
+            android:visibility="invisible" />
+
+        <TextView
+            android:id="@+id/textView10"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbCloseTimeDP"
+            android:layout_marginTop="15dp"
+            android:text="Tiền đặt cọc"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/textView7"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/textView10"
+            android:layout_toEndOf="@+id/textView5"
+            android:text="TextView"
+            android:textSize="18sp" />
+
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

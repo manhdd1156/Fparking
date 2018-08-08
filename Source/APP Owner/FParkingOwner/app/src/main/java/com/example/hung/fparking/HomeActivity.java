@@ -61,7 +61,7 @@ public class HomeActivity extends AppCompatActivity
 //        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
 
         //Ánh xạ
-        tbPass = findViewById(R.id.tbPassHP);
+        tbPass = findViewById(R.id.tvMoneyDP);
         tbPass.setFocusable(false);
         update = findViewById(R.id.btnUpdate);
         tbPass.setOnClickListener(new View.OnClickListener() {

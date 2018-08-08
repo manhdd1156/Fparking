@@ -35,11 +35,11 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
         Button mUpdate = (Button) findViewById(R.id.btnUpdate);
-        name = (EditText) findViewById(R.id.tbName);
-        phone = (EditText) findViewById(R.id.tbPhone);
-        address = (EditText) findViewById(R.id.tbAddress);
+        name = (EditText) findViewById(R.id.tbAddressDP);
+        phone = (EditText) findViewById(R.id.tbOpenTimeDP);
+        address = (EditText) findViewById(R.id.tbCloseTimeDP);
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
-        changePass = findViewById(R.id.tbPassHP);
+        changePass = findViewById(R.id.tvMoneyDP);
         changePass.setFocusable(false);
         changePass.setOnClickListener(new View.OnClickListener() {
             @Override
