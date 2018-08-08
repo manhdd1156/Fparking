@@ -5,8 +5,6 @@ import android.app.ProgressDialog;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.CountDownTimer;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
@@ -21,18 +19,13 @@ import android.widget.TextView;
 import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ParkingInforTask;
+import com.example.hung.fparking.asynctask.ParkingTask;
 import com.example.hung.fparking.asynctask.TariffTask;
 import com.example.hung.fparking.asynctask.VehicleTask;
-import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.dto.TariffDTO;
 import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
-import com.example.hung.fparking.entity.GetNearPlace;
-import com.example.hung.fparking.notification.Notification;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -52,6 +45,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     private ArrayList<VehicleDTO> vehicle;
     private ArrayList<ParkingDTO> parkingDTOS;
     private ArrayList<TariffDTO> tariffDTOS;
+    ArrayList<ParkingDTO> parkingSortDTOS;
     private List<CarouselPicker.PickerItem> textItems;
 
     int driverVehicleID, parkingID, vehicleID;
@@ -72,7 +66,10 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     String type;
     private ArrayList<TypeDTO> typeDTOS;
     private List<CarouselPicker.PickerItem> textItemsType;
-    AlertDialog dialog;
+
+    AlertDialog dialog, quickDialog;
+    Button buttonOK, buttonCancel;
+    TextView textViewAddressQB, textViewTotalTimeQB, textViewPriceQB;
 
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
     String[] sampleNetworkImageURLs = {
@@ -98,6 +95,14 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car, null);
         mBuilder.setView(mView);
         dialog = mBuilder.create();
+
+        // dialog đặt chỗ nhanh
+        AlertDialog.Builder quickBookingBuilder = new AlertDialog.Builder(OrderParking.this);
+        View quickBookingView = getLayoutInflater().inflate(R.layout.quick_booking_layout, null);
+        quickBookingBuilder.setView(quickBookingView);
+        quickDialog = quickBookingBuilder.create();
+
+        setDialogProperties(quickBookingView);
 
         // tạo SharedPreferences
         mPreferences = getSharedPreferences("driver", 0);
@@ -156,7 +161,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
 //                    Intent intent = new Intent(OrderParking.this, Notification.class);
 //                    startService(intent);
                     proD.setCancelable(false);
-                    proD.show();
                     counttime();
                 }
             }
@@ -224,7 +228,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 VehicleDTO addnewcar = new VehicleDTO();
                 addnewcar.setType(type);
                 addnewcar.setColor(editTextColor.getText().toString());
-                addnewcar.setLicenseplate(editTextLS1.getText().toString()+"-"+editTextLS2.getText().toString());
+                addnewcar.setLicenseplate(editTextLS1.getText().toString() + "-" + editTextLS2.getText().toString());
                 new VehicleTask("create", addnewcar, "add", OrderParking.this);
             }
         });
@@ -246,7 +250,25 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         });
     }
 
-    public void counttime(){
+    private void setDialogProperties(View dialogView) {
+        textViewAddressQB = dialogView.findViewById(R.id.textViewAddressQB);
+        textViewTotalTimeQB = dialogView.findViewById(R.id.textViewTotalTimeQB);
+        textViewPriceQB = dialogView.findViewById(R.id.textViewPriceQB);
+        buttonOK = dialogView.findViewById(R.id.btnOKQB);
+        buttonCancel = dialogView.findViewById(R.id.btnCancelQB);
+
+        // sự kiện nút cancel dialog
+        buttonCancel.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quickDialog.cancel();
+            }
+        });
+
+    }
+
+    public void counttime() {
+        proD.show();
         new CountDownTimer(3000, 1000) {
             boolean checkOwer = true;
 
@@ -266,7 +288,35 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     public void onClick(DialogInterface dialog, int choice) {
                         switch (choice) {
                             case DialogInterface.BUTTON_POSITIVE:
+                                if (parkingSortDTOS == null) {
+                                    double lat = mPreferences.getFloat("quicklat", 0);
+                                    double lng = mPreferences.getFloat("quicklng", 0);
+                                    new ParkingTask("order", lat, lng, "order", OrderParking.this);
+                                } else {
+                                    if (parkingSortDTOS.size() > 1) {
+                                        for(int i = 0; i< parkingSortDTOS.size(); i++){
+                                            if(parkingID == parkingSortDTOS.get(i).getParkingID()){
+                                                parkingSortDTOS.remove(i);
+                                            }
+                                        }
+                                        quickDialog.show();
+                                        textViewAddressQB.setText(parkingSortDTOS.get(0).getAddress());
+                                        textViewTotalTimeQB.setText(parkingSortDTOS.get(0).getTimeoc());
+                                        textViewPriceQB.setText(parkingSortDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
 
+                                        buttonOK.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                parkingID = parkingSortDTOS.get(0).getParkingID();
+                                                mPreferencesEditor.putString("vehicleID", vehicleID + "").commit();
+                                                mPreferencesEditor.putString("parkingID", parkingID + "").commit();
+                                                new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
+                                                quickDialog.cancel();
+                                                counttime();
+                                            }
+                                        });
+                                    }
+                                }
                                 break;
                             case DialogInterface.BUTTON_NEGATIVE:
 
@@ -276,8 +326,10 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 };
                 try {
                     proD.dismiss();
-                    builder.setMessage("Chủ bãi đỗ đang bận!")
-                            .setPositiveButton("Chấp Nhận", dialogClickListener).setCancelable(false).show();
+                    builder.setMessage("Chủ bãi đỗ đang bận! Bạn có muốn tìm bãi khác?")
+                            .setPositiveButton("Đồng ý", dialogClickListener)
+                            .setNegativeButton("Hủy", dialogClickListener)
+                            .setCancelable(false).show();
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -373,6 +425,33 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         } else if (action.equals("add")) {
             dialog.cancel();
             startActivity(getIntent());
+        } else if (action.equals("order")) {
+            parkingSortDTOS = (ArrayList<ParkingDTO>) o;
+            if (parkingSortDTOS.size() > 1) {
+                for(int i = 0; i< parkingSortDTOS.size(); i++){
+                    if(parkingID == parkingSortDTOS.get(i).getParkingID()){
+                        parkingSortDTOS.remove(i);
+                    }
+                }
+                quickDialog.show();
+                textViewAddressQB.setText(parkingSortDTOS.get(0).getAddress());
+                textViewTotalTimeQB.setText(parkingSortDTOS.get(0).getTimeoc());
+                textViewPriceQB.setText(parkingSortDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+
+                buttonOK.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        parkingID = parkingSortDTOS.get(0).getParkingID();
+                        mPreferencesEditor.putString("vehicleID", vehicleID + "").commit();
+                        mPreferencesEditor.putString("parkingID", parkingID + "").commit();
+                        new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
+                        quickDialog.cancel();
+                        counttime();
+                    }
+                });
+            } else {
+// thông báo không tìm thấy bãi xe nào
+            }
         }
     }
 

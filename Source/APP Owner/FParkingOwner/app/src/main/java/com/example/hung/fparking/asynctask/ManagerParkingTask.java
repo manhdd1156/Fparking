@@ -32,7 +32,7 @@ public class ManagerParkingTask {
     public ManagerParkingTask(String method,ParkingDTO parkingDTO,IAsyncTaskHandler container) {
 
         if (method.equals("getbyowner")) {
-            new GetParkingTask(OwnerDTO.getId(),container).execute((Void) null);
+//            new GetParkingTask(OwnerDTO.getId(),container).execute((Void) null);
         }else if(method.equals("update")) {
             new UpdateParkingTask(container,parkingDTO).execute((Void) null);
         }
@@ -70,23 +70,23 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
 
             JSONArray jsonArray = new JSONArray(json);
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject c = jsonArray.getJSONObject(i);
-
-                int id = c.getInt("id");
-
-                Session.currentParking.setAddress(jsonObj.getString("address"));
-                Session.currentParking.setCurrentspace(jsonObj.getInt("currentspace"));
-                Session.currentParking.setDeposits(jsonObj.getDouble("deposits"));
-                Session.currentParking.setImage(jsonObj.getString("image"));
-                Session.currentParking.setLatitude(jsonObj.getString("latitude"));
-                Session.currentParking.setLongitude(jsonObj.getString("longitude"));
-                Session.currentParking.setStatus(jsonObj.getInt("status"));
-                Session.currentParking.setTimeoc(jsonObj.getString("timeoc"));
-                Session.currentParking.setTotalspace(jsonObj.getInt("totalspace"));
-
-                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
-            }
+//            for (int i = 0; i < jsonArray.length(); i++) {
+//                JSONObject c = jsonArray.getJSONObject(i);
+//
+//                int id = c.getInt("id");
+//
+//                Session.currentParking.setAddress(jsonObj.getString("address"));
+//                Session.currentParking.setCurrentspace(jsonObj.getInt("currentspace"));
+//                Session.currentParking.setDeposits(jsonObj.getDouble("deposits"));
+//                Session.currentParking.setImage(jsonObj.getString("image"));
+//                Session.currentParking.setLatitude(jsonObj.getString("latitude"));
+//                Session.currentParking.setLongitude(jsonObj.getString("longitude"));
+//                Session.currentParking.setStatus(jsonObj.getInt("status"));
+//                Session.currentParking.setTimeoc(jsonObj.getString("timeoc"));
+//                Session.currentParking.setTotalspace(jsonObj.getInt("totalspace"));
+//
+//                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
+//            }
 
         } catch (Exception ex) {
             Log.e("Error:", ex.getMessage());
