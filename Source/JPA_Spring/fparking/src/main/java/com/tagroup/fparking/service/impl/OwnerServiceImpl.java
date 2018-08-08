@@ -103,7 +103,7 @@ public class OwnerServiceImpl implements OwnerService {
 
 	@Override
 	public Owner forgotpassword(Owner owner) throws Exception {
-
+		System.out.println("owner = " + owner);
 		Owner o = ownerRepository.findByPhone(owner.getPhone());
 		if (o == null) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Owner was not found");
