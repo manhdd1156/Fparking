@@ -3,11 +3,11 @@ package com.example.hung.fparking;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-public class AlertDialog extends AppCompatActivity {
+public class DialogAddStaff extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_alert_dialog);
+        setContentView(R.layout.activity_dialog_add_staff);
     }
 }

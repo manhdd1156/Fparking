@@ -198,32 +198,40 @@
             android:textStyle="bold|italic" />
 
         <Button
-            android:id="@+id/button2"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnCloseDP"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView10"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="20dp"
-            android:text="TẠM ĐÓNG" />
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_selector"
+            android:text="TẠM ĐÓNG"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
-            android:id="@+id/button3"
-            android:layout_width="wrap_content"
+            android:id="@+id/btnDeleteDP"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_below="@+id/textView10"
-            android:layout_marginEnd="31dp"
-            android:layout_marginTop="20dp"
-            android:text="XÓA" />
+            android:layout_alignTop="@+id/btnCloseDP"
+            android:layout_marginEnd="15dp"
+            android:background="@drawable/button_selector"
+            android:text="XÓA"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <Button
             android:id="@+id/btnUpdateDP"
-            android:layout_width="wrap_content"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView10"
-            android:layout_marginLeft="31dp"
-            android:layout_marginTop="20dp"
-            android:text="CẬP NHẬT" />
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="30dp"
+            android:background="@drawable/button_selector"
+            android:text="CẬP NHẬT"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
 
         <TextView
             android:id="@+id/textView8"

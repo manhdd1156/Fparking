@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hung.fparking">
 
     <!--
@@ -44,7 +44,6 @@ xmlns:tools="http://schemas.android.com/tools"
 
         <activity
             android:name=".HomeActivity"
-
             android:label="@string/title_activity_home">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -56,26 +55,20 @@ xmlns:tools="http://schemas.android.com/tools"
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".login.LoginActivity">
-
-        </activity>
-        <activity android:name=".login.SignUp_Fragment">
-
-        </activity>
-        <activity android:name=".login.ForgotPasswordOtp_Fragment">
-
-        </activity>
+        <activity android:name=".login.LoginActivity"></activity>
+        <activity android:name=".login.SignUp_Fragment"></activity>
+        <activity android:name=".login.ForgotPasswordOtp_Fragment"></activity>
         <activity
             android:name=".ChangePassword"
             android:noHistory="true" />
-        <activity android:name=".AlertDialog" />
+        <activity android:name=".dialog.AlertDialog" />
         <activity android:name=".other.Contact" />
         <activity android:name=".Login" />
         <activity android:name=".StaffManagement" />
         <activity android:name=".DetailedParking" />
         <activity android:name=".other.TermsAndConditions" />
         <activity android:name=".other.Guide" />
-        <activity android:name=".DialogAddParking"></activity>
+        <activity android:name=".dialog.DialogAddParking" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -91,6 +84,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
+        <activity android:name=".DialogAddStaff"></activity>
     </application>
 
 </manifest>

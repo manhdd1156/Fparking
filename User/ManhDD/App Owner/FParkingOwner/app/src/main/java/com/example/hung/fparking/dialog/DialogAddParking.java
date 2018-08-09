@@ -1,7 +1,9 @@
-package com.example.hung.fparking;
+package com.example.hung.fparking.dialog;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import com.example.hung.fparking.R;
 
 public class DialogAddParking extends AppCompatActivity {
 
