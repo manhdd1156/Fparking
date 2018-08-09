@@ -44,19 +44,20 @@ xmlns:tools="http://schemas.android.com/tools"
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home">
 
+            android:label="@string/title_activity_home">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
         <activity android:name=".login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity android:name=".login.SignUp_Fragment">
 
@@ -70,7 +71,6 @@ xmlns:tools="http://schemas.android.com/tools"
         <activity android:name=".AlertDialog" />
         <activity android:name=".other.Contact" />
         <activity android:name=".Login" />
-        <activity android:name=".ParkingManagement" />
         <activity android:name=".StaffManagement" />
         <activity android:name=".DetailedParking" />
         <activity android:name=".other.TermsAndConditions" />

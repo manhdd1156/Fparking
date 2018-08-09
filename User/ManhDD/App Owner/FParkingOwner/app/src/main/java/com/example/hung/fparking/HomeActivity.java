@@ -36,6 +36,7 @@ import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
 import com.example.hung.fparking.other.Contact;
+import com.example.hung.fparking.other.Guide;
 import com.example.hung.fparking.other.TermsAndConditions;
 
 import java.text.DateFormat;
@@ -268,7 +269,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_parking) {
             // Handle the camera action
-            Intent intentParking = new Intent(HomeActivity.this, ParkingManagement.class);
+            Intent intentParking = new Intent(HomeActivity.this, Guide.class);
             startActivity(intentParking);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

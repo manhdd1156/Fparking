@@ -35,9 +35,9 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_staff_detail);
         Button mUpdate = (Button) findViewById(R.id.btnUpdate);
-        name = (EditText) findViewById(R.id.tbName);
-        phone = (EditText) findViewById(R.id.tbPhone);
-        address = (EditText) findViewById(R.id.tbAddress);
+        name = (EditText) findViewById(R.id.tbAddressDP);
+        phone = (EditText) findViewById(R.id.tbOpenTimeDP);
+        address = (EditText) findViewById(R.id.tbCloseTimeDP);
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
         changePass = findViewById(R.id.tbPassHP);
         changePass.setFocusable(false);

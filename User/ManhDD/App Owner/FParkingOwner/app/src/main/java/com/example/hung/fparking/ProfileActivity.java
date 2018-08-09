@@ -46,9 +46,9 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         tbPass = findViewById(R.id.tbPassHP);
         tbPass.setFocusable(false);
         update = findViewById(R.id.btnUpdate);
-        phone = (EditText) findViewById(R.id.tbPhone);
-        name = (EditText) findViewById(R.id.tbName);
-        address = (EditText) findViewById(R.id.tbAddress);
+        phone = (EditText) findViewById(R.id.tbOpenTimeDP);
+        name = (EditText) findViewById(R.id.tbAddressDP);
+        address = (EditText) findViewById(R.id.tbCloseTimeDP);
         tbPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
