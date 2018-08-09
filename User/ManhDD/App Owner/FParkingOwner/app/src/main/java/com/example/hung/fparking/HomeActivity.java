@@ -21,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -38,6 +39,7 @@ import com.example.hung.fparking.model.CheckNetwork;
 import com.example.hung.fparking.other.Contact;
 import com.example.hung.fparking.other.Guide;
 import com.example.hung.fparking.other.TermsAndConditions;
+import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -66,7 +68,8 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView backParkingManagement, addParking;
-
+    AlertDialog dialog;
+    String [] CITYLIST ={"Bãi xe Trần ","Bãi xe","aaaaaaaaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaaassssssssssssssssssssssssssssssssssssssssssssssssaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa","aaaaaaaaa"};
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -74,6 +77,21 @@ public class HomeActivity extends AppCompatActivity
 //        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         Session.homeActivity = HomeActivity.this;
         //Ánh xạ
+
+        addParking = findViewById(R.id.imageViewAddParking);
+        addParking.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_parking, null);
+                mBuilder.setView(mView);
+                dialog = mBuilder.create();
+                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_dropdown_item_1line, CITYLIST);
+                MaterialBetterSpinner betterSpinner = (MaterialBetterSpinner)mView.findViewById(R.id.dropdownCity);
+                betterSpinner.setAdapter(arrayAdapter);
+                dialog.show();
+            }
+        });
         tvTotalParking = (TextView) findViewById(R.id.tvTotalParking);
         tvTotalSpace = (TextView) findViewById(R.id.tvTotalCar);
 //        tbPass = findViewById(R.id.tbPassHP);

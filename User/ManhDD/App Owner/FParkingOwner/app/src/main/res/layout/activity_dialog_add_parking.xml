@@ -1,20 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:background="@color/background"
+    tools:context=".DetailStaffActivity">
+
 
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="wrap_content"
         android:layout_height="50dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
         android:scaleType="fitXY"
-        app:srcCompat="@drawable/header" />
+        app:srcCompat="@drawable/header"
+        tools:layout_editor_absoluteX="0dp"
+        tools:layout_editor_absoluteY="0dp" />
 
     <TextView
         android:id="@+id/textView2"
@@ -23,60 +24,114 @@
         android:layout_alignParentTop="true"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="14dp"
-        android:text="Thêm bãi đỗ"
+        android:text="Thêm bãi xe"
         android:textColor="@color/whitetext"
-        android:textSize="15dp"
-        android:textStyle="bold" />
+        android:textSize="15sp"
+        android:textStyle="bold"
+        tools:layout_editor_absoluteX="141dp"
+        tools:layout_editor_absoluteY="16dp" />
+
 
     <EditText
-        android:id="@+id/tbPassword"
+        android:id="@+id/tbAddressAddParking"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
         android:layout_below="@+id/imageView9"
-        android:layout_marginLeft="22dp"
-        android:layout_marginTop="30dp"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="15dp"
         android:background="@android:color/transparent"
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
-        android:hint="Mật khẩu"
-        android:inputType="textPassword"
+        android:hint="Địa chỉ"
+        android:inputType="text"
         android:padding="10dp"
         android:singleLine="true"
-        android:textColor="@color/black"
+        android:textColor="#000000"
         android:textSize="16sp" />
 
     <View
-        android:layout_width="319dp"
+        android:layout_width="285dp"
         android:layout_height="1px"
-        android:layout_below="@+id/tbPassword"
-        android:layout_marginLeft="33dp"
+        android:layout_below="@+id/tbAddressAddParking"
+        android:layout_centerHorizontal="true"
         android:background="@color/white_greyish" />
 
 
-    <Button
-        android:id="@+id/btnConfirm"
-        android:layout_width="116dp"
-        android:layout_height="36dp"
-        android:layout_below="@+id/tbPassword"
+    <EditText
+        android:id="@+id/tbOpenTimeAddParking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tbAddressAddParking"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="Giờ mở cửa"
+        android:inputType="text"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="285dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/tbOpenTimeAddParking"
         android:layout_centerHorizontal="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginTop="50dp"
+        android:background="@color/white_greyish" />
+
+
+    <EditText
+        android:id="@+id/tbCloseTimeAddParking"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tbOpenTimeAddParking"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="Giờ đóng cửa"
+        android:inputType="text"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="16sp" />
+
+    <View
+        android:layout_width="285dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/tbCloseTimeAddParking"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
+
+    <Button
+        android:id="@+id/btnUpdate"
+        android:layout_width="149dp"
+        android:layout_height="38dp"
+        android:layout_below="@+id/dropdownCity"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
         android:background="@drawable/button_selector"
-        android:text="XÁC NHẬN"
-        android:textColor="@android:color/white"
+        android:text="THÊM"
+        android:textColor="#FFFFFF"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvError"
-        android:layout_width="wrap_content"
+
+
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/dropdownCity"
+        android:layout_width="285dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="42dp"
-        android:layout_marginTop="142dp"
-        android:text="Mật khẩu không đúng, vui lòng nhập lại"
-        android:textColor="@android:color/holo_red_dark"
-        android:visibility="invisible" />
+        android:layout_below="@+id/tbCloseTimeAddParking"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="7dp"
+        android:hint="Tỉnh/Thành phố"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
 </RelativeLayout>
+

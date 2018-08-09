@@ -67,7 +67,7 @@
             android:textSize="16sp" />
 
     <View
-        android:layout_width="300dp"
+        android:layout_width="285dp"
         android:layout_height="1px"
         android:layout_below="@+id/tbNameAddStaff"
         android:layout_centerHorizontal="true"
@@ -92,7 +92,7 @@
             android:textSize="16sp" />
 
     <View
-        android:layout_width="300dp"
+        android:layout_width="285dp"
         android:layout_height="1px"
         android:layout_below="@+id/tbPhoneAddStaff"
         android:layout_centerHorizontal="true"
@@ -117,24 +117,24 @@
         android:textSize="16sp" />
 
     <View
-        android:layout_width="300dp"
+        android:layout_width="285dp"
         android:layout_height="1px"
         android:layout_below="@+id/tbAddressAddStaff"
         android:layout_centerHorizontal="true"
         android:background="@color/white_greyish" />
 
-        <Button
-            android:id="@+id/btnUpdate"
-            android:layout_width="149dp"
-            android:layout_height="38dp"
-            android:layout_below="@+id/dropdownParking"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="10dp"
-            android:layout_marginTop="20dp"
-            android:background="@drawable/button_selector"
-            android:text="THÊM"
-            android:textColor="#FFFFFF"
-            android:textStyle="bold" />
+    <Button
+        android:id="@+id/btnAddStaff"
+        android:layout_width="149dp"
+        android:layout_height="38dp"
+        android:layout_below="@+id/dropdownParking"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="10dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/button_selector"
+        android:text="THÊM"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold" />
 
     <EditText
         android:id="@+id/tbPassAddStaff"
@@ -154,7 +154,7 @@
         android:textSize="16sp" />
 
     <View
-        android:layout_width="300dp"
+        android:layout_width="285dp"
         android:layout_height="1px"
         android:layout_below="@+id/tbPassAddStaff"
         android:layout_centerHorizontal="true"
@@ -162,11 +162,11 @@
 
     <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
         android:id="@+id/dropdownParking"
-        android:layout_width="319dp"
+        android:layout_width="285dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/tbPassAddStaff"
-        android:layout_centerHorizontal="true"
+        android:layout_marginStart="28dp"
         android:layout_marginTop="7dp"
         android:hint="Chọn bãi xe"
         android:textColor="@color/black"
