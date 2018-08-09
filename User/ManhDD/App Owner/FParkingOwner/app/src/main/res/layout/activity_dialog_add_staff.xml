@@ -1,18 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     android:background="@color/background"
     tools:context=".DetailStaffActivity">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerHorizontal="true"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:layout_editor_absoluteY="0dp">
 
         <ImageView
             android:id="@+id/imageView9"
@@ -69,15 +63,15 @@
             android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
-        <View
-            android:layout_width="319dp"
-            android:layout_height="1px"
-            android:layout_below="@+id/tbNameAddStaff"
-            android:layout_marginLeft="33dp"
-            android:background="@color/white_greyish" />
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/tbNameAddStaff"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
 
 
         <EditText
@@ -94,89 +88,89 @@
             android:inputType="phone"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
-        <View
-            android:layout_width="319dp"
-            android:layout_height="1px"
-            android:layout_below="@+id/tbPhoneAddStaff"
-            android:layout_marginLeft="33dp"
-            android:background="@color/white_greyish" />
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/tbPhoneAddStaff"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
 
 
-        <EditText
-            android:id="@+id/tbAddressAddStaff"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/tbPhoneAddStaff"
-            android:layout_marginLeft="23dp"
-            android:layout_marginTop="7dp"
-            android:background="@android:color/transparent"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:hint="Địa chỉ"
-            android:inputType="textPostalAddress"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+    <EditText
+        android:id="@+id/tbAddressAddStaff"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tbPhoneAddStaff"
+        android:layout_marginLeft="23dp"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="Địa chỉ"
+        android:inputType="textPostalAddress"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
-        <View
-            android:layout_width="319dp"
-            android:layout_height="1px"
-            android:layout_below="@+id/tbAddressAddStaff"
-            android:layout_marginLeft="33dp"
-            android:background="@color/white_greyish" />
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/tbAddressAddStaff"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
 
         <Button
             android:id="@+id/btnUpdate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
+            android:layout_width="149dp"
+            android:layout_height="38dp"
+            android:layout_below="@+id/dropdownParking"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/button_selector2"
-            android:text="CẬP NHẬT"
+            android:layout_marginBottom="10dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/button_selector"
+            android:text="THÊM"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/tvSuccess"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_marginBottom="64dp"
-            android:layout_toEndOf="@+id/imageViewBackHistory"
-            android:text="Cập nhật thông tin thành công"
-            android:textColor="@android:color/holo_green_dark"
-            android:visibility="invisible" />
+    <EditText
+        android:id="@+id/tbPassAddStaff"
+        android:layout_width="361dp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/tbNameAddStaff"
+        android:layout_below="@+id/tbAddressAddStaff"
+        android:layout_marginTop="7dp"
+        android:background="@android:color/transparent"
+        android:drawablePadding="8dp"
+        android:gravity="center_vertical"
+        android:hint="Mật khẩu"
+        android:inputType="text|textPassword"
+        android:padding="10dp"
+        android:singleLine="true"
+        android:textColor="#000000"
+        android:textSize="16sp" />
 
-        <EditText
-            android:id="@+id/tbPassAddStaff"
-            android:layout_width="361dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tbNameAddStaff"
-            android:layout_below="@+id/tbAddressAddStaff"
-            android:layout_marginTop="7dp"
-            android:background="@android:color/transparent"
-            android:drawablePadding="8dp"
-            android:gravity="center_vertical"
-            android:hint="Mật khẩu"
-            android:inputType="text|textPassword"
-            android:padding="10dp"
-            android:singleLine="true"
-            android:textColor="@color/black"
-            android:textSize="16sp" />
+    <View
+        android:layout_width="300dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/tbPassAddStaff"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
 
-        <View
-            android:layout_width="319dp"
-            android:layout_height="1px"
-            android:layout_alignStart="@+id/null"
-            android:layout_below="@+id/tbPassAddStaff"
-            android:layout_marginLeft="33dp"
-            android:background="@color/white_greyish" />
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/dropdownParking"
+        android:layout_width="319dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/tbPassAddStaff"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="7dp"
+        android:hint="Chọn bãi xe"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
 
+</RelativeLayout>
 
-    </RelativeLayout>
-
-</android.support.constraint.ConstraintLayout>

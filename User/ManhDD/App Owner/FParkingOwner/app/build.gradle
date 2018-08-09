@@ -41,4 +41,5 @@ dependencies {
     //          Facebook AccountKit
     //#####################################################################
     implementation 'com.facebook.android:account-kit-sdk:4.29.0'
+    implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
 }
