@@ -86,7 +86,7 @@
 												<div class="col-lg-12">
 													<div class="panel panel-default">
 														<div class="panel-heading">Tổng số tiền phạt:
-															${totalPriceFine } VNĐ</div>
+															${totalPriceFine } </div>
 														<div class="panel-body">
 															<table width="100%"
 																class="table table-striped table-bordered table-hover"

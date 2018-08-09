@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý phản hồi người dùng</title>
+<title>Quản lý nghiệp vụ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -23,41 +23,54 @@
 			<!-- ===============Left End================= -->
 
 		</nav>
+
 		<!-- ===============Hearder+Left End================= -->
-		<!-- ===============Body Start================= -->
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Phản hồi từ: ${inforFeedBack }</h1>
+					<h1 class="page-header">Phản hồi người dùng</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
-
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
 						<div class="panel-body">
-							<div class="row">
-								<div class="col-lg-12">
-									<div>
-										<label>Ngày: ${dateFeedBack }</label>
-									</div>
-									<div class="form-group">
-										<label>Nội dung:</label>
-										<textarea  style="background-color: white;" class="form-control" rows="25" readonly>${content }</textarea>
-									</div>
-									<div>
-										<a href="/home/feedback/delete/${id }" onclick="deleteFunction()" type="button" class="btn btn-danger" >Xóa</a>
-									</div>
-								</div>
-							</div>
+							<table width="100%"
+								class="table table-striped table-bordered table-hover"
+								id="dataTables-example">
+								<thead>
+									<tr>
+										<th>Ngày</th>
+										<th>Tên</th>
+										<th>Nội Dung</th>
+										<th>Xóa</th>
+									</tr>
+								</thead>
+								<tbody>
+									<c:forEach items="${arrayListFeedback}" var="listFeedBack">
+										<tr class="odd gradeX">
+											<td>${listFeedBack.dateFeedBack }</td>
+											<td>${listFeedBack.nameFeedBack}</td>
+											<td><a href="/business/feedbackdetail/${listFeedBack.id}">${listFeedBack.content }</a></td>
+											<td><a href="#"
+												onclick="deleteFeedback2(${listFeedBack.id });return false">Xóa</a></td>
+										</tr>
+									</c:forEach>
+								</tbody>
+							</table>
+							<!-- /.table-responsive -->
 						</div>
+						<!-- /.panel-body -->
 					</div>
+					<!-- /.panel -->
 				</div>
+				<!-- /.col-lg-12 -->
 			</div>
 		</div>
-		<!-- ===============Body End================= -->
 	</div>
+	<!-- ===============Body End================= -->
+
 	<!-- ===============FooterJavaScrip Start================= -->
 	<%@include file="footerjavascrip.jsp"%>
 	<!-- ===============FooterJavaScrip End================= -->
