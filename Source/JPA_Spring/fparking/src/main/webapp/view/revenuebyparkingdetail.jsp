@@ -60,7 +60,7 @@
 									<td>${licenseplate }</td>
 									<td>${price }</td>
 									<td>${totalFine }</td>
-									<td>${commssion }</td>
+									<td>${commssion }%</td>
 									<td>${amount }</td>
 								</tr>
 							</tbody>

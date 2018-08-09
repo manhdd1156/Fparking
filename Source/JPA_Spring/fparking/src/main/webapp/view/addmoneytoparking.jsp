@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý phản hồi người dùng</title>
+<title>Quản lý nghiệp vụ</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -28,7 +28,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Phản hồi từ: ${inforFeedBack }</h1>
+					<h1 class="page-header">Nạp tiền tài khoản</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -39,16 +39,19 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-lg-12">
-									<div>
-										<label>Ngày: ${dateFeedBack }</label>
-									</div>
-									<div class="form-group">
-										<label>Nội dung:</label>
-										<textarea  style="background-color: white;" class="form-control" rows="25" readonly>${content }</textarea>
-									</div>
-									<div>
-										<a href="/home/feedback/delete/${id }" onclick="deleteFunction()" type="button" class="btn btn-danger" >Xóa</a>
-									</div>
+									<form role="form" method="POST" action="">
+										<div class="form-group">
+											<label>Địa chỉ:</label> 
+											<input type="text" class="form-control"value="${address }" disabled>
+										</div>
+										<div class="form-group">
+											<label>Số tiền nạp:</label> 
+											<input type="number" class="form-control" name="deposit"  value="110000" step="1" min="110000" required>
+											<p style="color: green;">${messSuss }</p>
+										</div>
+										<button type="submit" class="btn btn-success">Lưu</button>
+										<button type="reset" class="btn btn-success">Đặt lại</button>
+									</form>
 								</div>
 							</div>
 						</div>
