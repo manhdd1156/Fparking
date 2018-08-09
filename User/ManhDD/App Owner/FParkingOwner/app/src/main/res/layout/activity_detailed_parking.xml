@@ -39,7 +39,7 @@
 
 
         <ImageView
-            android:id="@+id/imageViewBackProfile"
+            android:id="@+id/imageViewBackDP"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/imageView9"
@@ -85,7 +85,7 @@
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="Nguyễn Văn Hưng"
-            android:inputType="textPersonName"
+            android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -118,7 +118,7 @@
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="01647383196"
-            android:inputType="phone"
+            android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -151,7 +151,7 @@
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
             android:hint="sdsdsdsdsdsdsdsds"
-            android:inputType="textPostalAddress"
+            android:inputType="text"
             android:padding="10dp"
             android:singleLine="true"
             android:textColor="@color/black"
@@ -181,7 +181,6 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
             android:layout_below="@+id/tbCloseTimeDP"
-            android:layout_marginTop="20dp"
             android:text="Tiền đặt cọc:"
             android:textSize="18sp"
             android:textStyle="italic" />
@@ -199,11 +198,11 @@
 
         <Button
             android:id="@+id/btnCloseDP"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView10"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/button_selector"
             android:text="TẠM ĐÓNG"
             android:textColor="#FFFFFF"
@@ -211,11 +210,11 @@
 
         <Button
             android:id="@+id/btnDeleteDP"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignTop="@+id/btnCloseDP"
-            android:layout_marginEnd="15dp"
+            android:layout_marginEnd="25dp"
             android:background="@drawable/button_selector"
             android:text="XÓA"
             android:textColor="#FFFFFF"
@@ -223,11 +222,11 @@
 
         <Button
             android:id="@+id/btnUpdateDP"
-            android:layout_width="110dp"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView10"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="30dp"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="40dp"
             android:background="@drawable/button_selector"
             android:text="CẬP NHẬT"
             android:textColor="#FFFFFF"

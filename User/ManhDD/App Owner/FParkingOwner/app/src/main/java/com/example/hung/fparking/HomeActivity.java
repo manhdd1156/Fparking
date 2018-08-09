@@ -269,7 +269,7 @@ public class HomeActivity extends AppCompatActivity
 
         if (id == R.id.nav_parking) {
             // Handle the camera action
-            Intent intentParking = new Intent(HomeActivity.this, Guide.class);
+            Intent intentParking = new Intent(HomeActivity.this, DetailedParking.class);
             startActivity(intentParking);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

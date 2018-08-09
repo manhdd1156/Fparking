@@ -4,6 +4,179 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".DialogAddStaff">
+    android:background="@color/background"
+    tools:context=".DetailStaffActivity">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:layout_editor_absoluteY="0dp">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/header"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="14dp"
+            android:text="Thêm nhân viên"
+            android:textColor="@color/whitetext"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            tools:layout_editor_absoluteX="141dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+
+        <ImageView
+            android:id="@+id/imageView2"
+            android:layout_width="wrap_content"
+            android:layout_height="174dp"
+            android:layout_below="@+id/imageView9"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/infodetail" />
+
+        <ImageView
+            android:id="@+id/imageView3"
+            android:layout_width="178dp"
+            android:layout_height="117dp"
+            android:layout_alignParentTop="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="80dp"
+            app:srcCompat="@drawable/logo_profile2" />
+
+        <EditText
+            android:id="@+id/tbNameAddStaff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageView2"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="15dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Họ và tên"
+            android:inputType="text"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbNameAddStaff"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+
+        <EditText
+            android:id="@+id/tbPhoneAddStaff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tbNameAddStaff"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="7dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Số điện thoại"
+            android:inputType="phone"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbPhoneAddStaff"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+
+        <EditText
+            android:id="@+id/tbAddressAddStaff"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/tbPhoneAddStaff"
+            android:layout_marginLeft="23dp"
+            android:layout_marginTop="7dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Địa chỉ"
+            android:inputType="textPostalAddress"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_below="@+id/tbAddressAddStaff"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+        <Button
+            android:id="@+id/btnUpdate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/button_selector2"
+            android:text="CẬP NHẬT"
+            android:textColor="#FFFFFF"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/tvSuccess"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="64dp"
+            android:layout_toEndOf="@+id/imageViewBackHistory"
+            android:text="Cập nhật thông tin thành công"
+            android:textColor="@android:color/holo_green_dark"
+            android:visibility="invisible" />
+
+        <EditText
+            android:id="@+id/tbPassAddStaff"
+            android:layout_width="361dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/tbNameAddStaff"
+            android:layout_below="@+id/tbAddressAddStaff"
+            android:layout_marginTop="7dp"
+            android:background="@android:color/transparent"
+            android:drawablePadding="8dp"
+            android:gravity="center_vertical"
+            android:hint="Mật khẩu"
+            android:inputType="text|textPassword"
+            android:padding="10dp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="16sp" />
+
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_alignStart="@+id/null"
+            android:layout_below="@+id/tbPassAddStaff"
+            android:layout_marginLeft="33dp"
+            android:background="@color/white_greyish" />
+
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

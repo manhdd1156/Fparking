@@ -43,12 +43,12 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        tbPass = findViewById(R.id.tbPassHP);
+        tbPass = findViewById(R.id.tbPassProfileOwner);
         tbPass.setFocusable(false);
-        update = findViewById(R.id.btnUpdate);
-        phone = (EditText) findViewById(R.id.tbOpenTimeDP);
-        name = (EditText) findViewById(R.id.tbAddressDP);
-        address = (EditText) findViewById(R.id.tbCloseTimeDP);
+        update = findViewById(R.id.btnUpdateProfileOwner);
+        phone = (EditText) findViewById(R.id.tbPhoneSProfileOwner);
+        name = (EditText) findViewById(R.id.tbNameProfileOwner);
+        address = (EditText) findViewById(R.id.tbAddressProfileOwner);
         tbPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
