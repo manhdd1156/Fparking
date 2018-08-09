@@ -4,7 +4,7 @@
 <head>
 <%@include file="headerjavascript.jsp"%>
 <meta charset="utf-8">
-<title>Quản lý nghiệp vụ</title>
+<title>Admin</title>
 </head>
 <body>
 	<!-- ===============Body Start================= -->
@@ -28,7 +28,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Chi tiết doanh thu tiền phạt</h1>
+					<h1 class="page-header">Thay đổi mật khẩu</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
@@ -36,27 +36,32 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-default">
-						
-							<table class="table table-bordered">
-								<thead>
-									<tr>
-										<th>Thời gian vào</th>
-										<th>Thời gian ra</th>
-										<th>Địa chỉ</th>
-										<th>Biển số xe</th>
-										<th>Giá</th>
-										<th>Tiền phạt</th>
-										<th>Phần chăm triết khấu</th>
-										<th>Tổng tiền thu</th>
-									</tr>
-								</thead>
-								<tbody>
-									<tr>
-									</tr>
-								</tbody>
-							</table>
-
-					
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<form role="form" method="POST" action="">
+										<div class="form-group">
+											<label>Username:</label> 
+											<input style="background-color: white;" type="text" class="form-control"value="${username }" disabled>
+										</div>
+										<div class="form-group">
+											<label>Mật khẩu cũ:</label> 
+											<input type="password" class="form-control" name="oldPassword" required>
+										</div>
+										<div class="form-group">
+											<label>Mật khẩu mới:</label> 
+											<input type="password" class="form-control" name="newPassword" maxlength="24" minlength="6" required>
+										</div>
+										<div class="form-group">
+											<label>Xác nhận mật khẩu:</label> 
+											<input type="password" class="form-control" name="re_Password" maxlength="24" minlength="6" required>
+										</div>
+										<p style="color: green;">${messEdit }</p>
+										<button type="submit" class="btn btn-success">Lưu</button>
+									</form>
+								</div>
+							</div>
+						</div>
 					</div>
 				</div>
 			</div>

@@ -1,5 +1,6 @@
 package com.tagroup.fparking.controller.webadmin;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +47,8 @@ public class BusinessController {
 	private FeedbackService feedbackService;
 	// Commission
 	// get commission
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
 	@RequestMapping(path = "/commission", method = RequestMethod.GET)
@@ -193,11 +196,7 @@ public class BusinessController {
 		for (Finetariff finetariff : listFineTariff) {
 			HashMap<String, Object> m = new HashMap<>();
 			double pricefine = finetariff.getPrice();
-			if (pricefine % 1 == 0) {
-				m.put("price", (int) pricefine);
-			} else {
-				m.put("price", finetariff.getPrice());
-			}
+			m.put("price", currencyVN.format(finetariff.getPrice()));
 			m.put("id", finetariff.getId());
 			m.put("vehicletype", finetariff.getVehicletype().getType());
 
@@ -227,7 +226,7 @@ public class BusinessController {
 		return "editfine";
 	}
 
-	// save edit prive fine
+	// save price fine
 	@RequestMapping(path = "/managementfine/edit/{id}", method = RequestMethod.POST)
 	public String saveFineTypeForm(Map<String, Object> model, @PathVariable("id") long id,
 			@RequestParam("priceFine") Double price) throws Exception {
@@ -256,71 +255,222 @@ public class BusinessController {
 
 	// get all revenuve with booking and fine
 	@RequestMapping(path = "/revenue", method = RequestMethod.GET)
-	public String getAllRevenue(Map<String, Object> model) throws Exception {
-		// get booking
+	public String getAllRevenue(Map<String, Object> model,
+			@RequestParam(value = "dateFrom", required = false) String dateFrom,
+			@RequestParam(value = "dateTo", required = false) String dateTo) throws Exception {
+
+		int check = 0;
 		List<Booking> listBooking;
+		List<Fine> listFine;
+		double revenueCommission = 0;
+		double revenueFine = 0;
+		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
+		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
+
 		try {
 			listBooking = bookingService.getAll();
+			listFine = fineService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
-		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
-		double revenue = 0;
-		for (Booking booking : listBooking) {
-			HashMap<String, Object> m = new HashMap<>();
-			for (int i = 0; i < 10; i++) {
-				if (booking.getStatus() == 3) {
+
+		if (dateTo == null && dateFrom == null) {
+			check = 0;
+		} else {
+			if (dateFrom.length() > 0 && dateTo.length() == 0) {
+				check = 1;
+			}
+			if (dateFrom.length() == 0 && dateTo.length() > 0)
+				check = 2;
+			if (dateFrom.length() > 0 && dateTo.length() > 0)
+				check = 3;
+		}
+
+		switch (check) {
+		case 1:
+			// get booking
+			for (Booking booking : listBooking) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (booking.getStatus() == 3
+						&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
 					m.put("id", booking.getId());
-					SimpleDateFormat sdf = new SimpleDateFormat(" HH:mm:ss dd-MM-yyyy");
+					String strDate = sdf.format(booking.getTimeout());
+					m.put("timeout", strDate);
+					m.put("address", booking.getParking().getAddress());
+					m.put("amount", currencyVN.format(booking.getAmount()));
+					double totalCommission = booking.getComission() * booking.getAmount();
+					revenueCommission = revenueCommission + totalCommission;
+					m.put("totalCommission", currencyVN.format(totalCommission));
+					arrayListBooking.add(m);
+				}
+			}
+			model.put("revenueCommission", currencyVN.format(revenueCommission));
+			model.put("arrayListBooking", arrayListBooking);
+
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
+
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
+				}
+			}
+			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			model.put("dateFrom", dateFrom);
+			break;
+		case 2:
+			// get booking
+			for (Booking booking : listBooking) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (booking.getStatus() == 3
+						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 00:00:00").getTime()) {
+					m.put("id", booking.getId());
+
 					String strDate = sdf.format(booking.getTimeout());
 					m.put("timeout", strDate);
 					m.put("address", booking.getParking().getAddress());
 
 					m.put("amount", currencyVN.format(booking.getAmount()));
 					double totalCommission = booking.getComission() * booking.getAmount();
-					revenue = revenue + totalCommission;
+					revenueCommission = revenueCommission + totalCommission;
 					m.put("totalCommission", currencyVN.format(totalCommission));
 					arrayListBooking.add(m);
 				}
 			}
+			model.put("revenueCommission", currencyVN.format(revenueCommission));
+			model.put("arrayListBooking", arrayListBooking);
 
-		}
-		model.put("totalRevenue", currencyVN.format(revenue));
-		model.put("arrayListBooking", arrayListBooking);
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1 && fine.getDate().getTime() <= sdf2.parse(dateTo + " 00:00:00").getTime()) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
 
-		// get fine
-		List<Fine> listFine;
-		try {
-			listFine = fineService.getAll();
-		} catch (Exception e) {
-			return "404";
-		}
-
-		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
-		double revenueFine = 0;
-		for (Fine fine : listFine) {
-			HashMap<String, Object> m = new HashMap<>();
-			if (fine.getStatus() == 1) {
-				m.put("id", fine.getId());
-				SimpleDateFormat sdf = new SimpleDateFormat(" HH:mm:ss dd-MM-yyyy");
-				m.put("dateFine", sdf.format(fine.getDate()));
-				m.put("address", fine.getParking().getAddress());
-				m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-				m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-				if (fine.getType() == 0) {
-					m.put("objectFine", "Lái xe");
-				} else {
-					m.put("objectFine", "Bãi xe");
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
 				}
-
-				revenueFine = revenueFine + fine.getPrice();
-				m.put("priceFine", currencyVN.format(fine.getPrice()));
-				arrayListFine.add(m);
 			}
-		}
-		model.put("revenueFine", currencyVN.format(revenueFine));
-		model.put("arrayListFine", arrayListFine);
+			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			model.put("toTalRevenue", "dateTo");
+			model.put("dateTo", dateTo);
+			break;
+		case 3:
+			// get booking
+			for (Booking booking : listBooking) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (booking.getStatus() == 3
+						&& booking.getTimein().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 00:00:00").getTime()) {
+					m.put("id", booking.getId());
+					String strDate = sdf.format(booking.getTimeout());
+					m.put("timeout", strDate);
+					m.put("address", booking.getParking().getAddress());
+					m.put("amount", currencyVN.format(booking.getAmount()));
+					double totalCommission = booking.getComission() * booking.getAmount();
+					revenueCommission = revenueCommission + totalCommission;
+					m.put("totalCommission", currencyVN.format(totalCommission));
+					arrayListBooking.add(m);
+				}
+			}
+			model.put("revenueCommission", currencyVN.format(revenueCommission));
+			model.put("arrayListBooking", arrayListBooking);
 
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+						&& fine.getDate().getTime() <= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
+
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
+				}
+			}
+			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			model.put("dateFrom", dateFrom);
+			model.put("dateTo", dateTo);
+			break;
+		default:
+			// get booking
+			for (Booking booking : listBooking) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (booking.getStatus() == 3) {
+					m.put("id", booking.getId());
+					String strDate = sdf.format(booking.getTimeout());
+					m.put("timeout", strDate);
+					m.put("address", booking.getParking().getAddress());
+					m.put("amount", currencyVN.format(booking.getAmount()));
+					double totalCommission = booking.getComission() * booking.getAmount();
+					revenueCommission = revenueCommission + totalCommission;
+					m.put("totalCommission", currencyVN.format(totalCommission));
+					arrayListBooking.add(m);
+				}
+			}
+			model.put("revenueCommission", currencyVN.format(revenueCommission));
+			model.put("arrayListBooking", arrayListBooking);
+
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
+				}
+			}
+			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			break;
+		}
 		return "managementrevenue";
 	}
 
@@ -329,44 +479,31 @@ public class BusinessController {
 	@RequestMapping(path = "/revenue/detail/{id}", method = RequestMethod.GET)
 	public String getRevenueByID(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Booking bookingDetail;
+		SimpleDateFormat sdf = new SimpleDateFormat(" HH:mm:ss dd-MM-yyyy");
 		try {
 			bookingDetail = bookingService.getById(id);
+			model.put("timein", sdf.format(bookingDetail.getTimein()));
+			model.put("timeout", sdf.format(bookingDetail.getTimeout()));
+			double totalTime = (bookingDetail.getTimeout().getTime() - bookingDetail.getTimein().getTime())
+					/ (60 * 60 * 1000);
+			if (totalTime % 1 == 0) {
+				model.put("totalTime", (int) totalTime);
+			} else {
+				model.put("totalTime", (int) totalTime + 1);
+			}
+			model.put("address", bookingDetail.getParking().getAddress());
+			model.put("licenseplate", bookingDetail.getDrivervehicle().getVehicle().getLicenseplate());
+			model.put("price", currencyVN.format(bookingDetail.getPrice()));
+			model.put("totalFine", currencyVN.format(bookingDetail.getTotalfine()));
+			if (bookingDetail.getComission() * 100 % 1 == 0) {
+				model.put("commssion", (int) bookingDetail.getComission() * 100);
+			} else {
+				model.put("commssion", bookingDetail.getComission() * 100);
+			}
+			model.put("amount", currencyVN.format(bookingDetail.getAmount()));
 		} catch (Exception e) {
 			return "404";
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat(" HH:mm:ss dd-MM-yyyy");
-		model.put("timein", sdf.format(bookingDetail.getTimein()));
-		model.put("timeout", sdf.format(bookingDetail.getTimeout()));
-		double totalTime = (bookingDetail.getTimeout().getTime() - bookingDetail.getTimein().getTime())
-				/ (60 * 60 * 1000);
-		if (totalTime % 1 == 0) {
-			model.put("totalTime", (int) totalTime);
-		} else {
-			model.put("totalTime", (int) totalTime + 1);
-		}
-		model.put("address", bookingDetail.getParking().getAddress());
-		model.put("licenseplate", bookingDetail.getDrivervehicle().getVehicle().getLicenseplate());
-
-		if (bookingDetail.getPrice() % 1 == 0) {
-			model.put("price", (int) bookingDetail.getPrice());
-		} else {
-			model.put("price", bookingDetail.getPrice());
-		}
-
-		if (bookingDetail.getTotalfine() % 1 == 0) {
-			model.put("totalFine", (int) bookingDetail.getTotalfine());
-		} else {
-			model.put("totalFine", bookingDetail.getTotalfine());
-		}
-
-		model.put("commssion", bookingDetail.getComission());
-
-		if (bookingDetail.getAmount() % 1 == 0) {
-			model.put("amount", (int) bookingDetail.getAmount());
-		} else {
-			model.put("amount", bookingDetail.getAmount());
-		}
-
 		return "revenuebyparkingdetail";
 	}
 
@@ -382,7 +519,7 @@ public class BusinessController {
 			ArrayList<Map<String, Object>> arrayListFeedback = new ArrayList<>();
 			for (Feedback feedback : listFeedback) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (feedback.getStatus() == 0 || feedback.getStatus()==1) {
+				if (feedback.getStatus() == 0 || feedback.getStatus() == 1) {
 					m.put("id", feedback.getId());
 					m.put("dateFeedBack", sdf.format(feedback.getDate()));
 					String fb = feedback.getContent();
@@ -430,7 +567,7 @@ public class BusinessController {
 		model.put("dateFeedBack", sdf.format(feedback.getDate()));
 		return "viewdetailfeedback";
 	}
-	
+
 	// delete feedback
 	@RequestMapping(path = "/feedback/delete/{id}", method = RequestMethod.GET)
 	public String deleteFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {

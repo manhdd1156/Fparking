@@ -65,7 +65,7 @@
 											<td>${parking.totalspace }</td>
 											<td>${parking.deposits }</td>
 											<td class="cente"><a
-												href="/account/patking/detail/${parking.id }">Xem</a></td>
+												href="/account/parking/detail/${parking.id }">Xem</a></td>
 											<td class="center"><a
 												href="/account/parking/blockaccount/${parking.id }">Khóa</a></td>
 											<td class="center"><a

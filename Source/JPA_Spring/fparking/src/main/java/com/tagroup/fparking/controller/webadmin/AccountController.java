@@ -337,7 +337,7 @@ public class AccountController {
 	}
 
 	// get detail parking by id
-	@RequestMapping(path = "/patking/detail/{id}", method = RequestMethod.GET)
+	@RequestMapping(path = "/parking/detail/{id}", method = RequestMethod.GET)
 	public String accountDriverDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
@@ -393,7 +393,7 @@ public class AccountController {
 		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
 		for (Booking booking : listBooking) {
 			HashMap<String, Object> m = new HashMap<>();
-			if (booking.getParking().getId() == id) {
+			if (booking.getParking().getId() == id && booking.getTimeout() != null && booking.getTimeout() != null) {
 				m.put("timein", sdf.format(booking.getTimein()));
 				m.put("timeout", sdf.format(booking.getTimeout()));
 				m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
@@ -675,5 +675,14 @@ public class AccountController {
 		}
 		model.put("messSuss", "Sửa thành công!");
 		return "editowner";
+	}
+
+	// management account admin
+
+	// go to form edit
+	@RequestMapping(path = "/admin/editaccount/{id}", method = RequestMethod.GET)
+	public String editAccountAdmin(Map<String, Object> model, @PathVariable Long id) throws Exception {
+		model.put("username", "admin");
+		return "changepass";
 	}
 }

@@ -45,6 +45,7 @@ public class HomeController {
 	@Autowired
 	private FineService fineService;
 
+
 	// go to home
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public String home(Map<String, Object> model) {
