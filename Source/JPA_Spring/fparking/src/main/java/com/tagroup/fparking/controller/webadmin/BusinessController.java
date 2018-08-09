@@ -301,6 +301,7 @@ public class BusinessController {
 					double totalCommission = booking.getComission() * booking.getAmount();
 					revenueCommission = revenueCommission + totalCommission;
 					m.put("totalCommission", currencyVN.format(totalCommission));
+					m.put("city", booking.getParking().getCity().getName());
 					arrayListBooking.add(m);
 				}
 			}
@@ -337,17 +338,16 @@ public class BusinessController {
 			for (Booking booking : listBooking) {
 				HashMap<String, Object> m = new HashMap<>();
 				if (booking.getStatus() == 3
-						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 00:00:00").getTime()) {
+						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", booking.getId());
-
 					String strDate = sdf.format(booking.getTimeout());
 					m.put("timeout", strDate);
 					m.put("address", booking.getParking().getAddress());
-
 					m.put("amount", currencyVN.format(booking.getAmount()));
 					double totalCommission = booking.getComission() * booking.getAmount();
 					revenueCommission = revenueCommission + totalCommission;
 					m.put("totalCommission", currencyVN.format(totalCommission));
+					m.put("city", booking.getParking().getCity().getName());
 					arrayListBooking.add(m);
 				}
 			}
@@ -357,7 +357,7 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() <= sdf2.parse(dateTo + " 00:00:00").getTime()) {
+				if (fine.getStatus() == 1 && fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", fine.getId());
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("address", fine.getParking().getAddress());
@@ -386,7 +386,7 @@ public class BusinessController {
 				HashMap<String, Object> m = new HashMap<>();
 				if (booking.getStatus() == 3
 						&& booking.getTimein().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
-						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 00:00:00").getTime()) {
+						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", booking.getId());
 					String strDate = sdf.format(booking.getTimeout());
 					m.put("timeout", strDate);
@@ -395,6 +395,7 @@ public class BusinessController {
 					double totalCommission = booking.getComission() * booking.getAmount();
 					revenueCommission = revenueCommission + totalCommission;
 					m.put("totalCommission", currencyVN.format(totalCommission));
+					m.put("city", booking.getParking().getCity().getName());
 					arrayListBooking.add(m);
 				}
 			}
@@ -405,7 +406,7 @@ public class BusinessController {
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
 				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
-						&& fine.getDate().getTime() <= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						&& fine.getDate().getTime() <= sdf2.parse(dateFrom + " 24:00:00").getTime()) {
 					m.put("id", fine.getId());
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("address", fine.getParking().getAddress());
@@ -441,6 +442,7 @@ public class BusinessController {
 					double totalCommission = booking.getComission() * booking.getAmount();
 					revenueCommission = revenueCommission + totalCommission;
 					m.put("totalCommission", currencyVN.format(totalCommission));
+					m.put("city", booking.getParking().getCity().getName());
 					arrayListBooking.add(m);
 				}
 			}
@@ -464,6 +466,7 @@ public class BusinessController {
 					revenueFine = revenueFine + fine.getPrice();
 					m.put("priceFine", currencyVN.format(fine.getPrice()));
 					arrayListFine.add(m);
+					System.out.println("sizeFineList:" + arrayListFine.size());
 				}
 			}
 			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));

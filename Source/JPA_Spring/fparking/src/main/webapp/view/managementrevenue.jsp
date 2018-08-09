@@ -43,7 +43,8 @@
 								<div>
 									<br>
 									<div class="col-lg-12">
-										Từ <input type="date" name="dateFrom" value="${dateFrom }"> đến <input type="date" name="dateTo" value="${dateTo }">
+										Từ <input type="date" name="dateFrom" value="${dateFrom }">
+										đến <input type="date" name="dateTo" value="${dateTo }">
 										<input type="submit" value="Tìm">
 									</div>
 								</div>
@@ -110,7 +111,7 @@
 														<td>${listFine.dateFine }</td>
 														<td>${listFine.licenseplate }</td>
 														<td>${listFine.vehicletype }</td>
-														<td>${ listFine.address}</td>
+														<td>${listFine.address}</td>
 														<td>${listFine.objectFine }</td>
 														<td>${listFine.priceFine }</td>
 													</tr>
@@ -118,7 +119,6 @@
 											</tbody>
 										</table>
 										<!-- /.table-responsive -->
-
 									</div>
 									<!-- /.panel-body -->
 								</div>
@@ -135,14 +135,13 @@
 			<div class="col-lg-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">Doanh thu chiết khấu</div>
-
-
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
-									<div class="panel-heading">Tổng doanh thu: ${revenueCommission }</div>
+									<div class="panel-heading">Tổng doanh thu:
+										${revenueCommission }</div>
 									<!-- /.panel-heading -->
 									<div class="panel-body">
 										<table width="100%"
@@ -163,7 +162,7 @@
 													<tr class="odd gradeX">
 														<td>${booking.timeout }</td>
 														<td>${booking.address }</td>
-														<th>Tỉnh/Thành Phố</th>
+														<td>${booking.city }</td>
 														<td>${ booking.amount}</td>
 														<td>${booking.totalCommission }</td>
 														<td class="center"><a
@@ -173,7 +172,6 @@
 											</tbody>
 										</table>
 										<!-- /.table-responsive -->
-
 									</div>
 									<!-- /.panel-body -->
 								</div>
