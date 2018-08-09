@@ -93,18 +93,21 @@ public class DriverServiceImpl implements DriverService {
 		// TODO Auto-generated method stub
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
+			System.out.println("driverServiceimpl/update  driver = " + driver);
 			List<Driver> dlist = getAll();
 			for (Driver d : dlist) {
 				if (d.getId() == t.getId() && d.getPassword().equals(driver.getPassword())) {
 					List<Driver> dlist2 = getAll();
 					boolean flag = false;
+					System.out.println("driverServiceimpl/update  driver == " + driver);
 					for (Driver driver2 : dlist) {
-						if (driver2.getPhone().equals(driver.getPhone())) {
+						if (driver2.getPhone().equals(driver.getPhone()) && driver2.getId()!=driver.getId()) {
 							flag = true;
+							System.out.println("driverServiceimpl/update  driver === " + driver);
 						}
 					}
 					if (!flag) {
-
+						System.out.println("driverServiceimpl/update  driver ==== " + driver);
 						return driverRepository.save(driver);
 					}
 
@@ -121,7 +124,8 @@ public class DriverServiceImpl implements DriverService {
 	public void delete(Long id) {
 		// TODO Auto-generated method stub
 		Driver driver = driverRepository.getOne(id);
-		driverRepository.delete(driver);
+		driver.setStatus(0);
+		driverRepository.save(driver);
 	}
 
 	@Override
@@ -157,25 +161,27 @@ public class DriverServiceImpl implements DriverService {
 
 	@Override
 	public Driver changepassword(DriverDTO driver) throws Exception {
-		if (driver.getNewpassword() == null) {
-			Driver d = driverRepository.findByPhone(driver.getPhone());
-			if(d==null) {
-				throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
-			}
-			d.setPassword(driver.getPassword());
+
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Driver d = getById(t.getId());
+		System.out.println("driver = " + d);
+		if (driver.getNewpassword() != null && d.getPassword().equals(driver.getPassword())) {
+			d.setPassword(driver.getNewpassword());
 			return driverRepository.save(d);
-			
-		} else {
-			Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-			Driver d = getById(t.getId());
-			System.out.println("driver = " + d);
-			if (driver.getNewpassword() != null && d.getPassword().equals(driver.getPassword())) {
-				d.setPassword(driver.getNewpassword());
-				return driverRepository.save(d);
-			}
 		}
-		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	public Driver changepasswordotp(DriverDTO driver) throws Exception {
+
+		Driver d = driverRepository.findByPhone(driver.getPhone());
+		if (d == null) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Driver was not found");
+		}
+		d.setPassword(driver.getPassword());
+		return driverRepository.save(d);
+
 	}
 
 	@Override

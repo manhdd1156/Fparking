@@ -85,9 +85,9 @@ private TariffRepository tariffRepository;
 			p = parkingRepository.save(parking);
 			}catch(Exception e) {
 				System.out.println("lỗi");
-				p = parkingRepository.getOne(parking.getId());
-				p.setCurrentspace(parking.getCurrentspace());
-				p = parkingRepository.save(p);
+//				p = parkingRepository.getOne(parking.getId());
+//				p.setCurrentspace(parking.getCurrentspace());
+//				p = parkingRepository.save(p);
 			}
 			return p;
 		} catch (Exception e) {

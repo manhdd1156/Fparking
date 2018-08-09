@@ -64,7 +64,6 @@
             android:name=".ChangePassword"
             android:noHistory="true" />
         <activity android:name=".AlertDialog" />
-        <activity android:name=".Contact" />
         <activity android:name=".Login"></activity>
     </application>
 
