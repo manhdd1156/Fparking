@@ -18,6 +18,7 @@ import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.CommisionService;
+import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.FineTariffService;
 import com.tagroup.fparking.service.NotificationService;
@@ -54,6 +55,8 @@ public class BookingServiceImpl implements BookingService {
 	private DriverVehicleRepository driverVehicleRepository;
 	@Autowired
 	private DriverRepository driverRepository;
+	@Autowired
+	private DriverService driverService;
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	@Autowired
@@ -154,7 +157,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setEvent("cancel");
 				n.setType(2);
 				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()-1);
+				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()+1);
 				pusherService.trigger(nn.getDriver_id() + "channel", "cancel", "order");
 				return bookingRepository.save(b);
 			}
@@ -217,7 +220,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getStatus() == 5) {
 
 					booking.setStatus(1);
-					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()+1);
+					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()-1);
 					System.out.println("booking = " + booking.toString());
 					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
@@ -297,7 +300,7 @@ public class BookingServiceImpl implements BookingService {
 					modelNoti.setType(2);
 					modelNoti = notificationService.update(modelNoti);
 					System.out.println("booking ===: khi chua tahy doi status = 3 : " + booking.toString());
-					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace()-1);
+					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace()+1);
 					pusherService.trigger(modelNoti.getDriver_id() + "channel", modelNoti.getEvent(), "ok");
 					
 					return bookingRepository.save(booking);
@@ -351,9 +354,9 @@ public class BookingServiceImpl implements BookingService {
 		try {
 			List<Booking> bAll = bookingRepository.findAll();
 			List<Booking> b = new ArrayList<>();
-			for (Booking booking : bAll) {
-				if (booking.getDrivervehicle().getDriver().getId() == id && booking.getStatus()==3) {
-					b.add(booking);
+			for(int i = bAll.size()-1;i>=0;i--) {
+				if (bAll.get(i).getDrivervehicle().getDriver().getId() == id && bAll.get(i).getStatus()==3) {
+					b.add(bAll.get(i));
 				}
 			}
 			return b;
@@ -419,8 +422,18 @@ public class BookingServiceImpl implements BookingService {
 				booking.setStatus(0);
 				n.setEvent("cancel");
 				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace()-1);
+				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace()+1);
 				pusherService.trigger(nn.getParking_id() + "channel", "cancel", "order");
+				List<Fine> flist = fineService.getByDriverID(booking.getDrivervehicle().getDriver().getId());
+				int count = 0;
+				for (Fine fine : flist) {
+					if(fine.getDrivervehicle().getDriver().getId() == booking.getDrivervehicle().getDriver().getId() && fine.getType()==0 && fine.getStatus()==0) {
+						count++;
+					}
+				}
+				if(count==3) {
+					driverService.block(booking.getDrivervehicle().getDriver());
+				}
 				bookingRepository.save(booking);
 			}
 		}

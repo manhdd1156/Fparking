@@ -178,4 +178,12 @@ public class DriverServiceImpl implements DriverService {
 		return null;
 	}
 
+	@Override
+	public Driver block(Driver driver) throws Exception {
+		// TODO Auto-generated method stub
+		driver.setStatus(0);
+		driverRepository.save(driver);
+		return null;
+	}
+
 }
