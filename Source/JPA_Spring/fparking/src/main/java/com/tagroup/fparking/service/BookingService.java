@@ -20,7 +20,7 @@ public interface BookingService {
 
 	public void delete(Long id) throws Exception;
 
-	public List<Booking> findByDriverId(Long id) throws Exception;
+	public List<Booking> findByDriverId(int type) throws Exception;
 
 	public Booking findByStatus(int status) throws Exception;
 
