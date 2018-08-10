@@ -46,8 +46,13 @@
 										<label>Nội dung:</label>
 										<textarea  style="background-color: white;" class="form-control" rows="25" readonly>${content }</textarea>
 									</div>
+									<div class="form-group">
+										<label>Cách thức xử lý:</label>
+										<textarea  style="background-color: white;" class="form-control" rows="10"></textarea>
+									</div>
 									<div>
-										<a href="/home/feedback/delete/${id }" onclick="deleteFunction()" type="button" class="btn btn-danger" >Xóa</a>
+										<a href="#" onclick="deleteFeedback2(${id });return false" type="button" class="btn btn-danger" >Xóa</a>
+										<a href="/business/feedback/resolvefeedback/${id }" onclick="deleteFunction()" type="button" class="btn btn-success" >Xong</a>
 									</div>
 								</div>
 							</div>

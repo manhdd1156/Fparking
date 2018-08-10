@@ -34,7 +34,7 @@
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
-					<div class="panel panel-default">
+					<div class="panel panel-primary">
 						<div class="panel-body">
 							<table width="100%"
 								class="table table-striped table-bordered table-hover"
@@ -44,6 +44,7 @@
 										<th>Ngày</th>
 										<th>Tên</th>
 										<th>Nội Dung</th>
+										<th>Trạng thái</th>
 										<th>Xóa</th>
 									</tr>
 								</thead>
@@ -53,8 +54,8 @@
 											<td>${listFeedBack.dateFeedBack }</td>
 											<td>${listFeedBack.nameFeedBack}</td>
 											<td><a href="/business/feedbackdetail/${listFeedBack.id}">${listFeedBack.content }</a></td>
-											<td><a href="#"
-												onclick="deleteFeedback2(${listFeedBack.id });return false">Xóa</a></td>
+											<td>${listFeedBack.status }</td>
+											<td><a href="#" onclick="deleteFeedback2(${listFeedBack.id });return false">Xóa</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>
