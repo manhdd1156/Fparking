@@ -63,8 +63,7 @@ public class AccountController {
 		try {
 			listDriver = driverService.getByStatus(1);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
-			return "error";
+			return "404";
 		}
 		if (listDriver != null && listDriver.size() > 0) {
 			model.put("listDriver", listDriver);

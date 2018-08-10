@@ -31,8 +31,7 @@ import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
-import com.example.hung.fparking.other.Contact;
-import com.example.hung.fparking.other.TermsAndConditions;
+import com.example.hung.fparking.notification.CheckNetworkReciever;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -57,9 +56,8 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        NetworkUltil.thisregisterReceiver(NetworkUltil, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+//        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Session.homeActivity = HomeActivity.this;
@@ -227,10 +225,6 @@ public class HomeActivity extends AppCompatActivity
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else if (id == R.id.nav_view) {
 
-        }else if (id == R.id.nav_DK) {
-            Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
-            startActivity(intentDK);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

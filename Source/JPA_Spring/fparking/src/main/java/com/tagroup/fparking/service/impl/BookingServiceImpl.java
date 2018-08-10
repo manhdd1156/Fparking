@@ -136,7 +136,7 @@ public class BookingServiceImpl implements BookingService {
 			n.setStatus(0); // 0 : parking chưa nhận.
 			// b.setStatus(booking.getStatus());
 			if (booking.getStatus() == 2) {
-				System.out.println("booking ====== 2 ");
+
 				n.setEvent("checkin");
 				Notification nn = notificationRepository.save(n);
 				return updateByStatus(nn);
@@ -151,25 +151,16 @@ public class BookingServiceImpl implements BookingService {
 				f.setParking(b.getParking());
 				f.setDate(new Date());
 				f.setType(1);
-				f.setStatus(1);
+				f.setStatus(0);
 				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype())
 						.getPrice());
 				f = fineService.create(f);
-				// parking bị phạt thì trừ luôn vào deposits
-				Parking p = parkingService.getById(b.getParking().getId());
-				p.setDeposits(p.getDeposits()-f.getPrice());
-				
 				b.setStatus(0);
-				// tiền cọc < 100 thì ban parking
-				if(p.getDeposits()<100000) {
-					p.setStatus(2);
-				}
-				parkingService.update(p);
 				n.setEvent("cancel");
 				n.setType(2);
 				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(n.getParking_id(), b.getParking().getCurrentspace() + 1);
-				pusherService.trigger(nn.getDriver_id() + "channel", "order", "after");
+				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() + 1);
+				pusherService.trigger(nn.getDriver_id() + "channel", "cancel", "order");
 				return bookingRepository.save(b);
 			}
 
@@ -307,12 +298,6 @@ public class BookingServiceImpl implements BookingService {
 					}
 					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
-					Parking parking = parkingService.getById(booking.getParking().getId());
-					parking.setDeposits(parking.getDeposits() - totalPrice* booking.getComission());
-					if(parking.getDeposits()<100000) {
-						parking.setStatus(2);
-					}
-					parkingService.update(parking);
 					booking.setStatus(3);
 					modelNoti.setType(2);
 					modelNoti = notificationService.update(modelNoti);
@@ -374,7 +359,7 @@ public class BookingServiceImpl implements BookingService {
 				
 				List<Booking> bAll = bookingRepository.findAll();
 				
-				for (Booking booking : bAll) {
+				for (Booking booking : b) {
 					if (booking.getDrivervehicle().getDriver().getId() == t.getId()
 							&& booking.getStatus() == 3) {
 						b.add(booking);
