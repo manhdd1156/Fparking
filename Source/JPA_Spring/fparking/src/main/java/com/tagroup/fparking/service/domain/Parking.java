@@ -104,7 +104,7 @@ public class Parking implements Serializable {
 		this.deposits = deposits;
 	}
 
-	public Object getImage() {
+	public String getImage() {
 		return this.image;
 	}
 

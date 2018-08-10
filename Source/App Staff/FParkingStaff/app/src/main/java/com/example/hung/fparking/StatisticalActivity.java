@@ -62,7 +62,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     Button btnShow;
     Date fromDate;
     Date toDate;
-    private int DEFAULT_TYPE=0;
+    private int DEFAULT_TYPE = 0;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
     private DatePickerDialog.OnDateSetListener mDateSetListener2;
 
@@ -117,15 +117,14 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener1, year, month, day);
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
-
             }
         });
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(toDate.getTime()<fromDate.getTime()) {
+                if (toDate != null && fromDate != null && toDate.getTime() < fromDate.getTime()) {
                     tvDateError.setVisibility(View.VISIBLE);
-                }else {
+                } else {
                     tvDateError.setVisibility(View.INVISIBLE);
                     BookingDTO b = new BookingDTO();
                     b.setParkingID(Session.currentStaff.getParking_id());
@@ -196,6 +195,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
 
     }
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -208,23 +208,42 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         }
     };
     @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
+    @Override
     public void onPostExecute(Object o) {
         List<BookingDTO> lstBooking = (List<BookingDTO>) o;
         List<BookingDTO> lstBookingAdapter = new ArrayList<>();
         double money = 0;
-        if (DEFAULT_TYPE == 1) {
+        if (toDate==null && fromDate==null) {
+            for (int i = 0; i < lstBooking.size(); i++) {
+                money += lstBooking.get(i).getAmount();
+            }
+            tvTotalCar.setText(lstBooking.size() + "");
+            NumberFormat formatter = new DecimalFormat("###,###");
+            tvTotalMoney.setText(formatter.format(money) + " vnđ");
+            ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBooking, this);
+            lv.setAdapter(arrayAdapter);
+
+        } else if(toDate != null || fromDate != null){
             for (int i = 0; i < lstBooking.size(); i++) {
                 final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                 try {
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimein());
-                    if (lstBooking.get(i).getTimeout().isEmpty() && datein.getTime() <= fromDate.getTime()) {
+                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                    if (fromDate != null && toDate==null && lstBooking.get(i).getTimeout().isEmpty() && datein.getTime() <= fromDate.getTime()) {
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
                         continue;
-                    }
-                    Date dateout = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    if (datein.getTime() >= fromDate.getTime() && dateout.getTime() <= toDate.getTime()) {
+                    } else if (fromDate!=null && toDate!=null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
                     }
@@ -240,16 +259,6 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
             ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBookingAdapter, this);
             lv.setAdapter(arrayAdapter);
 
-        } else {
-            for (int i = 0; i < lstBooking.size(); i++) {
-                money += lstBooking.get(i).getAmount();
-            }
-            tvTotalCar.setText(lstBooking.size() + "");
-            NumberFormat formatter = new DecimalFormat("###,###");
-            tvTotalMoney.setText(formatter.format(money) + " vnđ");
-            ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBooking, this);
-            lv.setAdapter(arrayAdapter);
-            DEFAULT_TYPE=1;
         }
         Log.d("Statistical_onPost: ", lstBooking.toString());
 

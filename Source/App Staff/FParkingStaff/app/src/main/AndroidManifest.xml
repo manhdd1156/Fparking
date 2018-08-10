@@ -49,7 +49,6 @@
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".CheckOutActivity" />
         <activity
             android:name=".dialog.DialogActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />

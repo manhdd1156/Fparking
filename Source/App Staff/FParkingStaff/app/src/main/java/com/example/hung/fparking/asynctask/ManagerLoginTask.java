@@ -227,6 +227,7 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
             formData.put("name", Session.currentStaff.getName());
             formData.put("phone", Session.currentStaff.getPhone());
             formData.put("address", Session.currentStaff.getAddress());
+            formData.put("password", Session.currentStaff.getPass());
 
 
             String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "staffs/update", formData.toString(),"PUT");
