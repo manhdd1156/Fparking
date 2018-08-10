@@ -101,12 +101,12 @@ public class BookingController {
 
 	}
 
-	// get booking by phone of driver ?
-	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-	@RequestMapping(path = "/drivers/{id}", method = RequestMethod.GET)
-	public ResponseEntity<?> getBookingByDphone(@PathVariable Long id) throws Exception {
+	// get booking by driver id and type ?    type = 1 : lấy ra list booking có status =3, type = 2 : lấy ra booking mới nhất
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
+	@RequestMapping(path = "/drivers", method = RequestMethod.GET)
+	public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") int type) throws Exception {
 
-		List<Booking> respone = bookingService.findByDriverId(id);
+		List<Booking> respone = bookingService.findByDriverId(type);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}

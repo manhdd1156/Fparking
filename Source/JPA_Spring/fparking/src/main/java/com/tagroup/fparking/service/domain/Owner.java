@@ -79,4 +79,11 @@ public class Owner implements Serializable {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
+
+	@Override
+	public String toString() {
+		return "Owner [id=" + id + ", address=" + address + ", name=" + name + ", phone=" + phone + ", password="
+				+ password + "]";
+	}
+	
 }

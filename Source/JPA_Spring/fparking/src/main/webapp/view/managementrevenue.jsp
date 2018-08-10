@@ -33,25 +33,64 @@
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
+			<div class="col-lg-12">
+				<div class="panel panel-default">
+					<div class="panel-heading">Thông tin doanh thu</div>
+					<!-- .panel-heading -->
+					<div class="panel-body">
+						<div class="panel-group" id="accordion">
+							<form action="" method="GET">
+								<div>
+									<br>
+									<div class="col-lg-12">
+										Từ <input type="date" name="dateFrom" value="${dateFrom }">
+										đến <input type="date" name="dateTo" value="${dateTo }">
+										<input type="submit" value="Tìm">
+									</div>
+								</div>
+							</form>
+							<div class="panel-heading">
+								<table class="table table-hover">
+									<thead>
+										<tr>
+											<th></th>
+											<th></th>
+										</tr>
+									</thead>
+									<tbody>
+										<tr>
+											<td><b>Tiền phạt</b></td>
+											<td>${revenueFine }</td>
+										</tr>
+										<tr>
+											<td><b>Tiền chiết khấu</b></td>
+											<td>${revenueCommission }</td>
+										</tr>
+										<tr>
+											<td><b>Tổng</b></td>
+											<td>${toTalRevenue }</td>
+										</tr>
+									</tbody>
+								</table>
+							</div>
+
+						</div>
+						<!-- .panel-body -->
+					</div>
+					<!-- /.panel -->
+				</div>
+			</div>
 
 			<div class="col-lg-6">
 				<div class="panel panel-default">
 					<div class="panel-heading">Doanh thu tiền phạt</div>
-					<form action="" method="GET">
-						<div>
-							<br>
-							<p class="col-lg-12">
-								Từ <input type="date"> đến <input type="date"> <input
-									type="submit" value="Tìm">
-							</p>
-						</div>
-					</form>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
-									<div class="panel-heading">Tổng doanh thu: ${revenueFine } VND</div>
+									<div class="panel-heading">Tổng doanh thu: ${revenueFine }
+									</div>
 									<div class="panel-body">
 										<table width="100%"
 											class="table table-striped table-bordered table-hover"
@@ -72,7 +111,7 @@
 														<td>${listFine.dateFine }</td>
 														<td>${listFine.licenseplate }</td>
 														<td>${listFine.vehicletype }</td>
-														<td>${ listFine.address}</td>
+														<td>${listFine.address}</td>
 														<td>${listFine.objectFine }</td>
 														<td>${listFine.priceFine }</td>
 													</tr>
@@ -80,7 +119,6 @@
 											</tbody>
 										</table>
 										<!-- /.table-responsive -->
-
 									</div>
 									<!-- /.panel-body -->
 								</div>
@@ -96,24 +134,14 @@
 
 			<div class="col-lg-6">
 				<div class="panel panel-default">
-					<div class="panel-heading">Doanh thu triết khấu</div>
-					<form action="" method="GET">
-						<div>
-							<br>
-							<p class="col-lg-12">
-								Từ <input type="date"> đến <input type="date"> <input
-									type="submit" value="Tìm">
-							</p>
-						</div>
-					</form>
-
+					<div class="panel-heading">Doanh thu chiết khấu</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
 								<div class="panel panel-default">
-									<div class="panel-heading">Tổng doanh thu: ${totalRevenue }
-										VND</div>
+									<div class="panel-heading">Tổng doanh thu:
+										${revenueCommission }</div>
 									<!-- /.panel-heading -->
 									<div class="panel-body">
 										<table width="100%"
@@ -123,8 +151,9 @@
 												<tr>
 													<th>Ngày</th>
 													<th>Địa chỉ</th>
+													<th>Tỉnh/Thành Phố</th>
 													<th>Tổng hóa đơn</th>
-													<th>Tiền triết khấu</th>
+													<th>Tiền chiết khấu</th>
 													<th></th>
 												</tr>
 											</thead>
@@ -133,6 +162,7 @@
 													<tr class="odd gradeX">
 														<td>${booking.timeout }</td>
 														<td>${booking.address }</td>
+														<td>${booking.city }</td>
 														<td>${ booking.amount}</td>
 														<td>${booking.totalCommission }</td>
 														<td class="center"><a
@@ -142,7 +172,6 @@
 											</tbody>
 										</table>
 										<!-- /.table-responsive -->
-
 									</div>
 									<!-- /.panel-body -->
 								</div>

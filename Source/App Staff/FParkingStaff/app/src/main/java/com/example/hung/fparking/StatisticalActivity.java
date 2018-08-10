@@ -217,14 +217,13 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
                 final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                 try {
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimein());
+                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
                     if (lstBooking.get(i).getTimeout().isEmpty() && datein.getTime() <= fromDate.getTime()) {
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
                         continue;
                     }
-                    Date dateout = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    if (datein.getTime() >= fromDate.getTime() && dateout.getTime() <= toDate.getTime()) {
+                    if (datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
                     }

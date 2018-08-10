@@ -30,7 +30,6 @@ public class OwnerController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
-	
 	// get profile owner
 	@PreAuthorize("hasAnyAuthority('OWNER')")
 	@RequestMapping(path = "/profile", method = RequestMethod.GET)
@@ -38,13 +37,22 @@ public class OwnerController {
 		Owner respone = ownerService.getProfile();
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-	
-	// update profile 
-		@PreAuthorize("hasAnyAuthority('OWNER')")
-		@RequestMapping(path = "/update", method = RequestMethod.PUT)
-		public ResponseEntity<?> update(@RequestBody Owner owner) throws Exception {
-			Owner respone = ownerService.update(owner);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+	// update profile
+	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@RequestMapping(path = "/update", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody Owner owner) throws Exception {
+		Owner respone = ownerService.update(owner);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
+	}
+
+	// change password when forgot password driver
+	@RequestMapping(path = "/forgotpassword", method = RequestMethod.PUT)
+	public ResponseEntity<?> forgotpassword(@RequestBody Owner owner) throws Exception {
+
+		Owner respone = ownerService.forgotpassword(owner);
+
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
 }

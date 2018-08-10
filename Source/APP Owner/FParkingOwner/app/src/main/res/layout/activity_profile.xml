@@ -30,7 +30,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
-            android:text="Thông Tin Nhân Viên"
+            android:text="Thông Tin Cá Nhân"
             android:textColor="@color/whitetext"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -217,6 +217,28 @@
             android:layout_alignStart="@+id/textView3"
             android:layout_below="@+id/tbPassHP"
             android:background="@color/white_greyish" />
+
+        <TextView
+            android:id="@+id/lbMoney"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbPassHP"
+            android:layout_marginTop="15dp"
+            android:text="Tài khoản:"
+            android:textSize="18sp"
+            android:textStyle="italic" />
+
+        <TextView
+            android:id="@+id/tvTotalMoneyOwner"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView2"
+            android:layout_below="@+id/tbPassHP"
+            android:layout_marginTop="15dp"
+            android:text="TextView"
+            android:textSize="18sp"
+            android:textStyle="bold|italic" />
 
 
     </RelativeLayout>

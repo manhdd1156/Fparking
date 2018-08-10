@@ -6,6 +6,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
@@ -16,8 +17,10 @@ import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.NotificationRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.CommisionService;
+import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.FineTariffService;
 import com.tagroup.fparking.service.NotificationService;
@@ -42,30 +45,31 @@ public class BookingServiceImpl implements BookingService {
 	private NotificationService notificationService;
 	@Autowired
 	private NotificationRepository notificationRepository;
-	
+
 	@Autowired
 	private TariffService tariffService;
 	@Autowired
 	private FineService fineService;
 	@Autowired
 	private ParkingService parkingService;
-	
+
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
 	@Autowired
 	private DriverRepository driverRepository;
+	@Autowired
+	private DriverService driverService;
 	@Autowired
 	private VehicleRepository vehicleRepository;
 	@Autowired
 	private CommisionService commisionService;
 	@Autowired
 	private FineTariffService fineTariffService;
-	
 
 	@Override
 	public List<Booking> getAll() {
 		// TODO Auto-generated method stub
-//		pusherService.trigger("channel", "event", "dataa");
+		// pusherService.trigger("channel", "event", "dataa");
 		return bookingRepository.findAll();
 
 	}
@@ -75,7 +79,7 @@ public class BookingServiceImpl implements BookingService {
 		// TODO Auto-generated method stub
 		try {
 			return bookingRepository.getOne(id);
-			
+
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found " + e);
 		}
@@ -108,7 +112,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setStatus(0); // 0 : parking chưa nhận.
 				Notification nn = notificationService.create(n);
 				System.out.println("BookingServiceIml/create noti : " + nn);
-//				pusherService.trigger(b.getParking().getId() + "channel", "order", "");
+				// pusherService.trigger(b.getParking().getId() + "channel", "order", "");
 			}
 			return b;
 		} catch (Exception e) {
@@ -130,9 +134,9 @@ public class BookingServiceImpl implements BookingService {
 			n.setParking_id(b.getParking().getId());
 			n.setType(1); // 1 : driver gửi cho parking
 			n.setStatus(0); // 0 : parking chưa nhận.
-//			b.setStatus(booking.getStatus());
+			// b.setStatus(booking.getStatus());
 			if (booking.getStatus() == 2) {
-				
+				System.out.println("booking ====== 2 ");
 				n.setEvent("checkin");
 				Notification nn = notificationRepository.save(n);
 				return updateByStatus(nn);
@@ -140,25 +144,35 @@ public class BookingServiceImpl implements BookingService {
 				n.setEvent("checkout");
 				Notification nn = notificationRepository.save(n);
 				return null;
-			}else if(booking.getStatus()==0) {
+			} else if (booking.getStatus() == 0) {
 				b.setStatus(0);
 				Fine f = new Fine();
 				f.setDrivervehicle(b.getDrivervehicle());
 				f.setParking(b.getParking());
 				f.setDate(new Date());
 				f.setType(1);
-				f.setStatus(0);
-				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype()).getPrice());
+				f.setStatus(1);
+				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype())
+						.getPrice());
 				f = fineService.create(f);
+				// parking bị phạt thì trừ luôn vào deposits
+				Parking p = parkingService.getById(b.getParking().getId());
+				p.setDeposits(p.getDeposits()-f.getPrice());
+				
 				b.setStatus(0);
+				// tiền cọc < 100 thì ban parking
+				if(p.getDeposits()<100000) {
+					p.setStatus(2);
+				}
+				parkingService.update(p);
 				n.setEvent("cancel");
 				n.setType(2);
 				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()-1);
-				pusherService.trigger(nn.getDriver_id() + "channel", "cancel", "order");
+				parkingService.changeSpace(n.getParking_id(), b.getParking().getCurrentspace() + 1);
+				pusherService.trigger(nn.getDriver_id() + "channel", "order", "after");
 				return bookingRepository.save(b);
 			}
-			
+
 			return null;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
@@ -217,7 +231,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getStatus() == 5) {
 
 					booking.setStatus(1);
-					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace()+1);
+					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() - 1);
 					System.out.println("booking = " + booking.toString());
 					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
@@ -234,7 +248,7 @@ public class BookingServiceImpl implements BookingService {
 					Date date = new Date();
 					booking.setTimein(date);
 					booking.setComission(commisionService.getCommision());
-					
+
 					double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
 					booking.setTotalfine(finePrice);
 					System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
@@ -251,7 +265,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 2) {
 					booking.setStatus(3);
-					
+
 					return bookingRepository.save(booking);
 				}
 			}
@@ -291,15 +305,21 @@ public class BookingServiceImpl implements BookingService {
 					if (diffInHours < 1) {
 						totalPrice = booking.getPrice();
 					}
-					totalPrice+=booking.getTotalfine();
+					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
+					Parking parking = parkingService.getById(booking.getParking().getId());
+					parking.setDeposits(parking.getDeposits() - totalPrice* booking.getComission());
+					if(parking.getDeposits()<100000) {
+						parking.setStatus(2);
+					}
+					parkingService.update(parking);
 					booking.setStatus(3);
 					modelNoti.setType(2);
 					modelNoti = notificationService.update(modelNoti);
 					System.out.println("booking ===: khi chua tahy doi status = 3 : " + booking.toString());
-					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace()-1);
+					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace() + 1);
 					pusherService.trigger(modelNoti.getDriver_id() + "channel", modelNoti.getEvent(), "ok");
-					
+
 					return bookingRepository.save(booking);
 				}
 			}
@@ -346,16 +366,25 @@ public class BookingServiceImpl implements BookingService {
 	}
 
 	@Override
-	public List<Booking> findByDriverId(Long id) throws Exception {
-
+	public List<Booking> findByDriverId(int type) throws Exception {
 		try {
-			List<Booking> bAll = bookingRepository.findAll();
 			List<Booking> b = new ArrayList<>();
-			for (Booking booking : bAll) {
-				if (booking.getDrivervehicle().getDriver().getId() == id && booking.getStatus()==3) {
-					b.add(booking);
+			Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			if (type == 1) {
+				
+				List<Booking> bAll = bookingRepository.findAll();
+				
+				for (Booking booking : bAll) {
+					if (booking.getDrivervehicle().getDriver().getId() == t.getId()
+							&& booking.getStatus() == 3) {
+						b.add(booking);
+					}
 				}
+			}else if(type == 2) {
+				List<Booking> bAll = bookingRepository.findAll();
+				b.add(bAll.get(bAll.size()-1)); 
 			}
+			
 			return b;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
@@ -377,19 +406,17 @@ public class BookingServiceImpl implements BookingService {
 		return null;
 	}
 
-	
 	@Override
 	public void cancel(BookingDTO bb) throws Exception {
 		// TODO Auto-generated method stub
 		List<Booking> bAll = bookingRepository.findAll();
 		// driver cancel when preorder
 		for (Booking booking : bAll) {
-			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid() &&
-					booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid() &&
-					booking.getParking().getId() == bb.getParkingid()
-					&& booking.getStatus() == 5) {
-				Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(),
-						1, "order", 0);
+			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid()
+					&& booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid()
+					&& booking.getParking().getId() == bb.getParkingid() && booking.getStatus() == 5) {
+				Notification modelNoti = notificationService
+						.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(), 1, "order", 0);
 				notificationRepository.delete(modelNoti);
 				pusherService.trigger(booking.getParking().getId() + "channel", "cancel", "preorder");
 				bookingRepository.delete(booking);
@@ -398,10 +425,9 @@ public class BookingServiceImpl implements BookingService {
 		}
 		// driver cancel when ordered
 		for (Booking booking : bAll) {
-			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid() &&
-					booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid() &&
-					booking.getParking().getId() == bb.getParkingid()
-					&& booking.getStatus() == 1) {
+			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid()
+					&& booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid()
+					&& booking.getParking().getId() == bb.getParkingid() && booking.getStatus() == 1) {
 				Notification n = new Notification();
 				n.setDriver_id(booking.getDrivervehicle().getDriver().getId());
 				n.setVehicle_id(booking.getDrivervehicle().getVehicle().getId());
@@ -414,18 +440,29 @@ public class BookingServiceImpl implements BookingService {
 				f.setDate(new Date());
 				f.setType(0);
 				f.setStatus(0);
-				f.setPrice(fineTariffService.getByVehicleType(booking.getDrivervehicle().getVehicle().getVehicletype()).getPrice());
+				f.setPrice(fineTariffService.getByVehicleType(booking.getDrivervehicle().getVehicle().getVehicletype())
+						.getPrice());
 				f = fineService.create(f);
 				booking.setStatus(0);
 				n.setEvent("cancel");
 				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace()-1);
+				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace() + 1);
 				pusherService.trigger(nn.getParking_id() + "channel", "cancel", "order");
+				List<Fine> flist = fineService.getByDriverID(booking.getDrivervehicle().getDriver().getId());
+				int count = 0;
+				for (Fine fine : flist) {
+					if (fine.getDrivervehicle().getDriver().getId() == booking.getDrivervehicle().getDriver().getId()
+							&& fine.getType() == 0 && fine.getStatus() == 0) {
+						count++;
+					}
+				}
+				if (count == 3) {
+					driverService.block(booking.getDrivervehicle().getDriver());
+				}
 				bookingRepository.save(booking);
 			}
 		}
-	
-			
+
 	}
 
 }

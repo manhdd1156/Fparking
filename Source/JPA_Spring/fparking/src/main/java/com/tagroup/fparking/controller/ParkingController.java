@@ -42,9 +42,9 @@ public class ParkingController {
 	}
 	// get parking by owner id
 		@PreAuthorize("hasAnyAuthority('OWNER')")
-		@RequestMapping(path = "/owners/{id}", method = RequestMethod.GET)
-		public ResponseEntity<?> getbyOid(@PathVariable Long id) throws Exception {
-			List<Parking> respone = parkingService.getByOId(id);
+		@RequestMapping(path = "/owners", method = RequestMethod.GET)
+		public ResponseEntity<?> getbyOid() throws Exception {
+			List<Parking> respone = parkingService.getByOId();
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 
 		}
@@ -82,7 +82,7 @@ public class ParkingController {
 
 	}
 
-	// get tariff by parking id = ?
+	// get parking by parking id = ?
 	@PreAuthorize("hasAnyAuthority('STAFF','ADMIN')")
 	@RequestMapping(path = "/owner/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getByOwnerId(@PathVariable Long id) throws Exception {

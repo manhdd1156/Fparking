@@ -12,15 +12,17 @@ import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.domain.Owner;
+
 @Service
-public class OwnerServiceImpl implements OwnerService{
-@Autowired
-private OwnerRepository ownerRepository;
+public class OwnerServiceImpl implements OwnerService {
+	@Autowired
+	private OwnerRepository ownerRepository;
+
 	@Override
 	public List<Owner> getAll() {
 		// TODO Auto-generated method stub
 		return ownerRepository.findAll();
-		
+
 	}
 
 	@Override
@@ -31,43 +33,45 @@ private OwnerRepository ownerRepository;
 			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
 		}
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public Owner create(Owner owner) {
 		// TODO Auto-generated method stub
 		return ownerRepository.save(owner);
-	
+
 	}
 
 	@Override
 	public Owner update(Owner owner) {
-		// TODO Auto-generated method stub
-		// TODO Auto-generated method stub
-				try {
-					List<Owner> olist = getAll();
-					for (Owner o : olist) {
-						if (o.getId() == owner.getId()) {
-							List<Owner> olist2 = getAll();
-							boolean flag = false;
-							for (Owner owner2 : olist) {
-								if (owner2.getPhone().equals(owner.getPhone())) {
-									flag = true;
-								}
-							}
-							if (!flag) {
-
-								return ownerRepository.save(owner);
-							}
-
+		
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		try {
+			List<Owner> olist = getAll();
+			for (Owner o : olist) {
+				if (o.getId() == t.getId()) {
+					boolean flag = false;
+					for (Owner owner2 : olist) {
+						if (owner2.getId()!=t.getId() && owner2.getPhone().equals(owner.getPhone())) {
+							flag = true;
 						}
 					}
-				} catch (Exception e) {
-					System.out.println(e);
+					if (!flag) {
+						owner.setId(t.getId());
+						return ownerRepository.save(owner);
+					}
+					else
+						throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+
 				}
-				return null;
-		
+			}
+			
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+		}
+		return null;
+
 	}
 
 	@Override
@@ -81,9 +85,10 @@ private OwnerRepository ownerRepository;
 	public Owner findByPhoneAndPassword(String phone, String password) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			if(ownerRepository.findByPhoneAndPassword(phone, password)!=null)
-			return ownerRepository.findByPhoneAndPassword(phone, password);
-			else throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+			if (ownerRepository.findByPhoneAndPassword(phone, password) != null)
+				return ownerRepository.findByPhoneAndPassword(phone, password);
+			else
+				throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		}
@@ -92,9 +97,19 @@ private OwnerRepository ownerRepository;
 	@Override
 	public Owner getProfile() throws Exception {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		return ownerRepository.getOne(t.getId());
 	}
-	
+
+	@Override
+	public Owner forgotpassword(Owner owner) throws Exception {
+		System.out.println("owner = " + owner);
+		Owner o = ownerRepository.findByPhone(owner.getPhone());
+		if (o == null) {
+			throw new APIException(HttpStatus.NOT_FOUND, "The Owner was not found");
+		}
+		o.setPassword(owner.getPassword());
+		return ownerRepository.save(o);
+	}
 
 }
