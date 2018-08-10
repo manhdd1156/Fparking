@@ -45,7 +45,7 @@
 											<input type="text" class="form-control" name="vehicletype" value="${type}">
 											<p style="color: green;">${messSuss }</p>
 										</div>
-										<button type="submit" class="btn btn-success">Thêm</button>
+										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>
 									</form>
 								</div>

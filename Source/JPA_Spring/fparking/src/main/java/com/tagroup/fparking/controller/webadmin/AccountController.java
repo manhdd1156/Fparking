@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tagroup.fparking.dto.DriverFineDTO;
+import com.tagroup.fparking.service.AdminService;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.DriverVehicleService;
@@ -52,6 +53,8 @@ public class AccountController {
 	private TariffService tariffService;
 	@Autowired
 	private BookingService bookingService;
+	@Autowired
+	private AdminService adminService;
 
 	// Management Drivers Account
 
@@ -681,7 +684,42 @@ public class AccountController {
 	// go to form edit
 	@RequestMapping(path = "/admin/editaccount/{id}", method = RequestMethod.GET)
 	public String editAccountAdmin(Map<String, Object> model, @PathVariable Long id) throws Exception {
-		model.put("username", "admin");
+//		try {
+//			Admin admin = adminService.getById(id);
+//			model.put("username", admin.getUsername());
+//			System.out.println("lỗi go to edit form---"+id);
+//		} catch (Exception e) {
+//			return "404";
+//		}
 		return "changepass";
-	}
+	} 
+
+//	// change pass admin
+//	@RequestMapping(path = "/admin/editaccount/{id}", method = RequestMethod.POST)
+//	public String saveAccountAdmin(Map<String, Object> model, @PathVariable("id") Long id,
+//			@RequestParam("oldPassword") String oldpass, @RequestParam("newPassword") String newpass,
+//			@RequestParam("re_Password") String repass) throws Exception {
+//		try {
+//			Admin admin = adminService.getById(id);
+//			System.out.println("lỗi save edit---"+id);
+//			if (admin.getPassword().equals(oldpass)) {
+//				if (newpass.equals(repass)) {
+//					admin.setPassword(newpass);
+//					adminService.update(admin);
+//				} else {
+//					model.put("messError", "Mật khẩu và mật khẩu nhập lại không khớp!");
+//					model.put("username", admin.getUsername());
+//					return "changepass";
+//				}
+//				model.put("messSuss", "Sửa thành công!");
+//				model.put("username", admin.getUsername());
+//			}else {
+//				model.put("messError", "Mật khẩu không đúng!");
+//				model.put("username", admin.getUsername());
+//			}
+//		} catch (Exception e) {
+//			return "404";
+//		}
+//		return "changepass";
+//	}
 }
