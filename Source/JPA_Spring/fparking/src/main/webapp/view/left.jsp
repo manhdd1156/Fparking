@@ -25,7 +25,7 @@
 			<li><a href="#"><i class="glyphicon glyphicon-usd"></i> Quản lý
 					nghiệp vụ<span class="fa arrow"></span></a>
 				<ul class="nav nav-second-level">
-					<li><a href="/business/revenue/commission">Doanh thu chiếu khấu</a></li>
+					<li><a href="/business/revenue/commission">Doanh thu chiết khấu</a></li>
 					<li><a href="/business/revenue/fine">Doanh thu tiền phạt</a></li>
 					<li><a href="/business/managementfine">Quản lý tiền phạt</a></li>
 					<li><a href="/business/commission">Phần trăm chiết khấu</a></li>

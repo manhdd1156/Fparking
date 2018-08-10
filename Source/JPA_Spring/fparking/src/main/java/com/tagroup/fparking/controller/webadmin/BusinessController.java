@@ -585,7 +585,7 @@ public class BusinessController {
 
 	}
 
-	// view feedback
+	// view feedback by id
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.GET)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Feedback feedback = new Feedback();
@@ -606,6 +606,7 @@ public class BusinessController {
 		model.put("inforFeedBack", feedback.getName() + "_" + feedback.getPhone());
 		model.put("content", feedback.getContent());
 		model.put("dateFeedBack", sdf.format(feedback.getDate()));
+		model.put("resolve", feedback.getResolve());
 		return "viewdetailfeedback";
 	}
 
@@ -626,12 +627,14 @@ public class BusinessController {
 	}
 
 	// resolve feedback
-	@RequestMapping(path = "/feedback/resolvefeedback/{id}", method = RequestMethod.GET)
-	public String resolveFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {
+	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.POST)
+	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
+			@RequestParam("resolve") String resolve) {
 		try {
 			Feedback feedbackupdate = new Feedback();
 			feedbackupdate = feedbackService.getById(id);
 			feedbackupdate.setType(1);
+			feedbackupdate.setResolve(resolve);
 			feedbackService.update(feedbackupdate);
 		} catch (Exception e) {
 			return "404";

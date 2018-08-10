@@ -87,4 +87,16 @@
     	        table.draw();
     	    } );
     	} );
+    	
+    	function validateForm()
+    	{
+    		var newpass = document.getElementById('newPassword').value;
+    		var repass = document.getElementById('re_Password').value;
+    		if(newpass!=repass){
+    			
+    		}else{
+    			alert('Mật khẩu và mật khảu nhập lại không khớp!');
+    		}
+    	    return false;
+    	}
     </script>

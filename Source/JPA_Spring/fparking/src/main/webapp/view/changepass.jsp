@@ -50,13 +50,14 @@
 										</div>
 										<div class="form-group">
 											<label>Mật khẩu mới:</label> 
-											<input type="password" class="form-control" name="newPassword" maxlength="24" minlength="6" required>
+											<input type="password" class="form-control" name="newPassword" id="newPassword" maxlength="24" minlength="6" required>
 										</div>
 										<div class="form-group">
 											<label>Xác nhận mật khẩu:</label> 
-											<input type="password" class="form-control" name="re_Password" maxlength="24" minlength="6" required>
+											<input type="password" class="form-control" name="re_Password" id="re_Password" maxlength="24" minlength="6" required>
 										</div>
-										<p style="color: green;">${messEdit }</p>
+										<p style="color: green;">${messSuss }</p>
+										<p style="color: red;">${messError }</p>
 										<button type="submit" class="btn btn-success">Lưu</button>
 									</form>
 								</div>
