@@ -95,7 +95,10 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
                 oneBooking = jsonObj.getJSONObject(i);
                 int bookingID = oneBooking.getInt("id");
                 int status = oneBooking.getInt("status");
-                if (method.equals("homeget") && status != 1 && status != 2) {
+                if (method.equals("homeget") && status != 1 && status != 2 ||oneBooking.getString("timein") == null || oneBooking.getString("timeout")==null) {
+                    continue;
+                }
+                else if (method.equals("statisticget")&& (oneBooking.getString("timein") == null || oneBooking.getString("timeout")==null)) {
                     continue;
                 }
                 double price = oneBooking.getDouble("price");

@@ -34,6 +34,7 @@ public class Staff implements Serializable {
 	private String name;
 
 	private String phone;
+	
 	private String password;
 
 	@ManyToOne(fetch = FetchType.EAGER)
@@ -88,6 +89,12 @@ public class Staff implements Serializable {
 
 	public void setParking(Parking parking) {
 		this.parking = parking;
+	}
+
+	@Override
+	public String toString() {
+		return "Staff [id=" + id + ", address=" + address + ", name=" + name + ", phone=" + phone + ", password="
+				+ password + ", parking=" + parking + "]";
 	}
 	
 	

@@ -112,7 +112,7 @@ public class Notification extends Service implements SubscriptionEventListener {
             mBuilder.setContentTitle("content Title");
             mBuilder.setContentText("Content Text");
             mBuilder.setPriority(2);
-            mBuilder.setStyle(bigText);
+            mBuilder.setStyle(bigText).setAutoCancel(true);
 
             NotificationManager mNotificationManager =
                     (NotificationManager) this.getSystemService(Context.NOTIFICATION_SERVICE);
