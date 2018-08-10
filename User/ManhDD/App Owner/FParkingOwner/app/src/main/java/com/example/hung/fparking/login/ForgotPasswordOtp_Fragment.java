@@ -29,6 +29,7 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
     private static TextView error;
     Button btnOK;
     private static ImageView back;
+    public String phone;
     public static String APP_TAG = "AccountKit";
 
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,7 +46,6 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
     }
 
     public String getPhoneConfirm() {
-        final String[] returnphone = {""};
         AccountKit.getCurrentAccount(new AccountKitCallback<Account>() {
             @Override
             public void onSuccess(final Account account) {
@@ -57,11 +57,9 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
 
                 // Get phone number
                 PhoneNumber phoneNumber = account.getPhoneNumber();
-                String phoneNumberString = "";
                 if (phoneNumber != null) {
-                    returnphone[0] = phoneNumber.getPhoneNumber();
+                    phone = phoneNumber.toString();
                 }
-
             }
 
             @Override
@@ -69,7 +67,7 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
                 System.out.println("Error: " + error.toString());
             }
         });
-        return returnphone[0];
+        return phone;
     }
 
     // Set Listeners over buttons
@@ -88,9 +86,18 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
                 break;
 
             case R.id.confirmBtn:
+
                 System.out.println("newpass : " + newPassword.getText());
                 System.out.println("renewpass : " + reNewPassword.getText());
                 System.out.println(newPassword.getText().equals(reNewPassword.getText()));
+                if(newPassword.getText().toString().isEmpty() || newPassword.getText().toString().equals("") || reNewPassword.getText().toString().isEmpty() || reNewPassword.getText().toString().equals("")) {
+                    showDialog("Hãy nhập mật khẩu cần đổi");
+                }
+                else if(newPassword.getText().toString().length()<6 || newPassword.getText().toString().length()>24) {
+                    showDialog("mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự");
+                }else if(!newPassword.getText().toString().equals(reNewPassword.getText().toString())) {
+                    showDialog("Mật khẩu mới không giống nhau, vui lòng nhập lại");
+                }
                 if (newPassword.getText().toString().equals(reNewPassword.getText().toString())) {
                     new ManagerLoginTask("forgotpassword", getPhoneConfirm(), newPassword.getText().toString(), new IAsyncTaskHandler() {
                         @Override
@@ -99,7 +106,7 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
                         }
                     });
 
-                } else showDialog("Mật khẩu không giống nhau, vui lòng nhập lại");
+                }
                 // Call Submit button task
                 break;
 
@@ -120,8 +127,8 @@ public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnC
             public void onClick(View v) {
                 dialog.cancel();
                 finish();
-                Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
-                startActivity(intentLogin);
+//                Intent intentLogin = new Intent(getApplicationContext(), LoginActivity.class);
+//                startActivity(intentLogin);
             }
         });
     }

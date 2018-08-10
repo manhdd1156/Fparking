@@ -51,7 +51,7 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
                     }
                     else if(!getMD5Hex(tbOldPass.getText().toString()).equals(Session.currentStaff.getPass())) { // when wrong password
                         showDialog("mật khẩu cũ không đúng, vui lòng nhập lại",0);
-                    }else if(tbNewPass.getText().toString().length()<6 && tbNewPass.getText().toString().length()>24) { // when length < 6 %% > 24
+                    }else if(tbNewPass.getText().toString().length()<6 || tbNewPass.getText().toString().length()>24) { // when length < 6 %% > 24
                         showDialog("mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự",0);
                     }
                     else if(!tbNewPass.getText().toString().equals(tbConfirmPass.getText().toString())) { // when confirm pass is wrong
