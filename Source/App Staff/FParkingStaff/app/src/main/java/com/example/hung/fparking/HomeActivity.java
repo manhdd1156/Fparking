@@ -31,7 +31,6 @@ import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
-import com.example.hung.fparking.notification.CheckNetworkReciever;
 import com.example.hung.fparking.other.Contact;
 import com.example.hung.fparking.other.TermsAndConditions;
 
@@ -58,8 +57,9 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
+//        NetworkUltil.thisregisterReceiver(NetworkUltil, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Session.homeActivity = HomeActivity.this;

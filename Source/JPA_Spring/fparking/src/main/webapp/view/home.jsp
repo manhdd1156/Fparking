@@ -130,7 +130,7 @@
 			<!-- ==Thông tin hệ thông End== -->
 
 			<!--====Feedback from actor Start===-->
-			<div class="col-lg-6">
+			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">Phản hồi từ người dùng</div>
 					<!-- /.panel-heading -->
@@ -178,7 +178,7 @@
 			</div>
 			<!--====Feedback from actor End===-->
 			<!--====Parking Start===-->
-			<div class="col-lg-6">
+			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">Bãi xe sắp hết tiền cọc</div>
 					<!-- /.panel-heading -->
@@ -227,7 +227,7 @@
 			<!--====Parking End===-->
 
 			<!--====Parking Pending Start===-->
-			<div class="col-lg-6">
+			<div class="col-lg-12">
 				<div class="panel panel-default">
 					<div class="panel-heading">Bãi xe chờ duyệt</div>
 					<!-- /.panel-heading -->

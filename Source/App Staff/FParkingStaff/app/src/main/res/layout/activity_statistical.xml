@@ -144,16 +144,6 @@
         android:text="NA"
         android:textStyle="bold" />
 
-    <TextView
-        android:id="@+id/tvDateError"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tvFromDate"
-        android:layout_toEndOf="@+id/textView2"
-        android:text="Hãy chọn ngày lớn hơn"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="invisible" />
-
     <ImageView
         android:id="@+id/imageView5"
         android:layout_width="343dp"
@@ -161,6 +151,17 @@
         android:layout_below="@+id/tvFromDate"
         android:layout_centerHorizontal="true"
         app:srcCompat="@drawable/line" />
+
+    <TextView
+        android:id="@+id/tvDateError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tvFromDate"
+        android:layout_marginTop="19dp"
+        android:layout_toEndOf="@+id/textView2"
+        android:text="Hãy chọn ngày lớn hơn"
+        android:textColor="@android:color/holo_red_light"
+        android:visibility="invisible" />
 
 
 </RelativeLayout>

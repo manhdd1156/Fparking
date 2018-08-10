@@ -2,9 +2,11 @@ package com.example.hung.fparking.login;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -57,6 +59,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
         view = inflater.inflate(R.layout.activity_login, container, false);
 
         initViews();
+
         loginButton.setOnClickListener(this);
         setListeners();
         return view;

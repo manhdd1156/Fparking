@@ -31,6 +31,7 @@ public class Feedback implements Serializable {
 	private String name;
 	private String phone;
 	private String content;
+	private String resolve;
 	private int type;
 	@JsonSerialize(using = SerializeDate.class)
 	private Date date;
@@ -39,6 +40,14 @@ public class Feedback implements Serializable {
 
 	public Long getId() {
 		return id;
+	}
+
+	public String getResolve() {
+		return resolve;
+	}
+
+	public void setResolve(String resolve) {
+		this.resolve = resolve;
 	}
 
 	public Date getDate() {
@@ -99,8 +108,8 @@ public class Feedback implements Serializable {
 
 	@Override
 	public String toString() {
-		return "Feedback [id=" + id + ", name=" + name + ", phone=" + phone + ", content=" + content + ", type=" + type
-				+ ", date=" + date + ", status=" + status + "]";
+		return "Feedback [id=" + id + ", name=" + name + ", phone=" + phone + ", content=" + content + ", resolve="
+				+ resolve + ", type=" + type + ", date=" + date + ", status=" + status + "]";
 	}
 
 	

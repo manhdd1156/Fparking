@@ -33,7 +33,6 @@ public class ManagerParkingTask {
             new UpdateParkingTask(container,parkingDTO).execute((Void) null);
         }
     }
-
 }
 
 class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
