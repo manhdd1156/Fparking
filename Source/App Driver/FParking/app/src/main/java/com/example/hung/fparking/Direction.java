@@ -1,11 +1,13 @@
 package com.example.hung.fparking;
 
 import android.Manifest;
+import android.app.AlertDialog;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
@@ -29,9 +31,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.asynctask.BookingTask;
+import com.example.hung.fparking.asynctask.DriverLoginTask;
+import com.example.hung.fparking.asynctask.FineTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.asynctask.ParkingInforTask;
+import com.example.hung.fparking.asynctask.ParkingTask;
+import com.example.hung.fparking.dto.FineDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.entity.Route;
 import com.example.hung.fparking.model.DirectionFinder;
@@ -56,7 +62,8 @@ import java.util.List;
 public class Direction extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener, IAsyncTaskHandler, LocationListener, GoogleMap.OnCameraMoveStartedListener {
 
     private GoogleMap mMap;
-    Button buttonCheckin, buttonHuy;
+    Button buttonCheckin, buttonHuy, btnOK;
+    TextView textViewAlert;
     View mMapView;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
@@ -73,6 +80,12 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     private CameraPosition cameraPosition;
     private Location distination;
 
+    private String parkingID, vehicleID;
+    AlertDialog.Builder builder;
+    ArrayList<FineDTO> fineDTOS;
+
+    AlertDialog dialog;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,7 +95,8 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
-        progressDialog = ProgressDialog.show(this, "Please wait.",
+        builder = new AlertDialog.Builder(Direction.this);
+        progressDialog = ProgressDialog.show(this, "Vui lòng đợi.",
                 "Đang tìm đường đi..!", true);
 
         // khởi tạo shareRePreference
@@ -90,7 +104,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         mPreferencesEditor = mPreferences.edit();
 
         //excute chỉ đường
-        final String parkingID = mPreferences.getString("parkingID", "");
+        parkingID = mPreferences.getString("parkingID", "");
         if (!parkingID.equals("")) {
             ParkingInforTask parkingInforTask = new ParkingInforTask(parkingID, "pi", this);
             parkingInforTask.execute();
@@ -104,18 +118,18 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             public void onClick(View v) {
                 locationManager.removeUpdates(Direction.this);
                 new NotificationTask("checkin", mPreferences.getString("vehicleID", ""), parkingID, "", Direction.this);
-                Intent checkOutIntent = new Intent(Direction.this, CheckOut.class);
-                startActivity(checkOutIntent);
+//                Intent checkOutIntent = new Intent(Direction.this, CheckOut.class);
+//                startActivity(checkOutIntent);
             }
         });
 
         // Button Hủy đặt chỗ
-        final String vehicleID = mPreferences.getString("vehicleID", "");
+        vehicleID = mPreferences.getString("vehicleID", "");
         buttonHuy = (Button) findViewById(R.id.buttonHuy);
         buttonHuy.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new BookingTask("cancel", vehicleID + "", parkingID + "", "cancel", Direction.this);
+                new FineTask("getall", null, "fine", Direction.this);
             }
         });
 
@@ -129,6 +143,20 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlp.setMargins(0, 1500, 0, 0);
 
+        //tạo dialog
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Direction.this);
+        View mView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        mBuilder.setView(mView);
+        dialog = mBuilder.create();
+        textViewAlert = mView.findViewById(R.id.textViewAlert);
+        btnOK = mView.findViewById(R.id.btnOK);
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
     }
 
     @Override
@@ -240,6 +268,30 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             } catch (UnsupportedEncodingException e) {
                 e.printStackTrace();
             }
+        } else if (action.equals("fine")) {
+            fineDTOS = (ArrayList<FineDTO>) o;
+            if (fineDTOS.size() > 0) {
+                int countFine = 0;
+                for (int i = 0; i < fineDTOS.size(); i++) {
+                    if (fineDTOS.get(i).getStatus() == 0 && fineDTOS.get(i).getType() == 0) {
+                        countFine++;
+                    }
+                }
+                createDialog(countFine);
+            } else {
+                createDialog(0);
+            }
+        } else if (action.equals("cancel")) {
+            if (Boolean.TRUE.equals(o)) {
+                mPreferencesEditor.clear().commit();
+                new DriverLoginTask("second_time", null, "", Direction.this);
+                Intent intentHome = new Intent(Direction.this, HomeActivity.class);
+                startActivity(intentHome);
+                finish();
+            } else {
+                textViewAlert.setText("Không kết nối được đến máy chủ!");
+                dialog.show();
+            }
         }
     }
 
@@ -315,6 +367,37 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         }
     }
 
+    private void createDialog(final int content) {
+        String title;
+        if (content == 0) {
+            title = "Bạn có muốn hủy đặt chỗ";
+        } else {
+            title = "Bạn đã hủy đặt chỗ " + content + " lần";
+        }
+        DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int choice) {
+                switch (choice) {
+                    case DialogInterface.BUTTON_POSITIVE:
+                        new BookingTask("cancel", vehicleID + "", parkingID + "", "cancel", Direction.this);
+                        break;
+                    case DialogInterface.BUTTON_NEGATIVE:
+
+                        break;
+                }
+            }
+        };
+        try {
+            builder.setTitle(title)
+                    .setMessage("Nếu hủy đặt chỗ quá 3 lần tài khoản bạn sẽ bị khóa.")
+                    .setPositiveButton("Đồng ý", dialogClickListener)
+                    .setNegativeButton("Hủy", dialogClickListener)
+                    .setCancelable(false).show();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
     public void createNotification(String title) {
         Intent intent = new Intent(this, Direction.class);
 //        intent.putExtra("NotificationMessage", "order");
@@ -357,5 +440,13 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         }
 
         notificationManager.notify(/*notification id*/1, notificationBuilder.build());
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        progressDialog.dismiss();
+        startActivity(new Intent(this, OrderParking.class));
+        finish();
     }
 }

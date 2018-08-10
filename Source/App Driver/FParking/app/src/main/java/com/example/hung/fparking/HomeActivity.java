@@ -39,6 +39,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.dto.ParkingDTO;
+import com.example.hung.fparking.login.MainActivity;
 import com.example.hung.fparking.other.Contact;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ParkingTask;
@@ -90,9 +91,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private Toolbar mToolbar;
     boolean doubleBackToExitPressedOnce = false;
 
-    AlertDialog dialog;
-    Button buttonOK, buttonCancel;
-    TextView textViewAddressQB, textViewTotalTimeQB, textViewPriceQB;
+    AlertDialog dialog, notiDialog;
+    Button buttonOK, buttonCancel, btnOK;
+    TextView textViewAddressQB, textViewTotalTimeQB, textViewPriceQB, textViewAlert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -106,6 +107,21 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         dialog = mBuilder.create();
 
         setDialogProperties(mView);
+
+        //dialog thông báo
+        AlertDialog.Builder mNotiBuilder = new AlertDialog.Builder(HomeActivity.this);
+        View mNotiView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        mNotiBuilder.setView(mNotiView);
+        notiDialog = mNotiBuilder.create();
+        textViewAlert = mNotiView.findViewById(R.id.textViewAlert);
+        btnOK = mNotiView.findViewById(R.id.btnOK);
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notiDialog.cancel();
+            }
+        });
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -194,16 +210,30 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
 
         // check data
         int status = mPreferences.getInt("status", 8);
-        if (status == 1) {
-//            locationManager.removeUpdates(HomeActivity.this);
+        if (Session.currentDriver.getStatus().equals("0")) {
+            textViewAlert.setText("Tài khoản bạn đang bị khóa!");
+            notiDialog.show();
+        } else if (status == 1) {
+            if (locationManager != null) {
+                locationManager.removeUpdates(HomeActivity.this);
+            }
             Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
             startActivity(intentOrderFlagment);
+            finish();
         } else if (status == 2) {
+            if (locationManager != null) {
+                locationManager.removeUpdates(HomeActivity.this);
+            }
             Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
             startActivity(intentCheckoutFlagment);
+            finish();
         } else if (status == 3) {
+            if (locationManager != null) {
+                locationManager.removeUpdates(HomeActivity.this);
+            }
             Intent intentCheckoutFlagment = new Intent(HomeActivity.this, CheckOut.class);
             startActivity(intentCheckoutFlagment);
+            finish();
         }
     }
 
@@ -279,6 +309,18 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
                     startActivity(intentDK);
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.nav_logout:
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
+                    Intent intentLogout = new Intent(HomeActivity.this, MainActivity.class);
+                    startActivity(intentLogout);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    Session.spref = getSharedPreferences("intro", 0);
+                    mPreferencesEditor.clear().commit();
+                    Session.spref.edit().clear().commit();
+                    finish();
                     break;
             }
             return true;
@@ -434,6 +476,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                             }
                             Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
                             startActivity(intentOrderFlagment);
+                            finish();
                         }
                     }
                 });
@@ -470,7 +513,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void callLocationChangedListener() {
         try {
             locationManager = (LocationManager) getApplicationContext().getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 0, 0, this);
+            locationManager.requestLocationUpdates(LocationManager.PASSIVE_PROVIDER, 10000, 1000, this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -564,25 +607,29 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     @Override
     protected void onRestart() {
         super.onRestart();
-        startActivity(getIntent());
     }
 
     @Override
     public boolean onMarkerClick(Marker marker) {
         marker.hideInfoWindow();
-        if (mPreferences.getInt("status", 8) == 8) {
-            mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
-            LatLng cameraLatLng = mMap.getCameraPosition().target;
-            double lat = cameraLatLng.latitude;
-            double lng = cameraLatLng.longitude;
-            mPreferencesEditor.putFloat("quicklat", (float) lat);
-            mPreferencesEditor.putFloat("quicklng", (float) lng);
-            mPreferencesEditor.commit();
-            if (locationManager != null) {
-                locationManager.removeUpdates(HomeActivity.this);
+        if (Session.currentDriver.getStatus().equals("1")) {
+            if (mPreferences.getInt("status", 8) == 8) {
+                mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
+                LatLng cameraLatLng = mMap.getCameraPosition().target;
+                double lat = cameraLatLng.latitude;
+                double lng = cameraLatLng.longitude;
+                mPreferencesEditor.putFloat("quicklat", (float) lat);
+                mPreferencesEditor.putFloat("quicklng", (float) lng);
+                mPreferencesEditor.commit();
+                if (locationManager != null) {
+                    locationManager.removeUpdates(HomeActivity.this);
+                }
+                Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+                startActivity(intentOrderFlagment);
             }
-            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
-            startActivity(intentOrderFlagment);
+        } else {
+            textViewAlert.setText("Tài khoản bạn đang bị khóa!");
+            notiDialog.show();
         }
         return true;
     }

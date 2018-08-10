@@ -28,7 +28,7 @@ public class BookingTask {
             new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
         } else if (type.equals("cancel")) {
             new CancelBooking(data1, data2, action, container).execute((Void) null);
-        }else if (type.equals("timeout")) {
+        } else if (type.equals("timeout")) {
             new CancelBooking(data1, data2, action, container).execute((Void) null);
         }
     }
@@ -110,8 +110,8 @@ class GetBookingTaskByDriverID extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/drivers/" + driverID);
-            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers/" + driverID);
+            String json = httpHandler.get(Constants.API_URL + "bookings/drivers?type=1");
+            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers?type=1");
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -268,7 +268,6 @@ class CancelBooking extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     String vehicleid, parkingid, action;
-    boolean success = false;
 
     public CancelBooking(String vehicleid, String parkingid, String action, IAsyncTaskHandler container) {
         this.container = container;
@@ -293,26 +292,25 @@ class CancelBooking extends AsyncTask<Void, Void, Boolean> {
             }
 
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/drivers/cancel", formData.toString(), "PUT");
-            Log.e("Hủy đặt chỗ: ",Constants.API_URL + "bookings/drivers/cancel");
-            JSONObject jsonObj = new JSONObject(json);
-            if (jsonObj != null) {
-                success = true;
+            Log.e("Hủy đặt chỗ: ", Constants.API_URL + "bookings/drivers/cancel");
+            if (json.contains("OK")) {
+                return true;
             }
         } catch (Exception ex) {
             Log.e("Error CreateBooking:", ex.getMessage());
         }
-        return null;
+        return false;
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-//        Intent intent = new Intent();
-//        if(success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
+        container.onPostExecute(aBoolean, action);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        container.onPostExecute(false, action);
     }
 }
