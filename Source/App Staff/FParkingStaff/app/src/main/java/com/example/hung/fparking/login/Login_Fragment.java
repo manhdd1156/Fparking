@@ -53,7 +53,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_login, container, false);
+        view = inflater.inflate(R.layout.activity_login, container, false);
 
         initViews();
         setListeners();
