@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.adapter.ListBookingHomeAdapter;
+import com.example.hung.fparking.asynctask.GetNotiTask;
 import com.example.hung.fparking.asynctask.GetRateTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
@@ -32,8 +33,6 @@ import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
 import com.example.hung.fparking.notification.CheckNetworkReciever;
-import com.example.hung.fparking.other.Contact;
-import com.example.hung.fparking.other.TermsAndConditions;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -120,6 +119,11 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intentDriverInfo);
             }
         });
+        Intent i = getIntent();
+
+        if(i.getStringExtra("touchNoti")!=null) {
+            new GetNotiTask().execute((Void) null);
+        }
     }
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
@@ -227,10 +231,6 @@ public class HomeActivity extends AppCompatActivity
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else if (id == R.id.nav_view) {
 
-        }else if (id == R.id.nav_DK) {
-            Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
-            startActivity(intentDK);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

@@ -253,23 +253,19 @@ public class BusinessController {
 
 	// manager Revenue
 
-	// get all revenuve with booking and fine
-	@RequestMapping(path = "/revenue", method = RequestMethod.GET)
-	public String getAllRevenue(Map<String, Object> model,
+	// get all revenuve by commission
+	@RequestMapping(path = "/revenue/commission", method = RequestMethod.GET)
+	public String getAllRevenueByCommission(Map<String, Object> model,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
 			@RequestParam(value = "dateTo", required = false) String dateTo) throws Exception {
 
 		int check = 0;
 		List<Booking> listBooking;
-		List<Fine> listFine;
 		double revenueCommission = 0;
-		double revenueFine = 0;
-		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
 		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
 
 		try {
 			listBooking = bookingService.getAll();
-			listFine = fineService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
@@ -307,30 +303,6 @@ public class BusinessController {
 			}
 			model.put("revenueCommission", currencyVN.format(revenueCommission));
 			model.put("arrayListBooking", arrayListBooking);
-
-			// get fine
-			for (Fine fine : listFine) {
-				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
-					}
-
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
-				}
-			}
-			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
-			model.put("revenueFine", currencyVN.format(revenueFine));
-			model.put("arrayListFine", arrayListFine);
 			model.put("dateFrom", dateFrom);
 			break;
 		case 2:
@@ -353,30 +325,6 @@ public class BusinessController {
 			}
 			model.put("revenueCommission", currencyVN.format(revenueCommission));
 			model.put("arrayListBooking", arrayListBooking);
-
-			// get fine
-			for (Fine fine : listFine) {
-				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
-					}
-
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
-				}
-			}
-			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
-			model.put("revenueFine", currencyVN.format(revenueFine));
-			model.put("arrayListFine", arrayListFine);
 			model.put("toTalRevenue", "dateTo");
 			model.put("dateTo", dateTo);
 			break;
@@ -385,7 +333,7 @@ public class BusinessController {
 			for (Booking booking : listBooking) {
 				HashMap<String, Object> m = new HashMap<>();
 				if (booking.getStatus() == 3
-						&& booking.getTimein().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+						&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", booking.getId());
 					String strDate = sdf.format(booking.getTimeout());
@@ -401,31 +349,6 @@ public class BusinessController {
 			}
 			model.put("revenueCommission", currencyVN.format(revenueCommission));
 			model.put("arrayListBooking", arrayListBooking);
-
-			// get fine
-			for (Fine fine : listFine) {
-				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
-						&& fine.getDate().getTime() <= sdf2.parse(dateFrom + " 24:00:00").getTime()) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
-					}
-
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
-				}
-			}
-			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
-			model.put("revenueFine", currencyVN.format(revenueFine));
-			model.put("arrayListFine", arrayListFine);
 			model.put("dateFrom", dateFrom);
 			model.put("dateTo", dateTo);
 			break;
@@ -448,7 +371,121 @@ public class BusinessController {
 			}
 			model.put("revenueCommission", currencyVN.format(revenueCommission));
 			model.put("arrayListBooking", arrayListBooking);
+			break;
+		}
+		return "managementrevenuebycommission";
+	}
 
+	// get all revenuve by fine
+	@RequestMapping(path = "/revenue/fine", method = RequestMethod.GET)
+	public String getAllRevenueByFine(Map<String, Object> model,
+			@RequestParam(value = "dateFrom", required = false) String dateFrom,
+			@RequestParam(value = "dateTo", required = false) String dateTo) throws Exception {
+
+		int check = 0;
+		List<Fine> listFine;
+		double revenueFine = 0;
+		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
+		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
+
+		try {
+			listFine = fineService.getAll();
+		} catch (Exception e) {
+			return "404";
+		}
+
+		if (dateTo == null && dateFrom == null) {
+			check = 0;
+		} else {
+			if (dateFrom.length() > 0 && dateTo.length() == 0) {
+				check = 1;
+			}
+			if (dateFrom.length() == 0 && dateTo.length() > 0)
+				check = 2;
+			if (dateFrom.length() > 0 && dateTo.length() > 0)
+				check = 3;
+		}
+
+		switch (check) {
+		case 1:
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
+
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
+				}
+			}
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			model.put("dateFrom", dateFrom);
+			break;
+		case 2:
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1 && fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
+
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
+				}
+			}
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			model.put("toTalRevenue", "dateTo");
+			model.put("dateTo", dateTo);
+			break;
+		case 3:
+			// get fine
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+						&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+					m.put("id", fine.getId());
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("address", fine.getParking().getAddress());
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					if (fine.getType() == 0) {
+						m.put("objectFine", "Lái xe");
+					} else {
+						m.put("objectFine", "Bãi xe");
+					}
+
+					revenueFine = revenueFine + fine.getPrice();
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					arrayListFine.add(m);
+				}
+			}
+			model.put("revenueFine", currencyVN.format(revenueFine));
+			model.put("arrayListFine", arrayListFine);
+			model.put("dateFrom", dateFrom);
+			model.put("dateTo", dateTo);
+			break;
+		default:
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
@@ -469,12 +506,11 @@ public class BusinessController {
 					System.out.println("sizeFineList:" + arrayListFine.size());
 				}
 			}
-			model.put("toTalRevenue", currencyVN.format(revenueFine + revenueCommission));
 			model.put("revenueFine", currencyVN.format(revenueFine));
 			model.put("arrayListFine", arrayListFine);
 			break;
 		}
-		return "managementrevenue";
+		return "managementrevenuebyfine";
 	}
 
 	// get detail revenue by booking whit id
@@ -511,7 +547,6 @@ public class BusinessController {
 	}
 
 	// Management FeedBack
-
 	// get all feedback
 	@RequestMapping(path = "/feedback", method = RequestMethod.GET)
 	public String getAllFeedBack(Map<String, Object> model) throws Exception {
@@ -526,7 +561,6 @@ public class BusinessController {
 					m.put("id", feedback.getId());
 					m.put("dateFeedBack", sdf.format(feedback.getDate()));
 					String fb = feedback.getContent();
-
 					if (fb.length() > 30) {
 						m.put("content", fb.substring(0, 30) + "...");
 					} else {
@@ -534,7 +568,11 @@ public class BusinessController {
 					}
 
 					m.put("nameFeedBack", feedback.getName());
-
+					if (feedback.getType() == 0) {
+						m.put("status", "Chưa giải quyết");
+					} else {
+						m.put("status", "Đã giải quyết");
+					}
 					arrayListFeedback.add(m);
 				}
 			}
@@ -547,7 +585,7 @@ public class BusinessController {
 
 	}
 
-	// view feedback
+	// view feedback by id
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.GET)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Feedback feedback = new Feedback();
@@ -568,6 +606,7 @@ public class BusinessController {
 		model.put("inforFeedBack", feedback.getName() + "_" + feedback.getPhone());
 		model.put("content", feedback.getContent());
 		model.put("dateFeedBack", sdf.format(feedback.getDate()));
+		model.put("resolve", feedback.getResolve());
 		return "viewdetailfeedback";
 	}
 
@@ -584,6 +623,22 @@ public class BusinessController {
 			return "404";
 		}
 
+		return "redirect:/business/feedback";
+	}
+
+	// resolve feedback
+	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.POST)
+	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
+			@RequestParam("resolve") String resolve) {
+		try {
+			Feedback feedbackupdate = new Feedback();
+			feedbackupdate = feedbackService.getById(id);
+			feedbackupdate.setType(1);
+			feedbackupdate.setResolve(resolve);
+			feedbackService.update(feedbackupdate);
+		} catch (Exception e) {
+			return "404";
+		}
 		return "redirect:/business/feedback";
 	}
 

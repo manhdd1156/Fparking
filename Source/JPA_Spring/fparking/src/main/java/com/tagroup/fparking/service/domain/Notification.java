@@ -30,7 +30,7 @@ public class Notification implements Serializable {
 	private Long parking_id;
 	private Long vehicle_id;
 	private String event;
-	
+	private String data;
 	private int type;
 	
 	private int status;
@@ -38,6 +38,14 @@ public class Notification implements Serializable {
 	
 	
 	
+	public String getData() {
+		return data;
+	}
+
+	public void setData(String data) {
+		this.data = data;
+	}
+
 	public Long getId() {
 		return id;
 	}
@@ -98,7 +106,7 @@ public class Notification implements Serializable {
 	@Override
 	public String toString() {
 		return "Notification [id=" + id + ", driver_id=" + driver_id + ", parking_id=" + parking_id + ", vehicle_id="
-				+ vehicle_id + ", event=" + event + ", type=" + type + ", status=" + status + "]";
+				+ vehicle_id + ", event=" + event + ", data=" + data + ", type=" + type + ", status=" + status + "]";
 	}
 
 	

@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.tagroup.fparking.dto.ParkingTariffDTO;
+import com.tagroup.fparking.service.CityService;
 import com.tagroup.fparking.service.ParkingService;
+import com.tagroup.fparking.service.domain.City;
 import com.tagroup.fparking.service.domain.Parking;
 
 @RestController
@@ -23,6 +25,8 @@ import com.tagroup.fparking.service.domain.Parking;
 public class ParkingController {
 	@Autowired
 	private ParkingService parkingService;
+	@Autowired
+	private CityService cityService;
 
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.GET)
@@ -91,6 +95,15 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+	// get All city
+		@PreAuthorize("hasAnyAuthority('OWNER','ADMIN')")
+		@RequestMapping(path = "/citys", method = RequestMethod.GET)
+		public ResponseEntity<?> getAllCity() throws Exception {
+
+			List<City> respone = cityService.getAll();
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
 
 	// get Rating by parking id
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")

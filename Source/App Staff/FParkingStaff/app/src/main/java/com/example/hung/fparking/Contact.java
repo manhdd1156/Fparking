@@ -1,13 +1,10 @@
-package com.example.hung.fparking.other;
+package com.example.hung.fparking;
 
 import android.content.Intent;
-import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
-
-import com.example.hung.fparking.HomeActivity;
-import com.example.hung.fparking.R;
 
 public class Contact extends AppCompatActivity {
     ImageView backContact;

@@ -49,7 +49,6 @@
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".CheckOutActivity" />
         <activity
             android:name=".dialog.DialogActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />
@@ -64,6 +63,7 @@
             android:name=".ChangePassword"
             android:noHistory="true" />
         <activity android:name=".AlertDialog" />
+        <activity android:name=".Contact" />
         <activity android:name=".Login"></activity>
     </application>
 

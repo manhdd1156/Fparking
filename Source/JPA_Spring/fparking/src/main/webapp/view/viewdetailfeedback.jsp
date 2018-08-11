@@ -39,16 +39,24 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-lg-12">
-									<div>
+								<form action="" method="POST">
+										<div>
 										<label>Ngày: ${dateFeedBack }</label>
 									</div>
 									<div class="form-group">
 										<label>Nội dung:</label>
 										<textarea  style="background-color: white;" class="form-control" rows="25" readonly>${content }</textarea>
 									</div>
-									<div>
-										<a href="/home/feedback/delete/${id }" onclick="deleteFunction()" type="button" class="btn btn-danger" >Xóa</a>
+									
+									<div class="form-group">
+										<label>Cách thức xử lý:</label>
+										<textarea  style="background-color: white;" class="form-control" rows="10" name="resolve">${resolve }</textarea>
 									</div>
+									<div>
+										<a href="#" onclick="deleteFeedback2(${id });return false" type="button" class="btn btn-danger" >Xóa</a>
+										<input type="submit" class="btn btn-success" value="Xong">
+									</div>
+									</form>
 								</div>
 							</div>
 						</div>

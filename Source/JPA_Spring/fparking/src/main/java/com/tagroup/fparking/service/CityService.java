@@ -14,6 +14,4 @@ public interface CityService {
 	public City update(City city) throws Exception;
 
 	public void delete(Long id) throws Exception;
-
-	public City checklogin(City city) throws Exception;
 }

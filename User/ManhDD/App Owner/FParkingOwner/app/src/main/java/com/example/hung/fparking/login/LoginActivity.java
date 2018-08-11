@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         intent.putExtra(
                 AccountKitActivity.ACCOUNT_KIT_ACTIVITY_CONFIGURATION,
                 configurationBuilder.build());
+
         startActivityForResult(intent, APP_REQUEST_CODE);
     }
     @Override

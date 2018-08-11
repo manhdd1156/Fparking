@@ -132,6 +132,11 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
     @Override
     protected void onDestroy() {
         super.onDestroy();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         finish();
     }
 }

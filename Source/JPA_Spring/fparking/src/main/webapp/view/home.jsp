@@ -95,7 +95,7 @@
 								</div>
 							</div>
 						</div>
-						<a href="/business/revenue">
+						<a href="/home/revenue/commission">
 							<div class="panel-footer">
 								<span class="pull-left">Xem chi tiết</span> <span
 									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -117,7 +117,7 @@
 								</div>
 							</div>
 						</div>
-						<a href="/business/revenue">
+						<a href="/home/revenue/commission">
 							<div class="panel-footer">
 								<span class="pull-left">Xem chi tiết</span> <span
 									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
@@ -130,14 +130,14 @@
 			<!-- ==Thông tin hệ thông End== -->
 
 			<!--====Feedback from actor Start===-->
-			<div class="col-lg-6">
-				<div class="panel panel-default">
+			<div class="col-lg-12">
+				<div class="panel panel-warning">
 					<div class="panel-heading">Phản hồi từ người dùng</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<div class="panel panel-default">
+								<div class="panel panel-warning">
 									<div class="panel-body">
 										<table width="100%"
 											class="table table-striped table-bordered table-hover"
@@ -178,14 +178,14 @@
 			</div>
 			<!--====Feedback from actor End===-->
 			<!--====Parking Start===-->
-			<div class="col-lg-6">
-				<div class="panel panel-default">
+			<div class="col-lg-12">
+				<div class="panel panel-danger">
 					<div class="panel-heading">Bãi xe sắp hết tiền cọc</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<div class="panel panel-default">
+								<div class="panel panel-danger">
 									<!-- /.panel-heading -->
 									<div class="panel-body">
 										<table width="100%"
@@ -203,7 +203,7 @@
 												<c:forEach items="${arrayListParking}" var="listParking">
 													<tr class="odd gradeX">
 														<td><a
-															href="/account/patking/detail/${listParking.id }">${listParking.addressParking }</a></td>
+															href="/account/parking/detail/${listParking.id }">${listParking.addressParking }</a></td>
 														<td>${listParking.nameOwner }</td>
 														<td>${listParking.phoneOwner }</td>
 														<td>${listParking.deposits }</td>
@@ -227,14 +227,14 @@
 			<!--====Parking End===-->
 
 			<!--====Parking Pending Start===-->
-			<div class="col-lg-6">
-				<div class="panel panel-default">
+			<div class="col-lg-12">
+				<div class="panel panel-yellow">
 					<div class="panel-heading">Bãi xe chờ duyệt</div>
 					<!-- /.panel-heading -->
 					<div class="panel-body">
 						<div class="row">
 							<div class="col-lg-12">
-								<div class="panel panel-default">
+								<div class="panel panel-yellow">
 									<!-- /.panel-heading -->
 									<div class="panel-body">
 										<table width="100%"
@@ -253,7 +253,7 @@
 												<c:forEach items="${arrayListParkingPending}" var="listParkingPending">
 													<tr class="odd gradeX">
 														<td><a
-															href="/account/patking/detail/${listParkingPending.id }">${listParkingPending.addressParking }</a></td>
+															href="/account/parking/detail/${listParkingPending.id }">${listParkingPending.addressParking }</a></td>
 														<td>${listParkingPending.nameOwner }</td>
 														<td>${listParkingPending.phoneOwner }</td>
 														<td>${listParkingPending.deposits }</td>

@@ -8,7 +8,6 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 
-import com.example.hung.fparking.IntroApplication;
 
 public class CheckNetwork {
 

@@ -59,7 +59,8 @@ public class VehicleServiceImpl implements VehicleService {
 			Vehicle v2 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 0);
 			if (v1 != null && v2 == null) { // TH 2
 				System.out.println("VehicleServiceImpl/create/TH2 : v1 = " + v1.toString());
-				return drivervehicleRepository.save(dv);
+				return drivervehicleRepository
+						.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v1);
 			} else if (v1 == null && v2 != null) { // TH 1
 
 				v2.setColor(drivervehicle.getColor());
@@ -86,7 +87,6 @@ public class VehicleServiceImpl implements VehicleService {
 				v.setLicenseplate(drivervehicle.getLicenseplate());
 				v.setColor(drivervehicle.getColor());
 				v.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
-				v.setStatus(1);
 				update(v);
 				System.out.println("VehicleServiceImpl/create/TH5 : v = " + v.toString());
 				dv.setVehicle(v);

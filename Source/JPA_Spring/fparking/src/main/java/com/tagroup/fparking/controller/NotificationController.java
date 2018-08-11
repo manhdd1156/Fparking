@@ -30,12 +30,12 @@ public class NotificationController {
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 
 	}
-	// get noti when Internet connected
+	// get noti when Internet connected        5:48 - 8/11/2018
 		@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
 		@RequestMapping(path = "/check", method = RequestMethod.GET)
-		public ResponseEntity<?> getNoti(@RequestParam Long id,@RequestParam int type) throws Exception {
+		public ResponseEntity<?> getNoti() throws Exception {
 			System.out.println("NotificationController/check");
-			List<Notification> respone = notificationService.check(id,type);
+			List<Notification> respone = notificationService.check();
 
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 

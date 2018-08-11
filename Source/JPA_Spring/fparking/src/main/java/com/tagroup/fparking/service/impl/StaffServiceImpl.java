@@ -48,18 +48,21 @@ public class StaffServiceImpl implements StaffService {
 	public Staff update(Staff staff) throws Exception{
 		// TODO Auto-generated method stub
 		try {
+			System.out.println("staffServiceimp/update staff = " + staff);
 			List<Staff> slist = getAll();
 			for (Staff s : slist) {
 				if (s.getId() == staff.getId()) {
-					List<Staff> slist2 = getAll();
+					staff.setParking(s.getParking());
+					if(staff.getPassword()==null)
+					staff.setPassword(s.getPassword());
 					boolean flag = false;
 					for (Staff staff2 : slist) {
-						if (staff2.getPhone().equals(staff.getPhone())) {
+						if (staff2.getPhone().equals(staff.getPhone()) && staff2.getId()!=staff.getId()) {
 							flag = true;
 						}
 					}
 					if (!flag) {
-
+						
 						return staffRepository.save(staff);
 					}
 

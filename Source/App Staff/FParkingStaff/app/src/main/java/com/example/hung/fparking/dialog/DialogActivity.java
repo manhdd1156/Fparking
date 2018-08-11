@@ -57,7 +57,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
 
             case R.id.cancel_btn_id:
 
-//                showToastMessage("Cancel Button Clicked");
+                showToastMessage("Cancel Button Clicked");
                 this.finish();
 
                 break;

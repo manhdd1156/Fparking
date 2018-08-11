@@ -1,5 +1,6 @@
 package com.tagroup.fparking.controller.webadmin;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -45,6 +46,10 @@ public class HomeController {
 	@Autowired
 	private FineService fineService;
 
+	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
 	// go to home
 	@RequestMapping(path = "", method = RequestMethod.GET)
@@ -60,9 +65,6 @@ public class HomeController {
 	// go to home
 	@RequestMapping(path = "/home", method = RequestMethod.GET)
 	public String fparkingLogoClick(Map<String, Object> model) {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-		String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
-		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		List<Driver> listDriver;
 		List<Parking> listParking;
 		List<Feedback> listFeedback;
@@ -154,7 +156,7 @@ public class HomeController {
 			double revenueByCommistion = 0;
 			for (Booking booking : listBooking) {
 				if (booking.getTimeout() != null && timeStamp.equals(sdf.format(booking.getTimeout()))
-						&& booking.getStatus() == 4) {
+						&& booking.getStatus() == 3) {
 					totalTrasaction += 1;
 					revenueByCommistion += booking.getAmount() * booking.getComission();
 				}
@@ -162,7 +164,6 @@ public class HomeController {
 
 			for (Fine fine : listFine) {
 				if (fine.getDate() != null && timeStamp.equals(sdf.format(fine.getDate())) && fine.getStatus() == 1) {
-					totalTrasaction += 1;
 					revenueByCommistion += fine.getPrice();
 				}
 			}
@@ -187,8 +188,8 @@ public class HomeController {
 	public String login(Map<String, Object> model, @ModelAttribute Admin admin) {
 		try {
 			Admin admin2 = adminService.checklogin(admin);
-		System.out.println("username+ passs:"+admin2.getUsername()+"---"+admin2.getPassword());
-			if(admin2 !=null) {
+			System.out.println("username+ passs:" + admin2.getUsername() + "---" + admin2.getPassword());
+			if (admin2 != null) {
 				return "redirect:/home";
 			}
 		} catch (Exception e) {
@@ -272,4 +273,39 @@ public class HomeController {
 
 		return "addmoneytoparking";
 	}
+
+	// get all revenuve by commission
+	@RequestMapping(path = "/home/revenue/commission", method = RequestMethod.GET)
+	public String getAllRevenueByCommission(Map<String, Object> model) throws Exception {
+		int check = 0;
+		List<Booking> listBooking;
+		double revenueCommission = 0;
+		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
+
+		try {
+			listBooking = bookingService.getAll();
+		} catch (Exception e) {
+			return "404";
+		}
+		for (Booking booking : listBooking) {
+			HashMap<String, Object> m = new HashMap<>();
+			if (booking.getStatus() == 3 && booking.getTimeout() != null
+					&& timeStamp.equals(sdf.format(booking.getTimeout()))) {
+				m.put("id", booking.getId());
+				String strDate = sdf.format(booking.getTimeout());
+				m.put("timeout", strDate);
+				m.put("address", booking.getParking().getAddress());
+				m.put("amount", currencyVN.format(booking.getAmount()));
+				double totalCommission = booking.getComission() * booking.getAmount();
+				revenueCommission = revenueCommission + totalCommission;
+				m.put("totalCommission", currencyVN.format(totalCommission));
+				m.put("city", booking.getParking().getCity().getName());
+				arrayListBooking.add(m);
+			}
+		}
+		model.put("revenueCommission", currencyVN.format(revenueCommission));
+		model.put("arrayListBooking", arrayListBooking);
+		return "managementrevenuebycommission";
+	}
+
 }

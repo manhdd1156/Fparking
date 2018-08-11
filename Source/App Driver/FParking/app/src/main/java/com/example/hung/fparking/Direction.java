@@ -467,6 +467,11 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     protected void onDestroy() {
         super.onDestroy();
         textToSpeechNearPlace.shutdown();
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
         finish();
     }
 }

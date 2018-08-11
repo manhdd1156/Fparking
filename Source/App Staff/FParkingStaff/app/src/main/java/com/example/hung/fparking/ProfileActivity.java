@@ -23,7 +23,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     EditText phone;
     EditText address;
     EditText password;
-    EditText changePass;
+    EditText changePassStatistic;
     TextView tvError;
     TextView tvSuccess;
     Button btnConfirm;
@@ -39,9 +39,9 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         phone = (EditText) findViewById(R.id.tbPhone);
         address = (EditText) findViewById(R.id.tbAddress);
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
-        changePass = findViewById(R.id.tbPass);
-        changePass.setFocusable(false);
-        changePass.setOnClickListener(new View.OnClickListener() {
+        changePassStatistic = findViewById(R.id.tbPassStatistic);
+        changePassStatistic.setFocusable(false);
+        changePassStatistic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intentChangePass = new Intent(ProfileActivity.this, ChangePassword.class);
@@ -113,6 +113,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                     Session.currentStaff.setPhone(phone.getText().toString());
                 }
                 new ManagerLoginTask("updateProfile", "", "", ProfileActivity.this);
+                tvError.setVisibility(View.INVISIBLE);
             } else {
                 tvError.setVisibility(View.VISIBLE);
             }
