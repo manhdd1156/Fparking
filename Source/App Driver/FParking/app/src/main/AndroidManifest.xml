@@ -75,40 +75,26 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" />
-        <activity android:name=".CheckOut"
-            android:noHistory="true"/>
-        <activity android:name=".OrderParking" />
+            android:label="@string/title_activity_home"/>
+        <activity android:name=".CheckOut"/>
+        <activity android:name=".OrderParking"/>
         <activity
             android:name=".Direction"
             android:label="@string/title_activity_direction" />
         <activity android:name=".login.MainActivity" />
-        <activity android:name=".ParkingHistory"
-            android:noHistory="true"/>
-        <activity android:name=".DetailedHistory"
-            android:noHistory="true"/>
-        <activity android:name=".CarsList"
-            android:noHistory="true"/>
-        <activity android:name=".DriverInformation"
-            android:noHistory="true"/>
-        <activity android:name=".DialogConfirmPass"
-            android:noHistory="true"/>
-        <activity android:name=".DialogAddCar"
-            android:noHistory="true"/>
-        <activity android:name=".ChangePassword"
-            android:noHistory="true"/>
-        <activity android:name=".other.Contact"
-            android:noHistory="true"/>
-        <activity android:name=".FineHistory"
-            android:noHistory="true"/>
-        <activity android:name=".DetailedFine"
-            android:noHistory="true"/>
-        <activity android:name=".other.TermsAndConditions"
-            android:noHistory="true"/>
-        <activity android:name=".other.Feedback"
-            android:noHistory="true"/>
-        <activity android:name=".login.SignUp_Fragment"
-            android:noHistory="true"/>
+        <activity android:name=".ParkingHistory"/>
+        <activity android:name=".DetailedHistory"/>
+        <activity android:name=".CarsList"/>
+        <activity android:name=".DriverInformation"/>
+        <activity android:name=".DialogConfirmPass"/>
+        <activity android:name=".DialogAddCar"/>
+        <activity android:name=".ChangePassword" />
+        <activity android:name=".other.Contact" />
+        <activity android:name=".FineHistory"/>
+        <activity android:name=".DetailedFine"/>
+        <activity android:name=".other.TermsAndConditions" />
+        <activity android:name=".other.Feedback"/>
+        <activity android:name=".login.SignUp_Fragment"/>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -125,8 +111,7 @@
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
 
-        <activity android:name=".other.Guide"
-            android:noHistory="true"></activity>
+        <activity android:name=".other.Guide"></activity>
     </application>
 
 </manifest>

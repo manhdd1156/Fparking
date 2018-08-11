@@ -10,6 +10,8 @@ public class BookingDTO {
 
     private int parkingID;
 
+    private int driverVehicleID;
+
     private String address;
 
     private String timeIn;
@@ -32,7 +34,7 @@ public class BookingDTO {
 
     private String color;
 
-    public BookingDTO(int bookingID, int vehicleID, int parkingID, String address, String timeIn, String timeOut, double price, int status, String licenseplate, double amount, double comission, double totalfine, String type, String color) {
+    public BookingDTO(int bookingID, int vehicleID, int parkingID, String address, String timeIn, String timeOut, double price, int status, String licenseplate, double amount, double comission, double totalfine, String type, String color, int driverVehicleID) {
         this.bookingID = bookingID;
         this.vehicleID = vehicleID;
         this.parkingID = parkingID;
@@ -47,6 +49,7 @@ public class BookingDTO {
         this.totalfine = totalfine;
         this.type = type;
         this.color = color;
+        this.driverVehicleID = driverVehicleID;
     }
 
     public BookingDTO() {
@@ -108,6 +111,10 @@ public class BookingDTO {
         return color;
     }
 
+    public int getDriverVehicleID() {
+        return driverVehicleID;
+    }
+
     public void setBookingID(int bookingID) {
         this.bookingID = bookingID;
     }
@@ -162,6 +169,10 @@ public class BookingDTO {
 
     public void setColor(String color) {
         this.color = color;
+    }
+
+    public void setDriverVehicleID(int driverVehicleID) {
+        this.driverVehicleID = driverVehicleID;
     }
 
     /*Comparator for sorting the list by roll no*/

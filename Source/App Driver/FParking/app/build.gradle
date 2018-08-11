@@ -45,4 +45,7 @@ dependencies {
     //#####################################################################
     implementation 'com.facebook.android:account-kit-sdk:4.29.0'
 
+    // progess bar
+    implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+
 }

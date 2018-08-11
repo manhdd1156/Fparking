@@ -120,7 +120,7 @@ class LoginTask extends AsyncTask<Void, Void, Boolean> {
 class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
 
     private final IAsyncTaskHandler container;
-    private String action;
+    private String action = "";
 
     public GetProfileTask(IAsyncTaskHandler container) {
         this.container = container;

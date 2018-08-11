@@ -46,6 +46,7 @@ public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler 
             public void onClick(View v) {
                 Intent backHistoryIntent = new Intent(FineHistory.this, HomeActivity.class);
                 startActivity(backHistoryIntent);
+                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -76,6 +77,7 @@ public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler 
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, HomeActivity.class));
+        finish();
     }
 
     @Override
@@ -92,6 +94,7 @@ public class FineHistory extends AppCompatActivity implements IAsyncTaskHandler 
                 Intent intentDetail = new Intent(FineHistory.this, DetailedFine.class);
                 intentDetail.putExtra("fineID", fineDTOS.get(position).getFineID());
                 startActivity(intentDetail);
+                finish();
             }
         });
     }

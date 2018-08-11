@@ -19,6 +19,8 @@ import android.media.Ringtone;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.speech.tts.TextToSpeech;
+import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.FragmentActivity;
 import android.os.Bundle;
@@ -58,6 +60,7 @@ import com.google.android.gms.maps.model.PolylineOptions;
 import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 public class Direction extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener, IAsyncTaskHandler, LocationListener, GoogleMap.OnCameraMoveStartedListener {
 
@@ -65,6 +68,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     Button buttonCheckin, buttonHuy, btnOK;
     TextView textViewAlert;
     View mMapView;
+    private TextToSpeech textToSpeechNearPlace;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
@@ -185,7 +189,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             @Override
             public boolean onMyLocationButtonClick() {
                 userGesture = false;
-                return false;
+                return true;
             }
         });
 
@@ -255,7 +259,9 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         if (action.equals("pi")) {
             parkingDTOS = (ArrayList<ParkingDTO>) o;
             ParkingDTO parkingDTO = parkingDTOS.get(0);
-
+            if (parkingDTO != null) {
+                textToSpeech(parkingDTO.getAddress());
+            }
             //  tạo điểm đến
             distination = new Location("distination");
             distination.setLatitude(parkingDTO.getLatitude());
@@ -309,6 +315,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     public void onLocationChanged(Location location) {
 
         if (!userGesture) {
+            Log.e("auto move", location.getBearing()+ " ok");
             cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
                     .zoom(17)                   // Sets the zoom
@@ -354,16 +361,11 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     public void onCameraMoveStarted(int reason) {
         if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
             userGesture = true;
-            Toast.makeText(this, "The user gestured on the map.",
-                    Toast.LENGTH_SHORT).show();
+            Log.e("camera move", "ok");
         } else if (reason == GoogleMap.OnCameraMoveStartedListener
                 .REASON_API_ANIMATION) {
-            Toast.makeText(this, "The user tapped something on the map.",
-                    Toast.LENGTH_SHORT).show();
         } else if (reason == GoogleMap.OnCameraMoveStartedListener
                 .REASON_DEVELOPER_ANIMATION) {
-            Toast.makeText(this, "The app moved the camera.",
-                    Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -442,11 +444,29 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         notificationManager.notify(/*notification id*/1, notificationBuilder.build());
     }
 
+    protected void textToSpeech(final String address) {
+        textToSpeechNearPlace = new TextToSpeech(Direction.this, new TextToSpeech.OnInitListener() {
+            @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
+            @Override
+            public void onInit(int status) {
+                textToSpeechNearPlace.setLanguage(Locale.forLanguageTag("vi-VN"));
+                textToSpeechNearPlace.speak("Bạn đã đặt chỗ tại bãi xe " + address, TextToSpeech.QUEUE_FLUSH, null);
+            }
+        });
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
         progressDialog.dismiss();
         startActivity(new Intent(this, OrderParking.class));
+        finish();
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        textToSpeechNearPlace.shutdown();
         finish();
     }
 }

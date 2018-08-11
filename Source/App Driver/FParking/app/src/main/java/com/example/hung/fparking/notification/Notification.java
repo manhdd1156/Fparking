@@ -71,6 +71,7 @@ public class Notification extends Service implements SubscriptionEventListener, 
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
         if (Session.currentDriver != null) {
+            new BookingTask("newbooking", Session.currentDriver.getId() + "", "", "newbooking", this);
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
             Session.channel = Session.pusher.subscribe(Session.currentDriver.getId() + "channel");
             Log.e("Notification: ", Session.currentDriver.getId() + "channel");
@@ -85,6 +86,7 @@ public class Notification extends Service implements SubscriptionEventListener, 
             new DriverLoginTask("second_time", null, "", new IAsyncTaskHandler() {
                 @Override
                 public void onPostExecute(Object o, String action) {
+                    new BookingTask("newbooking", Session.currentDriver.getId() + "", "", "newbooking", this);
                     Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
                     Session.channel = Session.pusher.subscribe(Session.currentDriver.getId() + "channel");
                     Log.e("Notification: ", Session.currentDriver.getId() + "channel");
@@ -116,10 +118,16 @@ public class Notification extends Service implements SubscriptionEventListener, 
                     new BookingTask("getorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "bookingid", Notification.this);
                     new NotificationTask("cancelorder", mPreferences.getString("vehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                     createNotification("Bạn đã đặt chỗ thành công");
-                    OrderParking.yourCountDownTimer.cancel();
+                    if (HomeActivity.yourCountDownTimer != null) {
+                        HomeActivity.yourCountDownTimer.cancel();
+                    }
+                    if (OrderParking.yourCountDownTimer != null) {
+                        OrderParking.yourCountDownTimer.cancel();
+                    }
                     Intent intentDirection = new Intent(Notification.this, Direction.class);
                     intentDirection.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                     startActivity(intentDirection);
+                    
                 } else if (eventName.toLowerCase().contains("checkin")) {
                     new NotificationTask("cancelcheckin", mPreferences.getString("vehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                     mPreferencesEditor.putInt("status", 2);
@@ -140,6 +148,14 @@ public class Notification extends Service implements SubscriptionEventListener, 
             } else if (data.contains("cancel")) {
                 if (eventName.toLowerCase().contains("order")) {
                     createNotification("Bãi xe không chấp nhận yêu cầu đặt chỗ của bạn");
+                    if (OrderParking.yourCountDownTimer != null) {
+                        OrderParking.yourCountDownTimer.cancel();
+                    }
+                    if (OrderParking.progessDialog != null) {
+                        OrderParking.progessDialog.cancel();
+                    }
+//                    OrderParking.textViewAlert.setText("Chủ bãi không chấp nhận xe bạn");
+//                    OrderParking.notiDialog.show();
                     new NotificationTask("cancelorder", mPreferences.getString("vehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                 } else if (eventName.toLowerCase().contains("checkin")) {
                     createNotification("Bãi xe không chấp nhận yêu cầu vào bãi của bạn");
@@ -151,6 +167,10 @@ public class Notification extends Service implements SubscriptionEventListener, 
             } else if (data.contains("after")) {
                 if (eventName.toLowerCase().contains("order")) {
                     createNotification("Bãi xe đã hủy yêu cầu đặt chỗ của bạn");
+                    mPreferencesEditor.clear().commit();
+                    Intent intentCancel = new Intent(Notification.this, HomeActivity.class);
+                    intentCancel.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    startActivity(intentCancel);
                     new NotificationTask("after", mPreferences.getString("vehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                 }
             }
@@ -212,6 +232,18 @@ public class Notification extends Service implements SubscriptionEventListener, 
                 mPreferencesEditor.putString("bookingid", booking.get(0).getBookingID() + "");
                 mPreferencesEditor.putInt("status", booking.get(0).getStatus());
                 mPreferencesEditor.commit();
+            }
+        }else if(action.equals("newbooking")){
+            booking = (ArrayList<BookingDTO>) o;
+            BookingDTO bookingDTO = booking.get(0);
+            if (bookingDTO.getStatus() != 0) {
+                mPreferencesEditor.putString("drivervehicleID", bookingDTO.getDriverVehicleID() + "");
+                mPreferencesEditor.putString("vehicleID", bookingDTO.getVehicleID() + "");
+                mPreferencesEditor.putString("parkingID", bookingDTO.getParkingID() + "");
+                mPreferencesEditor.putInt("status", bookingDTO.getStatus());
+                mPreferencesEditor.putString("bookingid", bookingDTO.getBookingID() + "").commit();
+            } else {
+                mPreferencesEditor.clear().commit();
             }
         }
     }

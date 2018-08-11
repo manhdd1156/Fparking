@@ -47,10 +47,11 @@
             android:layout_alignParentTop="true"
             android:layout_marginStart="10dp"
             app:srcCompat="@drawable/ic_action_backwhile" />
+
         <ImageView
             android:id="@+id/imageView25"
             android:layout_width="352dp"
-            android:layout_height="396dp"
+            android:layout_height="426dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="68dp"
@@ -59,11 +60,12 @@
 
         <EditText
             android:id="@+id/editTextFeedback"
-            android:layout_width="wrap_content"
-            android:layout_height="333dp"
-            android:layout_alignParentTop="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="128dp"
+            android:layout_width="315dp"
+            android:layout_height="376dp"
+            android:layout_alignStart="@+id/imageViewBackFeedback"
+            android:layout_alignTop="@+id/imageView25"
+            android:layout_marginLeft="25dp"
+            android:layout_marginTop="25dp"
             android:background="@android:color/transparent"
             android:ems="10"
             android:inputType="textMultiLine"

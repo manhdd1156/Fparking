@@ -30,6 +30,10 @@ import com.example.hung.fparking.dto.TariffDTO;
 import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 import com.example.hung.fparking.login.CustomToast;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.SpriteFactory;
+import com.github.ybq.android.spinkit.Style;
+import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.squareup.picasso.Picasso;
 import com.synnapps.carouselview.CarouselView;
 import com.synnapps.carouselview.ImageListener;
@@ -51,21 +55,20 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     private ArrayList<VehicleDTO> vehicle;
     private ArrayList<ParkingDTO> parkingDTOS;
     private ArrayList<TariffDTO> tariffDTOS;
-    ArrayList<ParkingDTO> parkingSortDTOS;
+    private ArrayList<ParkingDTO> parkingSortDTOS;
     private List<CarouselPicker.PickerItem> textItems;
     public static CountDownTimer yourCountDownTimer;
 
     boolean doubleBackToExitPressedOnce = false;
     int driverVehicleID, parkingID, vehicleID;
-    ProgressDialog proD;
     AlertDialog.Builder builder;
 
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
 
     ImageView backOrder, addCarOrder;
-    Button buttonDat_Cho;
-    TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress;
+    Button buttonDat_Cho, btnOK;
+    public static TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress, textViewTitlePB, textViewAlert;
 
     //addcar view
     private CarouselPicker carouselPickerCarType;
@@ -75,8 +78,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     private ArrayList<TypeDTO> typeDTOS;
     private List<CarouselPicker.PickerItem> textItemsType;
 
-    AlertDialog dialog, quickDialog;
-    Button buttonOK, buttonCancel;
+    public static AlertDialog dialog, quickDialog, progessDialog, notiDialog;
+    Button buttonOK, buttonCancel, btnCancelPB;
     TextView textViewAddressQB, textViewTotalTimeQB, textViewPriceQB;
 
     int[] sampleImages = {R.drawable.image_1, R.drawable.image_2, R.drawable.image_3, R.drawable.image_4, R.drawable.image_5};
@@ -91,6 +94,9 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         customCarouselView.setPageCount(sampleNetworkImageURLs.length);
         customCarouselView.setSlideInterval(2500);
 //        customCarouselView.setViewListener(viewListener);
+        setProgessbar();
+
+        setAlertDialog();
 
         // tạo dialog car
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(OrderParking.this);
@@ -131,7 +137,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         buttonDat_Cho.setEnabled(false);
 
         // create dialog
-        proD = new ProgressDialog(OrderParking.this);
         builder = new AlertDialog.Builder(OrderParking.this);
 
         // set text cho button theo data
@@ -161,10 +166,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     mPreferencesEditor.putString("vehicleID", vehicleID + "").commit();
                     mPreferencesEditor.putString("parkingID", parkingID + "").commit();
                     new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
-
-//                    Intent intent = new Intent(OrderParking.this, Notification.class);
-//                    startService(intent);
-                    proD.setCancelable(false);
                     counttime();
                 }
             }
@@ -279,16 +280,11 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     }
 
     public void counttime() {
-        proD.show();
+        progessDialog.show();
         yourCountDownTimer = new CountDownTimer(20000, 1000) {
             boolean checkOwer = true;
 
             public void onTick(long millisUntilFinished) {
-                proD.setMessage("\tĐang đợi chủ bãi đỗ xác nhận ... " + millisUntilFinished / 1000);
-                if (checkOwer) {
-//                                new pushToOwner("2", "order").execute((Void) null);
-                    checkOwer = false;
-                }
             }
 
             public void onFinish() {
@@ -336,7 +332,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     }
                 };
                 try {
-                    proD.dismiss();
+                    progessDialog.cancel();
                     builder.setMessage("Chủ bãi đỗ đang bận! Bạn có muốn tìm bãi khác?")
                             .setPositiveButton("Đồng ý", dialogClickListener)
                             .setNegativeButton("Hủy", dialogClickListener)
@@ -460,6 +456,47 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         }
     }
 
+    private void setProgessbar() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(OrderParking.this);
+        View mView = getLayoutInflater().inflate(R.layout.progress_bar, null);
+        mBuilder.setView(mView);
+        mBuilder.setCancelable(false);
+        progessDialog = mBuilder.create();
+        btnCancelPB = mView.findViewById(R.id.btnCancelPB);
+        textViewTitlePB = mView.findViewById(R.id.textViewTitlePB);
+        textViewTitlePB.setText("Vui lòng đợi chủ bãi xác nhận");
+        btnCancelPB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progessDialog.cancel();
+                yourCountDownTimer.cancel();
+                new BookingTask("timeout", vehicleID + "", parkingID + "", "timeout", OrderParking.this);
+            }
+        });
+
+        SpinKitView spinKitView = (SpinKitView) mView.findViewById(R.id.spin_kit);
+        Style style = Style.values()[7];
+        Sprite drawable = SpriteFactory.create(style);
+        spinKitView.setIndeterminateDrawable(drawable);
+    }
+
+    private void setAlertDialog(){
+        //dialog thông báo
+        AlertDialog.Builder mNotiBuilder = new AlertDialog.Builder(OrderParking.this);
+        View mNotiView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
+        mNotiBuilder.setView(mNotiView);
+        notiDialog = mNotiBuilder.create();
+        textViewAlert = mNotiView.findViewById(R.id.textViewAlert);
+        btnOK = mNotiView.findViewById(R.id.btnOK);
+
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                notiDialog.cancel();
+            }
+        });
+    }
+
     @Override
     public void finish() {
         super.finish();
@@ -474,10 +511,17 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        finish();
+    }
+
+    @Override
     public void onBackPressed() {
         int status = mPreferences.getInt("status", 8);
         if (status != 1) {
-            super.onBackPressed();
+            startActivity(new Intent(this, HomeActivity.class));
+            finish();
         } else {
             if (doubleBackToExitPressedOnce) {
                 super.onBackPressed();
