@@ -49,9 +49,12 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.layout_login);
-        setProperties();
 
+        Session.homeActivity = this;
+        Session.spref = getSharedPreferences("intro", 0);
+        setProperties();
     }
+
     private void setProperties() {
         // ánh xạ
         phoneNumber = (EditText) findViewById(R.id.phone);
@@ -87,8 +90,8 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
 
     private void checkValidation() {
         // Get phone and password
-        phoneNumber.setText("01288028666");
-        password.setText("12345");
+//        phoneNumber.setText("01288028666");
+//        password.setText("12345");
         String getPhone = phoneNumber.getText().toString();
         String getPassword = password.getText().toString();
 
@@ -113,7 +116,11 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
                     "Số điện thoại không đúng");
             // Else do login and do your stuff
         else {
-           // thực hiện đăng nhập ở đây
+            DriverDTO driverDTO = new DriverDTO();
+            driverDTO.setPhone(getPhone);
+//            new DriverLoginTask("first_time", driverDTO, getPassword, MainActivity.this);
+            Toast.makeText(getApplicationContext(), "Do Login.", Toast.LENGTH_SHORT)
+                    .show();
         }
     }
 
@@ -176,7 +183,7 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
             Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
             intentSignup.putExtra("action", "forgot");
             startActivity(intentSignup);
-        } else if(event.equals("register")){
+        } else if (event.equals("register")) {
             Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
             intentSignup.putExtra("action", "register");
             startActivity(intentSignup);

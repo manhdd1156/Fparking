@@ -1,20 +1,16 @@
 package com.example.hung.fparking.asynctask;
 
-import android.app.Activity;
-import android.app.Fragment;
 import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
-import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
-import android.widget.ListView;
 
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.dto.OwnerDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
-import com.example.hung.fparking.dto.StaffDTO;
 
 import org.json.JSONObject;
 
@@ -30,23 +26,25 @@ public class ManagerLoginTask {
     public ManagerLoginTask(String type, String phone, String password, IAsyncTaskHandler container) {
 
         if (type.equals("first_time")) {
-            new StaffLoginTask(phone, password, container).execute((Void) null);
+            new OwnerLoginTask(phone, password, container).execute((Void) null);
         } else if (type.equals("second_time")) {
             new GetProfileTask(container).execute((Void) null);
         }else if(type.equals("updateProfile")) {
             new  UpdateProfileTask(container).execute((Void) null);
+        }else if(type.equals("forgotpassword")) {
+            new  UpdatePasswordTask(container).execute((Void) null);
         }
     }
 
 }
 
-class StaffLoginTask extends AsyncTask<Void, Void, Boolean> {
+class OwnerLoginTask extends AsyncTask<Void, Void, Boolean> {
     ProgressDialog pdLoading;
     private final String mPhone;
     private final String mPassword;
     private final IAsyncTaskHandler container;
     private SharedPreferences.Editor editor;
-    public StaffLoginTask(String phone, String password, IAsyncTaskHandler container) {
+    public OwnerLoginTask(String phone, String password, IAsyncTaskHandler container) {
         mPhone = phone;
         mPassword = password;
         this.container = container;
@@ -78,7 +76,7 @@ class StaffLoginTask extends AsyncTask<Void, Void, Boolean> {
             // convert pass to md5
             String passMD5 = getMD5Hex(mPassword);
             formData.put("password", passMD5);
-            formData.put("type", "STAFF");
+            formData.put("type", "OWNER");
             String jsonLogin = httpHandler.requestMethod(Constants.API_URL + "login", formData.toString(),"POST");
             JSONObject jsonObj = new JSONObject(jsonLogin);
             if(!jsonObj.getString("token").isEmpty()) {
@@ -87,27 +85,15 @@ class StaffLoginTask extends AsyncTask<Void, Void, Boolean> {
                 editor.putString("token",token);
                 editor.commit();
 
-            String jsonGetInfo = httpHandler.get(Constants.API_URL + "staffs/profile");
+            String jsonGetInfo = httpHandler.get(Constants.API_URL + "owners/profile");
                 JSONObject jsonObj2 = new JSONObject(jsonGetInfo);
-            Session.currentStaff = new StaffDTO();
-            Session.currentParking = new ParkingDTO();
-            Session.currentStaff.setId(jsonObj2.getLong("id"));
-            Session.currentStaff.setAddress(jsonObj2.getString("address"));
-            Session.currentStaff.setName(jsonObj2.getString("name"));
-            Session.currentStaff.setPhone(jsonObj2.getString("phone"));
-            Session.currentStaff.setPass(jsonObj2.getString("password"));
-            JSONObject parking = jsonObj2.getJSONObject("parking");
-            Session.currentStaff.setParking_id(parking.getInt("id"));
-            Session.currentParking.setId(parking.getInt("id"));
-            Session.currentParking.setAddress(parking.getString("address"));
-            Session.currentParking.setCurrentspace(parking.getInt("currentspace"));
-            Session.currentParking.setDeposits(parking.getDouble("deposits"));
-            Session.currentParking.setImage(parking.getString("image"));
-            Session.currentParking.setLatitude(parking.getString("latitude"));
-            Session.currentParking.setLongitude(parking.getString("longitude"));
-            Session.currentParking.setStatus(parking.getInt("status"));
-            Session.currentParking.setTimeoc(parking.getString("timeoc"));
-            Session.currentParking.setTotalspace(parking.getInt("totalspace"));
+            Session.currentOwner = new OwnerDTO();
+            Session.currentOwner.setId(jsonObj2.getLong("id"));
+            Session.currentOwner.setAddress(jsonObj2.getString("address"));
+            Session.currentOwner.setName(jsonObj2.getString("name"));
+            Session.currentOwner.setPhone(jsonObj2.getString("phone"));
+            Session.currentOwner.setPass(jsonObj2.getString("password"));
+
                 return true;
             }
 
@@ -168,15 +154,15 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
 
             JSONObject jsonObj = new JSONObject(json);
             System.out.println(jsonObj);
-            Session.currentStaff = new StaffDTO();
+//            Session.currentStaff = new OwnerDTO();
             Session.currentParking = new ParkingDTO();
-            Session.currentStaff.setId(jsonObj.getLong("id"));
-            Session.currentStaff.setAddress(jsonObj.getString("address"));
-            Session.currentStaff.setName(jsonObj.getString("name"));
-            Session.currentStaff.setPhone(jsonObj.getString("phone"));
-            Session.currentStaff.setPass(jsonObj.getString("password"));
+//            Session.currentStaff.setId(jsonObj.getLong("id"));
+//            Session.currentStaff.setAddress(jsonObj.getString("address"));
+//            Session.currentStaff.setName(jsonObj.getString("name"));
+//            Session.currentStaff.setPhone(jsonObj.getString("phone"));
+//            Session.currentStaff.setPass(jsonObj.getString("password"));
             JSONObject parking = jsonObj.getJSONObject("parking");
-            Session.currentStaff.setParking_id(parking.getInt("id"));
+//            Session.currentStaff.setParking_id(parking.getInt("id"));
             Session.currentParking.setId(parking.getInt("id"));
             Session.currentParking.setAddress(parking.getString("address"));
             Session.currentParking.setCurrentspace(parking.getInt("currentspace"));
@@ -223,19 +209,63 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
         try {
 
             JSONObject formData = new JSONObject();
-            formData.put("id", Session.currentStaff.getId());
-            formData.put("name", Session.currentStaff.getName());
-            formData.put("phone", Session.currentStaff.getPhone());
-            formData.put("address", Session.currentStaff.getAddress());
+            formData.put("id", Session.currentOwner.getId());
+            formData.put("name", Session.currentOwner.getName());
+            formData.put("phone", Session.currentOwner.getPhone());
+            formData.put("address", Session.currentOwner.getAddress());
 
 
-            String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "staffs/update", formData.toString(),"PUT");
+            String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "owners/update", formData.toString(),"PUT");
             JSONObject jsonObj = new JSONObject(jsonUpdate);
             if(jsonObj!=null) {
                 return true;
             }
         } catch (Exception e) {
             Log.e("Exception", "update profile : " + e);
+        }
+        return false;
+    }
+
+    @Override
+    protected void onPostExecute(final Boolean success) {
+        container.onPostExecute(success);
+    }
+
+    @Override
+    protected void onCancelled() {
+        container.onPostExecute(false);
+    }
+}
+class UpdatePasswordTask extends AsyncTask<Void, Void, Boolean> {
+
+    private final IAsyncTaskHandler container;
+
+    public UpdatePasswordTask(IAsyncTaskHandler container) {
+        this.container = container;
+
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... params) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+
+            JSONObject formData = new JSONObject();
+//            formData.put("id", Session.currentStaff.getId());
+//            formData.put("name", Session.currentStaff.getName());
+            formData.put("phone", Session.currentOwner.getPhone());
+            formData.put("password", Session.currentOwner.getPass());
+//            formData.put("address", Session.currentStaff.getAddress());
+
+
+            String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "owners/forgotpassword", formData.toString(),"PUT");
+            JSONObject jsonObj = new JSONObject(jsonUpdate);
+            if(jsonObj!=null) {
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("Exception", "forgot password  : " + e);
         }
         return false;
     }
