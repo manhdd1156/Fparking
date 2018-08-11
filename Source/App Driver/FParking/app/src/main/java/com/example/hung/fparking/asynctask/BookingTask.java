@@ -28,8 +28,10 @@ public class BookingTask {
             new GetBookingTaskWhenOrder(data1, data2, action, container).execute((Void) null);
         } else if (type.equals("cancel")) {
             new CancelBooking(data1, data2, action, container).execute((Void) null);
-        }else if (type.equals("timeout")) {
+        } else if (type.equals("timeout")) {
             new CancelBooking(data1, data2, action, container).execute((Void) null);
+        } else if (type.equals("newbooking")) {
+            new GetBookingTaskByDriverID(data1, action, container).execute((Void) null);
         }
     }
 }
@@ -69,6 +71,7 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
             String address = parking.getString("address");
 
             JSONObject drivervehicle = c.getJSONObject("drivervehicle");
+            int driverVehicleID = drivervehicle.getInt("id");
             JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
             int vehicleID = vehicle.getInt("id");
             String licenseplate = vehicle.getString("licenseplate");
@@ -77,7 +80,7 @@ class GetBookingTaskByID extends AsyncTask<Void, Void, Boolean> {
             JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
             String type = vehicletype.getString("type");
 
-            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
+            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color, driverVehicleID));
 //            }
 
         } catch (Exception e) {
@@ -110,8 +113,14 @@ class GetBookingTaskByDriverID extends AsyncTask<Void, Void, Boolean> {
         booking = new ArrayList<>();
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "bookings/drivers/" + driverID);
-            Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers/" + driverID);
+            String json;
+            if (action.equals("newbooking")) {
+                 json = httpHandler.get(Constants.API_URL + "bookings/drivers?type=2");
+                Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers?type=2");
+            }else{
+                json = httpHandler.get(Constants.API_URL + "bookings/drivers?type=1");
+                Log.e("Get Booking By Phone: ", Constants.API_URL + "bookings/drivers?type=1");
+            }
             JSONArray jsonArray = new JSONArray(json);
 
             for (int i = 0; i < jsonArray.length(); i++) {
@@ -130,6 +139,7 @@ class GetBookingTaskByDriverID extends AsyncTask<Void, Void, Boolean> {
                 String address = parking.getString("address");
 
                 JSONObject drivervehicle = c.getJSONObject("drivervehicle");
+                int driverVehicleID = drivervehicle.getInt("id");
                 JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
                 int vehicleID = vehicle.getInt("id");
                 String licenseplate = vehicle.getString("licenseplate");
@@ -138,7 +148,7 @@ class GetBookingTaskByDriverID extends AsyncTask<Void, Void, Boolean> {
                 JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
                 String type = vehicletype.getString("type");
 
-                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
+                booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color, driverVehicleID));
             }
 
         } catch (Exception e) {
@@ -240,6 +250,7 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
             String address = parking.getString("address");
 
             JSONObject drivervehicle = c.getJSONObject("drivervehicle");
+            int driverVehicleID = drivervehicle.getInt("id");
             JSONObject vehicle = drivervehicle.getJSONObject("vehicle");
             int vehicleID = vehicle.getInt("id");
             String licenseplate = vehicle.getString("licenseplate");
@@ -248,7 +259,7 @@ class GetBookingTaskWhenOrder extends AsyncTask<Void, Void, Boolean> {
             JSONObject vehicletype = vehicle.getJSONObject("vehicletype");
             String type = vehicletype.getString("type");
 
-            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color));
+            booking.add(new BookingDTO(bookingID, vehicleID, parkingID, address, timein, timeout, price, status, licenseplate, amount, comission, totalfine, type, color, driverVehicleID));
 //            }
 
         } catch (Exception e) {
@@ -268,7 +279,6 @@ class CancelBooking extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     String vehicleid, parkingid, action;
-    boolean success = false;
 
     public CancelBooking(String vehicleid, String parkingid, String action, IAsyncTaskHandler container) {
         this.container = container;
@@ -293,26 +303,25 @@ class CancelBooking extends AsyncTask<Void, Void, Boolean> {
             }
 
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/drivers/cancel", formData.toString(), "PUT");
-            Log.e("Hủy đặt chỗ: ",Constants.API_URL + "bookings/drivers/cancel");
-            JSONObject jsonObj = new JSONObject(json);
-            if (jsonObj != null) {
-                success = true;
+            Log.e("Hủy đặt chỗ: ", Constants.API_URL + "bookings/drivers/cancel");
+            if (json.contains("OK")) {
+                return true;
             }
         } catch (Exception ex) {
             Log.e("Error CreateBooking:", ex.getMessage());
         }
-        return null;
+        return false;
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-//        Intent intent = new Intent();
-//        if(success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
+        container.onPostExecute(aBoolean, action);
+    }
+
+    @Override
+    protected void onCancelled() {
+        super.onCancelled();
+        container.onPostExecute(false, action);
     }
 }
