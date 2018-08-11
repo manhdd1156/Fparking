@@ -93,26 +93,30 @@ public class DriverServiceImpl implements DriverService {
 		// TODO Auto-generated method stub
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			List<Driver> dlist = getAll();
-			for (Driver d : dlist) {
-				if (d.getId() == t.getId() && d.getPassword().equals(driver.getPassword())) {
-					List<Driver> dlist2 = getAll();
-					boolean flag = false;
-					for (Driver driver2 : dlist) {
-						if (driver2.getPhone().equals(driver.getPhone()) && driver2.getId()!=driver.getId()) {
-							flag = true;
+			if (t.getType().equals("ADMIN")) {
+				return driverRepository.save(driver);
+			} else {
+				List<Driver> dlist = getAll();
+				for (Driver d : dlist) {
+					if (d.getId() == t.getId() && d.getPassword().equals(driver.getPassword())) {
+						boolean flag = false;
+						for (Driver driver2 : dlist) {
+							if (driver2.getPhone().equals(driver.getPhone()) && driver2.getId() != driver.getId()) {
+								flag = true;
+							}
 						}
-					}
-					if (!flag) {
+						if (!flag) {
 
-						return driverRepository.save(driver);
-					}
+							return driverRepository.save(driver);
+						}
 
+					}
 				}
 			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}
+
 		return null;
 
 	}
