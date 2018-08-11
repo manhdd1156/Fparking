@@ -14,12 +14,10 @@ public class CheckNetwork {
 
     private final Activity mActivity;
     private final Context mContext;
-    private String content;
 
-    public CheckNetwork(Activity mActivity, Context mContext, String content) {
+    public CheckNetwork(Activity mActivity, Context mContext) {
         this.mActivity = mActivity;
         this.mContext = mContext;
-        this.content = content;
     }
 
     public boolean isNetworkConnected() {
@@ -48,7 +46,7 @@ public class CheckNetwork {
             }
         };
         builder.setTitle("RẤT TIẾC :-(")
-                .setMessage(content)
+                .setMessage("Kết nối mạng đã bị tắt. Vui lòng bật kết nối mạng và thử lại trong ít phút nữa")
                 .setPositiveButton("THỬ LẠI", dialogClickListener).setCancelable(false).show();
         try {
         } catch (Exception e) {

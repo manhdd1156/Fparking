@@ -49,7 +49,6 @@ public class Feedback extends AppCompatActivity implements IAsyncTaskHandler {
             public void onClick(View v) {
                 Intent intentFeedback = new Intent(Feedback.this, HomeActivity.class);
                 startActivity(intentFeedback);
-                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -71,7 +70,6 @@ public class Feedback extends AppCompatActivity implements IAsyncTaskHandler {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, HomeActivity.class));
-        finish();
     }
 
     @Override

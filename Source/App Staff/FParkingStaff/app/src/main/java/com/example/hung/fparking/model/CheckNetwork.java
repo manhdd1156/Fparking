@@ -40,7 +40,7 @@ public class CheckNetwork {
                             createDialog();
                         } else {
                             mActivity.recreate();
-                            new ManagerNotiTask().execute((Void) null);
+                            new ManagerNotiTask("get");
 //                            Intent intent = new Intent(mContext, IntroApplication.class);
 //                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                            mContext.startActivity(intent);

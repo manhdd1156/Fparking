@@ -10,7 +10,13 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,6 +24,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.tagroup.fparking.security.Token;
+import com.tagroup.fparking.security.TokenProvider;
 import com.tagroup.fparking.service.AdminService;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.DriverService;
@@ -45,6 +53,8 @@ public class HomeController {
 	private BookingService bookingService;
 	@Autowired
 	private FineService fineService;
+	@Autowired
+	private TokenProvider tokenProvider;
 
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -52,6 +62,7 @@ public class HomeController {
 	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
 	// go to home
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "", method = RequestMethod.GET)
 	public String home(Map<String, Object> model) {
 		return "redirect:/home";
@@ -63,6 +74,7 @@ public class HomeController {
 	}
 
 	// go to home
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home", method = RequestMethod.GET)
 	public String fparkingLogoClick(Map<String, Object> model) {
 		List<Driver> listDriver;
@@ -90,7 +102,7 @@ public class HomeController {
 				model.put("totalAccountParking", 0);
 			}
 
-			// get list parking will be close
+			// get list parking will be close and peding
 			ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
 			ArrayList<Map<String, Object>> arrayListParkingPending = new ArrayList<>();
 			for (Parking parking : listParking) {
@@ -110,6 +122,7 @@ public class HomeController {
 					arrayListParking.add(m);
 				}
 
+				//Pending
 				if (parking.getStatus() == 3) {
 					m1.put("id", parking.getId());
 					m1.put("addressParking", parking.getAddress());
@@ -185,14 +198,20 @@ public class HomeController {
 
 	// check login
 	@RequestMapping(path = "/login", method = RequestMethod.POST)
-	public String login(Map<String, Object> model, @ModelAttribute Admin admin) {
+	public String login(Map<String, Object> model, @ModelAttribute Admin admin, HttpServletRequest request) {
 		try {
 			Admin admin2 = adminService.checklogin(admin);
+			Token token = new Token();
+			token.setId(admin2.getId());
+			token.setType("ADMIN");
+			String jwt = tokenProvider.generateToken(token);
+			request.getSession().setAttribute("Authorization", "Bearer " + jwt);
 			System.out.println("username+ passs:" + admin2.getUsername() + "---" + admin2.getPassword());
 			if (admin2 != null) {
 				return "redirect:/home";
 			}
 		} catch (Exception e) {
+			model.put("username", admin.getUsername());
 			model.put("messError", "Tên đăng nhập hoặc mật khẩu không đúng!");
 			return "login";
 		}
@@ -200,6 +219,7 @@ public class HomeController {
 	}
 
 	// get feedback detail
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.GET)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) {
 		Feedback feedback = new Feedback();
@@ -227,6 +247,7 @@ public class HomeController {
 	}
 
 	// delete feedback
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/feedback/delete/{id}", method = RequestMethod.GET)
 	public String deleteFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {
 		try {
@@ -243,6 +264,7 @@ public class HomeController {
 	}
 
 	// go to add money
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/addmoney/{id}", method = RequestMethod.GET)
 	public String getFỏmMoneyToParking(Map<String, Object> model, @PathVariable("id") Long id) {
 		Parking parking = new Parking();
@@ -257,6 +279,7 @@ public class HomeController {
 	}
 
 	// add money
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/addmoney/{id}", method = RequestMethod.POST)
 	public String addMoneyToParking(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("deposit") Double deposit) {
@@ -275,6 +298,7 @@ public class HomeController {
 	}
 
 	// get all revenuve by commission
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/revenue/commission", method = RequestMethod.GET)
 	public String getAllRevenueByCommission(Map<String, Object> model) throws Exception {
 		int check = 0;
@@ -308,4 +332,60 @@ public class HomeController {
 		return "managementrevenuebycommission";
 	}
 
+	// get driver by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/home/statistic", method = RequestMethod.GET)
+	public ResponseEntity<?> getStatistics() throws Exception {
+		HashMap<String, Object> model = new HashMap<>();
+		List<Driver> listDriver;
+		List<Parking> listParking;
+		List<Booking> listBooking;
+		List<Fine> listFine;
+
+		try {
+			listDriver = driverService.getAll();
+			listParking = parkingService.getAll();
+			listBooking = bookingService.getAll();
+			listFine = fineService.getAll();
+
+			if (listDriver != null && listDriver.size() > 0) {
+				model.put("totalAccountDriver", listDriver.size());
+			} else {
+				model.put("totalAccountDriver", 0);
+			}
+
+			if (listDriver != null && listDriver.size() > 0) {
+				model.put("totalAccountParking", listParking.size());
+			} else {
+				model.put("totalAccountParking", 0);
+			}
+
+			// get all transaction in a day and reveune
+			int totalTrasaction = 0;
+			double totalReveune = 0;
+			double revenueByFine = 0;
+			double revenueByCommistion = 0;
+			for (Booking booking : listBooking) {
+				if (booking.getTimeout() != null && timeStamp.equals(sdf.format(booking.getTimeout()))
+						&& booking.getStatus() == 3) {
+					totalTrasaction += 1;
+					revenueByCommistion += booking.getAmount() * booking.getComission();
+				}
+			}
+			for (Fine fine : listFine) {
+				if (fine.getDate() != null && timeStamp.equals(sdf.format(fine.getDate())) && fine.getStatus() == 1) {
+					revenueByCommistion += fine.getPrice();
+				}
+			}
+			model.put("totalTrasaction", totalTrasaction);
+			totalReveune = revenueByCommistion + revenueByFine;
+			model.put("totalReveune", currencyVN.format(totalReveune));
+			return new ResponseEntity<>(model, HttpStatus.OK);
+
+		} catch (Exception e) {
+			HttpHeaders headers = new HttpHeaders();
+			headers.add("Location", "/404");    
+			return new ResponseEntity<String>(headers,HttpStatus.FOUND);
+		}
+	}
 }

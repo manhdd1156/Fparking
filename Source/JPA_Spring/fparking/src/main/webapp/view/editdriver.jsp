@@ -48,6 +48,8 @@
 											<label>Số điện thoại:</label> 
 											<input type="text" class="form-control" name="phone" value="${phonenumber }">
 										</div>
+										<p style="color: green;">${messSuss }</p>
+										<p style="color: red;">${messError }</p>
 										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>
 									</form>

@@ -211,11 +211,11 @@ class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
             JSONObject formData = new JSONObject();
             formData.put("id", b.getBookingID());
             formData.put("status", b.getStatus());
-//            if (b.getStatus() == 2) {
-//                formData.put("timein", b.getTimein());
-//            } else if (b.getStatus() == 3) {
-//                formData.put("timeout", b.getTimeout());
-//            }
+            if (b.getStatus() == 2) {
+                formData.put("timein", b.getTimein());
+            } else if (b.getStatus() == 3) {
+                formData.put("timeout", b.getTimeout());
+            }
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/update/", formData.toString(), "PUT");
 
             JSONObject jsonObj = new JSONObject(json);

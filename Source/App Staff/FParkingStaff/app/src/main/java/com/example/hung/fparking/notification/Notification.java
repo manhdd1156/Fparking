@@ -103,8 +103,7 @@ public class Notification extends Service implements SubscriptionEventListener {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this.getApplicationContext(), "notify_001");
             Intent ii = new Intent(this.getApplicationContext(), HomeActivity.class);
-            ii.putExtra("touchNoti","true");
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,ii, 0);
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
 
             NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
             bigText.bigText("Nhấn vào để xem chi tiết");

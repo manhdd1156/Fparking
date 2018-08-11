@@ -66,7 +66,7 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
             Session.currentParking.setCurrentspace(jsonObj.getInt("currentspace"));
             Session.currentParking.setDeposits(jsonObj.getDouble("deposits"));
             Session.currentParking.setImage(jsonObj.getString("image"));
-            Session.currentParking.setCity_id(jsonObj.getJSONObject("city").getInt("id"));
+            Session.currentParking.setCity_id(jsonObj.getInt("city_id"));
             Session.currentParking.setLatitude(jsonObj.getString("latitude"));
             Session.currentParking.setLongitude(jsonObj.getString("longitude"));
             Session.currentParking.setStatus(jsonObj.getInt("status"));
@@ -87,8 +87,6 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
 
         } catch (Exception ex) {
             Log.e("Error:", ex.getMessage());
-        }finally {
-
         }
         return null;
     }

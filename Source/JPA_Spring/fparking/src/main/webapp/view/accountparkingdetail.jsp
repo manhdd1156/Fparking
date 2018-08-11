@@ -46,21 +46,21 @@
 
 									<ul class="nav nav-tabs">
 										<li><a data-toggle="tab" href="#Infromation"
-											class="text-success"><i class="fa fa-bookmark-o"></i>
-												Thông tin tài khoản</a></li>
+											id="tabInfromation" class="text-success"><i
+												class="fa fa-bookmark-o"></i> Thông tin tài khoản</a></li>
 										<li><a data-toggle="tab" href="#PriceType"
-											class="text-success"><i class="glyphicon glyphicon-usd"></i>Giá
-												gửi xe</a></li>
+											id="tabPriceType" class="text-success"><i
+												class="glyphicon glyphicon-usd"></i>Giá gửi xe</a></li>
 										<li><a data-toggle="tab" href="#FineHistory"
-											class="text-success"><i class="fa fa-info"></i> Lịch sử
-												phạt</a></li>
+											id="tabFineHistory" class="text-success"><i
+												class="fa fa-info"></i> Lịch sử phạt</a></li>
 										<li><a data-toggle="tab" href="#TransactionHistory"
-											class="text-success"><i class="fa fa-info"></i> Lịch sử
-												giao dịch</a></li>
+											id="tabTransactionHistory" class="text-success"><i
+												class="fa fa-info"></i> Lịch sử giao dịch</a></li>
 									</ul>
 
 									<div class="tab-content">
-										<div id="Infromation" class="tab-pane fade in active">
+										<div id="Infromation" class="tab-pane fade in">
 											<div class="table-responsive panel">
 												<table class="table">
 													<tbody>
@@ -170,12 +170,20 @@
 															<div>
 																<br>
 																<p class="col-lg-12">
-																	Từ <input type="date"> đến <input type="date">
-																	<input type="submit" value="Tìm">
+																	Từ <input type="date" name="dateFrom"
+																		value="${dateFrom }"> đến <input type="date"
+																		name="dateTo" value="${dateTo }"> <input
+																		type="hidden" name="type" value="3"> <input
+																		type="submit" value="Tìm">
 																</p>
 															</div>
 														</form>
+
 														<div class="panel-body">
+														<div>
+															<b>Tổng tiền phạt: ${totalFine } </b>
+														</div>
+														<br>
 															<table width="100%"
 																class="table table-striped table-bordered table-hover"
 																id="dataTables-example2">
@@ -212,14 +220,24 @@
 											<div class="row">
 												<div class="col-lg-12">
 													<div class="panel panel-default">
-														<div>
-															<br>
-															<p class="col-lg-12">
-																Từ <input type="date" id="min" name="min"> đến
-																<input type="date" id="max" name="max">
-															</p>
-														</div>
+														<form action="" method="GET">
+															<div>
+																<br>
+																<p class="col-lg-12">
+																	Từ <input type="date" name="dateFrom"
+																		value="${dateFrom }"> đến <input type="date"
+																		name="dateTo" value="${dateTo }"> <input
+																		type="hidden" name="type" value="4"> <input
+																		type="submit" value="Tìm"> 
+																		<br>
+																</p>
+															</div>
+														</form>
 														<div class="panel-body">
+														<div>
+															<b>Tổng doanh thu: ${totalRevenue } </b>
+														</div>
+														<br>
 															<table width="100%"
 																class="table table-striped table-bordered table-hover"
 																id="dataTables-example4">
@@ -277,6 +295,18 @@
 
 	<!-- ===============FooterJavaScrip Start================= -->
 	<%@include file="footerjavascrip.jsp"%>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var type = ${type};
+		if(type==3){
+			$("#tabFineHistory").tab('show')
+		}else if(type==4){
+			$("#tabTransactionHistory").tab('show')
+		}else{
+			$("#tabInfromation").tab('show')
+		}
+	});
+	</script>
 	<!-- ===============FooterJavaScrip End================= -->
 
 </body>
