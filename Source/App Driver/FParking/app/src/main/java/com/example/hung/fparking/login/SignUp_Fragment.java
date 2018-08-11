@@ -39,17 +39,21 @@ import java.util.regex.Pattern;
 
 public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHandler {
 
-    TextView phone, already_user, textViewAlert;
+    TextView phone, already_user, textViewAlert, signup_password_title;
     EditText password, confirmPassword;
     Button signUpBtn, btnOK;
     AlertDialog dialog;
 
     public static String APP_TAG = "AccountKit";
+    String action;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.signup_layout);
+
+        Intent intent = getIntent();
+        action = intent.getStringExtra("action");
 
         setUserInformation();
         setProperties();
@@ -83,8 +87,21 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
             @Override
             public void onClick(View v) {
                 dialog.cancel();
+                startActivity(new Intent(SignUp_Fragment.this, MainActivity.class));
+                finish();
             }
         });
+
+        // set ui
+        signup_password_title = findViewById(R.id.signup_password_title);
+        if (getIntent() != null) {
+            if (action.equals("forgot")) {
+                signup_password_title.setText("Quên mật khẩu");
+                signUpBtn.setText("Đổi mật khẩu");
+            } else if (action.equals("register")) {
+                signup_password_title.setText("Đăng ký");
+            }
+        }
     }
 
     public void setUserInformation() {
@@ -146,8 +163,6 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
         else {
 
             if (getIntent() != null) {
-                Intent intent = getIntent();
-                String action = intent.getStringExtra("action");
                 if (action.equals("forgot")) {
                     DriverDTO driverDTO = new DriverDTO();
                     driverDTO.setPhone(phone.getText().toString());
