@@ -35,7 +35,7 @@ public class Notification extends Service implements SubscriptionEventListener {
         options.setCluster("ap1");
         if(Session.currentParking!=null) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
-            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "schannel");
+            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "channel");
         }
         System.out.println("class Notification");
         Session.channel.bind(Constants.PUSHER_ORDER_FROM_DRIVER, this);
@@ -81,7 +81,7 @@ public class Notification extends Service implements SubscriptionEventListener {
                         myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                             Session.homeActivity.finish();
                         startActivity(myIntent);
-                        Session.homeActivity.recreate();
+//                        Session.homeActivity.recreate();
 //                        finish();
 
 

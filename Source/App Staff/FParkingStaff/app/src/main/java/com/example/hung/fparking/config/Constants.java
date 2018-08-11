@@ -1,7 +1,7 @@
 package com.example.hung.fparking.config;
 
 public class Constants {
-    public static final String API_URL = "http://192.168.119.232:9000/api/";
+    public static final String API_URL = "http://192.168.43.177:9000/api/";
     public static final String PUSHER_KEY = "d8e15d0b0ecad0c93a5e";
     public static final String PUSHER_CHANNEL = "Fparking";
     public static final String PUSHER_ORDER_FROM_DRIVER = "order";

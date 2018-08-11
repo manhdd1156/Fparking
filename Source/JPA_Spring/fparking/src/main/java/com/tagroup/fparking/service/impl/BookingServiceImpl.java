@@ -152,17 +152,26 @@ public class BookingServiceImpl implements BookingService {
 				f.setParking(b.getParking());
 				f.setDate(new Date());
 				f.setType(1);
-				f.setStatus(0);
+				f.setStatus(1);
 				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype())
 						.getPrice());
 				f = fineService.create(f);
+				// parking bị phạt thì trừ luôn vào deposits
+				Parking p = parkingService.getById(b.getParking().getId());
+				p.setDeposits(p.getDeposits()-f.getPrice());
+				
 				b.setStatus(0);
+				// tiền cọc < 100 thì ban parking
+				if(p.getDeposits()<100000) {
+					p.setStatus(2);
+				}
+				parkingService.update(p);
 				n.setEvent("cancel");
 				n.setType(2);
 				n.setData("order");
 				Notification nn = notificationRepository.save(n);
 				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() + 1);
-				pusherService.trigger(nn.getDriver_id() + "dchannel", "cancel", "order");
+				pusherService.trigger(nn.getDriver_id() + "dchannel", "order", "after");
 				return bookingRepository.save(b);
 			}
 
@@ -300,6 +309,12 @@ public class BookingServiceImpl implements BookingService {
 					}
 					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
+					Parking parking = parkingService.getById(booking.getParking().getId());
+					parking.setDeposits(parking.getDeposits() - totalPrice* booking.getComission());
+					if(parking.getDeposits()<100000) {
+						parking.setStatus(2);
+					}
+					parkingService.update(parking);
 					booking.setStatus(3);
 					modelNoti.setType(2);
 					modelNoti.setData("ok");
@@ -362,7 +377,7 @@ public class BookingServiceImpl implements BookingService {
 				
 				List<Booking> bAll = bookingRepository.findAll();
 				
-				for (Booking booking : b) {
+				for (Booking booking : bAll) {
 					if (booking.getDrivervehicle().getDriver().getId() == t.getId()
 							&& booking.getStatus() == 3) {
 						b.add(booking);
@@ -398,7 +413,6 @@ public class BookingServiceImpl implements BookingService {
 	public void cancel(BookingDTO bb) throws Exception {
 		// TODO Auto-generated method stub
 		List<Booking> bAll = bookingRepository.findAll();
-		
 		// driver cancel when preorder
 		for (Booking booking : bAll) {
 			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid()
