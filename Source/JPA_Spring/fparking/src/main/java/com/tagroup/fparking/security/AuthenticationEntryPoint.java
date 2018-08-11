@@ -15,7 +15,11 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
 	@Override
 	public void commence(HttpServletRequest request, HttpServletResponse response,
 			AuthenticationException authException) throws IOException, ServletException {
-		response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
+		if(request.getRequestURI().startsWith("/api/")) {
+			response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Access Denied");
+		}else {
+			response.sendRedirect("/login");
+		}
 	}
 
 }

@@ -10,6 +10,7 @@ import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,12 +46,14 @@ public class BusinessController {
 	private FineService fineService;
 	@Autowired
 	private FeedbackService feedbackService;
-	// Commission
-	// get commission
+
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 
+	// --------------MANAGE COMMISSION-----------
+	// get commission
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/commission", method = RequestMethod.GET)
 	public String commissiomDetail(Map<String, Object> model) throws Exception {
 		List<Commision> listCommission;
@@ -72,6 +75,7 @@ public class BusinessController {
 	}
 
 	// edit commission
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/commission", method = RequestMethod.POST)
 	public String saveEditCommission(Map<String, Object> model, @RequestParam("commission") double commission)
 			throws Exception {
@@ -110,8 +114,9 @@ public class BusinessController {
 		return "commission";
 	}
 
-	// Vehicle type
+	// -------------MANAGER VEHICLE TYPE-----------------------
 	// get vehicletype
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype", method = RequestMethod.GET)
 	public String getAllVehicletype(Map<String, Object> model) throws Exception {
 		List<Vehicletype> listVehicletype;
@@ -131,12 +136,14 @@ public class BusinessController {
 	}
 
 	// go to add form vehicletype
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/add", method = RequestMethod.GET)
 	public String addVehicletypeForm(Map<String, Object> model) throws Exception {
 		return "addvehicletype";
 	}
 
 	// add vehicletype
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/add", method = RequestMethod.POST)
 	public String addVehicletype(Map<String, Object> model, @RequestParam("vehicletype") Integer vehicletype,
 			@RequestParam("priceFine") Double priceFine) throws Exception {
@@ -161,6 +168,7 @@ public class BusinessController {
 	}
 
 	// go to edit form vehicletype
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/edit/{id}", method = RequestMethod.GET)
 	public String editVehicletypeForm(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Vehicletype vehicletype;
@@ -174,6 +182,7 @@ public class BusinessController {
 	}
 
 	// edit vehicletype
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/edit/{id}", method = RequestMethod.POST)
 	public String saveVehicletypeForm(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("vehicletype") String typeVehicletype) throws Exception {
@@ -188,7 +197,9 @@ public class BusinessController {
 		return "editvehicletype";
 	}
 
+	// ---------------------MANAGE FINE-------------------
 	// get all type fine
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/managementfine", method = RequestMethod.GET)
 	public String getAllFineType(Map<String, Object> model) throws Exception {
 		List<Finetariff> listFineTariff = fineTariffService.getAll();
@@ -208,6 +219,7 @@ public class BusinessController {
 	}
 
 	// go to form edit price fine
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/managementfine/edit/{id}", method = RequestMethod.GET)
 	public String editFineTypeForm(Map<String, Object> model, @PathVariable("id") long id) throws Exception {
 		Finetariff fineTariff;
@@ -227,6 +239,7 @@ public class BusinessController {
 	}
 
 	// save price fine
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/managementfine/edit/{id}", method = RequestMethod.POST)
 	public String saveFineTypeForm(Map<String, Object> model, @PathVariable("id") long id,
 			@RequestParam("priceFine") Double price) throws Exception {
@@ -251,9 +264,9 @@ public class BusinessController {
 		return "editfine";
 	}
 
-	// manager Revenue
-
+	// ---------------MANAGE REVENUE-------------
 	// get all revenuve by commission
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/revenue/commission", method = RequestMethod.GET)
 	public String getAllRevenueByCommission(Map<String, Object> model,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
@@ -358,8 +371,7 @@ public class BusinessController {
 				HashMap<String, Object> m = new HashMap<>();
 				if (booking.getStatus() == 3) {
 					m.put("id", booking.getId());
-					String strDate = sdf.format(booking.getTimeout());
-					m.put("timeout", strDate);
+					m.put("timeout", sdf.format(booking.getTimeout()));
 					m.put("address", booking.getParking().getAddress());
 					m.put("amount", currencyVN.format(booking.getAmount()));
 					double totalCommission = booking.getComission() * booking.getAmount();
@@ -377,6 +389,7 @@ public class BusinessController {
 	}
 
 	// get all revenuve by fine
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/revenue/fine", method = RequestMethod.GET)
 	public String getAllRevenueByFine(Map<String, Object> model,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
@@ -386,8 +399,6 @@ public class BusinessController {
 		List<Fine> listFine;
 		double revenueFine = 0;
 		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
-		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
-
 		try {
 			listFine = fineService.getAll();
 		} catch (Exception e) {
@@ -474,7 +485,6 @@ public class BusinessController {
 					} else {
 						m.put("objectFine", "Bãi xe");
 					}
-
 					revenueFine = revenueFine + fine.getPrice();
 					m.put("priceFine", currencyVN.format(fine.getPrice()));
 					arrayListFine.add(m);
@@ -514,7 +524,7 @@ public class BusinessController {
 	}
 
 	// get detail revenue by booking whit id
-
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/revenue/detail/{id}", method = RequestMethod.GET)
 	public String getRevenueByID(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Booking bookingDetail;
@@ -546,8 +556,9 @@ public class BusinessController {
 		return "revenuebyparkingdetail";
 	}
 
-	// Management FeedBack
+	// --------------------MANAGE FEEDBACK--------------------------------------
 	// get all feedback
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedback", method = RequestMethod.GET)
 	public String getAllFeedBack(Map<String, Object> model) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -586,6 +597,7 @@ public class BusinessController {
 	}
 
 	// view feedback by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.GET)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Feedback feedback = new Feedback();
@@ -611,6 +623,7 @@ public class BusinessController {
 	}
 
 	// delete feedback
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedback/delete/{id}", method = RequestMethod.GET)
 	public String deleteFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {
 		try {
@@ -627,6 +640,7 @@ public class BusinessController {
 	}
 
 	// resolve feedback
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.POST)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("resolve") String resolve) {

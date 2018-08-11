@@ -28,7 +28,7 @@
 		<div id="page-wrapper">
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Tài khoản bị khóa</h1>
+					<h1 class="page-header">Tài khoản lái xe bị khóa</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>

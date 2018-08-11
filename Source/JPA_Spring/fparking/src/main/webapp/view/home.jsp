@@ -46,18 +46,18 @@
 									<i class="fa fa-car fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${totalAccountDriver }</div>
+									<div class="huge" id="totalAccountDriver">${totalAccountDriver }</div>
 									<div>Tài khoản lái xe</div>
 								</div>
 							</div>
 						</div>
-						<a href="/account/driver">
+						<!-- <a href="/account/driver">
 							<div class="panel-footer">
 								<span class="pull-left">Xem chi tiết</span> <span
 									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
-						</a>
+						</a> -->
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
@@ -68,18 +68,19 @@
 									<i class="fa fa-ruble fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${totalAccountParking }</div>
+									<div class="huge" id="totalAccountParking">${totalAccountParking }</div>
 									<div>Tổng số bãi đỗ</div>
 								</div>
 							</div>
 						</div>
+						<!-- 
 						<a href="/account/parking">
 							<div class="panel-footer">
 								<span class="pull-left">Xem chi tiết</span> <span
 									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
-						</a>
+						</a> -->
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
@@ -90,18 +91,18 @@
 									<i class="glyphicon glyphicon-stats fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${totalTrasaction }</div>
+									<div class="huge" id="totalTrasaction">${totalTrasaction }</div>
 									<div>Giao dịch hôm nay</div>
 								</div>
 							</div>
 						</div>
-						<a href="/home/revenue/commission">
+						<!--						<a href="/home/revenue/commission">
 							<div class="panel-footer">
 								<span class="pull-left">Xem chi tiết</span> <span
 									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
-						</a>
+						</a>  -->
 					</div>
 				</div>
 				<div class="col-lg-3 col-md-6">
@@ -112,18 +113,19 @@
 									<i class="glyphicon glyphicon-usd fa-5x"></i>
 								</div>
 								<div class="col-xs-9 text-right">
-									<div class="huge">${totalReveune }</div>
+									<div class="huge" id="totalReveune">${totalReveune }</div>
 									<div>Doanh thu hôm nay</div>
 								</div>
 							</div>
 						</div>
+						<!-- 
 						<a href="/home/revenue/commission">
 							<div class="panel-footer">
 								<span class="pull-left">Xem chi tiết</span> <span
 									class="pull-right"><i class="fa fa-arrow-circle-right"></i></span>
 								<div class="clearfix"></div>
 							</div>
-						</a>
+						</a> -->
 					</div>
 				</div>
 			</div>
@@ -250,14 +252,17 @@
 												</tr>
 											</thead>
 											<tbody>
-												<c:forEach items="${arrayListParkingPending}" var="listParkingPending">
+												<c:forEach items="${arrayListParkingPending}"
+													var="listParkingPending">
 													<tr class="odd gradeX">
 														<td><a
 															href="/account/parking/detail/${listParkingPending.id }">${listParkingPending.addressParking }</a></td>
 														<td>${listParkingPending.nameOwner }</td>
 														<td>${listParkingPending.phoneOwner }</td>
 														<td>${listParkingPending.deposits }</td>
-														<td><a href="/home/addmoney/${listParkingPending.id }">Chấp nhận</a></td>
+														<td><a
+															href="/home/addmoney/${listParkingPending.id }">Chấp
+																nhận</a></td>
 													</tr>
 												</c:forEach>
 											</tbody>
@@ -286,6 +291,22 @@
 
 	<!-- ===============FooterJavaScrip Start================= -->
 	<%@include file="footerjavascrip.jsp"%>
+	<script type="text/javascript">
+	
+	$(document).ready(function(){
+		setInterval(function(){
+			$.ajax({
+				  method: "GET",
+				  url: "/home/statistic"
+				})
+				  .done(function( data ) {
+				    $.each(data, function(i, item) {
+				       $("#"+i).html(item)
+				    });
+				  });	
+		}, 60000);
+	});
+	</script>
 	<!-- ===============FooterJavaScrip End================= -->
 
 </body>

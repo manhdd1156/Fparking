@@ -1,5 +1,5 @@
 <%@ page pageEncoding="utf-8"%>
-<%@ taglib uri = "http://java.sun.com/jsp/jstl/core" prefix = "c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <head>
@@ -17,23 +17,19 @@
 						<h3 class="panel-title">Vui lòng đăng nhập</h3>
 					</div>
 					<div class="panel-body">
-						<form role="form" method="POST" action="">
+						<form role="form" method="POST" action="" id="loginForm">
 							<fieldset>
 								<div class="form-group">
 									<input class="form-control" placeholder="Tên đăng nhập"
-										name="username" type="text" autofocus required>
+										name="username" type="text" autofocus required
+										value="${username }">
 								</div>
 								<div class="form-group">
 									<input class="form-control" placeholder="Mật Khẩu"
 										name="password" type="password" value="" required>
 								</div>
-								<div class="checkbox">
-									<label> <input name="remember" type="checkbox"
-										value="Remember Me">Ghi nhớ mật khẩu
-									</label>
-								</div>
-									<input type="submit"
-									class="btn btn-lg btn-success btn-block" value="Đăng nhập">
+								<input type="submit" class="btn btn-lg btn-success btn-block"
+									value="Đăng nhập">
 							</fieldset>
 							<h5 style="color: red">${messError}</h5>
 						</form>

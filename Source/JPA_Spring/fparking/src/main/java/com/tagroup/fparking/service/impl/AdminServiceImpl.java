@@ -21,25 +21,22 @@ public List<Admin> getAll() {
 
 @Override
 public Admin getById(Long id) {
-	// TODO Auto-generated method stub
-	return null;
+	return adminRepository.findById(id).get();
 }
 
 @Override
 public Admin create(Admin tariff) {
-	// TODO Auto-generated method stub
-	return null;
+	return adminRepository.save(tariff);
 }
 
 @Override
 public Admin update(Admin tariff) {
-	// TODO Auto-generated method stub
-	return null;
+	return adminRepository.save(tariff);
 }
 
 @Override
 public void delete(Long id) {
-	// TODO Auto-generated method stub
+	adminRepository.deleteById(id);
 	
 }
 	
