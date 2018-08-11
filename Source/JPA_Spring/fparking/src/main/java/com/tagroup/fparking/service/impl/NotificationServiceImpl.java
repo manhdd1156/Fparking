@@ -133,17 +133,21 @@ public class NotificationServiceImpl implements NotificationService {
 
 	@Override
 	public void deleteByNoti(Notification notification) throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
+			
 			System.out.println("NotificationServiceIml/DeleteByNoti :" + notification.toString());
 			List<Notification> notilst = notificationRepository.findAll();
 			for (Notification noti : notilst) {
-				if (noti.getDriver_id() == notification.getDriver_id() && noti.getType() == notification.getType()
-						&& noti.getVehicle_id() == notification.getVehicle_id()
+				if (noti.getDriver_id() == t.getId() && noti.getType() == notification.getType()
+						&& t.getType().equals("DRIVER")
 						&& noti.getEvent().equals(notification.getEvent())
 						&& noti.getStatus() == notification.getStatus()) {
 					System.out.println("NotificationServiceIml/DeleteByNoti : ok");
 					notificationRepository.delete(noti);
 					System.out.println("NotificationServiceIml/DeleteByNoti : ok");
+				}else if(noti.getParking_id() == t.getId() && t.getType().equals("STAFF")) {
+					notificationRepository.delete(noti);
 				}
 			}
 

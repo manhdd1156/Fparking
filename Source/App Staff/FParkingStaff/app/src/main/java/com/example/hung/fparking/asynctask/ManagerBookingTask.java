@@ -292,13 +292,6 @@ class UpdateBookingByStatus extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
 
-//        Intent intent = new Intent();
-//        if(success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
     }
 
 }

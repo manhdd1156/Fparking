@@ -41,7 +41,6 @@ public class DetailedFine extends AppCompatActivity implements IAsyncTaskHandler
             public void onClick(View v) {
                 Intent intentHistory = new Intent(DetailedFine.this, FineHistory.class);
                 startActivity(intentHistory);
-                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -59,7 +58,6 @@ public class DetailedFine extends AppCompatActivity implements IAsyncTaskHandler
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, FineHistory.class));
-        finish();
     }
 
     @Override

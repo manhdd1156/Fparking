@@ -10,7 +10,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
@@ -25,11 +24,8 @@ import java.util.regex.Pattern;
 public class DriverInformation extends AppCompatActivity implements IAsyncTaskHandler {
 
     ImageView backInformation;
-    Button mUpdate, confirm, btnOK;
+    Button mUpdate, confirm;
     EditText password, tbName, tbPhone, tbPassword;
-    TextView textViewAlert;
-
-    AlertDialog alertDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,21 +98,6 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
 
         tbPhone.setText(Session.currentDriver.getPhone());
         tbName.setText(Session.currentDriver.getName());
-
-        //tạo dialog
-        AlertDialog.Builder mAlertBuilder = new AlertDialog.Builder(DriverInformation.this);
-        View mAlertView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
-        mAlertBuilder.setView(mAlertView);
-        alertDialog = mAlertBuilder.create();
-        textViewAlert = mAlertView.findViewById(R.id.textViewAlert);
-        btnOK = mAlertView.findViewById(R.id.btnOK);
-
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                alertDialog.cancel();
-            }
-        });
     }
 
     @Override
@@ -127,17 +108,9 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
 
     @Override
     public void onPostExecute(Object o, String action) {
-        if (Boolean.TRUE.equals(o)) {
-            textViewAlert.setText("Đổi thông tin thành công!");
-            alertDialog.show();
-            password.setText("");
-            tbName.setText(Session.currentDriver.getName());
-            tbPhone.setText(Session.currentDriver.getPhone());
-        }else {
-            textViewAlert.setText("Đổi thông tin thất bại!");
-            alertDialog.show();
-        }
-
+        password.setText("");
+        tbName.setText(Session.currentDriver.getName());
+        tbPhone.setText(Session.currentDriver.getPhone());
     }
 
     @Override

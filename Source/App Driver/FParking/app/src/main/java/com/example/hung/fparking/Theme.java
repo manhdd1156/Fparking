@@ -31,7 +31,6 @@ public class Theme extends AppCompatActivity {
     private static int SPLASH_TIME_OUT = 3000;
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
-    CheckNetwork checkNetwork;
 
     private static FragmentManager fragmentManager;
 
@@ -58,7 +57,7 @@ public class Theme extends AppCompatActivity {
 //        this.startService(myIntent);
 
         // kiểm tra có bật kết nối mạng không
-        checkNetwork = new CheckNetwork(Theme.this, getApplicationContext(), "Kết nối mạng đã bị tắt. Vui lòng bật kết nối mạng và thử lại trong ít phút nữa");
+        CheckNetwork checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
         if (!checkNetwork.isNetworkConnected()) {
             checkNetwork.createDialog();
         } else {
@@ -73,16 +72,11 @@ public class Theme extends AppCompatActivity {
                         new DriverLoginTask("second_time", null, "", new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o, String action) {
-                                checkNetwork = new CheckNetwork(Theme.this, getApplicationContext(), "Không kết nối được đến máy chủ.");
-                                if (Boolean.TRUE.equals(o)) {
-                                    Intent myIntent = new Intent(Theme.this, Notification.class);
-                                    Theme.this.startService(myIntent);
-                                    Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
-                                    startActivity(homeIntent);
-                                    finish();
-                                } else {
-                                 checkNetwork.createDialog();
-                                }
+                                Intent myIntent = new Intent(Theme.this, Notification.class);
+                                Theme.this.startService(myIntent);
+                                Intent homeIntent = new Intent(Theme.this, HomeActivity.class);
+                                startActivity(homeIntent);
+                                finish();
                             }
                         });
                     }

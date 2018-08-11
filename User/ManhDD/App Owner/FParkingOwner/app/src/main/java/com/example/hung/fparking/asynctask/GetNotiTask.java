@@ -16,7 +16,13 @@ import org.json.JSONObject;
 
 public class GetNotiTask extends AsyncTask<Void, Void, Boolean> {
 
-    public GetNotiTask() {
+    private Activity activity;
+private int parkingid;
+    private SharedPreferences spref;
+    public GetNotiTask(int parkingid, Activity activity) {
+        this.activity = activity;
+        this.parkingid = parkingid;
+//        spref = activity.getSharedPreferences("info",0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -24,11 +30,18 @@ public class GetNotiTask extends AsyncTask<Void, Void, Boolean> {
     protected Boolean doInBackground(Void... params) {
         HttpHandler httpHandler = new HttpHandler();
         try {
-            String json = httpHandler.get(Constants.API_URL + "notifications/check");
+            String json = httpHandler.get(Constants.API_URL + "notifications/check?id=" + parkingid + "&type=1");
             JSONObject jsonObject = new JSONObject(json);
+//            if(jsonObject.get)
 
+//            System.out.println(json);
+            if(json.contains("NaN")) {
+                json = "3";
+            }
+//            RatingBar ratingbar = (RatingBar) activity.findViewById(R.id.ratingBar2);
+//            ratingbar.setRating(Float.parseFloat(json));
         } catch (Exception e) {
-            Log.e("Exception", "  GetNotiTask fail : " + e);
+            Log.e("Exception", " get rating fail in GetRateTask" + e);
         }
         return false;
     }

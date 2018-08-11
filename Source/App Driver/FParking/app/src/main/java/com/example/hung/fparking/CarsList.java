@@ -72,7 +72,6 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
             public void onClick(View v) {
                 Intent backHistoryIntent = new Intent(CarsList.this, HomeActivity.class);
                 startActivity(backHistoryIntent);
-                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -166,7 +165,6 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, HomeActivity.class));
-        finish();
     }
 
     @Override
@@ -220,7 +218,6 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         } else if (action.equals("add")) {
             dialog.cancel();
             startActivity(getIntent());
-            finish();
         }
     }
 }

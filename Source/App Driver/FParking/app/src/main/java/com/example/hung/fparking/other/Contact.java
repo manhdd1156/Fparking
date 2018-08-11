@@ -22,7 +22,6 @@ public class Contact extends AppCompatActivity {
             public void onClick(View v) {
                 Intent intentBackContact = new Intent(Contact.this, HomeActivity.class);
                 startActivity(intentBackContact);
-                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -32,6 +31,5 @@ public class Contact extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, HomeActivity.class));
-        finish();
     }
 }

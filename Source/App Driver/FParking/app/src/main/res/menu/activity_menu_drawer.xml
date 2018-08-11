@@ -3,26 +3,23 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
 
-    <item
-        android:id="@+id/nav_history"
-        android:icon="@drawable/ic_menu_history"
-        android:title="Lịch sử đỗ xe" />
-
+        <item
+            android:id="@+id/nav_history"
+            android:icon="@drawable/ic_menu_history"
+            android:title="Lịch sử đỗ xe" />
     <item
         android:id="@+id/nav_fine_history"
         android:icon="@drawable/ic_menu_guide"
         android:title="Lịch sử phạt" />
-
-    <item
-        android:id="@+id/nav_mCar"
-        android:icon="@drawable/ic_menu_car"
-        android:title="Quản lý xe" />
+        <item
+            android:id="@+id/nav_mCar"
+            android:icon="@drawable/ic_menu_car"
+            android:title="Quản lý xe" />
 
     <item
         android:id="@+id/nav_contact"
         android:icon="@drawable/ic_menu_contact"
         android:title="Liên hệ" />
-
     <item
         android:id="@+id/nav_feedback"
         android:icon="@drawable/ic_menu_contact"
@@ -32,14 +29,12 @@
         android:id="@+id/nav_DK"
         android:icon="@drawable/ic_menu_rules"
         android:title="Điều kiện và điều khoản" />
-
     <item
         android:id="@+id/nav_guide"
         android:icon="@drawable/ic_menu_guide"
         android:title="Hướng dẫn sử dụng" />
 
-    <item
-        android:id="@+id/nav_logout"
-        android:icon="@drawable/ic_menu_guide"
-        android:title="Đăng xuất" />
+
+
+
 </menu>

@@ -23,7 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.adapter.ListBookingHomeAdapter;
-import com.example.hung.fparking.asynctask.GetNotiTask;
+import com.example.hung.fparking.asynctask.ManagerNotiTask;
 import com.example.hung.fparking.asynctask.GetRateTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
@@ -32,7 +32,6 @@ import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
-import com.example.hung.fparking.notification.CheckNetworkReciever;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -122,7 +121,7 @@ public class HomeActivity extends AppCompatActivity
         Intent i = getIntent();
 
         if(i.getStringExtra("touchNoti")!=null) {
-            new GetNotiTask().execute((Void) null);
+            new ManagerNotiTask("get");
         }
     }
     private BroadcastReceiver receiver = new BroadcastReceiver() {

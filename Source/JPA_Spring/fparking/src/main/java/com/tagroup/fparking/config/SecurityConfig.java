@@ -28,7 +28,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.anyRequest().permitAll() //
 				.and().addFilterBefore(authenticationFilter, UsernamePasswordAuthenticationFilter.class)
 				.exceptionHandling().authenticationEntryPoint(authenticationEntryPoint) //
-				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+				.and().sessionManagement().sessionCreationPolicy(SessionCreationPolicy.ALWAYS);
 	}
 
 }

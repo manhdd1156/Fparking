@@ -24,11 +24,11 @@ public class DriverLoginTask {
             new GetProfileTask(container).execute((Void) null);
         } else if (type.equals("update")) {
             new UpdateProfileTask(driverDTO, password, container).execute((Void) null);
-        } else if (type.equals("create")) {
+        }else if (type.equals("create")) {
             new RegisterTask(driverDTO, password, container).execute((Void) null);
-        } else if (type.equals("newpass")) {
+        }else if (type.equals("newpass")) {
             new ChangePassByPassTask(driverDTO, password, container).execute((Void) null);
-        } else if (type.equals("phone")) {
+        }else if (type.equals("phone")) {
             new ChangePassByPhoneTask(driverDTO, password, container).execute((Void) null);
         }
     }
@@ -120,7 +120,7 @@ class LoginTask extends AsyncTask<Void, Void, Boolean> {
 class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
 
     private final IAsyncTaskHandler container;
-    private String action = "";
+    private String action;
 
     public GetProfileTask(IAsyncTaskHandler container) {
         this.container = container;
@@ -190,8 +190,8 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
             formData.put("status", 1);
             String json = httpHandler.requestMethod(Constants.API_URL + "drivers", formData.toString(), "PUT");
             // Check Json token
-            JSONObject jsonObj = new JSONObject(json);
-            if (jsonObj != null) {
+            if (json != null) {
+                JSONObject jsonObj = new JSONObject(json);
                 Session.currentDriver = new DriverDTO();
                 Session.currentDriver.setId(jsonObj.getLong("id"));
                 Session.currentDriver.setName(jsonObj.getString("name"));
@@ -416,8 +416,15 @@ class ChangePassByPhoneTask extends AsyncTask<Void, Void, Boolean> {
             formData.put("phone", driverDTO.getPhone().toString());
             String newpass = getMD5Hex(mPassword);
             formData.put("password", newpass);
-            String json = httpHandler.requestMethod(Constants.API_URL + "drivers/passwordotp", formData.toString(), "PUT");
+            String json = httpHandler.requestMethod(Constants.API_URL + "drivers/password", formData.toString(), "PUT");
+            // Check Json token
             if (json != null) {
+                JSONObject jsonObj = new JSONObject(json);
+                Session.currentDriver = new DriverDTO();
+                Session.currentDriver.setId(jsonObj.getLong("id"));
+                Session.currentDriver.setName(jsonObj.getString("name"));
+                Session.currentDriver.setPhone(jsonObj.getString("phone"));
+                Session.currentDriver.setStatus(jsonObj.getString("status"));
                 return true;
             }
         } catch (Exception e) {

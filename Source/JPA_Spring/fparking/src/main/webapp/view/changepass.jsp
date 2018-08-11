@@ -39,9 +39,9 @@
 						<div class="panel-body">
 							<div class="row">
 								<div class="col-lg-12">
-									<form role="form" method="POST" action="">
+									<form role="form" method="POST" action="" id="changepass">
 										<div class="form-group">
-											<label>Username:</label> 
+											<label>Tài khoản:</label> 
 											<input style="background-color: white;" type="text" class="form-control"value="${username }" disabled>
 										</div>
 										<div class="form-group">

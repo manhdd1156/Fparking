@@ -1,5 +1,6 @@
 package com.tagroup.fparking.controller.webadmin;
 
+import java.text.DateFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -9,7 +10,11 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.tagroup.fparking.dto.DriverFineDTO;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.AdminService;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.DriverService;
@@ -26,6 +32,7 @@ import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.domain.Admin;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.Fine;
@@ -55,12 +62,16 @@ public class AccountController {
 	private BookingService bookingService;
 	@Autowired
 	private AdminService adminService;
+	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 
-	// Management Drivers Account
-
+	// ---------------------MANAGE DRIVER'S
+	// ACCOUNT--------------------------------------
 	// get all account
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver", method = RequestMethod.GET)
-
 	public String accountDriver(Map<String, Object> model) throws Exception {
 		List<Driver> listDriver;
 		try {
@@ -78,14 +89,14 @@ public class AccountController {
 	}
 
 	// get all account block
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/block", method = RequestMethod.GET)
 	public String blockAccountDriver(Map<String, Object> model) throws Exception {
 		List<Driver> listDriver;
 		try {
 			listDriver = driverService.getByStatus(0);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
-			return "error";
+			return "404";
 		}
 		if (listDriver != null && listDriver.size() > 0) {
 			model.put("listDriver", listDriver);
@@ -97,6 +108,7 @@ public class AccountController {
 	}
 
 	// get detail account by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/detail/{id}", method = RequestMethod.GET)
 	public String getInforDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -167,6 +179,7 @@ public class AccountController {
 	}
 
 	// block account by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/blockaccount/{id}", method = RequestMethod.GET)
 	public String blockAccountDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Driver driver;
@@ -188,6 +201,7 @@ public class AccountController {
 	}
 
 	// unblock account by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/unblockaccount/{id}", method = RequestMethod.GET)
 	public String unBlockAccountDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Driver driver;
@@ -208,7 +222,8 @@ public class AccountController {
 		return "blockaccountdriver";
 	}
 
-	// edit account driver by id
+	// get form edited by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/editaccount/{id}", method = RequestMethod.GET)
 	public String editAccountDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Driver driver;
@@ -223,43 +238,56 @@ public class AccountController {
 		return "editdriver";
 	}
 
-	// save account driver by id
+	// submit change driver's account
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/editaccount/{id}", method = RequestMethod.POST)
 	public String saveAccountDriver(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("name") String name, @RequestParam("phone") String phone) throws Exception {
 		Driver driver;
+		List<Driver> listDriver;
 		try {
 			driver = driverService.getById(id);
+			listDriver = driverService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
+
+		for (Driver driverCheck : listDriver) {
+			if (driverCheck.getPhone().equals(phone)) {
+				System.out.println(driverCheck.getPhone());
+				model.put("id", id);
+				model.put("name", name);
+				model.put("phonenumber", phone);
+				model.put("messError", "Số điện thoại đã tồn tại!");
+				return "editdriver";
+			}
+		}
 		driver.setName(name);
 		driver.setPhone(phone);
+		System.out.println("Test update driver:" + name + "------" + phone);
 		try {
 			driverService.update(driver);
 		} catch (Exception e) {
 			model.put("messError", "Sửa không thành công!");
 			return "editdriver";
 		}
-
+		model.put("messSuss", "Sửa thành công!");
 		Driver driver2;
 		try {
 			driver2 = driverService.getById(id);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
-			return "error";
+			return "404";
 		}
 		model.put("id", id);
-		model.put("name", driver.getName());
-		model.put("phonenumber", driver.getPhone());
+		model.put("name", driver2.getName());
+		model.put("phonenumber", driver2.getPhone());
 
-		model.put("messSuss", "Sửa thành công!");
 		return "editdriver";
 	}
 
-	// Management Parking Account
-
+	// ------------ MANAGE PARK'S ACCOUNT---------------------------
 	// get all account parking by id with status =1
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking", method = RequestMethod.GET)
 	public String accountParking(Map<String, Object> model) throws Exception {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -299,6 +327,7 @@ public class AccountController {
 	}
 
 	// get all blockaccount parking by id with status = 0
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/block", method = RequestMethod.GET)
 	public String blockAccountParking(Map<String, Object> model) throws Exception {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -339,14 +368,40 @@ public class AccountController {
 	}
 
 	// get detail parking by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/detail/{id}", method = RequestMethod.GET)
-	public String accountDriverDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-		String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+	public String accountDriverDetail(Map<String, Object> model, @PathVariable("id") Long id,
+			@RequestParam(value = "dateFrom", required = false) String dateFrom,
+			@RequestParam(value = "dateTo", required = false) String dateTo,
+			@RequestParam(value = "type", required = false) Integer type) throws Exception {
+		int check = 0;
+		double totalFine = 0;
+		double totalRevenue = 0;
 		Parking parking;
 		List<Tariff> listTariff;
 		List<Fine> listFine;
 		List<Booking> listBooking;
+		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
+		ArrayList<Map<String, Object>> arrayListVehicletype = new ArrayList<>();
+		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
+		// check date is null or not null
+		if (dateTo == null && dateFrom == null) {
+			check = 0;
+		} else {
+			if (dateFrom.length() > 0 && dateTo.length() == 0) {
+				check = 1;
+			}
+			if (dateFrom.length() == 0 && dateTo.length() > 0)
+				check = 2;
+			if (dateFrom.length() > 0 && dateTo.length() > 0)
+				check = 3;
+		}
+
+		if (type == null) {
+			type = 0;
+		}
+		System.out.println("---------Type:" + type);
+		model.put("type", type);
 		try {
 			parking = parkingService.getById(id);
 			listTariff = tariffService.getAll();
@@ -367,7 +422,6 @@ public class AccountController {
 		model.put("deposits", currencyVN.format(parking.getDeposits()));
 
 		// tab information price by type car
-		ArrayList<Map<String, Object>> arrayListVehicletype = new ArrayList<>();
 		for (Tariff tariff : listTariff) {
 			HashMap<String, Object> m = new HashMap<>();
 			if (tariff.getParking().getId() == id) {
@@ -377,64 +431,237 @@ public class AccountController {
 			}
 		}
 		model.put("arrayListVehicletype", arrayListVehicletype);
+
 		// tab fine history
-		ArrayList<Map<String, Object>> arrayListFine = new ArrayList<>();
-		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-		for (Fine fine : listFine) {
-			HashMap<String, Object> m = new HashMap<>();
-			if (fine.getParking().getId() == id && fine.getType() == 1) {
-				m.put("dateFine", sdf.format(fine.getDate()));
-				m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-				m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-				m.put("priceFine", currencyVN.format(fine.getPrice()));
-				arrayListFine.add(m);
+		if (type == 3) {
+			switch (check) {
+			case 1:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getParking().getId() == id && fine.getType() == 1
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						totalFine += fine.getPrice();
+						arrayListFine.add(m);
+					}
+				}
+				model.put("dateFrom", dateFrom);
+				break;
+			case 2:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getParking().getId() == id && fine.getType() == 1
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						totalFine += fine.getPrice();
+						arrayListFine.add(m);
+					}
+				}
+				model.put("dateTo", dateTo);
+				break;
+			case 3:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getParking().getId() == id && fine.getType() == 1
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						totalFine += fine.getPrice();
+						arrayListFine.add(m);
+					}
+				}
+				model.put("dateFrom", dateFrom);
+				model.put("dateTo", dateTo);
+				break;
+			default:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getParking().getId() == id && fine.getType() == 1) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						totalFine += fine.getPrice();
+						arrayListFine.add(m);
+					}
+				}
+				break;
+			}
+		} else {
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getParking().getId() == id && fine.getType() == 1) {
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					totalFine += fine.getPrice();
+					arrayListFine.add(m);
+				}
 			}
 		}
+		model.put("totalFine", currencyVN.format(totalFine));
 		model.put("arrayListFine", arrayListFine);
 		// tab transaction history
-		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
-		for (Booking booking : listBooking) {
-			HashMap<String, Object> m = new HashMap<>();
-			if (booking.getParking().getId() == id && booking.getTimeout() != null && booking.getTimeout() != null) {
-				m.put("timein", sdf.format(booking.getTimein()));
-				m.put("timeout", sdf.format(booking.getTimeout()));
-				m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
-				double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime()) / (60 * 60 * 1000);
-				if (totalTime % 1 == 0) {
-					m.put("totalTime", (int) totalTime);
-				} else {
-					m.put("totalTime", (int) totalTime + 1);
+		if (type == 4) {
+			switch (check) {
+			case 1:
+				for (Booking booking : listBooking) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (booking.getParking().getId() == id && booking.getTimeout() != null
+							&& booking.getTimeout() != null
+							&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						m.put("timein", sdf.format(booking.getTimein()));
+						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
+						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
+								/ (60 * 60 * 1000);
+						if (totalTime % 1 == 0) {
+							m.put("totalTime", (int) totalTime);
+						} else {
+							m.put("totalTime", (int) totalTime + 1);
+						}
+						m.put("address", booking.getParking().getAddress());
+						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("price", currencyVN.format((booking.getPrice())));
+						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
+						m.put("commssion", booking.getComission());
+						m.put("amount", currencyVN.format(booking.getAmount()));
+						totalRevenue += booking.getAmount();
+						arrayListBooking.add(m);
+					}
 				}
-				m.put("address", booking.getParking().getAddress());
-				m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
+				model.put("dateFrom", dateFrom);
+				break;
+			case 2:
+				for (Booking booking : listBooking) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (booking.getParking().getId() == id && booking.getTimeout() != null
+							&& booking.getTimeout() != null
+							&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("timein", sdf.format(booking.getTimein()));
+						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
+						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
+								/ (60 * 60 * 1000);
+						if (totalTime % 1 == 0) {
+							m.put("totalTime", (int) totalTime);
+						} else {
+							m.put("totalTime", (int) totalTime + 1);
+						}
+						m.put("address", booking.getParking().getAddress());
+						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("price", currencyVN.format((booking.getPrice())));
+						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
+						m.put("commssion", booking.getComission());
+						m.put("amount", currencyVN.format(booking.getAmount()));
+						totalRevenue += booking.getAmount();
+						arrayListBooking.add(m);
+					}
+				}
+				model.put("dateTo", dateTo);
+				break;
+			case 3:
+				for (Booking booking : listBooking) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (booking.getParking().getId() == id && booking.getTimeout() != null
+							&& booking.getTimeout() != null
+							&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("timein", sdf.format(booking.getTimein()));
+						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
+						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
+								/ (60 * 60 * 1000);
+						if (totalTime % 1 == 0) {
+							m.put("totalTime", (int) totalTime);
+						} else {
+							m.put("totalTime", (int) totalTime + 1);
+						}
+						m.put("address", booking.getParking().getAddress());
+						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("price", currencyVN.format((booking.getPrice())));
+						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
+						m.put("commssion", booking.getComission());
+						m.put("amount", currencyVN.format(booking.getAmount()));
+						totalRevenue += booking.getAmount();
+						arrayListBooking.add(m);
 
-				if (booking.getPrice() % 1 == 0) {
-					m.put("price", currencyVN.format((int) booking.getPrice()));
-				} else {
+					}
+				}
+				model.put("dateFrom", dateFrom);
+				model.put("dateTo", dateTo);
+				break;
+
+			default:
+				for (Booking booking : listBooking) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (booking.getParking().getId() == id && booking.getTimeout() != null
+							&& booking.getTimeout() != null) {
+						m.put("timein", sdf.format(booking.getTimein()));
+						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
+						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
+								/ (60 * 60 * 1000);
+						if (totalTime % 1 == 0) {
+							m.put("totalTime", (int) totalTime);
+						} else {
+							m.put("totalTime", (int) totalTime + 1);
+						}
+						m.put("address", booking.getParking().getAddress());
+						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("price", currencyVN.format((booking.getPrice())));
+						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
+						m.put("commssion", booking.getComission());
+						m.put("amount", currencyVN.format(booking.getAmount()));
+						totalRevenue += booking.getAmount();
+						arrayListBooking.add(m);
+					}
+				}
+				break;
+			}
+		} else {
+			for (Booking booking : listBooking) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (booking.getParking().getId() == id && booking.getTimeout() != null
+						&& booking.getTimeout() != null) {
+					m.put("timein", sdf.format(booking.getTimein()));
+					m.put("timeout", sdf.format(booking.getTimeout()));
+					m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
+					double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
+							/ (60 * 60 * 1000);
+					if (totalTime % 1 == 0) {
+						m.put("totalTime", (int) totalTime);
+					} else {
+						m.put("totalTime", (int) totalTime + 1);
+					}
+					m.put("address", booking.getParking().getAddress());
+					m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
 					m.put("price", currencyVN.format((booking.getPrice())));
-				}
-
-				if (booking.getTotalfine() % 1 == 0) {
-					m.put("totalFine", currencyVN.format((int) booking.getTotalfine()));
-				} else {
 					m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-				}
-
-				m.put("commssion", booking.getComission());
-
-				if (booking.getAmount() % 1 == 0) {
-					m.put("amount", currencyVN.format((int) booking.getAmount()));
-				} else {
+					m.put("commssion", booking.getComission());
 					m.put("amount", currencyVN.format(booking.getAmount()));
+					totalRevenue += booking.getAmount();
+					arrayListBooking.add(m);
 				}
-				arrayListBooking.add(m);
 			}
 		}
+		model.put("totalRevenue", currencyVN.format(totalRevenue));
 		model.put("arrayListBooking", arrayListBooking);
 		return "accountparkingdetail";
 	}
 
 	// block account parking by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/blockaccount/{id}", method = RequestMethod.GET)
 	public String blockAccountParking(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Parking parking;
@@ -457,6 +684,7 @@ public class AccountController {
 	}
 
 	// unblock account parking by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/unblockaccount/{id}", method = RequestMethod.GET)
 	public String unBlockAccountParking(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Parking parking;
@@ -472,6 +700,7 @@ public class AccountController {
 	}
 
 	// go to edit form parking
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.GET)
 	public String getEditParkingForm(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Parking parking;
@@ -495,6 +724,7 @@ public class AccountController {
 	}
 
 	// save edit form parking by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.POST)
 	public String saveEditParkingForm(Map<String, Object> model, @PathVariable Long id,
 			@RequestParam("address") String address, @RequestParam("longitude") Double longitude,
@@ -544,9 +774,10 @@ public class AccountController {
 		return "editparking";
 	}
 
-	// Manager Account Owner
-
+	// --------------------------MANAGE OWNER'S
+	// ACCOUNT--------------------------------------
 	// get account owner by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/owner", method = RequestMethod.GET)
 	public String accountOwner(Map<String, Object> model) throws Exception {
 		List<Owner> listOwner;
@@ -567,6 +798,7 @@ public class AccountController {
 	}
 
 	// get detail owner by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/owner/detail/{id}", method = RequestMethod.GET)
 	public String accountOwnerDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
@@ -625,6 +857,7 @@ public class AccountController {
 	}
 
 	// edit owner by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/owner/edit/{id}", method = RequestMethod.GET)
 	public String editAccountOwner(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Owner owner;
@@ -643,6 +876,7 @@ public class AccountController {
 	}
 
 	// save owner by id
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/owner/edit/{id}", method = RequestMethod.POST)
 	public String saveAccountOwner(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("name") String name, @RequestParam("phone") String phone,
@@ -679,47 +913,59 @@ public class AccountController {
 		return "editowner";
 	}
 
-	// management account admin
-
+	// -------------------------MANAGE ADMIN'S ACCOUNT----------------------------
 	// go to form edit
-	@RequestMapping(path = "/admin/editaccount/{id}", method = RequestMethod.GET)
-	public String editAccountAdmin(Map<String, Object> model, @PathVariable Long id) throws Exception {
-//		try {
-//			Admin admin = adminService.getById(id);
-//			model.put("username", admin.getUsername());
-//			System.out.println("lỗi go to edit form---"+id);
-//		} catch (Exception e) {
-//			return "404";
-//		}
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/admin/editaccount", method = RequestMethod.GET)
+	public String editAccountAdmin(Map<String, Object> model) throws Exception {
+		try {
+			Token token = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Long id = token.getId();
+			System.out.println("------------------------id" + id);
+			Admin admin = adminService.getById(id);
+			model.put("username", admin.getUsername());
+			System.out.println("lỗi go to edit form---" + id);
+		} catch (Exception e) {
+			return "404";
+		}
 		return "changepass";
-	} 
+	}
 
-//	// change pass admin
-//	@RequestMapping(path = "/admin/editaccount/{id}", method = RequestMethod.POST)
-//	public String saveAccountAdmin(Map<String, Object> model, @PathVariable("id") Long id,
-//			@RequestParam("oldPassword") String oldpass, @RequestParam("newPassword") String newpass,
-//			@RequestParam("re_Password") String repass) throws Exception {
-//		try {
-//			Admin admin = adminService.getById(id);
-//			System.out.println("lỗi save edit---"+id);
-//			if (admin.getPassword().equals(oldpass)) {
-//				if (newpass.equals(repass)) {
-//					admin.setPassword(newpass);
-//					adminService.update(admin);
-//				} else {
-//					model.put("messError", "Mật khẩu và mật khẩu nhập lại không khớp!");
-//					model.put("username", admin.getUsername());
-//					return "changepass";
-//				}
-//				model.put("messSuss", "Sửa thành công!");
-//				model.put("username", admin.getUsername());
-//			}else {
-//				model.put("messError", "Mật khẩu không đúng!");
-//				model.put("username", admin.getUsername());
-//			}
-//		} catch (Exception e) {
-//			return "404";
-//		}
-//		return "changepass";
-//	}
+	// change pass admin
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/admin/editaccount", method = RequestMethod.POST)
+	public String saveAccountAdmin(Map<String, Object> model, @RequestParam("oldPassword") String oldpass,
+			@RequestParam("newPassword") String newpass, @RequestParam("re_Password") String repass) throws Exception {
+
+		try {
+			Token token = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+			Long id = token.getId();
+			Admin admin = adminService.getById(id);
+			System.out.println("lỗi save edit---" + id);
+			if (admin.getPassword().equals(oldpass)) {
+				if (newpass.equals(repass)) {
+					admin.setPassword(newpass);
+					adminService.update(admin);
+				} else {
+					model.put("messError", "Mật khẩu và mật khẩu nhập lại không khớp!");
+					model.put("username", admin.getUsername());
+					return "changepass";
+				}
+				model.put("messSuss", "Sửa thành công!");
+				model.put("username", admin.getUsername());
+			} else {
+				model.put("messError", "Mật khẩu không đúng!");
+				model.put("username", admin.getUsername());
+			}
+		} catch (Exception e) {
+			return "404";
+		}
+		return "changepass";
+	}
+
+	@RequestMapping(path = "/logout", method = RequestMethod.GET)
+	public String logout(HttpServletRequest request) throws Exception {
+		request.getSession().invalidate();
+		return "redirect:/home";
+	}
 }

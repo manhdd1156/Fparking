@@ -23,7 +23,6 @@ ImageView backDK;
             public void onClick(View v) {
                 Intent intentBackDK = new Intent(TermsAndConditions.this, HomeActivity.class);
                 startActivity(intentBackDK);
-                finish();
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
@@ -33,6 +32,5 @@ ImageView backDK;
     public void onBackPressed() {
         super.onBackPressed();
         startActivity(new Intent(this, HomeActivity.class));
-        finish();
     }
 }
