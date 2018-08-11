@@ -33,7 +33,8 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
     Button btnConfimPass;
     ImageView backDP;
     Spinner sprinerCity;
-    String parkingid,city;
+    String parkingid;
+    int city,statusButton;
     List<String> listCity;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,94 +73,33 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(address.getText().toString().isEmpty() || address.getText().toString().equals("") ||
-                        openHour.getText().toString().isEmpty() || openHour.getText().toString().equals("") ||
-                        openMin.getText().toString().isEmpty() || openMin.getText().toString().equals("") ||
-                        closeHour.getText().toString().isEmpty() || closeHour.getText().toString().equals("") ||
-                        closeMin.getText().toString().isEmpty() || closeMin.getText().toString().equals("") ||
-                        totalSpace.getText().toString().isEmpty() || totalSpace.getText().toString().equals("")
-                        ) {
-                    process.setText("Hãy nhập các trường cần thay đổi");
-                    process.setVisibility(View.VISIBLE);
-                }else {
-                    process.setVisibility(View.INVISIBLE);
-                    android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
-                    View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                    mBuilder.setView(mView);
-                    confirmPass = (EditText) mView.findViewById(R.id.tbPassword);
-                    errorConfirmPass = (TextView) mView.findViewById(R.id.tvError);
-                    btnConfimPass = (Button) mView.findViewById(R.id.btnConfirm);
-                    btnConfimPass.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            try {
-                                if (confirmPass.getText().toString().isEmpty() || confirmPass.getText().toString().equals("")) {  // when is Empty
-                                    errorConfirmPass.setText("Hãy nhập mật khẩu");
-                                    errorConfirmPass.setVisibility(View.VISIBLE);
-                                } else if (getMD5Hex(errorConfirmPass.getText().toString()).equals(Session.currentOwner.getPass())) { // when confirm pass is wrong
-                                    errorConfirmPass.setText("Mật khẩu không đúng, vui lòng nhập lại");
-                                    errorConfirmPass.setVisibility(View.VISIBLE);
-                                } else {
-                                    ParkingDTO p = new ParkingDTO();
-                                    p.setAddress(address.getText().toString());
-                                    p.setTotalspace(Integer.parseInt(totalSpace.getText().toString()));
-                                    String openhour = openHour.getText().toString();
-                                    if(openhour.length()<2) {
-                                        openhour = "0" + openhour;
-                                    }
-                                    String openmin = openMin.getText().toString();
-                                    if(openmin.length()<2) {
-                                        openmin = "0" + openhour;
-                                    }
-                                    String closehour = closeHour.getText().toString();
-                                    if(closehour.length()<2) {
-                                        closehour = "0" + closehour;
-                                    }
-                                    String closemin = closeMin.getText().toString();
-                                    if(closemin.length()<2) {
-                                        closemin = "0" + closemin;
-                                    }
-                                    System.out.println(openHour.getText().toString() + " ===========================");
-                                   p.setTimeoc(openHour.getText().toString()+":" +openMin.getText().toString() +"-" + closeHour.getText().toString()+":" + closeMin.getText().toString()+"h");
-                                    new ManagerParkingTask("update", p, new IAsyncTaskHandler() {
-                                        @Override
-                                        public void onPostExecute(Object o) {
-
-                                        }
-                                    });
-                                    dialog.cancel();
-                                    process.setVisibility(View.INVISIBLE);
-                                }
-                            } catch (Exception e) {
-                                System.out.println(e);
-                            }
-                        }
-                    });
-                    dialog = mBuilder.create();
-                    dialog.show();
-                }
+                statusButton = 4;
+                onclickButton();
             }
         });
         btnDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                mBuilder.setView(mView);
-                dialog = mBuilder.create();
-                dialog.show();
+                statusButton = 5;
+                onclickButton();
+//                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+//                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+//                mBuilder.setView(mView);
+//                dialog = mBuilder.create();
+//                dialog.show();
             }
         });
         btnClose.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                statusButton = 6;
+                onclickButton();
 
-                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                mBuilder.setView(mView);
-                dialog = mBuilder.create();
-                dialog.show();
+//                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+//                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+//                mBuilder.setView(mView);
+//                dialog = mBuilder.create();
+//                dialog.show();
             }
         });
         new GetCityTask(new IAsyncTaskHandler() {
@@ -173,7 +113,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                     sprinerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            city = sprinerCity.getSelectedItem().toString();
+                            city = sprinerCity.getSelectedItemPosition();
 
                         }
 
@@ -187,7 +127,87 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
             }
         }).execute((Void) null);
     }
+    public void onclickButton() {
+        if(address.getText().toString().isEmpty() || address.getText().toString().equals("") ||
+                openHour.getText().toString().isEmpty() || openHour.getText().toString().equals("") ||
+                openMin.getText().toString().isEmpty() || openMin.getText().toString().equals("") ||
+                closeHour.getText().toString().isEmpty() || closeHour.getText().toString().equals("") ||
+                closeMin.getText().toString().isEmpty() || closeMin.getText().toString().equals("") ||
+                totalSpace.getText().toString().isEmpty() || totalSpace.getText().toString().equals("")
+                ) {
+            process.setText("Hãy nhập các trường cần thay đổi");
+            process.setVisibility(View.VISIBLE);
+        }else {
+            android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+            View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+            mBuilder.setView(mView);
+            confirmPass = (EditText) mView.findViewById(R.id.tbPassword);
+            errorConfirmPass = (TextView) mView.findViewById(R.id.tvError);
+            btnConfimPass = (Button) mView.findViewById(R.id.btnConfirm);
+            btnConfimPass.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    try {
+                        if (confirmPass.getText().toString().isEmpty() || confirmPass.getText().toString().equals("")) {  // when is Empty
+                            errorConfirmPass.setText("Hãy nhập mật khẩu");
+                            errorConfirmPass.setVisibility(View.VISIBLE);
+                        } else if (!getMD5Hex(confirmPass.getText().toString()).equals(Session.currentOwner.getPass())) { // when confirm pass is wrong
+                            errorConfirmPass.setText("Mật khẩu không đúng, vui lòng nhập lại");
+                            errorConfirmPass.setVisibility(View.VISIBLE);
+                        } else {
+                            ParkingDTO p = new ParkingDTO();
+                            p.setId(Integer.parseInt(parkingid));
+                            p.setStatus(statusButton);
+                            if(statusButton==4) {
 
+
+                                p.setAddress(address.getText().toString());
+                                p.setTotalspace(Integer.parseInt(totalSpace.getText().toString()));
+
+                                String openhour = openHour.getText().toString();
+                                if (openhour.length() < 2) {
+                                    openhour = "0" + openhour;
+                                }
+                                String openmin = openMin.getText().toString();
+                                if (openmin.length() < 2) {
+                                    openmin = "0" + openhour;
+                                }
+                                String closehour = closeHour.getText().toString();
+                                if (closehour.length() < 2) {
+                                    closehour = "0" + closehour;
+                                }
+                                String closemin = closeMin.getText().toString();
+                                if (closemin.length() < 2) {
+                                    closemin = "0" + closemin;
+                                }
+                                System.out.println(openHour.getText().toString() + " ===========================");
+                                p.setCity_id(city);
+                                p.setTimeoc(openHour.getText().toString() + ":" + openMin.getText().toString() + "-" + closeHour.getText().toString() + ":" + closeMin.getText().toString() + "h");
+                            }
+                            new ManagerParkingTask("update", p, new IAsyncTaskHandler() {
+                                @Override
+                                public void onPostExecute(Object o) {
+                                    if((boolean) o) {
+                                        dialog.cancel();
+
+                                        process.setVisibility(View.VISIBLE);
+                                        process.setText("Yêu cầu của bạn sẽ được xử lý trong 24 giờ");
+                                    }else {
+                                        errorConfirmPass.setText("Không thành công");
+                                    }
+                                }
+                            });
+
+                        }
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
+                }
+            });
+            dialog = mBuilder.create();
+            dialog.show();
+        }
+    }
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -225,7 +245,10 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                         totalSpace.setText(plist.get(i).getTotalspace() + "");
                         currentSpace.setText(plist.get(i).getCurrentspace()+"");
                         desposits.setText(plist.get(i).getDeposits() + "");
-                        sprinerCity.setSelection(plist.get(i).getCity_id());
+                        sprinerCity.setSelection(plist.get(i).getCity_id()-1);
+                        if(plist.get(i).getStatus()==3) {
+                            process.setVisibility(View.VISIBLE);
+                        }
                     }
                 }
             }

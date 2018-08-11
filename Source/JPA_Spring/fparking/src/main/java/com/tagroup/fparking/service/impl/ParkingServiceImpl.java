@@ -83,9 +83,24 @@ private TariffRepository tariffRepository;
 			Parking p = new Parking();
 			try {
 				System.out.println("parkingServiceImpl/update : parking = " + parking);
-				if(parking.getAddress()==null && parking.getCity()==null) {
-					Parking temp = parkingRepository.getOne(parking.getId());
+				Parking temp = parkingRepository.getOne(parking.getId());
+				if(parking.getAddress()==null && parking.getCity()==null) { // update space from staff
+					
 					temp.setCurrentspace(parking.getCurrentspace());
+					
+					parking = temp;
+				}
+				else if(parking.getStatus()==4) { // status = 4 : chờ phê duyệt update
+					
+					temp.setCurrentspace(parking.getCurrentspace());
+					temp.setTotalspace(parking.getTotalspace());
+					temp.setAddress(parking.getAddress());
+					temp.setStatus(3);
+					temp.setTimeoc(parking.getTimeoc());
+					temp.setCity(parking.getCity());
+					parking = temp;
+				}else if(parking.getStatus()==5 || parking.getStatus()==6) {  // status = 4 : chờ phê duyệt block or xóa
+					temp.setStatus(parking.getStatus());
 					parking = temp;
 				}
 			p = parkingRepository.save(parking);

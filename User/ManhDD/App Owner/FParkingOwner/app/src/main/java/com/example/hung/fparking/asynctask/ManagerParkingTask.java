@@ -5,6 +5,7 @@ import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 import android.widget.ListView;
@@ -108,12 +109,10 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     ParkingDTO p;
-    Activity activity;
     boolean success = false;
     private SharedPreferences spref;
     public UpdateParkingTask(IAsyncTaskHandler container, ParkingDTO p){
         this.container = container;
-        this.activity = (Activity)container;
         this.p = p;
 //        spref = activity.getSharedPreferences("info",0);
     }
@@ -126,25 +125,27 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
             Log.e("Update-Async", p.toString());
             JSONObject formData = new JSONObject();
             formData.put("id", p.getId());
+            formData.put("address", p.getAddress());
             formData.put("totalspace", p.getTotalspace());
             formData.put("timeoc", p.getTimeoc());
-
+            formData.put("city",new JSONObject().put("id",p.getCity_id()+1 + ""));
             String json = httpHandler.requestMethod(Constants.API_URL + "parkings/update/", formData.toString(),"POST");
             JSONObject jsonObj = new JSONObject(json);
             Log.e(" Updateparking : ", jsonObj.toString());
-            success = true;
+            return true;
 //            TextView tv = activity.findViewById(R.id.tvSpace);
 //            tv.setText(Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
         }catch (Exception ex){
             Log.e("Error:", ex.getMessage());
         }
-        return null;
+        return false;
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean);
 //        Intent intent = new Intent();
 //        if(success)
 //            intent.putExtra("result", "success!");

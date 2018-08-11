@@ -35,7 +35,7 @@ public class Notification extends Service implements SubscriptionEventListener {
         options.setCluster("ap1");
         if(Session.currentParking!=null) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
-            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "channel");
+            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "schannel");
         }
         System.out.println("class Notification");
         Session.channel.bind(Constants.PUSHER_ORDER_FROM_DRIVER, this);
@@ -101,7 +101,8 @@ public class Notification extends Service implements SubscriptionEventListener {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this.getApplicationContext(), "notify_001");
             Intent ii = new Intent(this.getApplicationContext(), HomeActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
+            ii.putExtra("touchNoti","true");
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,ii, 0);
 
             NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
             bigText.bigText("Nhấn vào để xem chi tiết");

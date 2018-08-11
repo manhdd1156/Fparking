@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.NotificationRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.NotificationService;
 import com.tagroup.fparking.service.PusherService;
@@ -46,7 +48,7 @@ public class NotificationServiceImpl implements NotificationService {
 		try {
 			pusherService.trigger(notification.getParking_id() + "channel", notification.getEvent(), "");
 			
-			
+			notification.setData("");
 			return notificationRepository.save(notification);
 
 		} catch (Exception e) {
@@ -151,9 +153,15 @@ public class NotificationServiceImpl implements NotificationService {
 	}
 
 	@Override
-	public List<Notification> check(Long id, int type) throws Exception {
+	public List<Notification> check() throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		List<Notification> notilst = notificationRepository.findAll();
 		for (Notification noti : notilst) {
+				if(t.getType().toLowerCase().contains("driver") && noti.getType()==2) {
+					pusherService.trigger(noti.getDriver_id() + "dchannel", noti.getEvent(), noti.getData());
+				}else if(t.getType().toLowerCase().contains("staff") && noti.getType()==1) {
+					pusherService.trigger(noti.getParking_id() + "schannel", noti.getEvent(), noti.getData());
+				}
 //			if (noti.getDriver_id() == notification.getDriver_id() && noti.getType() == notification.getType()
 //					&& noti.getVehicle_id() == notification.getVehicle_id()
 //					&& noti.getEvent().equals(notification.getEvent())

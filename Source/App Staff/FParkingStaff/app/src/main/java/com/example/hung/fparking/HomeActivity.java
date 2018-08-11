@@ -23,6 +23,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.adapter.ListBookingHomeAdapter;
+import com.example.hung.fparking.asynctask.GetNotiTask;
 import com.example.hung.fparking.asynctask.GetRateTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
@@ -118,6 +119,11 @@ public class HomeActivity extends AppCompatActivity
                 startActivity(intentDriverInfo);
             }
         });
+        Intent i = getIntent();
+
+        if(i.getStringExtra("touchNoti")!=null) {
+            new GetNotiTask().execute((Void) null);
+        }
     }
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override

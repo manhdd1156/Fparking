@@ -190,14 +190,14 @@
 
         <EditText
             android:id="@+id/tbTotalSpace"
-            android:layout_width="40dp"
+            android:layout_width="55dp"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView5"
             android:layout_marginLeft="23dp"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:inputType="text"
+            android:inputType="number"
             android:maxLength="3"
             android:padding="10dp"
             android:singleLine="true"
@@ -364,10 +364,10 @@
             android:id="@+id/spinner"
             android:layout_width="158dp"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
             android:layout_alignParentEnd="true"
-            android:layout_marginBottom="120dp"
-            android:layout_marginEnd="11dp" />
+            android:layout_below="@+id/textView5"
+            android:layout_marginEnd="17dp"
+            android:layout_marginTop="6dp" />
 
 
     </RelativeLayout>
