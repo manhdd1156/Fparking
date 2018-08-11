@@ -94,27 +94,6 @@ public class HomeActivity extends AppCompatActivity
         });
         tvTotalParking = (TextView) findViewById(R.id.tvTotalParking);
         tvTotalSpace = (TextView) findViewById(R.id.tvTotalCar);
-//        tbPass = findViewById(R.id.tbPassHP);
-//        tbPass.setFocusable(false);
-//        update = findViewById(R.id.btnUpdate);
-//        tbPass.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intentChangePass = new Intent(HomeActivity.this, ChangePassword.class);
-//                startActivity(intentChangePass);
-//            }
-//        });
-//        //Gọi alertDialog
-//        update.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
-//                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-//                mBuilder.setView(mView);
-//                final AlertDialog dialog = mBuilder.create();
-//                dialog.show();
-//            }
-//        });
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
@@ -128,47 +107,11 @@ public class HomeActivity extends AppCompatActivity
         Session.container = this;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-//        backParkingManagement = findViewById(R.id.imageViewBackParking);
-//        backParkingManagement.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                Intent intentBackParkingManagement = new Intent(ParkingManagement.this, HomeActivity.class);
-//                startActivity(intentBackParkingManagement);
-//                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-//            }
-//        });
         mRecyclerView = (RecyclerView) findViewById(R.id.parking_list_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-//        lv = (ListView) findViewById(R.id.cars_list);
-//        if (Session.currentStaff != null) {
-//            if (Session.currentParking == null) {
-//                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-//            } else {
-////                tvSpace = (TextView) findViewById(R.id.tvSpace);
-////                tvAddress = (TextView) findViewById(R.id.tvAddress);
-//                setText(tvAddress, Session.currentParking.getAddress());
-//                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
-//
-//            }
-//
-//            BookingDTO b = new BookingDTO();
-////            b.setParkingID(Session.currentStaff.getParking_id());
         new ManagerParkingTask("getbyowner", null, this);
-//            new ManagerBookingTask("homeget", b, this);
-//        }
-
-//        Button btnChangeSpace = (Button) findViewById(R.id.btnChange);
-//        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
-//            public void onClick(View v) {
-//                Intent intent = new Intent(HomeActivity.this, NumberPickerActivity.class);
-//                startActivityForResult(intent, PICK_CONTACT_REQUEST);
-////                startActivity(intent);
-//                // TODO Auto-generated method stub
-//            }
-//        });
-
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
@@ -207,23 +150,6 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void recreate() {
         super.recreate();
-//       super.recreate();
-//        lv = (ListView) findViewById(R.id.cars_list);
-//            if (Session.currentParking == null) {
-//                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-//            } else {
-//                tvSpace = (TextView) findViewById(R.id.tvSpace);
-//                tvAddress = (TextView) findViewById(R.id.tvAddress);
-//                setText(tvAddress, Session.currentParking.getAddress());
-//                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
-//
-//            }
-//        new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-//        BookingDTO b = new BookingDTO();
-//            b.setParkingID(Session.currentStaff.getParking_id());
-//        new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
-//        new ManagerBookingTask("homeget", b, this);
-
     }
 
 
@@ -323,17 +249,16 @@ public class HomeActivity extends AppCompatActivity
                 for (int i=0; i< plist.size();i++) {
                     totalSpace+=plist.get(i).getTotalspace()-plist.get(i).getCurrentspace();
                 }
-                tvTotalSpace.setText(totalSpace);
-                tvTotalParking.setText(plist.size());
+                tvTotalSpace.setText(totalSpace+"");
+                tvTotalParking.setText(plist.size()+"");
                 mAdapter = new MyRecyclerViewAdapter(plist);
                 mRecyclerView.setAdapter(mAdapter);
-
                 ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
                         .MyClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
                         Intent intentDetail = new Intent(HomeActivity.this, DetailedParking.class);
-                        intentDetail.putExtra("parkingid", plist.get(position).getId());
+                        intentDetail.putExtra("parkingid", plist.get(position).getId()+"");
                         startActivity(intentDetail);
                         finish();
                     }
@@ -361,15 +286,15 @@ class MyRecyclerViewAdapter extends RecyclerView
     public static class DataObjectHolder extends RecyclerView.ViewHolder
             implements View
             .OnClickListener {
-        TextView label;
-        TextView amount;
-        TextView time;
+        TextView address;
+        TextView slot;
+        ImageView imgCancel;
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-//            label = (TextView) itemView.findViewById(R.id.textViewHLicenseplate);
-//            amount = (TextView) itemView.findViewById(R.id.textViewAmount);
-//            time = (TextView) itemView.findViewById(R.id.textViewTime);
+            address = (TextView) itemView.findViewById(R.id.tvAdreesPL);
+            slot = (TextView) itemView.findViewById(R.id.tvSpacee);
+            imgCancel = (ImageView) itemView.findViewById(R.id.imgCancel);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -392,7 +317,7 @@ class MyRecyclerViewAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.activity_detailed_parking, parent, false);
+                .inflate(R.layout.parking_list, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;
@@ -400,10 +325,11 @@ class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-//        holder.label.setText(mDataset.get(position).getLicenseplate());
-//        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-//        holder.amount.setText(currencyVN.format(mDataset.get(position).getAmount()).toString());
-//        holder.time.setText(mDataset.get(position).getTimeIn().substring(8));
+        holder.address.setText(mDataset.get(position).getAddress());
+        holder.slot.setText(mDataset.get(position).getTotalspace() + "");
+        if(mDataset.get(position).getStatus()==3) {
+            holder.imgCancel.setVisibility(View.VISIBLE);
+        }
     }
 
     public void addItem(ParkingDTO dataObj, int index) {

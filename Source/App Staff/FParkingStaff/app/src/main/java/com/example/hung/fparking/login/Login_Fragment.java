@@ -100,39 +100,6 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
         forgotPassword.setOnClickListener(this);
         signUp.setOnClickListener(this);
 
-//        // Set check listener over checkbox for showing and hiding password
-//        show_hide_password
-//                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-//
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton button,
-//                                                 boolean isChecked) {
-//
-//                        // If it is checked then show password else hide
-//                        // password
-//                        if (isChecked) {
-//
-//                            show_hide_password.setText(R.string.hide_pwd);// change
-//                            // checkbox
-//                            // text
-//
-//                            password.setInputType(InputType.TYPE_CLASS_TEXT);
-//                            password.setTransformationMethod(HideReturnsTransformationMethod
-//                                    .getInstance());// show password
-//                        } else {
-//                            show_hide_password.setText(R.string.show_pwd);// change
-//                            // checkbox
-//                            // text
-//
-//                            password.setInputType(InputType.TYPE_CLASS_TEXT
-//                                    | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//                            password.setTransformationMethod(PasswordTransformationMethod
-//                                    .getInstance());// hide password
-//
-//                        }
-//
-//                    }
-//                });
     }
 
     @Override

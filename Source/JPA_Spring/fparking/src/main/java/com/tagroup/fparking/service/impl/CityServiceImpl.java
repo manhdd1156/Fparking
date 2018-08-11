@@ -16,37 +16,31 @@ private CityRepository cityRepository;
 @Override
 public List<City> getAll() {
 	// TODO Auto-generated method stub
-	return null;
+	return cityRepository.findAll();
 }
 
 @Override
 public City getById(Long id) throws Exception {
 	// TODO Auto-generated method stub
-	return null;
+	return cityRepository.getOne(id);
 }
 
 @Override
 public City create(City city) throws Exception {
 	// TODO Auto-generated method stub
-	return null;
+	return cityRepository.save(city);
 }
 
 @Override
 public City update(City city) throws Exception {
 	// TODO Auto-generated method stub
-	return null;
+	return cityRepository.save(city);
 }
 
 @Override
 public void delete(Long id) throws Exception {
 	// TODO Auto-generated method stub
 	
-}
-
-@Override
-public City checklogin(City city) throws Exception {
-	// TODO Auto-generated method stub
-	return null;
 }
 
 

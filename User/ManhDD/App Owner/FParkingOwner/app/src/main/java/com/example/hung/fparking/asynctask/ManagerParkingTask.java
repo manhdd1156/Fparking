@@ -85,8 +85,9 @@ class GetParkingTask extends AsyncTask<Void, Void, List> {
                 int status= p.getInt("status");
                 String timeoc= p.getString("timeoc");
                 int totalspace= p.getInt("totalspace");
+                int city_id = p.getJSONObject("city").getInt("id");
 
-                parkinglist.add(new ParkingDTO(id, address,currentspace,deposits, image, latitude, longitude, status, timeoc, totalspace));
+                parkinglist.add(new ParkingDTO(id, address,currentspace,deposits, image, latitude, longitude, status, timeoc, totalspace,city_id));
             }
             return parkinglist;
         } catch (Exception ex) {
@@ -125,7 +126,9 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
             Log.e("Update-Async", p.toString());
             JSONObject formData = new JSONObject();
             formData.put("id", p.getId());
-            formData.put("currentspace", p.getCurrentspace());
+            formData.put("totalspace", p.getTotalspace());
+            formData.put("timeoc", p.getTimeoc());
+
             String json = httpHandler.requestMethod(Constants.API_URL + "parkings/update/", formData.toString(),"POST");
             JSONObject jsonObj = new JSONObject(json);
             Log.e(" Updateparking : ", jsonObj.toString());
