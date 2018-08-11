@@ -110,6 +110,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setEvent("order");
 				n.setType(1); // 1 : driver gửi cho parking
 				n.setStatus(0); // 0 : parking chưa nhận.
+				n.setData("");
 				Notification nn = notificationService.create(n);
 				System.out.println("BookingServiceIml/create noti : " + nn);
 				// pusherService.trigger(b.getParking().getId() + "channel", "order", "");
@@ -151,16 +152,26 @@ public class BookingServiceImpl implements BookingService {
 				f.setParking(b.getParking());
 				f.setDate(new Date());
 				f.setType(1);
-				f.setStatus(0);
+				f.setStatus(1);
 				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype())
 						.getPrice());
 				f = fineService.create(f);
+				// parking bị phạt thì trừ luôn vào deposits
+				Parking p = parkingService.getById(b.getParking().getId());
+				p.setDeposits(p.getDeposits()-f.getPrice());
+				
 				b.setStatus(0);
+				// tiền cọc < 100 thì ban parking
+				if(p.getDeposits()<100000) {
+					p.setStatus(2);
+				}
+				parkingService.update(p);
 				n.setEvent("cancel");
 				n.setType(2);
+				n.setData("order");
 				Notification nn = notificationRepository.save(n);
 				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() + 1);
-				pusherService.trigger(nn.getDriver_id() + "channel", "cancel", "order");
+				pusherService.trigger(nn.getDriver_id() + "dchannel", "order", "after");
 				return bookingRepository.save(b);
 			}
 
@@ -224,7 +235,7 @@ public class BookingServiceImpl implements BookingService {
 					booking.setStatus(1);
 					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() - 1);
 					System.out.println("booking = " + booking.toString());
-					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
+					pusherService.trigger(n.getDriver_id() + "dchannel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
@@ -246,7 +257,7 @@ public class BookingServiceImpl implements BookingService {
 					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(),
 							booking.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
 					booking.setPrice(price);
-					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
+					pusherService.trigger(n.getDriver_id() + "dchannel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
@@ -298,12 +309,19 @@ public class BookingServiceImpl implements BookingService {
 					}
 					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
+					Parking parking = parkingService.getById(booking.getParking().getId());
+					parking.setDeposits(parking.getDeposits() - totalPrice* booking.getComission());
+					if(parking.getDeposits()<100000) {
+						parking.setStatus(2);
+					}
+					parkingService.update(parking);
 					booking.setStatus(3);
 					modelNoti.setType(2);
+					modelNoti.setData("ok");
 					modelNoti = notificationService.update(modelNoti);
 					System.out.println("booking ===: khi chua tahy doi status = 3 : " + booking.toString());
 					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace() + 1);
-					pusherService.trigger(modelNoti.getDriver_id() + "channel", modelNoti.getEvent(), "ok");
+					pusherService.trigger(modelNoti.getDriver_id() + "dchannel", modelNoti.getEvent(), "ok");
 
 					return bookingRepository.save(booking);
 				}
@@ -359,7 +377,7 @@ public class BookingServiceImpl implements BookingService {
 				
 				List<Booking> bAll = bookingRepository.findAll();
 				
-				for (Booking booking : b) {
+				for (Booking booking : bAll) {
 					if (booking.getDrivervehicle().getDriver().getId() == t.getId()
 							&& booking.getStatus() == 3) {
 						b.add(booking);
@@ -403,7 +421,7 @@ public class BookingServiceImpl implements BookingService {
 				Notification modelNoti = notificationService
 						.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(), 1, "order", 0);
 				notificationRepository.delete(modelNoti);
-				pusherService.trigger(booking.getParking().getId() + "channel", "cancel", "preorder");
+				pusherService.trigger(booking.getParking().getId() + "schannel", "cancel", "preorder");
 				bookingRepository.delete(booking);
 				return;
 			}
@@ -430,9 +448,10 @@ public class BookingServiceImpl implements BookingService {
 				f = fineService.create(f);
 				booking.setStatus(0);
 				n.setEvent("cancel");
+				n.setData("order");
 				Notification nn = notificationRepository.save(n);
 				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace() + 1);
-				pusherService.trigger(nn.getParking_id() + "channel", "cancel", "order");
+				pusherService.trigger(nn.getParking_id() + "schannel", "cancel", "order");
 				List<Fine> flist = fineService.getByDriverID(booking.getDrivervehicle().getDriver().getId());
 				int count = 0;
 				for (Fine fine : flist) {

@@ -22,6 +22,6 @@ public interface NotificationService {
 
 	public Notification cancelNoti(Notification notification) throws Exception;
 
-	 public List<Notification> check(Long id,int type) throws Exception;
+	 public List<Notification> check() throws Exception;
 
 }

@@ -101,7 +101,7 @@ public class BookingController {
 
 	}
 
-	// get booking by driver id and type ?
+	// get booking by driver id and type ?    type = 1 : lấy ra list booking có status =3, type = 2 : lấy ra booking mới nhất
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
 	@RequestMapping(path = "/drivers", method = RequestMethod.GET)
 	public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") int type) throws Exception {

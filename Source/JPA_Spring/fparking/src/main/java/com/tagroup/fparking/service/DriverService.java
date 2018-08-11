@@ -12,6 +12,8 @@ public interface DriverService {
 	public Driver create(Driver driver)throws Exception;
 	public Driver update(Driver driver)throws Exception;
 	public Driver changepassword(DriverDTO driver)throws Exception;
+	public Driver changepasswordotp(DriverDTO driver)throws Exception;
+
 	public Driver block(Driver driver) throws Exception;
 	public void delete(Long id)throws Exception;
 	public List<Driver> getByStatus(int status)throws Exception;

@@ -109,6 +109,7 @@ public class OwnerServiceImpl implements OwnerService {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Owner was not found");
 		}
 		o.setPassword(owner.getPassword());
+		System.out.println("ownerServiceImpl/forgotpass : owner = " + o);
 		return ownerRepository.save(o);
 	}
 

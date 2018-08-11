@@ -53,7 +53,7 @@ public class StaffServiceImpl implements StaffService {
 			for (Staff s : slist) {
 				if (s.getId() == staff.getId()) {
 					staff.setParking(s.getParking());
-					if(staff.getParking()==null)
+					if(staff.getPassword()==null)
 					staff.setPassword(s.getPassword());
 					boolean flag = false;
 					for (Staff staff2 : slist) {
