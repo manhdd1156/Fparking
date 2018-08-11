@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.hung.fparking.asynctask.ManagerNotiTask;
 import com.example.hung.fparking.dialog.DialogActivity;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
@@ -35,7 +36,7 @@ public class Notification extends Service implements SubscriptionEventListener {
         options.setCluster("ap1");
         if(Session.currentParking!=null) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
-            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "channel");
+            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "schannel");
         }
         System.out.println("class Notification");
         Session.channel.bind(Constants.PUSHER_ORDER_FROM_DRIVER, this);
@@ -77,11 +78,12 @@ public class Notification extends Service implements SubscriptionEventListener {
 
                         @Override
                         public void run() {
-                            Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
-                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Session.homeActivity.finish();
-                        startActivity(myIntent);
-//                        Session.homeActivity.recreate();
+            new ManagerNotiTask("delete");
+//                            Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
+//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            Session.homeActivity.finish();
+//                        startActivity(myIntent);
+                        Session.homeActivity.recreate();
 //                        finish();
 
 
