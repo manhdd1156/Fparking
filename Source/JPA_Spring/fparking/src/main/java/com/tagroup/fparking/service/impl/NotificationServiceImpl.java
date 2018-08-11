@@ -46,7 +46,7 @@ public class NotificationServiceImpl implements NotificationService {
 	public Notification create(Notification notification) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			pusherService.trigger(notification.getParking_id() + "channel", notification.getEvent(), "");
+			pusherService.trigger(notification.getParking_id() + "schannel", notification.getEvent(), "");
 			
 			notification.setData("");
 			return notificationRepository.save(notification);
@@ -106,6 +106,7 @@ public class NotificationServiceImpl implements NotificationService {
 					notification.getEvent(), 0);
 			System.out.println("BookingServerImp/deleteByStatus : " + noti);
 			noti.setType(2);
+			noti.setData("cancel");
 			Notification n = update(noti);
 			if (notification.getEvent().equals("order")) {
 				List<Booking> blist = bookingService.getAll();
@@ -120,7 +121,7 @@ public class NotificationServiceImpl implements NotificationService {
 				}
 			}
 			if (n != null) {
-				pusherService.trigger(n.getDriver_id() + "channel", notification.getEvent(), "cancel");
+				pusherService.trigger(n.getDriver_id() + "dchannel", notification.getEvent(), "cancel");
 				System.out.println("====================== đã đẩy pusher");
 			}
 

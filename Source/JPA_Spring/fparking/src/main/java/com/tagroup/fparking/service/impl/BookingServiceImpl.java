@@ -110,6 +110,7 @@ public class BookingServiceImpl implements BookingService {
 				n.setEvent("order");
 				n.setType(1); // 1 : driver gửi cho parking
 				n.setStatus(0); // 0 : parking chưa nhận.
+				n.setData("");
 				Notification nn = notificationService.create(n);
 				System.out.println("BookingServiceIml/create noti : " + nn);
 				// pusherService.trigger(b.getParking().getId() + "channel", "order", "");
@@ -158,9 +159,10 @@ public class BookingServiceImpl implements BookingService {
 				b.setStatus(0);
 				n.setEvent("cancel");
 				n.setType(2);
+				n.setData("order");
 				Notification nn = notificationRepository.save(n);
 				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() + 1);
-				pusherService.trigger(nn.getDriver_id() + "channel", "cancel", "order");
+				pusherService.trigger(nn.getDriver_id() + "dchannel", "cancel", "order");
 				return bookingRepository.save(b);
 			}
 
@@ -224,7 +226,7 @@ public class BookingServiceImpl implements BookingService {
 					booking.setStatus(1);
 					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() - 1);
 					System.out.println("booking = " + booking.toString());
-					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
+					pusherService.trigger(n.getDriver_id() + "dchannel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
@@ -246,7 +248,7 @@ public class BookingServiceImpl implements BookingService {
 					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(),
 							booking.getDrivervehicle().getVehicle().getVehicletype().getId()).getPrice();
 					booking.setPrice(price);
-					pusherService.trigger(n.getDriver_id() + "channel", n.getEvent(), "ok");
+					pusherService.trigger(n.getDriver_id() + "dchannel", n.getEvent(), "ok");
 					return bookingRepository.save(booking);
 				}
 			}
@@ -300,10 +302,11 @@ public class BookingServiceImpl implements BookingService {
 					booking.setAmount(totalPrice);
 					booking.setStatus(3);
 					modelNoti.setType(2);
+					modelNoti.setData("ok");
 					modelNoti = notificationService.update(modelNoti);
 					System.out.println("booking ===: khi chua tahy doi status = 3 : " + booking.toString());
 					parkingService.changeSpace(modelNoti.getParking_id(), booking.getParking().getCurrentspace() + 1);
-					pusherService.trigger(modelNoti.getDriver_id() + "channel", modelNoti.getEvent(), "ok");
+					pusherService.trigger(modelNoti.getDriver_id() + "dchannel", modelNoti.getEvent(), "ok");
 
 					return bookingRepository.save(booking);
 				}
@@ -395,6 +398,7 @@ public class BookingServiceImpl implements BookingService {
 	public void cancel(BookingDTO bb) throws Exception {
 		// TODO Auto-generated method stub
 		List<Booking> bAll = bookingRepository.findAll();
+		
 		// driver cancel when preorder
 		for (Booking booking : bAll) {
 			if (booking.getDrivervehicle().getDriver().getId() == bb.getDriverid()
@@ -403,7 +407,7 @@ public class BookingServiceImpl implements BookingService {
 				Notification modelNoti = notificationService
 						.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(), 1, "order", 0);
 				notificationRepository.delete(modelNoti);
-				pusherService.trigger(booking.getParking().getId() + "channel", "cancel", "preorder");
+				pusherService.trigger(booking.getParking().getId() + "schannel", "cancel", "preorder");
 				bookingRepository.delete(booking);
 				return;
 			}
@@ -430,9 +434,10 @@ public class BookingServiceImpl implements BookingService {
 				f = fineService.create(f);
 				booking.setStatus(0);
 				n.setEvent("cancel");
+				n.setData("order");
 				Notification nn = notificationRepository.save(n);
 				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace() + 1);
-				pusherService.trigger(nn.getParking_id() + "channel", "cancel", "order");
+				pusherService.trigger(nn.getParking_id() + "schannel", "cancel", "order");
 				List<Fine> flist = fineService.getByDriverID(booking.getDrivervehicle().getDriver().getId());
 				int count = 0;
 				for (Fine fine : flist) {
