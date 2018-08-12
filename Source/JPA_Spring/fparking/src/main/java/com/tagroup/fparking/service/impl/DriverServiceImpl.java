@@ -94,23 +94,7 @@ public class DriverServiceImpl implements DriverService {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			if (t.getType().equals("ADMIN")) {
-				List<Driver> dlist = getAll();
-				for (Driver d : dlist) {
-					if (d.getId() == driver.getId()) {
-						boolean flag = false;
-						for (Driver driver2 : dlist) {
-							if (driver2.getPhone().equals(driver.getPhone()) && driver2.getId() != driver.getId()) {
-								flag = true;
-							}
-						}
-						if (!flag) {
-							return driverRepository.save(driver);
-						}else {
-							throw new APIException(HttpStatus.NOT_FOUND, "Phone is exist");
-						}
-
-					}
-				}
+				return driverRepository.save(driver);
 			} else {
 				List<Driver> dlist = getAll();
 				for (Driver d : dlist) {
