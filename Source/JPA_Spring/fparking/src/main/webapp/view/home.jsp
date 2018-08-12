@@ -132,153 +132,160 @@
 			<!-- ==Thông tin hệ thông End== -->
 
 			<!--====Feedback from actor Start===-->
-			<div class="col-lg-12">
-				<div class="panel panel-warning">
-					<div class="panel-heading">Phản hồi từ người dùng</div>
-					<!-- /.panel-heading -->
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="panel panel-warning">
-									<div class="panel-body">
-										<table width="100%"
-											class="table table-striped table-bordered table-hover"
-											id="dataTables-example">
-											<thead>
-												<tr>
-													<th>Ngày</th>
-													<th>Tên</th>
-													<th>Nội Dung</th>
-													<th>Xóa</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach items="${arrayListFeedback}" var="listFeedBack">
-													<tr class="odd gradeX">
-														<td>${listFeedBack.dateFeedBack }</td>
-														<td>${listFeedBack.nameFeedBack}</td>
-														<td><a href="/home/feedbackdetail/${listFeedBack.id}">${listFeedBack.content }</a></td>
-														<td><a href="#"
-															onclick="deleteFeedback1(${listFeedBack.id });return false">Xóa</a></td>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-warning">
+						<div class="panel-heading">Phản hồi từ người dùng</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="panel panel-warning">
+										<div class="panel-body">
+											<table width="100%"
+												class="table table-striped table-bordered table-hover"
+												id="dataTables-example">
+												<thead>
+													<tr>
+														<th>Ngày</th>
+														<th>Tên</th>
+														<th>Nội Dung</th>
+														<th>Xóa</th>
 													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-										<!-- /.table-responsive -->
+												</thead>
+												<tbody>
+													<c:forEach items="${arrayListFeedback}" var="listFeedBack">
+														<tr class="odd gradeX">
+															<td>${listFeedBack.dateFeedBack }</td>
+															<td>${listFeedBack.nameFeedBack}</td>
+															<td><a
+																href="/home/feedbackdetail/${listFeedBack.id}">${listFeedBack.content }</a></td>
+															<td><a href="#"
+																onclick="deleteFeedback1(${listFeedBack.id });return false">Xóa</a></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+											<!-- /.table-responsive -->
 
+										</div>
+										<!-- /.panel-body -->
 									</div>
-									<!-- /.panel-body -->
+									<!-- /.panel -->
 								</div>
-								<!-- /.panel -->
+								<!-- /.col-lg-12 -->
 							</div>
-							<!-- /.col-lg-12 -->
 						</div>
+						<!-- /.panel-body -->
 					</div>
-					<!-- /.panel-body -->
+					<!-- /.panel -->
 				</div>
-				<!-- /.panel -->
 			</div>
 			<!--====Feedback from actor End===-->
 			<!--====Parking Start===-->
-			<div class="col-lg-12">
-				<div class="panel panel-danger">
-					<div class="panel-heading">Bãi xe sắp hết tiền cọc</div>
-					<!-- /.panel-heading -->
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="panel panel-danger">
-									<!-- /.panel-heading -->
-									<div class="panel-body">
-										<table width="100%"
-											class="table table-striped table-bordered table-hover"
-											id="dataTables-example2">
-											<thead>
-												<tr>
-													<th>Địa chỉ</th>
-													<th>Chủ bãi</th>
-													<th>Số điện thoại</th>
-													<th>Số dư tài khoản</th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach items="${arrayListParking}" var="listParking">
-													<tr class="odd gradeX">
-														<td><a
-															href="/account/parking/detail/${listParking.id }">${listParking.addressParking }</a></td>
-														<td>${listParking.nameOwner }</td>
-														<td>${listParking.phoneOwner }</td>
-														<td>${listParking.deposits }</td>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-danger">
+						<div class="panel-heading">Bãi xe sắp hết tiền cọc</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="panel panel-danger">
+										<!-- /.panel-heading -->
+										<div class="panel-body">
+											<table width="100%"
+												class="table table-striped table-bordered table-hover"
+												id="dataTables-example2">
+												<thead>
+													<tr>
+														<th>Địa chỉ</th>
+														<th>Chủ bãi</th>
+														<th>Số điện thoại</th>
+														<th>Số dư tài khoản</th>
 													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-										<!-- /.table-responsive -->
+												</thead>
+												<tbody>
+													<c:forEach items="${arrayListParking}" var="listParking">
+														<tr class="odd gradeX">
+															<td><a
+																href="/account/parking/detail/${listParking.id }">${listParking.addressParking }</a></td>
+															<td>${listParking.nameOwner }</td>
+															<td>${listParking.phoneOwner }</td>
+															<td>${listParking.deposits }</td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+											<!-- /.table-responsive -->
+										</div>
+										<!-- /.panel-body -->
 									</div>
-									<!-- /.panel-body -->
+									<!-- /.panel -->
 								</div>
-								<!-- /.panel -->
+								<!-- /.col-lg-12 -->
 							</div>
-							<!-- /.col-lg-12 -->
 						</div>
+						<!-- /.panel-body -->
 					</div>
-					<!-- /.panel-body -->
+					<!-- /.panel -->
 				</div>
-				<!-- /.panel -->
 			</div>
 			<!--====Parking End===-->
 
 			<!--====Parking Pending Start===-->
-			<div class="col-lg-12">
-				<div class="panel panel-yellow">
-					<div class="panel-heading">Bãi xe chờ duyệt</div>
-					<!-- /.panel-heading -->
-					<div class="panel-body">
-						<div class="row">
-							<div class="col-lg-12">
-								<div class="panel panel-yellow">
-									<!-- /.panel-heading -->
-									<div class="panel-body">
-										<table width="100%"
-											class="table table-striped table-bordered table-hover"
-											id="dataTables-example3">
-											<thead>
-												<tr>
-													<th>Địa chỉ</th>
-													<th>Chủ bãi</th>
-													<th>Số điện thoại</th>
-													<th>Số dư tài khoản</th>
-													<th></th>
-												</tr>
-											</thead>
-											<tbody>
-												<c:forEach items="${arrayListParkingPending}"
-													var="listParkingPending">
-													<tr class="odd gradeX">
-														<td><a
-															href="/account/parking/detail/${listParkingPending.id }">${listParkingPending.addressParking }</a></td>
-														<td>${listParkingPending.nameOwner }</td>
-														<td>${listParkingPending.phoneOwner }</td>
-														<td>${listParkingPending.deposits }</td>
-														<td><a
-															href="/home/addmoney/${listParkingPending.id }">Chấp
-																nhận</a></td>
+			<div class="row">
+				<div class="col-lg-12">
+					<div class="panel panel-yellow">
+						<div class="panel-heading">Bãi xe chờ duyệt</div>
+						<!-- /.panel-heading -->
+						<div class="panel-body">
+							<div class="row">
+								<div class="col-lg-12">
+									<div class="panel panel-yellow">
+										<!-- /.panel-heading -->
+										<div class="panel-body">
+											<table width="100%"
+												class="table table-striped table-bordered table-hover"
+												id="dataTables-example3">
+												<thead>
+													<tr>
+														<th>Địa chỉ</th>
+														<th>Chủ bãi</th>
+														<th>Số điện thoại</th>
+														<th>Số dư tài khoản</th>
+														<th></th>
 													</tr>
-												</c:forEach>
-											</tbody>
-										</table>
-										<!-- /.table-responsive -->
+												</thead>
+												<tbody>
+													<c:forEach items="${arrayListParkingPending}"
+														var="listParkingPending">
+														<tr class="odd gradeX">
+															<td><a
+																href="/account/parking/detail/${listParkingPending.id }">${listParkingPending.addressParking }</a></td>
+															<td>${listParkingPending.nameOwner }</td>
+															<td>${listParkingPending.phoneOwner }</td>
+															<td>${listParkingPending.deposits }</td>
+															<td><a
+																href="/home/addmoney/${listParkingPending.id }">Chấp
+																	nhận</a></td>
+														</tr>
+													</c:forEach>
+												</tbody>
+											</table>
+											<!-- /.table-responsive -->
+										</div>
+										<!-- /.panel-body -->
 									</div>
-									<!-- /.panel-body -->
+									<!-- /.panel -->
 								</div>
-								<!-- /.panel -->
+								<!-- /.col-lg-12 -->
 							</div>
-							<!-- /.col-lg-12 -->
 						</div>
+						<!-- /.panel-body -->
 					</div>
-					<!-- /.panel-body -->
+					<!-- /.panel -->
 				</div>
-				<!-- /.panel -->
 			</div>
 			<!--====Parking Pending End===-->
 

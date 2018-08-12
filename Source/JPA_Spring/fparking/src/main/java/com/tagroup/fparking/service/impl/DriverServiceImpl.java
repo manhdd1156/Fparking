@@ -94,23 +94,7 @@ public class DriverServiceImpl implements DriverService {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			if (t.getType().equals("ADMIN")) {
-				List<Driver> dlist = getAll();
-				for (Driver d : dlist) {
-					if (d.getId() == driver.getId()) {
-						boolean flag = false;
-						for (Driver driver2 : dlist) {
-							if (driver2.getPhone().equals(driver.getPhone()) && driver2.getId() != driver.getId()) {
-								flag = true;
-							}
-						}
-						if (!flag) {
-							return driverRepository.save(driver);
-						}else {
-							throw new APIException(HttpStatus.NOT_FOUND, "Phone is exist");
-						}
-
-					}
-				}
+				return driverRepository.save(driver);
 			} else {
 				List<Driver> dlist = getAll();
 				for (Driver d : dlist) {
@@ -122,10 +106,8 @@ public class DriverServiceImpl implements DriverService {
 							}
 						}
 						if (!flag) {
-
 							return driverRepository.save(driver);
 						}
-
 					}
 				}
 			}
@@ -133,7 +115,6 @@ public class DriverServiceImpl implements DriverService {
 			System.out.println(e);
 			throw new APIException(HttpStatus.NOT_FOUND, "Cannot update driver");
 		}
-
 		return null;
 
 	}
@@ -208,6 +189,21 @@ public class DriverServiceImpl implements DriverService {
 		driver.setStatus(0);
 		driverRepository.save(driver);
 		return null;
+	}
+
+	@Override
+	public Boolean validateDriver(Driver driver) {
+		try {
+			Driver d1 = getById(driver.getId());
+			if (d1.getPhone().equals(driver.getPhone())) {
+				return true;
+			}
+			Driver d = driverRepository.findByPhone(driver.getPhone());
+			return d==null;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
 	}
 
 }

@@ -27,35 +27,31 @@ public class CheckNetworkReciever extends BroadcastReceiver implements IAsyncTas
     public void onReceive(Context context, Intent intent) {
         mPreferences = context.getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
+        Session.spref = context.getSharedPreferences("intro", 0);
         ConnectivityManager connectivityManager = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo activeNetInfo = connectivityManager.getActiveNetworkInfo();
         boolean isConnected = activeNetInfo != null && activeNetInfo.isConnectedOrConnecting();
         if (isConnected) {
-            if (Session.currentDriver != null) {
-                new BookingTask("newbooking", Session.currentDriver.getId() + "", "", "newbooking", this);
-            } else if (!Session.spref.getBoolean("first_time", true)) {
-                new DriverLoginTask("second_time", null, "", new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o, String action) {
-                        new BookingTask("newbooking", Session.currentDriver.getId() + "", "", "newbooking", this);
-                    }
-                });
+            if (!Session.spref.getString("driverid", "").equals("")) {
+                new BookingTask("newbooking", Session.spref.getString("driverid", "") + "", "", "newbooking", this);
             }
         }
     }
 
     @Override
     public void onPostExecute(Object o, String action) {
-        booking = (ArrayList<BookingDTO>) o;
-        BookingDTO bookingDTO = booking.get(0);
-        if (bookingDTO.getStatus() != 0) {
-            mPreferencesEditor.putString("drivervehicleID", bookingDTO.getDriverVehicleID() + "");
-            mPreferencesEditor.putString("vehicleID", bookingDTO.getVehicleID() + "");
-            mPreferencesEditor.putString("parkingID", bookingDTO.getParkingID() + "");
-            mPreferencesEditor.putInt("status", bookingDTO.getStatus());
-            mPreferencesEditor.putString("bookingid", bookingDTO.getBookingID() + "").commit();
-        } else {
-            mPreferencesEditor.clear().commit();
+        if (Boolean.TRUE.equals(o)) {
+            booking = (ArrayList<BookingDTO>) o;
+            BookingDTO bookingDTO = booking.get(0);
+            if (bookingDTO.getStatus() != 0 && bookingDTO.getStatus() != 3) {
+                mPreferencesEditor.putString("drivervehicleID", bookingDTO.getDriverVehicleID() + "");
+                mPreferencesEditor.putString("vehicleID", bookingDTO.getVehicleID() + "");
+                mPreferencesEditor.putString("parkingID", bookingDTO.getParkingID() + "");
+                mPreferencesEditor.putInt("status", bookingDTO.getStatus());
+                mPreferencesEditor.putString("bookingid", bookingDTO.getBookingID() + "").commit();
+            } else {
+                mPreferencesEditor.clear().commit();
+            }
         }
     }
 }

@@ -45,6 +45,10 @@ import com.example.hung.fparking.entity.Route;
 import com.example.hung.fparking.model.DirectionFinder;
 import com.example.hung.fparking.model.DirectionFinderListener;
 import com.example.hung.fparking.model.GPSTracker;
+import com.github.ybq.android.spinkit.SpinKitView;
+import com.github.ybq.android.spinkit.SpriteFactory;
+import com.github.ybq.android.spinkit.Style;
+import com.github.ybq.android.spinkit.sprite.Sprite;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -65,14 +69,13 @@ import java.util.Locale;
 public class Direction extends FragmentActivity implements OnMapReadyCallback, DirectionFinderListener, IAsyncTaskHandler, LocationListener, GoogleMap.OnCameraMoveStartedListener {
 
     private GoogleMap mMap;
-    Button buttonCheckin, buttonHuy, btnOK;
-    TextView textViewAlert;
+    Button buttonCheckin, buttonHuy, btnOK, btnCancelPB;
+    TextView textViewAlert, textViewTitlePB;
     View mMapView;
     private TextToSpeech textToSpeechNearPlace;
     private List<Marker> originMarkers = new ArrayList<>();
     private List<Marker> destinationMarkers = new ArrayList<>();
     private List<Polyline> polylinePaths = new ArrayList<>();
-    private ProgressDialog progressDialog;
     private LocationManager locationManager = null;
 
     private SharedPreferences mPreferences;
@@ -88,7 +91,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     AlertDialog.Builder builder;
     ArrayList<FineDTO> fineDTOS;
 
-    AlertDialog dialog;
+    AlertDialog dialog, progessDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -99,13 +102,41 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
+        // set properties progestbar
+        setProgessbar();
+
         builder = new AlertDialog.Builder(Direction.this);
-        progressDialog = ProgressDialog.show(this, "Vui lòng đợi.",
-                "Đang tìm đường đi..!", true);
 
         // khởi tạo shareRePreference
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
+
+        // check data
+        int status = mPreferences.getInt("status", 5);
+        if (status == 5) {
+            if (locationManager != null) {
+                locationManager.removeUpdates(Direction.this);
+            }
+            Intent intentOrderFlagment = new Intent(Direction.this, HomeActivity.class);
+            startActivity(intentOrderFlagment);
+            finish();
+        } else if (status == 2) {
+            if (locationManager != null) {
+                locationManager.removeUpdates(Direction.this);
+            }
+            Intent intentCheckoutFlagment = new Intent(Direction.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+            finish();
+        } else if (status == 3) {
+            if (locationManager != null) {
+                locationManager.removeUpdates(Direction.this);
+            }
+            Intent intentCheckoutFlagment = new Intent(Direction.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+            finish();
+        }else{
+            progessDialog.show();
+        }
 
         //excute chỉ đường
         parkingID = mPreferences.getString("parkingID", "");
@@ -223,7 +254,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
 
     @Override
     public void onDirectionFinderSuccess(List<Route> routes) {
-        progressDialog.dismiss();
+        progessDialog.cancel();
         polylinePaths = new ArrayList<>();
         originMarkers = new ArrayList<>();
         destinationMarkers = new ArrayList<>();
@@ -315,7 +346,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     public void onLocationChanged(Location location) {
 
         if (!userGesture) {
-            Log.e("auto move", location.getBearing()+ " ok");
+            Log.e("auto move", location.getBearing() + " ok");
             cameraPosition = new CameraPosition.Builder()
                     .target(new LatLng(location.getLatitude(), location.getLongitude()))             // Sets the center of the map to current location
                     .zoom(17)                   // Sets the zoom
@@ -455,10 +486,31 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         });
     }
 
+    private void setProgessbar() {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(Direction.this);
+        View mView = getLayoutInflater().inflate(R.layout.progress_bar, null);
+        mBuilder.setView(mView);
+        mBuilder.setCancelable(false);
+        progessDialog = mBuilder.create();
+        btnCancelPB = mView.findViewById(R.id.btnCancelPB);
+        textViewTitlePB = mView.findViewById(R.id.textViewTitlePB);
+        textViewTitlePB.setText("Đang tìm kiếm đường đi");
+        btnCancelPB.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                progessDialog.cancel();
+            }
+        });
+
+        SpinKitView spinKitView = (SpinKitView) mView.findViewById(R.id.spin_kit);
+        Style style = Style.values()[7];
+        Sprite drawable = SpriteFactory.create(style);
+        spinKitView.setIndeterminateDrawable(drawable);
+    }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        progressDialog.dismiss();
         startActivity(new Intent(this, OrderParking.class));
         finish();
     }
@@ -466,12 +518,11 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        textToSpeechNearPlace.shutdown();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
+        if (textToSpeechNearPlace != null) {
+            textToSpeechNearPlace.shutdown();
+        }
+        if (locationManager != null) {
+            locationManager.removeUpdates(Direction.this);
+        }
     }
 }
