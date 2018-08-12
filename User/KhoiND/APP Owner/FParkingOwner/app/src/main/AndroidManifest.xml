@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
+xmlns:tools="http://schemas.android.com/tools"
     package="com.example.hung.fparking">
 
     <!--
@@ -33,6 +33,10 @@
             android:enabled="true"
             android:exported="true" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <receiver android:name=".notification.CheckNetworkReciever">
             <intent-filter>
                 <action android:name="android.net.conn.CONNECTIVITY_CHANGE" />
@@ -41,31 +45,38 @@
                 <category android:name="android.intent.category.DEFAULT" />
             </intent-filter>
         </receiver>
-
+        <activity android:name=".login.MainActivity" >
+        </activity>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home">
+
         </activity>
         <activity android:name=".ProfileActivity" />
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".login.MainActivity" >
+        <activity android:name=".login.SignUp_Fragment">
+
+        </activity>
+        <activity
+            android:name=".ChangePassword"
+            android:noHistory="true" />
+        <activity android:name=".AlertDialog" />
+        <activity android:name=".other.Contact" />
+        <activity android:name=".Login" />
+        <activity android:name=".ParkingManagement" />
+        <activity android:name=".StaffManagement" />
+        <activity android:name=".DetailedParking" />
+        <activity android:name=".other.TermsAndConditions" />
+        <activity android:name=".other.Guide" />
+        <activity android:name=".DialogAddParking">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".ChangePassword"
-            android:noHistory="true" />
-        <activity android:name=".AlertDialog" />
-        <activity android:name=".Contact" />
-        <activity android:name=".Login" />
-        <activity android:name=".ParkingManagement" />
-        <activity android:name=".StaffManagement"></activity>
-        <activity android:name=".login.SignUp_Fragment"></activity>
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

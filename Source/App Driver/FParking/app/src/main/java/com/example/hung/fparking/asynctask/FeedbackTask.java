@@ -30,10 +30,11 @@ public class FeedbackTask extends AsyncTask<Void, Void, Boolean> {
 
             String json = httpHandler.requestMethod(Constants.API_URL + "drivers/feedbacks", formData.toString(), "POST");
             Log.e("Feedback: ", json);
+            return true;
         } catch (Exception ex) {
             Log.e("Error CreateBooking:", ex.getMessage());
         }
-        return null;
+        return false;
     }
 
     @Override

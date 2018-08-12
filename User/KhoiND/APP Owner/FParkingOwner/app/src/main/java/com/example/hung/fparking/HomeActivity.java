@@ -8,7 +8,10 @@ import android.content.IntentFilter;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -17,6 +20,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -27,18 +31,23 @@ import com.example.hung.fparking.asynctask.GetRateTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
 import com.example.hung.fparking.asynctask.ManagerParkingTask;
-import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
+import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.model.CheckNetwork;
+import com.example.hung.fparking.other.Contact;
+import com.example.hung.fparking.other.TermsAndConditions;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import static com.example.hung.fparking.config.Constants.PICK_CONTACT_REQUEST;
 
@@ -52,12 +61,17 @@ public class HomeActivity extends AppCompatActivity
     ImageView imageViewFParking;
     EditText tbPass;
     Button update;
+    private RecyclerView mRecyclerView;
+    private RecyclerView.Adapter mAdapter;
+    private RecyclerView.LayoutManager mLayoutManager;
+    ImageView backParkingManagement, addParking;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 //        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
-
+        Session.homeActivity = HomeActivity.this;
         //Ánh xạ
         tbPass = findViewById(R.id.tbPassHP);
         tbPass.setFocusable(false);
@@ -65,19 +79,19 @@ public class HomeActivity extends AppCompatActivity
         tbPass.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-          Intent intentChangePass = new Intent(HomeActivity.this,ChangePassword.class);
-          startActivity(intentChangePass);
+                Intent intentChangePass = new Intent(HomeActivity.this, ChangePassword.class);
+                startActivity(intentChangePass);
             }
         });
         //Gọi alertDialog
         update.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
-                        View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                        mBuilder.setView(mView);
-                        final AlertDialog dialog = mBuilder.create();
-                        dialog.show();
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                mBuilder.setView(mView);
+                final AlertDialog dialog = mBuilder.create();
+                dialog.show();
             }
         });
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -93,23 +107,36 @@ public class HomeActivity extends AppCompatActivity
         Session.container = this;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+//        backParkingManagement = findViewById(R.id.imageViewBackParking);
+//        backParkingManagement.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Intent intentBackParkingManagement = new Intent(ParkingManagement.this, HomeActivity.class);
+//                startActivity(intentBackParkingManagement);
+//                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+//            }
+//        });
+        mRecyclerView = (RecyclerView) findViewById(R.id.parking_list_view);
+        mRecyclerView.setHasFixedSize(true);
+        mLayoutManager = new LinearLayoutManager(this);
+        mRecyclerView.setLayoutManager(mLayoutManager);
 //        lv = (ListView) findViewById(R.id.cars_list);
-        if (Session.currentStaff != null) {
-            if (Session.currentParking == null) {
-                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-            } else {
-//                tvSpace = (TextView) findViewById(R.id.tvSpace);
-//                tvAddress = (TextView) findViewById(R.id.tvAddress);
-                setText(tvAddress, Session.currentParking.getAddress());
-                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
-
-            }
-
-            BookingDTO b = new BookingDTO();
-            b.setParkingID(Session.currentStaff.getParking_id());
-            new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
-            new ManagerBookingTask("homeget", b, this);
-        }
+//        if (Session.currentStaff != null) {
+//            if (Session.currentParking == null) {
+//                new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
+//            } else {
+////                tvSpace = (TextView) findViewById(R.id.tvSpace);
+////                tvAddress = (TextView) findViewById(R.id.tvAddress);
+//                setText(tvAddress, Session.currentParking.getAddress());
+//                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+//
+//            }
+//
+//            BookingDTO b = new BookingDTO();
+////            b.setParkingID(Session.currentStaff.getParking_id());
+        new ManagerParkingTask("getbyowner", null, this);
+//            new ManagerBookingTask("homeget", b, this);
+//        }
 
 //        Button btnChangeSpace = (Button) findViewById(R.id.btnChange);
 //        btnChangeSpace.setOnClickListener(new View.OnClickListener() {
@@ -142,6 +169,7 @@ public class HomeActivity extends AppCompatActivity
             }
         });
     }
+
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -169,9 +197,9 @@ public class HomeActivity extends AppCompatActivity
 //
 //            }
         new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-            BookingDTO b = new BookingDTO();
-            b.setParkingID(Session.currentStaff.getParking_id());
-            new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
+        BookingDTO b = new BookingDTO();
+//            b.setParkingID(Session.currentStaff.getParking_id());
+        new GetRateTask(Session.currentParking.getId(), this).execute((Void) null);
         new ManagerBookingTask("homeget", b, this);
 
     }
@@ -243,12 +271,19 @@ public class HomeActivity extends AppCompatActivity
 
         } else if (id == R.id.nav_contact) {
 
-            Intent intent = new Intent(HomeActivity.this, Contact.class);
-            startActivity(intent);
+            Intent intentContact = new Intent(HomeActivity.this, Contact.class);
+            startActivity(intentContact);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else if (id == R.id.nav_view) {
-
+        } else if (id == R.id.nav_members) {
+            Intent intentStaff = new Intent(HomeActivity.this, StaffManagement.class);
+            startActivity(intentStaff);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        } else if (id == R.id.nav_DK) {
+            Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
+            startActivity(intentDK);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -258,54 +293,26 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void onPostExecute(Object o) {
         System.out.println("O = " + o);
+       final ArrayList<ParkingDTO> plist;
         try {
             if (o instanceof List) {
-                List<BookingDTO> lstBooking = (List<BookingDTO>) o;
-                Log.d("HomeActivity_onPost: ", lstBooking.toString());
-//                ListBookingHomeAdapter arrayAdapter = new ListBookingHomeAdapter(HomeActivity.this, lstBooking, this);
-//                lv.setAdapter(arrayAdapter);
-            } else if(o instanceof String) {
-                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
+                plist = (ArrayList<ParkingDTO>) o;
+                mAdapter = new MyRecyclerViewAdapter(plist);
+                mRecyclerView.setAdapter(mAdapter);
+
+                ((MyRecyclerViewAdapter) mAdapter).setOnItemClickListener(new MyRecyclerViewAdapter
+                        .MyClickListener() {
                     @Override
-                    public void onClick(DialogInterface dialog, int choice) {
-                        switch (choice) {
-                            case DialogInterface.BUTTON_POSITIVE:
-//                                BookingDTO b = new BookingDTO();
-//                                b.setParkingID(Session.currentParking.getId());
-//                                b.setStatus(3);
-//                                new ManagerBookingTask("updatebystatus", b, null);
-                                recreate();
-                                break;
-                        }
+                    public void onItemClick(int position, View v) {
+                        Intent intentDetail = new Intent(HomeActivity.this, DetailedParking.class);
+                        intentDetail.putExtra("parkingid", plist.get(position).getId());
+                        startActivity(intentDetail);
+                        finish();
                     }
-                };
+                });
+            } else if (o instanceof String) {
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
-                try {
-                    final DateFormat df = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy");
-                    Date datein = df.parse(Session.bookingTemp.getTimein());
-                    Date dateout = df.parse(Session.bookingTemp.getTimeout());
-
-
-                    long diff = dateout.getTime() - datein.getTime();
-                    double diffInHours = diff / ((double) 1000 * 60 * 60);
-                    NumberFormat formatter = new DecimalFormat("###,###");
-                    NumberFormat formatterHour = new DecimalFormat("0.00");
-                    builder.setMessage("\t\t\t\t\t\t\t\t\t\tHÓA ĐƠN THANH TOÁN \n\n"
-                            + "            Biển số : " + Session.bookingTemp.getLicensePlate() + "\n"
-                            + "            Loại xe : " + Session.bookingTemp.getTypeCar() + "\n"
-                            + " Thời gian vào : " + Session.bookingTemp.getTimein() + "\n"
-                            + "    Thời gian ra : " + Session.bookingTemp.getTimeout() + "\n"
-                            + "             Giá đỗ : " + formatter.format(Session.bookingTemp.getPrice()) + " vnđ\n"
-                            + "   Thời gian đỗ : " + formatterHour.format(diffInHours) + " giờ \n"
-                            + "Số tiền bị phạt : " + formatter.format(Session.bookingTemp.getTotalfine()) + " vnđ\n"
-                            + "          Tổng giá : " + formatter.format(Session.bookingTemp.getAmount()) + " vnđ")
-                            .setPositiveButton("Yes", dialogClickListener).setCancelable(false).show();
-
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-            }else if(o instanceof Boolean) {
+            } else if (o instanceof Boolean) {
 
             }
         } catch (Exception e) {
@@ -314,4 +321,79 @@ public class HomeActivity extends AppCompatActivity
     }
 
 
+}
+
+class MyRecyclerViewAdapter extends RecyclerView
+        .Adapter<MyRecyclerViewAdapter
+        .DataObjectHolder> {
+    private static String LOG_TAG = "MyRecyclerViewAdapter";
+    private ArrayList<ParkingDTO> mDataset;
+    private static MyClickListener myClickListener;
+
+    public static class DataObjectHolder extends RecyclerView.ViewHolder
+            implements View
+            .OnClickListener {
+        TextView label;
+        TextView amount;
+        TextView time;
+
+        public DataObjectHolder(View itemView) {
+            super(itemView);
+//            label = (TextView) itemView.findViewById(R.id.textViewHLicenseplate);
+//            amount = (TextView) itemView.findViewById(R.id.textViewAmount);
+//            time = (TextView) itemView.findViewById(R.id.textViewTime);
+            Log.i(LOG_TAG, "Adding Listener");
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            myClickListener.onItemClick(getAdapterPosition(), v);
+        }
+    }
+
+    public void setOnItemClickListener(MyClickListener myClickListener) {
+        this.myClickListener = myClickListener;
+    }
+
+    public MyRecyclerViewAdapter(ArrayList<ParkingDTO> myDataset) {
+        mDataset = myDataset;
+    }
+
+    @Override
+    public DataObjectHolder onCreateViewHolder(ViewGroup parent,
+                                               int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.activity_detailed_parking, parent, false);
+
+        DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
+        return dataObjectHolder;
+    }
+
+    @Override
+    public void onBindViewHolder(DataObjectHolder holder, int position) {
+//        holder.label.setText(mDataset.get(position).getLicenseplate());
+//        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+//        holder.amount.setText(currencyVN.format(mDataset.get(position).getAmount()).toString());
+//        holder.time.setText(mDataset.get(position).getTimeIn().substring(8));
+    }
+
+    public void addItem(ParkingDTO dataObj, int index) {
+        mDataset.add(index, dataObj);
+        notifyItemInserted(index);
+    }
+
+    public void deleteItem(int index) {
+        mDataset.remove(index);
+        notifyItemRemoved(index);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mDataset.size();
+    }
+
+    public interface MyClickListener {
+        public void onItemClick(int position, View v);
+    }
 }

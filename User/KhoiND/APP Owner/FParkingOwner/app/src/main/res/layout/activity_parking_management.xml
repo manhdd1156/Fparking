@@ -90,7 +90,7 @@
 
 
         <TextView
-            android:id="@+id/textViewNumberCar"
+            android:id="@+id/tvTotalCar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView6"
@@ -101,11 +101,11 @@
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/textViewNumberParking"
+            android:id="@+id/tvTotalParking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView"
-            android:layout_alignStart="@+id/textViewNumberCar"
+            android:layout_alignStart="@+id/tvTotalCar"
             android:text="TextView"
             android:textSize="18sp"
             android:textStyle="bold" />

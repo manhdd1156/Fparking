@@ -1,6 +1,6 @@
 package com.example.hung.fparking.dto;
 
-public class StaffDTO {
+public class OwnerDTO {
     private Long id;
 
     private int parking_id;
@@ -13,7 +13,7 @@ public class StaffDTO {
 
     private String pass;
 
-    public StaffDTO() {
+    public OwnerDTO() {
 
     }
 
@@ -68,7 +68,7 @@ public class StaffDTO {
 
     @Override
     public String toString() {
-        return "StaffDTO{" +
+        return "OwnerDTO{" +
                 "id=" + id +
                 ", parking_id=" + parking_id +
                 ", name='" + name + '\'' +
