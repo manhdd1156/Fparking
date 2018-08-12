@@ -21,17 +21,17 @@
 
             <ImageView
                 android:id="@+id/imageView7"
-                android:layout_width="74dp"
+                android:layout_width="65dp"
                 android:layout_height="match_parent"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentStart="true"
                 android:layout_marginBottom="0dp"
                 android:layout_marginStart="0dp"
-                android:background="@drawable/logo_profile" />
+                android:background="@drawable/logo_profile2" />
 
 
             <TextView
-                android:id="@+id/tvName"
+                android:id="@+id/tvSListName"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/imageView7"
@@ -44,7 +44,7 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/tvPhone"
+                android:id="@+id/tvSListPhone"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
@@ -54,11 +54,12 @@
                 android:text="01647383196" />
 
             <ImageView
-                android:id="@+id/imgCancel"
+                android:id="@+id/imgSListCancel"
                 android:layout_width="41dp"
                 android:layout_height="41dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="12dp"
                 app:srcCompat="@drawable/ic_action_cancel" />
 
         </RelativeLayout>

@@ -19,11 +19,14 @@ import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
+import com.tagroup.fparking.service.TariffService;
+import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Staff;
 import com.tagroup.fparking.service.domain.Tariff;
+import com.tagroup.fparking.service.domain.Vehicle;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {
@@ -31,6 +34,8 @@ public class ParkingServiceImpl implements ParkingService {
 	private ParkingRepository parkingRepository;
 	@Autowired
 	private StaffService staffService;
+	@Autowired
+	private VehicleService vehicleService;
 	@Autowired
 	private RatingRepository ratingRepository;
 	@Autowired
@@ -226,8 +231,9 @@ public class ParkingServiceImpl implements ParkingService {
 	}
 
 	@Override
-	public List<Parking> findSortByLatitudeANDLongitude(String latitude, String longitude) throws Exception {
+	public List<Parking> findSortByLatitudeANDLongitude(String latitude, String longitude,Long vehicleid) throws Exception {
 		// TODO Auto-generated method stub
+		Vehicle v = vehicleService.getById(vehicleid);
 		List<Parking> plist = getAll();
 		Parking ptemp = new Parking();
 		List<Parking> returnList = new ArrayList<Parking>();
@@ -251,11 +257,19 @@ public class ParkingServiceImpl implements ParkingService {
 			if (Math.abs(Double.parseDouble(parking.getLatitude()) - Double.parseDouble(latitude))
 					+ (Math.abs(Double.parseDouble(parking.getLongitude()) - Double.parseDouble(longitude))) < 0.028324
 					&& parking.getStatus() == 1 && parking.getCurrentspace() > 0) {
-				returnList.add(parking);
+				List<Tariff> tlist = tariffRepository.findAll();
+				for (Tariff tariff : tlist) {
+					if(tariff.getParking().getId()==parking.getId() && tariff.getVehicletype().getId() == v.getVehicletype().getId()) {
+						returnList.add(parking);
+					}
+				}
+				
 			}
 		}
-
+		if(returnList.size()>0) {
 		return returnList;
+		}
+		return null;
 	}
 
 }

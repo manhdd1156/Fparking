@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.hung.fparking">
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.example.hung.fparkingowner">
 
     <!--
          The ACCESS_COARSE/FINE_LOCATION permissions are not required to use
@@ -47,7 +47,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:label="@string/title_activity_home">
 
         </activity>
-        <activity android:name=".ProfileActivity" />
+        <activity android:name=".profile.ProfileActivity" />
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
@@ -58,21 +58,19 @@ xmlns:tools="http://schemas.android.com/tools"
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".login.SignUp_Fragment">
-
-        </activity>
+        <activity android:name=".login.SignUp_Fragment"></activity>
+        <activity android:name=".login.ForgotPasswordOtp_Fragment"></activity>
         <activity
-            android:name=".ChangePassword"
+            android:name=".profile.ChangePassword"
             android:noHistory="true" />
-        <activity android:name=".AlertDialog" />
+        <activity android:name=".dialog.AlertDialog" />
         <activity android:name=".other.Contact" />
-        <activity android:name=".Login" />
-        <activity android:name=".ParkingManagement" />
         <activity android:name=".StaffManagement" />
         <activity android:name=".DetailedParking" />
+        <activity android:name=".DetailStaffActivity" />
         <activity android:name=".other.TermsAndConditions" />
         <activity android:name=".other.Guide" />
-        <activity android:name=".DialogAddParking"></activity>
+        <activity android:name=".dialog.DialogAddParking" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
@@ -88,6 +86,7 @@ xmlns:tools="http://schemas.android.com/tools"
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
+        <activity android:name=".dialog.DialogAddStaff"></activity>
     </application>
 
 </manifest>

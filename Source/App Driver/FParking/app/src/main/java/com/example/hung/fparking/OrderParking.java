@@ -116,6 +116,18 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         mPreferences = getSharedPreferences("driver", 0);
         mPreferencesEditor = mPreferences.edit();
 
+        // check data
+        int status = mPreferences.getInt("status", 5);
+        if (status == 2) {
+            Intent intentCheckoutFlagment = new Intent(OrderParking.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+            finish();
+        } else if (status == 3) {
+            Intent intentCheckoutFlagment = new Intent(OrderParking.this, CheckOut.class);
+            startActivity(intentCheckoutFlagment);
+            finish();
+        }
+
         // ánh xạ
         textViewAddress = findViewById(R.id.textViewAddress);
         textViewEmptySpace = findViewById(R.id.textViewEmptySpace);
@@ -140,7 +152,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         builder = new AlertDialog.Builder(OrderParking.this);
 
         // set text cho button theo data
-        int status = mPreferences.getInt("status", 8);
         if (status == 1) {
             buttonDat_Cho.setText("CHỈ ĐƯỜNG");
         }
@@ -233,7 +244,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 Pattern p = Pattern.compile(Constants.regBs);
                 Matcher m = p.matcher(editTextLS1.getText().toString());
                 if (!m.find() || editTextLS2.getText().toString().length() < 4) {
-                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.list_car_layout),
+                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.fragmentOrder),
                             "Biển số xe không hợp lệ!");
                 } else {
                     VehicleDTO addnewcar = new VehicleDTO();
@@ -322,6 +333,10 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                                                 counttime();
                                             }
                                         });
+                                    } else {
+                                        // thông báo không tìm thấy bãi xe nào
+                                        textViewAlert.setText("Không còn bãi xe nào gần bạn");
+                                        notiDialog.show();
                                     }
                                 }
                                 break;
@@ -451,7 +466,9 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     }
                 });
             } else {
-// thông báo không tìm thấy bãi xe nào
+                // thông báo không tìm thấy bãi xe nào
+                textViewAlert.setText("Không còn bãi xe nào gần bạn");
+                notiDialog.show();
             }
         }
     }
@@ -480,7 +497,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         spinKitView.setIndeterminateDrawable(drawable);
     }
 
-    private void setAlertDialog(){
+    private void setAlertDialog() {
         //dialog thông báo
         AlertDialog.Builder mNotiBuilder = new AlertDialog.Builder(OrderParking.this);
         View mNotiView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
@@ -507,12 +524,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     protected void onRestart() {
         super.onRestart();
         startActivity(getIntent());
-        finish();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
         finish();
     }
 

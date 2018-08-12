@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ProfileActivity">
+    tools:context=".profile.ProfileActivity">
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -76,7 +76,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbName"
+            android:id="@+id/tbNameProfileOwner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
@@ -84,17 +84,16 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:hint="Nguyễn Văn Hưng"
             android:inputType="textPersonName"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbName"
+            android:layout_below="@+id/tbNameProfileOwner"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -103,13 +102,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbName"
+            android:layout_below="@+id/tbNameProfileOwner"
             android:layout_marginTop="10dp"
             android:text="Số điện thoại"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPhone"
+            android:id="@+id/tbPhoneSProfileOwner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
@@ -117,17 +116,16 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:hint="01647383196"
             android:inputType="phone"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbPhone"
+            android:layout_below="@+id/tbPhoneSProfileOwner"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -136,13 +134,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPhone"
+            android:layout_below="@+id/tbPhoneSProfileOwner"
             android:layout_marginTop="10dp"
             android:text="Địa chỉ"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbAddress"
+            android:id="@+id/tbAddressProfileOwner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView5"
@@ -150,27 +148,26 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:hint="sdsdsdsdsdsdsdsds"
             android:inputType="textPostalAddress"
             android:padding="10dp"
             android:singleLine="true"
-            android:textColor="@color/black"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbAddress"
+            android:layout_below="@+id/tbAddressProfileOwner"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
         <Button
-            android:id="@+id/btnUpdate"
+            android:id="@+id/btnUpdateProfileOwner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/button_selector2"
+            android:background="@drawable/button_selector3"
             android:text="CẬP NHẬT"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
@@ -190,55 +187,33 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbAddress"
+            android:layout_below="@+id/tbAddressProfileOwner"
             android:layout_marginTop="10dp"
             android:text="Mật khẩu:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPassHP"
+            android:id="@+id/tbPassProfileOwner"
             android:layout_width="361dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tbName"
             android:layout_below="@+id/textView10"
+            android:layout_centerHorizontal="true"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
-            android:text="01647383196"
-            android:textColor="@color/black"
+            android:text="fsfasfasfasffas"
+            android:textColor="#000000"
             android:textSize="16sp" />
 
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPassHP"
+            android:layout_below="@+id/tbPassProfileOwner"
             android:background="@color/white_greyish" />
-
-        <TextView
-            android:id="@+id/lbMoney"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPassHP"
-            android:layout_marginTop="15dp"
-            android:text="Tài khoản:"
-            android:textSize="18sp"
-            android:textStyle="italic" />
-
-        <TextView
-            android:id="@+id/tvTotalMoneyOwner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView2"
-            android:layout_below="@+id/tbPassHP"
-            android:layout_marginTop="15dp"
-            android:text="TextView"
-            android:textSize="18sp"
-            android:textStyle="bold|italic" />
 
 
     </RelativeLayout>

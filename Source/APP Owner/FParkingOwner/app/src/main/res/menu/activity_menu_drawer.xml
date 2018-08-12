@@ -2,14 +2,11 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     tools:showIn="navigation_view">
+
     <item
-        android:id="@+id/nav_parking"
+        android:id="@+id/nav_members"
         android:icon="@drawable/ic_menu_history"
-        android:title="Quản lý bãi xe" />
-        <item
-            android:id="@+id/nav_members"
-            android:icon="@drawable/ic_menu_history"
-            android:title="Quản lý nhân viên" />
+        android:title="Quản lý nhân viên" />
 
     <item
         android:id="@+id/nav_contact"
@@ -23,8 +20,6 @@
         android:id="@+id/nav_guide"
         android:icon="@drawable/ic_menu_guide"
         android:title="Hướng dẫn sử dụng" />
-
-
 
 
 </menu>

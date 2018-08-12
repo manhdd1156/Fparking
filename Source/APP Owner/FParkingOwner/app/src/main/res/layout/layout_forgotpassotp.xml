@@ -32,11 +32,17 @@
         android:orientation="vertical"
         android:padding="20dp">
 
+        <View
+            android:layout_width="fill_parent"
+            android:layout_height="1px"
+            android:layout_marginTop="20dp"
+            android:background="@color/white_greyish" />
+
         <EditText
             android:id="@+id/password"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="20dp"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
@@ -46,11 +52,6 @@
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="16sp" />
-
-        <View
-            android:layout_width="fill_parent"
-            android:layout_height="1px"
-            android:background="@color/white_greyish" />
 
         <EditText
             android:id="@+id/confirmPassword"
@@ -86,6 +87,15 @@
             android:textColor="#FFFFFF"
             android:textSize="17sp"
             android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/editTextTemp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:inputType="textPersonName"
+            android:text="Name"
+            android:visibility="invisible" />
 
     </LinearLayout>
 </RelativeLayout>
