@@ -78,6 +78,7 @@ public class LoginServiceImpl implements LoginService {
 
 	private Staff loginByStaff(String phone, String password) throws Exception {
 		try {
+			System.out.println("phone = " + phone + ",pass =  " + password);
 			return staffService.findByPhoneAndPassword(phone, password);
 		} catch (Exception e) {
 			System.out.println(e);

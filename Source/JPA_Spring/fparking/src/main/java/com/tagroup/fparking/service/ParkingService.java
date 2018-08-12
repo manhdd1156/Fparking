@@ -2,6 +2,7 @@ package com.tagroup.fparking.service;
 
 import java.util.List;
 
+import com.tagroup.fparking.dto.ParkingDTO;
 import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.service.domain.Parking;
 
@@ -10,7 +11,7 @@ public interface ParkingService {
 	public List<Parking> getAll();
 	public Parking getById(Long id)throws Exception;
 	public List<Parking> getByOId()throws Exception;
-	public Parking create(Parking parking)throws Exception;
+	public Parking create(ParkingDTO parkingDTO)throws Exception;
 	public Parking update(Parking parking)throws Exception;
 	public void delete(Long id)throws Exception;
 	public List<Parking> findByLatitudeANDLongitude(String latitude, String longitude)throws Exception;

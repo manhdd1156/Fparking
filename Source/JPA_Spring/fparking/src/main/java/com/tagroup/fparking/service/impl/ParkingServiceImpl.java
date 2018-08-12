@@ -10,8 +10,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
+import com.tagroup.fparking.dto.ParkingDTO;
 import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.dto.TariffSingle;
+import com.tagroup.fparking.repository.CityRepository;
 import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.RatingRepository;
@@ -21,12 +23,14 @@ import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.domain.City;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Staff;
 import com.tagroup.fparking.service.domain.Tariff;
 import com.tagroup.fparking.service.domain.Vehicle;
+import com.tagroup.fparking.service.domain.Vehicletype;
 
 @Service
 public class ParkingServiceImpl implements ParkingService {
@@ -42,7 +46,8 @@ public class ParkingServiceImpl implements ParkingService {
 	private OwnerRepository ownerRepository;
 	@Autowired
 	private TariffRepository tariffRepository;
-
+	@Autowired
+	private CityRepository cityRepository;
 	@Override
 	public List<Parking> getAll() {
 		// TODO Auto-generated method stub
@@ -74,11 +79,52 @@ public class ParkingServiceImpl implements ParkingService {
 		}
 		return returnList;
 	}
-
 	@Override
-	public Parking create(Parking parking) {
+	public Parking create(ParkingDTO parkingDTO) {
 		// TODO Auto-generated method stub
-		return parkingRepository.save(parking);
+		Token token = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Parking p = new Parking();
+		try {
+			
+		p.setAddress(parkingDTO.getAddress());
+		p.setLongitude(parkingDTO.getLongitude());
+		p.setLatitude(parkingDTO.getLatitude());
+		p.setTimeoc(parkingDTO.getTimeoc());
+		p.setTotalspace(parkingDTO.getTotalspace());
+		p.setStatus(3);
+		p.setCurrentspace(0);
+		City c = cityRepository.getOne(parkingDTO.getCity_id());
+		p.setCity(c);
+		Owner o = ownerRepository.getOne(token.getId());
+		p.setOwner(o);
+		
+		Tariff t = new Tariff();
+		System.out.println("parking : " + p);
+		p = parkingRepository.save(p);
+		System.out.println("parking = : " + p);
+		Vehicletype vt = new Vehicletype();
+		if(!parkingDTO.getSpace1().equals("")) {
+			t.setPrice(Double.parseDouble(parkingDTO.getSpace1()));
+			vt.setId((long)1);
+			t.setVehicletype(vt);
+		}else if(!parkingDTO.getSpace2().equals("")) {
+			t.setPrice(Double.parseDouble(parkingDTO.getSpace2()));
+			vt.setId((long)2);
+			t.setVehicletype(vt);
+		}else if(!parkingDTO.getSpace3().equals("")) {
+			t.setPrice(Double.parseDouble(parkingDTO.getSpace3()));
+			vt.setId((long)3);
+			t.setVehicletype(vt);
+		}
+		t.setParking(p);
+		System.out.println("tariff  = : " + t);
+		tariffRepository.save(t);
+		System.out.println("parking = : " + p);
+		}catch(Exception e) {
+			System.out.println(e);
+			throw new APIException(HttpStatus.BAD_REQUEST, "Error");
+		}
+		return p;
 
 	}
 

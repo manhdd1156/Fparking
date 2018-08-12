@@ -45,6 +45,9 @@
             android:name=".HomeActivity"
             android:label="@string/title_activity_home" />
         <activity android:name=".ProfileActivity" />
+        <activity android:name=".other.Contact" />
+        <activity android:name=".other.Guide" />
+        <activity android:name=".other.TermsAndConditions" />
         <activity android:name=".StatisticalActivity" />
         <activity
             android:name=".change_space.NumberPickerActivity"
@@ -63,7 +66,6 @@
             android:name=".ChangePassword"
             android:noHistory="true" />
         <activity android:name=".AlertDialog" />
-        <activity android:name=".Contact" />
         <activity android:name=".Login"></activity>
     </application>
 

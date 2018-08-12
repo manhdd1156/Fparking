@@ -120,11 +120,13 @@ public class StaffServiceImpl implements StaffService {
 	public Staff findByPhoneAndPassword(String phone, String password) throws Exception {
 		// TODO Auto-generated method stub
 		try {
+			System.out.println(staffRepository.findByPhoneAndPassword(phone, password));
 			if (staffRepository.findByPhoneAndPassword(phone, password) != null)
 				return staffRepository.findByPhoneAndPassword(phone, password);
 			else
 				throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		} catch (Exception e) {
+			System.out.println(e);
 			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		}
 	}
