@@ -3,12 +3,11 @@ package com.example.hung.fparking.model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 
-import com.example.hung.fparking.IntroApplication;
+import com.example.hung.fparking.asynctask.ManagerNotiTask;
 
 public class CheckNetwork {
 
@@ -41,6 +40,7 @@ public class CheckNetwork {
                             createDialog();
                         } else {
                             mActivity.recreate();
+                            new ManagerNotiTask("get");
 //                            Intent intent = new Intent(mContext, IntroApplication.class);
 //                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                            mContext.startActivity(intent);

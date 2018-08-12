@@ -31,9 +31,10 @@ import java.util.regex.Pattern;
 
 public class Login_Fragment extends Fragment implements OnClickListener, IAsyncTaskHandler {
     private static View view;
+    private static Button loginButton,btnOK;
+    private static TextView error;
 
     private static EditText phoneNumber, password;
-    private static Button loginButton;
     private static TextView forgotPassword, signUp;
     //    private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;
@@ -53,7 +54,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        view = inflater.inflate(R.layout.layout_login, container, false);
+        view = inflater.inflate(R.layout.activity_login, container, false);
 
         initViews();
         setListeners();

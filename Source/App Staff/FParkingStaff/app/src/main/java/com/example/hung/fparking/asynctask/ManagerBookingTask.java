@@ -211,11 +211,6 @@ class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
             JSONObject formData = new JSONObject();
             formData.put("id", b.getBookingID());
             formData.put("status", b.getStatus());
-            if (b.getStatus() == 2) {
-                formData.put("timein", b.getTimein());
-            } else if (b.getStatus() == 3) {
-                formData.put("timeout", b.getTimeout());
-            }
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/update/", formData.toString(), "PUT");
 
             JSONObject jsonObj = new JSONObject(json);
@@ -292,13 +287,6 @@ class UpdateBookingByStatus extends AsyncTask<Void, Void, String> {
     protected void onPostExecute(String json) {
         super.onPostExecute(json);
 
-//        Intent intent = new Intent();
-//        if(success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
     }
 
 }

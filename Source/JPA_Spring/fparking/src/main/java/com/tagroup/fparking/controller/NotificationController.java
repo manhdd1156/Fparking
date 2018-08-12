@@ -22,7 +22,7 @@ public class NotificationController {
 	private NotificationService notificationService;
 
 	// delete notification by DriverVehicle
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
 	@RequestMapping(path = "/delete", method = RequestMethod.POST)
 	public ResponseEntity<?> deleteNotification(@RequestBody Notification notification) throws Exception {
 
@@ -30,18 +30,18 @@ public class NotificationController {
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 
 	}
-	// get noti when Internet connected        5:48 - 8/11/2018
-		@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
-		@RequestMapping(path = "/check", method = RequestMethod.GET)
-		public ResponseEntity<?> getNoti() throws Exception {
-			System.out.println("NotificationController/check");
-			List<Notification> respone = notificationService.check();
 
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+	// get noti when Internet connected 5:48 - 8/11/2018
+	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+	@RequestMapping(path = "/check", method = RequestMethod.GET)
+	public ResponseEntity<?> getNoti() throws Exception {
+		System.out.println("NotificationController/check");
+		List<Notification> respone = notificationService.check();
 
-		}
-	
-	
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// create new noti
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/create", method = RequestMethod.POST)

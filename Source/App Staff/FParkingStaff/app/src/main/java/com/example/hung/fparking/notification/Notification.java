@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.hung.fparking.asynctask.ManagerNotiTask;
 import com.example.hung.fparking.dialog.DialogActivity;
 import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
@@ -35,7 +36,7 @@ public class Notification extends Service implements SubscriptionEventListener {
         options.setCluster("ap1");
         if(Session.currentParking!=null) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
-            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "channel");
+            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "schannel");
         }
         System.out.println("class Notification");
         Session.channel.bind(Constants.PUSHER_ORDER_FROM_DRIVER, this);
@@ -77,10 +78,11 @@ public class Notification extends Service implements SubscriptionEventListener {
 
                         @Override
                         public void run() {
-                            Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
-                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Session.homeActivity.finish();
-                        startActivity(myIntent);
+            new ManagerNotiTask("delete");
+//                            Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
+//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+//                            Session.homeActivity.finish();
+//                        startActivity(myIntent);
                         Session.homeActivity.recreate();
 //                        finish();
 
@@ -101,7 +103,9 @@ public class Notification extends Service implements SubscriptionEventListener {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this.getApplicationContext(), "notify_001");
             Intent ii = new Intent(this.getApplicationContext(), HomeActivity.class);
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
+            ii.putExtra("touchNoti","true");
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,ii, 0);
 
             NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
             bigText.bigText("Nhấn vào để xem chi tiết");

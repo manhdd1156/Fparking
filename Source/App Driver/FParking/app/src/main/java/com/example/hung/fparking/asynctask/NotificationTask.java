@@ -22,6 +22,8 @@ public class NotificationTask {
             new DeleteNotification(data1, data2, action, container, "checkin").execute((Void) null);
         } else if (type.equals("cancelcheckout")) {
             new DeleteNotification(data1, data2, action, container, "checkout").execute((Void) null);
+        } else if (type.equals("after")) {
+            new DeleteNotification(data1, data2, action, container, "cancel").execute((Void) null);
         }
     }
 }
@@ -105,11 +107,7 @@ class DeleteNotification extends AsyncTask<Void, Void, Boolean> {
             formData.put("event", event);
 
             String json = httpHandler.requestMethod(Constants.API_URL + "notifications/delete ", formData.toString(), "POST");
-            System.out.print(json);
-            JSONObject jsonObj = new JSONObject(json);
-            if (jsonObj != null) {
-                success = true;
-            }
+            Log.e("Xóa Noti: ", json);
         } catch (Exception ex) {
             Log.e("Error Delete Noti:", "");
             ex.printStackTrace();
