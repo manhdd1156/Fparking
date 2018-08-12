@@ -62,13 +62,13 @@ public class OwnerServiceImpl implements OwnerService {
 						return ownerRepository.save(owner);
 					}
 					else
-						throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+						throw new APIException(HttpStatus.CONFLICT, "Phone exist");
 
 				}
 			}
 			
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+			throw new APIException(HttpStatus.BAD_REQUEST, "Error");
 		}
 		return null;
 

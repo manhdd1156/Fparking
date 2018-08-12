@@ -44,7 +44,21 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public Staff create(Staff staff) {
 		// TODO Auto-generated method stub
-		return staffRepository.save(staff);
+		System.out.println("staffServiceImpl/create/ staff = " + staff);
+		try {
+			List<Staff> slist = getAll();
+			for (Staff s : slist) {
+				if (s.getPhone().equals(staff.getPhone())) {
+					throw new APIException(HttpStatus.CONFLICT, "phone of Staff is Exist");
+				} else {
+					System.out.println("=======");
+					return staffRepository.save(staff);
+				}
+			}
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.BAD_REQUEST, "Error");
+		}
+		return null;
 
 	}
 
@@ -74,7 +88,7 @@ public class StaffServiceImpl implements StaffService {
 
 					}
 				}
-			}else if(t.getType().equals("OWNER")) {
+			} else if (t.getType().equals("OWNER")) {
 				return staffRepository.save(staff);
 			}
 		} catch (Exception e) {

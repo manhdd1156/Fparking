@@ -69,9 +69,9 @@ public class ParkingController {
 	@RequestMapping(value = "/sort", params = { "latitude", "longitude" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getBySortLocation(@RequestParam("latitude") String latitude,
-			@RequestParam("longitude") String longitude) throws Exception {
+			@RequestParam("longitude") String longitude,@RequestParam("vehicleid") Long vehicleid) throws Exception {
 
-		List<Parking> respone = parkingService.findSortByLatitudeANDLongitude(latitude, longitude);
+		List<Parking> respone = parkingService.findSortByLatitudeANDLongitude(latitude, longitude,vehicleid);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
@@ -86,7 +86,7 @@ public class ParkingController {
 
 	}
 
-	// get parking by parking id = ?
+	// get parking by owner id = ?
 	@PreAuthorize("hasAnyAuthority('STAFF','ADMIN')")
 	@RequestMapping(path = "/owner/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getByOwnerId(@PathVariable Long id) throws Exception {
