@@ -46,7 +46,7 @@
 										</div>
 										<div class="form-group">
 											<label>Mật khẩu cũ:</label> 
-											<input type="password" class="form-control" name="oldPassword" maxlength="24" minlength="6" required>
+											<input type="password" class="form-control" name="oldPassword"  maxlength="24" minlength="6" required>
 										</div>
 										<div class="form-group">
 											<label>Mật khẩu mới:</label> 
