@@ -230,9 +230,14 @@ public class HomeActivity extends AppCompatActivity
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else if (id == R.id.nav_view) {
 
-        }
+        } else if (id == R.id.nav_DK) {
+        Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
+        startActivity(intentDK);
+        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+    }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+
+    DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }

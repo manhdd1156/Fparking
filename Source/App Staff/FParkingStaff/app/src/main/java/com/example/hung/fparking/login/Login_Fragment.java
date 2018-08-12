@@ -31,9 +31,10 @@ import java.util.regex.Pattern;
 
 public class Login_Fragment extends Fragment implements OnClickListener, IAsyncTaskHandler {
     private static View view;
+    private static Button loginButton,btnOK;
+    private static TextView error;
 
     private static EditText phoneNumber, password;
-    private static Button loginButton;
     private static TextView forgotPassword, signUp;
     //    private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;

@@ -33,7 +33,7 @@ public class DriverServiceImpl implements DriverService {
 		try {
 			return driverRepository.getOne(id);
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The driver was not found");
 		}
 
 	}
@@ -94,7 +94,23 @@ public class DriverServiceImpl implements DriverService {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			if (t.getType().equals("ADMIN")) {
-				return driverRepository.save(driver);
+				List<Driver> dlist = getAll();
+				for (Driver d : dlist) {
+					if (d.getId() == driver.getId()) {
+						boolean flag = false;
+						for (Driver driver2 : dlist) {
+							if (driver2.getPhone().equals(driver.getPhone()) && driver2.getId() != driver.getId()) {
+								flag = true;
+							}
+						}
+						if (!flag) {
+							return driverRepository.save(driver);
+						}else {
+							throw new APIException(HttpStatus.NOT_FOUND, "Phone is exist");
+						}
+
+					}
+				}
 			} else {
 				List<Driver> dlist = getAll();
 				for (Driver d : dlist) {
@@ -115,6 +131,7 @@ public class DriverServiceImpl implements DriverService {
 			}
 		} catch (Exception e) {
 			System.out.println(e);
+			throw new APIException(HttpStatus.NOT_FOUND, "Cannot update driver");
 		}
 
 		return null;

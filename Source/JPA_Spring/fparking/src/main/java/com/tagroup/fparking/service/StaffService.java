@@ -17,6 +17,8 @@ public interface StaffService {
 	public void delete(Long id) throws Exception;
 
 	public List<Staff> findByParking(Parking parking) throws Exception;
+	
+	public List<Staff> findByOwner() throws Exception;
 
 	public Staff findByPhoneAndPassword(String phone, String password) throws Exception;
 
