@@ -76,7 +76,7 @@
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbName"
+            android:id="@+id/tbNameSD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView3"
@@ -94,7 +94,7 @@
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbName"
+            android:layout_below="@+id/tbNameSD"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -103,13 +103,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbName"
+            android:layout_below="@+id/tbNameSD"
             android:layout_marginTop="10dp"
             android:text="Số điện thoại"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPhone"
+            android:id="@+id/tbPhoneSD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView4"
@@ -127,7 +127,7 @@
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbPhone"
+            android:layout_below="@+id/tbPhoneSD"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -136,13 +136,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPhone"
+            android:layout_below="@+id/tbPhoneSD"
             android:layout_marginTop="10dp"
             android:text="Địa chỉ"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbAddress"
+            android:id="@+id/tbAddressSD"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/textView5"
@@ -160,7 +160,7 @@
         <View
             android:layout_width="319dp"
             android:layout_height="1px"
-            android:layout_below="@+id/tbAddress"
+            android:layout_below="@+id/tbAddressSD"
             android:layout_marginLeft="33dp"
             android:background="@color/white_greyish" />
 
@@ -170,7 +170,7 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:background="@drawable/button_selector2"
+            android:background="@drawable/button_selector3"
             android:text="CẬP NHẬT"
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
@@ -182,6 +182,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginBottom="64dp"
             android:layout_toEndOf="@+id/imageViewBackHistory"
+            android:paddingLeft="20dp"
             android:text="Cập nhật thông tin thành công"
             android:textColor="@android:color/holo_green_dark"
             android:visibility="invisible" />
@@ -190,21 +191,21 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbAddress"
+            android:layout_below="@+id/tbAddressSD"
             android:layout_marginTop="10dp"
             android:text="Mật khẩu:"
             android:textSize="18sp" />
 
         <EditText
-            android:id="@+id/tbPassHP"
+            android:id="@+id/tbPassSD"
             android:layout_width="361dp"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tbName"
+            android:layout_alignStart="@+id/tbNameSD"
             android:layout_below="@+id/textView10"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:inputType="numberPassword"
+            android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
             android:text="01647383196"
@@ -215,8 +216,16 @@
             android:layout_width="319dp"
             android:layout_height="1px"
             android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/tbPassHP"
+            android:layout_below="@+id/tbPassSD"
             android:background="@color/white_greyish" />
+
+        <Spinner
+            android:id="@+id/spinner2"
+            android:layout_width="364dp"
+            android:layout_height="34dp"
+            android:layout_alignParentBottom="true"
+            android:layout_alignStart="@+id/tbNameSD"
+            android:layout_marginBottom="146dp" />
 
 
     </RelativeLayout>

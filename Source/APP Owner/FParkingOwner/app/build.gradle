@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.hung.fparking"
+        applicationId "com.example.hung.fparkingowner"
         minSdkVersion 19
         targetSdkVersion 27
         versionCode 1
@@ -41,4 +41,5 @@ dependencies {
     //          Facebook AccountKit
     //#####################################################################
     implementation 'com.facebook.android:account-kit-sdk:4.29.0'
+    implementation 'com.weiwangcn.betterspinner:library-material:1.1.0'
 }
