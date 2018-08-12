@@ -243,44 +243,27 @@ public class AccountController {
 	@RequestMapping(path = "/driver/editaccount/{id}", method = RequestMethod.POST)
 	public String saveAccountDriver(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("name") String name, @RequestParam("phone") String phone) throws Exception {
-		Driver driver;
-		List<Driver> listDriver;
+		Driver driver = new Driver();
+		model.put("id", id);
 		try {
-			driver = driverService.getById(id);
-			listDriver = driverService.getAll();
+			Driver driverOld = driverService.getById(id);
+			driver.setId(id);
+			driver.setPassword(driverOld.getPassword());
+			driver.setStatus(driverOld.getStatus());
+			driver.setName(name);
+			driver.setPhone(phone);
+			if (driverService.validateDriver(driver)) {
+				driver = driverService.update(driver);
+				model.put("messSuss", "Sửa thành công!");
+			} else {
+				model.put("messError", "Số điện thoại đã tồn tại!");
+			}
 		} catch (Exception e) {
 			return "404";
 		}
 
-		for (Driver driverCheck : listDriver) {
-			if (driverCheck.getPhone().equals(phone)) {
-				System.out.println(driverCheck.getPhone());
-				model.put("id", id);
-				model.put("name", name);
-				model.put("phonenumber", phone);
-				model.put("messError", "Số điện thoại đã tồn tại!");
-				return "editdriver";
-			}
-		}
-		driver.setName(name);
-		driver.setPhone(phone);
-		System.out.println("Test update driver:" + name + "------" + phone);
-		try {
-			driverService.update(driver);
-		} catch (Exception e) {
-			model.put("messError", "Sửa không thành công!");
-			return "editdriver";
-		}
-		model.put("messSuss", "Sửa thành công!");
-		Driver driver2;
-		try {
-			driver2 = driverService.getById(id);
-		} catch (Exception e) {
-			return "404";
-		}
-		model.put("id", id);
-		model.put("name", driver2.getName());
-		model.put("phonenumber", driver2.getPhone());
+		model.put("name", driver.getName());
+		model.put("phonenumber", driver.getPhone());
 
 		return "editdriver";
 	}
