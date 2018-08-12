@@ -421,7 +421,7 @@ public class AccountController {
 			case 1:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getParking().getId() == id && fine.getType() == 1
+					if (fine.getParking().getId() == id && fine.getType() == 1 && fine.getDate() != null
 							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
 						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
@@ -436,7 +436,7 @@ public class AccountController {
 			case 2:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getParking().getId() == id && fine.getType() == 1
+					if (fine.getParking().getId() == id && fine.getType() == 1 && fine.getDate() != null
 							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
 						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
@@ -451,7 +451,7 @@ public class AccountController {
 			case 3:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getParking().getId() == id && fine.getType() == 1
+					if (fine.getParking().getId() == id && fine.getType() == 1 && fine.getDate() != null
 							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
@@ -468,7 +468,7 @@ public class AccountController {
 			default:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getParking().getId() == id && fine.getType() == 1) {
+					if (fine.getParking().getId() == id && fine.getType() == 1 && fine.getDate() != null) {
 						m.put("dateFine", sdf.format(fine.getDate()));
 						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
 						m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
@@ -482,7 +482,7 @@ public class AccountController {
 		} else {
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getParking().getId() == id && fine.getType() == 1) {
+				if (fine.getParking().getId() == id && fine.getType() == 1 && fine.getDate() != null) {
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
 					m.put("typeCar", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
@@ -501,7 +501,6 @@ public class AccountController {
 				for (Booking booking : listBooking) {
 					HashMap<String, Object> m = new HashMap<>();
 					if (booking.getParking().getId() == id && booking.getTimeout() != null
-							&& booking.getTimeout() != null
 							&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
 						m.put("timein", sdf.format(booking.getTimein()));
 						m.put("timeout", sdf.format(booking.getTimeout()));
@@ -924,9 +923,12 @@ public class AccountController {
 			Token token = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Long id = token.getId();
 			Admin admin = adminService.getById(id);
-			System.out.println("lỗi save edit---" + id);
 			if (admin.getPassword().equals(oldpass)) {
-				if (newpass.equals(repass)) {
+				if (oldpass.equals(newpass)) {
+					model.put("username", admin.getUsername());
+					model.put("messError", "Mật khẩu cũ và mật khẩu mới không được trùng nhau!");
+					return "changepass";
+				} else if (newpass.equals(repass)) {
 					admin.setPassword(newpass);
 					adminService.update(admin);
 				} else {

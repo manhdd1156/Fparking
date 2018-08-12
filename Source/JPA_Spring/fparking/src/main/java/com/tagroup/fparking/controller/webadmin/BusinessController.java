@@ -300,7 +300,7 @@ public class BusinessController {
 			// get booking
 			for (Booking booking : listBooking) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (booking.getStatus() == 3
+				if (booking.getStatus() == 3 && booking.getTimeout() != null
 						&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
 					m.put("id", booking.getId());
 					String strDate = sdf.format(booking.getTimeout());
@@ -322,7 +322,7 @@ public class BusinessController {
 			// get booking
 			for (Booking booking : listBooking) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (booking.getStatus() == 3
+				if (booking.getStatus() == 3 && booking.getTimeout() != null
 						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", booking.getId());
 					String strDate = sdf.format(booking.getTimeout());
@@ -345,7 +345,7 @@ public class BusinessController {
 			// get booking
 			for (Booking booking : listBooking) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (booking.getStatus() == 3
+				if (booking.getStatus() == 3 && booking.getTimeout() != null
 						&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 						&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", booking.getId());
@@ -369,7 +369,7 @@ public class BusinessController {
 			// get booking
 			for (Booking booking : listBooking) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (booking.getStatus() == 3) {
+				if (booking.getStatus() == 3 && booking.getTimeout() != null) {
 					m.put("id", booking.getId());
 					m.put("timeout", sdf.format(booking.getTimeout()));
 					m.put("address", booking.getParking().getAddress());
@@ -422,7 +422,8 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+				if (fine.getStatus() == 1 && fine.getDate() != null
+						&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
 					m.put("id", fine.getId());
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("address", fine.getParking().getAddress());
@@ -447,7 +448,8 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+				if (fine.getStatus() == 1 && fine.getDate() != null
+						&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", fine.getId());
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("address", fine.getParking().getAddress());
@@ -473,7 +475,8 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+				if (fine.getStatus() == 1 && fine.getDate() != null
+						&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 						&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
 					m.put("id", fine.getId());
 					m.put("dateFine", sdf.format(fine.getDate()));
@@ -499,7 +502,7 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1) {
+				if (fine.getStatus() == 1 && fine.getDate() != null) {
 					m.put("id", fine.getId());
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("address", fine.getParking().getAddress());
