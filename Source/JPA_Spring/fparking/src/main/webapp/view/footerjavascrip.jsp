@@ -25,9 +25,7 @@
 	src="assets/vendor/datatables-responsive/dataTables.responsive.js"></script>
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
-<script
-	src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/3.1.2/rollups/md5.js" ></script>
-	<!--<script src="assets/dist/js/md5.js"></script>  -->
+<script src="assets/js/md5.js"></script>
 
 <script>
 	$(document).ready(function() {

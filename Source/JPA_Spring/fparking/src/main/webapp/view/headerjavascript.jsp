@@ -6,11 +6,7 @@
     <meta name="author" content="">
 
     <!-- Bootstrap Core CSS -->
-<<<<<<< HEAD
-    <base href="http://localhost:9000/">
-=======
     <base href="http://fparking.net:8080/">
->>>>>>> 9aa5f25c88cc6e27df89e69f112613a1f40a80d7
     
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 

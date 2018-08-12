@@ -63,7 +63,7 @@ public class ParkingServiceImpl implements ParkingService {
 		List<Parking> plist = getAll();
 		List<Parking> returnList = new ArrayList<>();
 		for (Parking parking : plist) {
-			if (parking.getOwner().getId() == t.getId() && parking.getStatus() == 1 || parking.getStatus() == 3) {
+			if (parking.getOwner().getId() == t.getId()) {
 				returnList.add(parking);
 			}
 		}
@@ -82,46 +82,41 @@ public class ParkingServiceImpl implements ParkingService {
 		// TODO Auto-generated method stub
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			Parking p = new Parking();
+			System.out.println("parkingServiceImpl/update : parking = " + parking);
 			if (parking == null) {
 				throw new APIException(HttpStatus.NO_CONTENT, "Parking was not content");
 			}
 			if (t.getType().contains("ADMIN")) {
+				System.out.println("parkingServiceImpl/update ADMIN");
 				return parkingRepository.save(parking);
-			} else {
-				
-				try {
-					System.out.println("parkingServiceImpl/update : parking = " + parking);
+			} else if(t.getType().equals("STAFF")){
+				System.out.println("parkingServiceImpl/update STAFF");
+				Parking temp = parkingRepository.getOne(parking.getId());
+				temp.setCurrentspace(parking.getCurrentspace());
+				parking = temp;
+			}else if(t.getType().equals("OWNER")) {
+				System.out.println("parkingServiceImpl/update OWNER");
+				System.out.println("status = " + parking.getStatus());
+				if (parking.getStatus() == 4) { // status = 4 : chờ phê duyệt update
+					System.out.println("parkingServiceImpl/update : staus  =   4");
 					Parking temp = parkingRepository.getOne(parking.getId());
-					if (parking.getAddress() == null && parking.getCity() == null) { // update space from staff
-
-						temp.setCurrentspace(parking.getCurrentspace());
-
-						parking = temp;
-					} else if (parking.getStatus() == 4) { // status = 4 : chờ phê duyệt update
-
-						temp.setCurrentspace(parking.getCurrentspace());
-						temp.setTotalspace(parking.getTotalspace());
-						temp.setAddress(parking.getAddress());
-						temp.setStatus(3);
-						temp.setTimeoc(parking.getTimeoc());
-						temp.setCity(parking.getCity());
-						parking = temp;
-					} else if (parking.getStatus() == 5 || parking.getStatus() == 6) { // status = 4 : chờ phê duyệt
-																						// block or xóa
-						temp.setStatus(parking.getStatus());
-						parking = temp;
-					}
-					p = parkingRepository.save(parking);
-
-				} catch (Exception e) {
-					System.out.println("lỗi :" + e);
-					// p = parkingRepository.getOne(parking.getId());
-					// p.setCurrentspace(parking.getCurrentspace());
-					// p = parkingRepository.save(p);
+					temp.setCurrentspace(parking.getCurrentspace());
+					temp.setTotalspace(parking.getTotalspace());
+					temp.setAddress(parking.getAddress());
+					temp.setStatus(4);
+					temp.setTimeoc(parking.getTimeoc());
+					temp.setCity(parking.getCity());
+					parking = temp;
+				} else if (parking.getStatus() == 5 || parking.getStatus()==6 ||// status = 5-6 : chờ phê duyệt đóng hoặc xóa
+						parking.getStatus()== 1) {    // status = 1 : Hủy đóng hoặc hủy xóa
+					System.out.println("parkingServiceImpl/update : staus  =  1 5 6 7 8");
+					Parking temp = parkingRepository.getOne(parking.getId());															
+					temp.setStatus(parking.getStatus());
+					parking = temp;
 				}
 			}
-			return p;
+				
+			return parkingRepository.save(parking);
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}

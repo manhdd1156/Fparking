@@ -19,4 +19,5 @@ public interface DriverService {
 	public List<Driver> getByStatus(int status)throws Exception;
 	public Driver findByPhoneAndPassword(String phone, String password)throws Exception;
 	public Driver getProfile() throws Exception;
+	public Boolean validateDriver(Driver driver);
 }

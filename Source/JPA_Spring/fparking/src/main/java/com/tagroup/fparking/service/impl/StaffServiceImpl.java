@@ -1,5 +1,6 @@
 package com.tagroup.fparking.service.impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.repository.StaffRepository;
 import com.tagroup.fparking.security.Token;
+import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Staff;
@@ -18,6 +20,8 @@ import com.tagroup.fparking.service.domain.Staff;
 public class StaffServiceImpl implements StaffService {
 	@Autowired
 	private StaffRepository staffRepository;
+	@Autowired
+	private ParkingService parkingService;
 
 	@Override
 	public List<Staff> getAll() {
@@ -29,7 +33,7 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public Staff getById(Long id) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			return staffRepository.getOne(id);
 		} catch (Exception e) {
@@ -45,34 +49,39 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	@Override
-	public Staff update(Staff staff) throws Exception{
+	public Staff update(Staff staff) throws Exception {
 		// TODO Auto-generated method stub
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			System.out.println("staffServiceimp/update staff = " + staff);
-			List<Staff> slist = getAll();
-			for (Staff s : slist) {
-				if (s.getId() == staff.getId()) {
-					staff.setParking(s.getParking());
-					if(staff.getPassword()==null)
-					staff.setPassword(s.getPassword());
-					boolean flag = false;
-					for (Staff staff2 : slist) {
-						if (staff2.getPhone().equals(staff.getPhone()) && staff2.getId()!=staff.getId()) {
-							flag = true;
+			if (t.getType().equals("STAFF")) {
+				System.out.println("staffServiceimp/update staff = " + staff);
+				List<Staff> slist = getAll();
+				for (Staff s : slist) {
+					if (s.getId() == staff.getId()) {
+						staff.setParking(s.getParking());
+						if (staff.getPassword() == null)
+							staff.setPassword(s.getPassword());
+						boolean flag = false;
+						for (Staff staff2 : slist) {
+							if (staff2.getPhone().equals(staff.getPhone()) && staff2.getId() != staff.getId()) {
+								flag = true;
+							}
 						}
-					}
-					if (!flag) {
-						
-						return staffRepository.save(staff);
-					}
+						if (!flag) {
 
+							return staffRepository.save(staff);
+						}
+
+					}
 				}
+			}else if(t.getType().equals("OWNER")) {
+				return staffRepository.save(staff);
 			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		return null;
-		
+
 	}
 
 	@Override
@@ -83,9 +92,9 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	@Override
-	public List<Staff> findByParking(Parking parking) throws Exception{
+	public List<Staff> findByParking(Parking parking) throws Exception {
 		// TODO Auto-generated method stub
-		
+
 		try {
 			return staffRepository.findByParking(parking);
 		} catch (Exception e) {
@@ -94,19 +103,20 @@ public class StaffServiceImpl implements StaffService {
 	}
 
 	@Override
-	public Staff findByPhoneAndPassword(String phone, String password) throws Exception{
+	public Staff findByPhoneAndPassword(String phone, String password) throws Exception {
 		// TODO Auto-generated method stub
 		try {
-			if(staffRepository.findByPhoneAndPassword(phone, password)!=null)
-			return staffRepository.findByPhoneAndPassword(phone, password);
-			else throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
+			if (staffRepository.findByPhoneAndPassword(phone, password) != null)
+				return staffRepository.findByPhoneAndPassword(phone, password);
+			else
+				throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "Staff was not found");
 		}
 	}
 
 	@Override
-	public Staff findByPhone(String phone) throws Exception{
+	public Staff findByPhone(String phone) throws Exception {
 		try {
 			return staffRepository.findByPhone(phone);
 		} catch (Exception e) {
@@ -117,8 +127,24 @@ public class StaffServiceImpl implements StaffService {
 	@Override
 	public Staff getProfile() throws Exception {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		
+
 		return staffRepository.getOne(t.getId());
+	}
+
+	// return list staff by Owner id
+	@Override
+	public List<Staff> findByOwner() throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Staff> returnlist = new ArrayList<>();
+		List<Staff> slist = getAll();
+
+		for (Staff staff : slist) {
+			if (staff.getParking().getOwner().getId() == t.getId())
+				returnlist.add(staff);
+		}
+
+		// TODO Auto-generated method stub
+		return returnlist;
 	}
 
 }

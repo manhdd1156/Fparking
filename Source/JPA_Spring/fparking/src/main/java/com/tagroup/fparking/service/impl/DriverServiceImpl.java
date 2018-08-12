@@ -33,7 +33,7 @@ public class DriverServiceImpl implements DriverService {
 		try {
 			return driverRepository.getOne(id);
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The driver was not found");
 		}
 
 	}
@@ -106,17 +106,15 @@ public class DriverServiceImpl implements DriverService {
 							}
 						}
 						if (!flag) {
-
 							return driverRepository.save(driver);
 						}
-
 					}
 				}
 			}
 		} catch (Exception e) {
 			System.out.println(e);
+			throw new APIException(HttpStatus.NOT_FOUND, "Cannot update driver");
 		}
-
 		return null;
 
 	}
@@ -191,6 +189,21 @@ public class DriverServiceImpl implements DriverService {
 		driver.setStatus(0);
 		driverRepository.save(driver);
 		return null;
+	}
+
+	@Override
+	public Boolean validateDriver(Driver driver) {
+		try {
+			Driver d1 = getById(driver.getId());
+			if (d1.getPhone().equals(driver.getPhone())) {
+				return true;
+			}
+			Driver d = driverRepository.findByPhone(driver.getPhone());
+			return d==null;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
 	}
 
 }

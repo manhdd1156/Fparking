@@ -40,7 +40,13 @@ public class StaffController {
 		List<Staff> respone = staffService.findByParking(parking);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-
+	// get list staff by owner id
+		@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
+		@RequestMapping(path = "/owners", method = RequestMethod.GET)
+		public ResponseEntity<?> findByOwner() throws Exception {
+			List<Staff> respone = staffService.findByOwner();
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
 	// get profile staff
 	@PreAuthorize("hasAnyAuthority('STAFF')")
 	@RequestMapping(path = "/profile", method = RequestMethod.GET)
@@ -48,13 +54,28 @@ public class StaffController {
 		Staff respone = staffService.getProfile();
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-	
-	// update profile 
-		@PreAuthorize("hasAnyAuthority('STAFF')")
-		@RequestMapping(path = "/update", method = RequestMethod.PUT)
-		public ResponseEntity<?> update(@RequestBody Staff Staff) throws Exception {
-			Staff respone = staffService.update(Staff);
+	// create staff
+		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+		@RequestMapping(path = "", method = RequestMethod.POST)
+		public ResponseEntity<?> create(@RequestBody Staff Staff) throws Exception {
+			Staff respone = staffService.create(Staff);
 			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
+	// update profile
+	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+	@RequestMapping(path = "/update", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody Staff Staff) throws Exception {
+		Staff respone = staffService.update(Staff);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+	// delete profile
+		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+		@RequestMapping(path = "", method = RequestMethod.DELETE)
+		public ResponseEntity<?> delete(@RequestBody Staff Staff) throws Exception {
+			staffService.delete(Staff.getId());
+			return new ResponseEntity<>("OK", HttpStatus.OK);
 
 		}
 }
