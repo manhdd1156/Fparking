@@ -160,7 +160,9 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
         textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
-        textViewMPhone.setText(Session.currentDriver.getPhone());
+        if (Session.currentDriver != null) {
+            textViewMPhone.setText(Session.currentDriver.getPhone());
+        }
         quickBooking = findViewById(R.id.buttonFastSearch);
 
         // sự kiện click vào số điện thoại
@@ -470,13 +472,17 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 }
                 driverVehicleID = vehicle.get(0).getDriverVehicleID();
                 vehicleID = vehicle.get(0).getVehicleID();
+                CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
+                carouselPicker.setAdapter(textAdapter);
+                dialog.show();
+            } else {
+                textViewAlert.setText("Bạn chưa có xe nào!");
+                notiDialog.show();
             }
-            CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(this, textItems, 0);
-            carouselPicker.setAdapter(textAdapter);
-            dialog.show();
+
         } else if (s.equals("order")) {
             parkingSortDTOS = (ArrayList<ParkingDTO>) o;
-            if (parkingSortDTOS.size() > 1) {
+            if (parkingSortDTOS.size() > 0) {
                 parkingID = parkingSortDTOS.get(0).getParkingID();
                 counttime();
             }
@@ -606,7 +612,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     public boolean onMarkerClick(Marker marker) {
         marker.hideInfoWindow();
         if (Session.currentDriver.getStatus().equals("1")) {
-            if (mPreferences.getInt("status", 8) == 8) {
+            if (mPreferences.getInt("status", 5) == 5) {
                 mPreferencesEditor.putString("parkingID", marker.getTitle().toString());
                 LatLng cameraLatLng = mMap.getCameraPosition().target;
                 double lat = cameraLatLng.latitude;

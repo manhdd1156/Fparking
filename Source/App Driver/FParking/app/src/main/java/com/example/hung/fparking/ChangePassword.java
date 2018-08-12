@@ -103,7 +103,7 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
         // Check if old pass and new pass not match
         else if (!newPass.equals(cfPassword))
             new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.change_pass_layout),
-                    "Mật khẩu mới và xác nhận mật khẩu không trùng nhau");
+                    "Mật khẩu xác nhận không đúng, vui lòng nhập lại");
             // Else do login and do your stuff
         else {
             comfirmDialog(oldPass, cfPassword);

@@ -121,10 +121,11 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
 
     private final IAsyncTaskHandler container;
     private String action = "";
+    private SharedPreferences.Editor editor;
 
     public GetProfileTask(IAsyncTaskHandler container) {
         this.container = container;
-
+        editor = Session.spref.edit();
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -140,6 +141,10 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
             Session.currentDriver.setName(jsonObj2.getString("name"));
             Session.currentDriver.setPhone(jsonObj2.getString("phone"));
             Session.currentDriver.setStatus(jsonObj2.getString("status"));
+
+            editor.putString("driverid", jsonObj2.getLong("id")+"");
+            editor.putBoolean("first_time", false);
+            editor.commit();
             return true;
         } catch (Exception e) {
             e.printStackTrace();

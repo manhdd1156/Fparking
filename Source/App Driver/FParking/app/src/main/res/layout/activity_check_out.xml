@@ -197,16 +197,6 @@
             android:textColor="#FFFFFF"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/imageViewBackCheckoutTT"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/imageView9"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="10dp"
-            app:srcCompat="@drawable/ic_action_backwhile"/>
-
         <TextView
             android:id="@+id/textViewTimeCheckinTT"
             android:layout_width="wrap_content"

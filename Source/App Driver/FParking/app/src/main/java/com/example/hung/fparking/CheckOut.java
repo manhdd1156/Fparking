@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,6 +30,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
 
     TextView textViewAddress, textViewCheckIn, textViewPrice, textViewLicensePlate, textViewTotalPrice, textViewTimeCheckoutTT, textViewTotalTimeTT;
     Button buttonCheckOut;
+    ImageView imageViewBackCheckoutTT;
 
     private SharedPreferences mPreferences;
     private SharedPreferences.Editor mPreferencesEditor;
@@ -55,8 +57,14 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
         textViewTotalPrice = findViewById(R.id.textViewTotalPriceTT);
         buttonCheckOut = findViewById(R.id.buttonCheckout);
 
+        // check data
+        int status = mPreferences.getInt("status", 5);
+        if (status == 5) {
+            Intent intentOrderFlagment = new Intent(CheckOut.this, HomeActivity.class);
+            startActivity(intentOrderFlagment);
+            finish();
+        }
         // set text cho button theo data
-        int status = mPreferences.getInt("status", 8);
         if (status == 3) {
             buttonCheckOut.setText("QUAY VỀ");
         }
@@ -93,7 +101,7 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
                     Date date2 = df.parse(myBookingDTO.getTimeOut());
                     long diff = date2.getTime() - date1.getTime();
                     textViewTimeCheckoutTT.setText(myBookingDTO.getTimeOut());
-                    if (diff / (60 * 60 * 1000) == 0 ) {
+                    if (diff / (60 * 60 * 1000) == 0) {
                         textViewTotalTimeTT.setText("Dưới 1 Giờ");
                     } else {
                         textViewTotalTimeTT.setText(diff / (60 * 60 * 1000) + " Giờ");
@@ -132,11 +140,5 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-    }
-
-    @Override
-    protected void onStop() {
-        super.onStop();
-        finish();
     }
 }

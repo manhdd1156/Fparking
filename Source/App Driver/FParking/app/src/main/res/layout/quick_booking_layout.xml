@@ -28,6 +28,7 @@
         android:textStyle="bold" />
 
     <View
+        android:id="@+id/imageView6"
         android:layout_width="fill_parent"
         android:layout_height="1px"
         android:layout_alignParentStart="true"
@@ -35,33 +36,36 @@
         android:layout_marginTop="25dp"
         android:background="@color/white_greyish" />
 
-    <Button
-        android:id="@+id/btnOKQB"
+    <LinearLayout
         android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_below="@+id/textViewPriceQB"
+        android:layout_height="45dp"
+        android:layout_below="@+id/imageView6"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="40dp"
-        android:background="@drawable/button_selector"
-        android:padding="10dp"
-        android:text="Đồng ý"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        android:layout_marginTop="25dp">
 
-    <Button
-        android:id="@+id/btnCancelQB"
-        android:layout_width="wrap_content"
-        android:layout_height="32dp"
-        android:layout_alignParentEnd="true"
-        android:layout_alignTop="@+id/btnOKQB"
-        android:layout_marginEnd="49dp"
-        android:background="@drawable/button_selector"
-        android:padding="10dp"
-        android:text="Hủy"
-        android:textColor="@android:color/white"
-        android:textSize="10sp"
-        android:textStyle="bold" />
+        <Button
+            android:id="@+id/btnOKQB"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:background="@drawable/button_selector"
+            android:padding="10dp"
+            android:text="Đặt chỗ"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/btnCancelQB"
+            android:layout_width="wrap_content"
+            android:layout_height="32dp"
+            android:layout_marginLeft="15dp"
+            android:background="@drawable/button_selector"
+            android:padding="10dp"
+            android:text="Hủy"
+            android:textColor="@android:color/white"
+            android:textSize="10sp"
+            android:textStyle="bold" />
+    </LinearLayout>
 
     <TextView
         android:id="@+id/textViewAddressQB"
