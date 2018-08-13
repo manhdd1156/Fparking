@@ -52,11 +52,21 @@ public class NumberPickerActivity extends Activity implements IAsyncTaskHandler{
             public void onClick(View v) {
                 if(Session.currentParking!=null) {
                     Session.currentParking.setCurrentspace(newValue);
-                    new ManagerParkingTask("update", Session.currentParking, NumberPickerActivity.this);
-                    Intent _result = new Intent();
-//                    _result.setData(Session.current);
-                    setResult(Activity.RESULT_OK, _result);
-                    finish();
+                    new ManagerParkingTask("update", Session.currentParking, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            Intent _result = new Intent();
+                            if((boolean) o) {
+                                setResult(Activity.RESULT_OK, _result);
+
+                            }else {
+                                setResult(Activity.RESULT_CANCELED, _result);
+                            }
+
+                            finish();
+                        }
+                    });
+
                 }
             }
         });

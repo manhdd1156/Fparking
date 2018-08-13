@@ -127,7 +127,7 @@ public class HomeActivity extends AppCompatActivity
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            CheckNetwork checkNetwork = new CheckNetwork(HomeActivity.this, getApplicationContext());
+            CheckNetwork checkNetwork = new CheckNetwork(HomeActivity.this, getApplicationContext(), "Kết nối mạng đã bị tắt. Vui lòng bật kết nối mạng và thử lại trong ít phút nữa");
             if (!checkNetwork.isNetworkConnected()) {
                 checkNetwork.createDialog();
             } else {
@@ -211,7 +211,7 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intentStaff);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else if (id == R.id.nav_DK) {
-            Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
+            Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
             startActivity(intentDK);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }

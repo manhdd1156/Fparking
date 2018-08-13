@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -31,7 +32,11 @@ import com.example.hung.fparking.asynctask.ManagerParkingTask;
 import com.example.hung.fparking.change_space.NumberPickerActivity;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
+import com.example.hung.fparking.login.LoginActivity;
 import com.example.hung.fparking.model.CheckNetwork;
+import com.example.hung.fparking.other.Contact;
+import com.example.hung.fparking.other.Guide;
+import com.example.hung.fparking.other.TermsAndConditions;
 
 import java.text.DateFormat;
 import java.text.DecimalFormat;
@@ -47,11 +52,12 @@ public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IAsyncTaskHandler {
     ListView lv;
     TextView tvSpace, textViewMPhone;
-    TextView tvAddress;
+    TextView tvAddress,error;
+    Button btnOK;
     NavigationView navigationView;
     View headerView;
     ImageView imageViewFParking;
-
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,7 +67,7 @@ public class HomeActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         Session.homeActivity = HomeActivity.this;
-
+        editor = Session.spref.edit();
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -121,7 +127,12 @@ public class HomeActivity extends AppCompatActivity
         Intent i = getIntent();
 
         if(i.getStringExtra("touchNoti")!=null) {
-            new ManagerNotiTask("get");
+            new ManagerNotiTask("get", new IAsyncTaskHandler() {
+                @Override
+                public void onPostExecute(Object o) {
+
+                }
+            });
         }
     }
     private BroadcastReceiver receiver = new BroadcastReceiver() {
@@ -168,14 +179,27 @@ public class HomeActivity extends AppCompatActivity
                 System.out.println("ở trong activityressult");
                 setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-
-                // Do something with the contact here (bigger example below)
+            }else {
+                showDialog("Số chỗ trống không thể nhỏ hơn số xe trong bãi");
             }
         }
     }
-
+    public void showDialog(String text) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
     @Override
     protected void onResume() {
         super.onResume();
@@ -228,8 +252,21 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, Contact.class);
             startActivity(intent);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else if (id == R.id.nav_view) {
-
+        } else if (id == R.id.nav_DK) {
+            Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }else if(id == R.id.nav_guide) {
+            Intent intent = new Intent(HomeActivity.this, Guide.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }else if(id == R.id.Logout) {
+            editor.putBoolean("first_time",true);
+            editor.commit();
+            Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+            finish();
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

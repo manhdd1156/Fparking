@@ -22,9 +22,7 @@ public class TermsAndConditions extends AppCompatActivity {
         backDK.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentBackDK = new Intent(TermsAndConditions.this, HomeActivity.class);
-                startActivity(intentBackDK);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                finish();
             }
         });
     }

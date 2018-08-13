@@ -103,14 +103,10 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     ParkingDTO p;
-    Activity activity;
-    boolean success = false;
     private SharedPreferences spref;
     public UpdateParkingTask(IAsyncTaskHandler container, ParkingDTO p){
         this.container = container;
-        this.activity = (Activity)container;
         this.p = p;
-//        spref = activity.getSharedPreferences("info",0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
@@ -123,28 +119,26 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
             formData.put("id", p.getId());
             formData.put("currentspace", p.getCurrentspace());
             String json = httpHandler.requestMethod(Constants.API_URL + "parkings/update/", formData.toString(),"POST");
+            if(json.isEmpty() || json.equals("")) {
+                return false;
+            }
+
             JSONObject jsonObj = new JSONObject(json);
             Log.e(" Updateparking : ", jsonObj.toString());
-            success = true;
-            TextView tv = activity.findViewById(R.id.tvSpace);
-            tv.setText(Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+
+//            TextView tv = activity.findViewById(R.id.tvSpace);
+//            tv.setText(Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
         }catch (Exception ex){
             Log.e("Error:", ex.getMessage());
         }
-        return null;
+        return true;
     }
 
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-//        Intent intent = new Intent();
-//        if(success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
+        container.onPostExecute(aBoolean);
     }
 
 }

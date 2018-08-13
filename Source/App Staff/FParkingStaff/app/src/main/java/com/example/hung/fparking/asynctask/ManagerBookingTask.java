@@ -420,13 +420,13 @@ class GetBookingByStatus extends AsyncTask<Void, Void, String> {
 class CancelTask extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
-    Activity activity;
+//    Activity activity;
     boolean success = false;
     BookingDTO bookingDTO;
 
     public CancelTask(IAsyncTaskHandler container, BookingDTO bookingDTO) {
         this.container = container;
-        this.activity = (Activity) container;
+//        this.activity = (Activity) container;
         this.bookingDTO = bookingDTO;
 //        spref = activity.getSharedPreferences("info",0);
     }
@@ -466,6 +466,7 @@ class CancelTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean);
 //        Intent intent = new Intent();
 //        if(success)
 //            intent.putExtra("result", "success!");

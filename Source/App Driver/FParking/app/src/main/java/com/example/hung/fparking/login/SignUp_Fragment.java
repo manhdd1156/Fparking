@@ -43,6 +43,7 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
     EditText password, confirmPassword;
     Button signUpBtn, btnOK;
     AlertDialog dialog;
+    ImageView back;
 
     public static String APP_TAG = "AccountKit";
     String action;
@@ -65,6 +66,7 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
         View mView = getLayoutInflater().inflate(R.layout.alert_dialog, null);
         mBuilder.setView(mView);
         dialog = mBuilder.create();
+        dialog.setCancelable(false);
         textViewAlert = mView.findViewById(R.id.textViewAlert);
         btnOK = mView.findViewById(R.id.btnOK);
 
@@ -75,6 +77,15 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
         confirmPassword = findViewById(R.id.confirmPasswordDK);
         signUpBtn = findViewById(R.id.signUpBtn);
         already_user = findViewById(R.id.already_user);
+        back = findViewById(R.id.back);
+
+        back.setOnClickListener(new OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(SignUp_Fragment.this, MainActivity.class));
+                finish();
+            }
+        });
 
         signUpBtn.setOnClickListener(new OnClickListener() {
             @Override
@@ -87,8 +98,11 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                startActivity(new Intent(SignUp_Fragment.this, MainActivity.class));
-                finish();
+                if (textViewAlert.getText().equals("Tạo tài khoản thành công!") || textViewAlert.getText().equals("Mật khẩu đã được đổi thành công!")) {
+                    startActivity(new Intent(SignUp_Fragment.this, MainActivity.class));
+                    finish();
+                }
+
             }
         });
 

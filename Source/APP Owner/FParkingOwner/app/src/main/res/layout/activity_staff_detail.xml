@@ -180,8 +180,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
             android:layout_marginBottom="64dp"
-            android:layout_toEndOf="@+id/imageViewBackHistory"
             android:paddingLeft="20dp"
             android:text="Cập nhật thông tin thành công"
             android:textColor="@android:color/holo_green_dark"
@@ -221,12 +221,26 @@
 
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="364dp"
+            android:layout_width="319dp"
             android:layout_height="34dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/tbNameSD"
-            android:layout_marginBottom="146dp" />
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbPassSD"
+            android:layout_marginTop="23dp" />
 
+        <ImageView
+            android:id="@+id/imageView4"
+            android:layout_width="30dp"
+            android:layout_height="45dp"
+            android:layout_alignBottom="@+id/tbPassSD"
+            android:layout_alignEnd="@+id/tbPassSD"
+            android:layout_marginRight="30dp"
+            app:srcCompat="@drawable/change" />
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/spinner2"
+            android:background="@color/white_greyish" />
 
     </RelativeLayout>
 

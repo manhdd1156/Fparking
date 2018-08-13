@@ -187,10 +187,12 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
             Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
             intentSignup.putExtra("action", "forgot");
             startActivity(intentSignup);
+            finish();
         } else if(event.equals("register")){
             Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
             intentSignup.putExtra("action", "register");
             startActivity(intentSignup);
+            finish();
         }
 
     }
