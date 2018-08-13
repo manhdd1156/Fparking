@@ -1,6 +1,7 @@
 package com.tagroup.fparking.controller.webadmin;
 
 import java.text.DateFormat;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +67,7 @@ public class AccountController {
 	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+	DecimalFormat numFormat;
 
 	// ---------------------MANAGE DRIVER'S
 	// ACCOUNT--------------------------------------
@@ -680,7 +682,7 @@ public class AccountController {
 		model.put("latitude", parking.getLatitude());
 		model.put("timeoc", parking.getTimeoc());
 		model.put("totalSpace", parking.getTotalspace());
-		model.put("deposits", parking.getDeposits());
+		model.put("deposits", String.format("%.2f", parking.getDeposits()).replace(",", "."));
 		return "editparking";
 	}
 
@@ -692,8 +694,6 @@ public class AccountController {
 			@RequestParam("latitude") Double latitude, @RequestParam("timeoc") String timeoc,
 			@RequestParam("totalSpace") Integer totalSpace, @RequestParam("deposits") Double deposits)
 			throws Exception {
-		System.out.println(deposits);
-		System.out.println("==========================");
 		Parking parking;
 		try {
 			parking = parkingService.getById(id);
@@ -727,11 +727,7 @@ public class AccountController {
 		model.put("latitude", parking2.getLatitude());
 		model.put("timeoc", parking2.getTimeoc());
 		model.put("totalSpace", parking2.getTotalspace());
-		if (parking2.getDeposits() % 1 == 0) {
-			model.put("deposits", (int) parking2.getDeposits());
-		} else {
-			model.put("deposits", parking2.getDeposits());
-		}
+		model.put("deposits", String.format("%.2f", parking.getDeposits()).replace(",", "."));
 		return "editparking";
 	}
 

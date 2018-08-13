@@ -206,7 +206,6 @@ public class HomeController {
 			token.setType("ADMIN");
 			String jwt = tokenProvider.generateToken(token);
 			request.getSession().setAttribute("Authorization", "Bearer " + jwt);
-			System.out.println("username+ passs:" + admin2.getUsername() + "---" + admin2.getPassword());
 			if (admin2 != null) {
 				return "redirect:/home";
 			}

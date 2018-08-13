@@ -42,7 +42,7 @@
 									<form role="form" method="POST" action="">
 										<div class="form-group">
 											<label>Địa chỉ:</label> 
-											<input type="text" class="form-control" name="address" value="${address }" required>
+											<textarea class="form-control" name="address" rows="2" required>"${address }</textarea>
 										</div>
 										<div class="form-group">
 											<label>Kinh độ:</label> 
