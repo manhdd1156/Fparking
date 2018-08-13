@@ -20,12 +20,20 @@ public class ParkingDTO {
     private String timeoc;
 
     private int totalspace;
+
     private int city_id;
+
+    private double price9;
+
+    private double price1629;
+
+    private double price3445;
+
     public ParkingDTO() {
 
     }
 
-    public ParkingDTO(int id, String address, int currentspace, double deposits, String image, String latitude, String longitude, int status, String timeoc, int totalspace, int city_id) {
+    public ParkingDTO(int id, String address, int currentspace, double deposits, String image, String latitude, String longitude, int status, String timeoc, int totalspace, int city_id, double price9, double price1629, double price3445) {
         this.id = id;
         this.address = address;
         this.currentspace = currentspace;
@@ -37,6 +45,9 @@ public class ParkingDTO {
         this.timeoc = timeoc;
         this.totalspace = totalspace;
         this.city_id = city_id;
+        this.price9 = price9;
+        this.price1629 = price1629;
+        this.price3445 = price3445;
     }
 
     public int getId() {
@@ -125,6 +136,30 @@ public class ParkingDTO {
 
     public void setCity_id(int city_id) {
         this.city_id = city_id;
+    }
+
+    public double getPrice9() {
+        return price9;
+    }
+
+    public double getPrice1629() {
+        return price1629;
+    }
+
+    public double getPrice3445() {
+        return price3445;
+    }
+
+    public void setPrice9(double price9) {
+        this.price9 = price9;
+    }
+
+    public void setPrice1629(double price1629) {
+        this.price1629 = price1629;
+    }
+
+    public void setPrice3445(double price3445) {
+        this.price3445 = price3445;
     }
 
     @Override

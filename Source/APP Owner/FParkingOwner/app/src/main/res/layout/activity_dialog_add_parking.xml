@@ -164,7 +164,7 @@
         android:drawablePadding="8dp"
         android:gravity="center_vertical"
         android:hint="Số chỗ đỗ"
-        android:inputType="text"
+        android:inputType="number"
         android:padding="10dp"
         android:singleLine="true"
         android:textColor="#000000"

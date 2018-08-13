@@ -44,10 +44,11 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     EditText password;
     EditText changePass;
     TextView tvError;
-    TextView tvSuccess,error;
-    Button btnConfirm,btnOK;
+    TextView tvSuccess, error;
+    Button btnConfirm, btnOK;
     AlertDialog dialog;
     ImageView backProfile;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -156,20 +157,20 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                                                 Session.currentOwner.setPhone(phone.getHint().toString());
                                             } else {
                                                 String tempPhone = phone.getText().toString();
-                                                if(tempPhone.contains("+84")) {
-                                                    tempPhone = phone.getText().toString().replace("+84","0");
+                                                if (tempPhone.contains("+84")) {
+                                                    tempPhone = phone.getText().toString().replace("+84", "0");
                                                 }
                                                 Session.currentOwner.setPhone(tempPhone);
                                             }
                                             new ManagerLoginTask("updateProfile", "", "", new IAsyncTaskHandler() {
                                                 @Override
                                                 public void onPostExecute(Object o) {
-                                                    if((boolean) o ) {
+                                                    if ((boolean) o) {
                                                         tvSuccess.setText("Cập nhật thông tin thành công");
                                                         tvSuccess.setTextColor(Color.GREEN);
                                                         tvSuccess.setVisibility(View.VISIBLE);
                                                         dialog.cancel();
-                                                    }else {
+                                                    } else {
                                                         dialog.cancel();
                                                         showDialog("Số điện thoại đã tồn tại, cập nhật không thành công");
                                                     }
@@ -187,6 +188,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
             }
         });
     }
+
     public void setText() {
         name.setText("");
         phone.setText("");
@@ -195,6 +197,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         phone.setHint(Session.currentOwner.getPhone());
         address.setHint(Session.currentOwner.getAddress());
     }
+
     public void showDialog(String text) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
@@ -211,6 +214,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
             }
         });
     }
+
     public void checkValidation() {
         try {
             String passMD5 = getMD5Hex(password.getText().toString());
@@ -233,7 +237,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                 new ManagerLoginTask("updateProfile", "", "", new IAsyncTaskHandler() {
                     @Override
                     public void onPostExecute(Object o) {
-                        if((boolean)o) {
+                        if ((boolean) o) {
                             DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int choice) {
@@ -263,6 +267,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
             System.out.println("Lỗi ProfileActivity/checkValidation : " + e);
         }
     }
+
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");

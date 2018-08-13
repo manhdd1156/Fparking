@@ -42,6 +42,13 @@
             </intent-filter>
         </receiver>
 
+        <activity android:name=".Theme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".HomeActivity"
             android:label="@string/title_activity_home"></activity>
@@ -49,13 +56,8 @@
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
-        <activity android:name=".login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
+        <activity android:name=".login.LoginActivity"></activity>
         <activity android:name=".login.SignUp_Fragment" />
         <activity android:name=".login.ForgotPasswordOtp_Fragment" />
         <activity
@@ -90,9 +92,9 @@
             tools:replace="android:theme" />
         <activity android:name=".dialog.DialogAddStaff" />
         <activity android:name=".AddParkingInformation" />
-        <activity android:name=".AddParkingLocation">
 
-        </activity>
+        <activity android:name=".AddParkingLocation"></activity>
+
     </application>
 
 </manifest>

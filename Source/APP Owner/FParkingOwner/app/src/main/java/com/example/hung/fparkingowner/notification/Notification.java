@@ -26,21 +26,21 @@ public class Notification extends Service implements SubscriptionEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
-        if(Session.currentParking!=null) {
+        if (!Session.spref.getString("owerid", "").equals("")) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
-            Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "channel");
+            Session.channel = Session.pusher.subscribe(Session.spref.getString("owerid", "") + "channel");
+            Log.e("Notification: ", Session.spref.getString("owerid", "") + "channel");
+            Session.channel.bind(Constants.PUSHER_ORDER_FROM_DRIVER, this);
+            Session.channel.bind(Constants.PUSHER_CHECKIN_FROM_DRIVER, this);
+            Session.channel.bind(Constants.PUSHER_CHECKOUT_FROM_DRIVER, this);
+            Session.channel.bind(Constants.PUSHER_CANCEL_FROM_DRIVER, this);
+            connect();
         }
-        System.out.println("class Notification");
-        Session.channel.bind(Constants.PUSHER_ORDER_FROM_DRIVER, this);
-        Session.channel.bind(Constants.PUSHER_CHECKIN_FROM_DRIVER, this);
-        Session.channel.bind(Constants.PUSHER_CHECKOUT_FROM_DRIVER, this);
-        Session.channel.bind(Constants.PUSHER_CANCEL_FROM_DRIVER, this);
-        connect();
-
 
 //        return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -56,32 +56,32 @@ public class Notification extends Service implements SubscriptionEventListener {
     public void onEvent(String channelName, String eventName, final String data) {
         try {
 
-                if (eventName.toLowerCase().contains("order")) {
-                    createNotification("Có xe muốn đặt chỗ");
-                    System.out.println("noti order");
-                } else if (eventName.toLowerCase().contains("checkin")) {
-                    createNotification("Có xe muốn vào bãi");
-                    System.out.println("noti checkin");
-                } else if (eventName.toLowerCase().contains("checkout")) {
-                    createNotification("Có xe muốn thanh toán");
-                    System.out.println("noti checkout");
-                }else if(eventName.toLowerCase().contains("cancel") && data.contains("preorder")) {
-                    Session.homeActivity.runOnUiThread(new Runnable() {
+            if (eventName.toLowerCase().contains("order")) {
+                createNotification("Có xe muốn đặt chỗ");
+                System.out.println("noti order");
+            } else if (eventName.toLowerCase().contains("checkin")) {
+                createNotification("Có xe muốn vào bãi");
+                System.out.println("noti checkin");
+            } else if (eventName.toLowerCase().contains("checkout")) {
+                createNotification("Có xe muốn thanh toán");
+                System.out.println("noti checkout");
+            } else if (eventName.toLowerCase().contains("cancel") && data.contains("preorder")) {
+                Session.homeActivity.runOnUiThread(new Runnable() {
 
-                        @Override
-                        public void run() {
-                            Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
+                    @Override
+                    public void run() {
+                        Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
                         myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                            Session.homeActivity.finish();
+                        Session.homeActivity.finish();
                         startActivity(myIntent);
                         Session.homeActivity.recreate();
 //                        finish();
 
 
-                        }
-                    });
-                    return;
-                }
+                    }
+                });
+                return;
+            }
             createDialog(eventName, data);
         } catch (Exception e) {
             Log.e("Error notification : ", e.getMessage());

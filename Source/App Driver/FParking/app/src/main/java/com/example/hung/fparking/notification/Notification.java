@@ -71,7 +71,7 @@ public class Notification extends Service implements SubscriptionEventListener, 
         final PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
         if (!Session.spref.getString("driverid", "").equals("")) {
-            new BookingTask("newbooking", Session.spref.getString("driverid", "") + "", "", "newbooking", this);
+            new BookingTask("newbooking", Session.spref.getString("driverid", ""), "", "newbooking", this);
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
             Session.channel = Session.pusher.subscribe(Session.spref.getString("driverid", "") + "channel");
             Log.e("Notification: ", Session.spref.getString("driverid", "") + "channel");

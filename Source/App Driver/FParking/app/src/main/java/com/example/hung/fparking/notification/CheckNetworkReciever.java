@@ -34,6 +34,11 @@ public class CheckNetworkReciever extends BroadcastReceiver implements IAsyncTas
         if (isConnected) {
             if (!Session.spref.getString("driverid", "").equals("")) {
                 new BookingTask("newbooking", Session.spref.getString("driverid", "") + "", "", "newbooking", this);
+                new DriverLoginTask("second_time", null, "", new IAsyncTaskHandler() {
+                    @Override
+                    public void onPostExecute(Object o, String action) {
+                    }
+                });
             }
         }
     }

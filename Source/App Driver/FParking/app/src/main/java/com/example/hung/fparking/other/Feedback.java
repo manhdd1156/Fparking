@@ -14,6 +14,7 @@ import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.FeedbackTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
+import com.example.hung.fparking.login.CustomToast;
 import com.example.hung.fparking.login.SignUp_Fragment;
 
 public class Feedback extends AppCompatActivity implements IAsyncTaskHandler {
@@ -61,8 +62,13 @@ public class Feedback extends AppCompatActivity implements IAsyncTaskHandler {
             @Override
             public void onClick(View v) {
                 String content = editTextFeedback.getText().toString();
-                FeedbackTask feedbackTask = new FeedbackTask(content, Feedback.this);
-                feedbackTask.execute();
+                if (content.equals("")) {
+                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.feedback_layout),
+                            "Vui lòng nhập nội dung");
+                } else {
+                    FeedbackTask feedbackTask = new FeedbackTask(content, Feedback.this);
+                    feedbackTask.execute();
+                }
             }
         });
     }
