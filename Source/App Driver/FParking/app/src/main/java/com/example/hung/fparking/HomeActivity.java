@@ -436,7 +436,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void doSearchAsyncTask(double lat, double lng) {
-        new ParkingTask("list", lat, lng, "list", this);
+        new ParkingTask("list", lat, lng, "", "list", this);
     }
 
     @Override
@@ -654,7 +654,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                 LatLng cameraLatLng = mMap.getCameraPosition().target;
                 double lat = cameraLatLng.latitude;
                 double lng = cameraLatLng.longitude;
-                new ParkingTask("order", lat, lng, "order", HomeActivity.this);
+                new ParkingTask("order", lat, lng, vehicleID + "", "order", HomeActivity.this);
             }
         });
 

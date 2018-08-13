@@ -38,7 +38,6 @@ import com.example.hung.fparking.asynctask.FineTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.asynctask.ParkingInforTask;
-import com.example.hung.fparking.asynctask.ParkingTask;
 import com.example.hung.fparking.dto.FineDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.entity.Route;

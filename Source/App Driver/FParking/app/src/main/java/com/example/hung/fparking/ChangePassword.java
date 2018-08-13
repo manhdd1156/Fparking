@@ -9,21 +9,11 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.example.hung.fparking.asynctask.BookingTask;
 import com.example.hung.fparking.asynctask.DriverLoginTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
-import com.example.hung.fparking.asynctask.ParkingTask;
-import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.dto.DriverDTO;
 import com.example.hung.fparking.login.CustomToast;
-import com.example.hung.fparking.login.MainActivity;
-import com.example.hung.fparking.login.SignUp_Fragment;
-import com.example.hung.fparking.notification.Notification;
-
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandler {
     ImageView backChangePass;

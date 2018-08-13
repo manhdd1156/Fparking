@@ -109,6 +109,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
         View quickBookingView = getLayoutInflater().inflate(R.layout.quick_booking_layout, null);
         quickBookingBuilder.setView(quickBookingView);
         quickDialog = quickBookingBuilder.create();
+        quickDialog.setCancelable(false);
 
         setDialogProperties(quickBookingView);
 
@@ -177,6 +178,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     mPreferencesEditor.putString("vehicleID", vehicleID + "").commit();
                     mPreferencesEditor.putString("parkingID", parkingID + "").commit();
                     new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
+                    parkingSortDTOS = null;
                     counttime();
                 }
             }
@@ -309,7 +311,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                                 if (parkingSortDTOS == null) {
                                     double lat = mPreferences.getFloat("quicklat", 0);
                                     double lng = mPreferences.getFloat("quicklng", 0);
-                                    new ParkingTask("order", lat, lng, "order", OrderParking.this);
+                                    new ParkingTask("order", lat, lng, vehicleID + "", "order", OrderParking.this);
                                 } else {
                                     if (parkingSortDTOS.size() > 1) {
                                         for (int i = 0; i < parkingSortDTOS.size(); i++) {
@@ -320,7 +322,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                                         quickDialog.show();
                                         textViewAddressQB.setText(parkingSortDTOS.get(0).getAddress());
                                         textViewTotalTimeQB.setText(parkingSortDTOS.get(0).getTimeoc());
-                                        textViewPriceQB.setText(parkingSortDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
+                                        textViewPriceQB.setText(parkingDTOS.get(0).getCurrentspace() + "");
 
                                         buttonOK.setOnClickListener(new View.OnClickListener() {
                                             @Override
