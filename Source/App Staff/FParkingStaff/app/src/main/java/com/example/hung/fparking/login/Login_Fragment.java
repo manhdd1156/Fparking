@@ -2,12 +2,15 @@ package com.example.hung.fparking.login;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import android.content.res.XmlResourceParser;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,11 +34,10 @@ import java.util.regex.Pattern;
 
 public class Login_Fragment extends Fragment implements OnClickListener, IAsyncTaskHandler {
     private static View view;
-    private static Button loginButton,btnOK;
-    private static TextView error;
 
     private static EditText phoneNumber, password;
-    private static TextView forgotPassword, signUp;
+    private static Button loginButton,btnOK;
+    private static TextView error;
     //    private static CheckBox show_hide_password;
     private static LinearLayout loginLayout;
     private static Animation shakeAnimation;
@@ -57,6 +59,8 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
         view = inflater.inflate(R.layout.activity_login, container, false);
 
         initViews();
+
+        loginButton.setOnClickListener(this);
         setListeners();
         return view;
     }
@@ -71,25 +75,25 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
             phoneNumber = (EditText) view.findViewById(R.id.phone);
             password = (EditText) view.findViewById(R.id.login_password);
             loginButton = (Button) view.findViewById(R.id.loginBtn);
-            forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
-            signUp = (TextView) view.findViewById(R.id.createAccount);
+//            forgotPassword = (TextView) view.findViewById(R.id.forgot_password);
+//            signUp = (TextView) view.findViewById(R.id.createAccount);
 //        show_hide_password = (CheckBox) view
 //                .findViewById(R.id.show_hide_password);
-            loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
+//            loginLayout = (LinearLayout) view.findViewById(R.id.login_layout);
 
             // Load ShakeAnimation
-            shakeAnimation = AnimationUtils.loadAnimation(getActivity(),
-                    R.anim.shake);
+//            shakeAnimation = AnimationUtils.loadAnimation(getActivity(),
+//                    R.anim.shake);
 
             // Setting text selector over textviews
-            @SuppressLint("ResourceType") XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
+//            @SuppressLint("ResourceType") XmlResourceParser xrp = getResources().getXml(R.drawable.text_selector);
+//
+//            ColorStateList csl = ColorStateList.createFromXml(getResources(),
+//                    xrp);
 
-            ColorStateList csl = ColorStateList.createFromXml(getResources(),
-                    xrp);
-
-            forgotPassword.setTextColor(csl);
+//            forgotPassword.setTextColor(csl);
 //            show_hide_password.setTextColor(csl);
-            signUp.setTextColor(csl);
+//            signUp.setTextColor(csl);
         } catch (Exception e) {
             System.out.println("lỗi ở login_fragment : " + e);
         }
@@ -97,43 +101,9 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 
     // Set Listeners
     private void setListeners() {
-        loginButton.setOnClickListener(this);
-        forgotPassword.setOnClickListener(this);
-        signUp.setOnClickListener(this);
-
-//        // Set check listener over checkbox for showing and hiding password
-//        show_hide_password
-//                .setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
 //
-//                    @Override
-//                    public void onCheckedChanged(CompoundButton button,
-//                                                 boolean isChecked) {
-//
-//                        // If it is checked then show password else hide
-//                        // password
-//                        if (isChecked) {
-//
-//                            show_hide_password.setText(R.string.hide_pwd);// change
-//                            // checkbox
-//                            // text
-//
-//                            password.setInputType(InputType.TYPE_CLASS_TEXT);
-//                            password.setTransformationMethod(HideReturnsTransformationMethod
-//                                    .getInstance());// show password
-//                        } else {
-//                            show_hide_password.setText(R.string.show_pwd);// change
-//                            // checkbox
-//                            // text
-//
-//                            password.setInputType(InputType.TYPE_CLASS_TEXT
-//                                    | InputType.TYPE_TEXT_VARIATION_PASSWORD);
-//                            password.setTransformationMethod(PasswordTransformationMethod
-//                                    .getInstance());// hide password
-//
-//                        }
-//
-//                    }
-//                });
+//        forgotPassword.setOnClickListener(this);
+//        signUp.setOnClickListener(this);
     }
 
     @Override
@@ -141,26 +111,6 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
         switch (v.getId()) {
             case R.id.loginBtn:
                 checkValidation();
-                break;
-
-            case R.id.forgot_password:
-
-                // Replace forgot password fragment with animation
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer,
-                                new ForgotPassword_Fragment(),
-                                Constants.ForgotPassword_Fragment).commit();
-                break;
-            case R.id.createAccount:
-
-                // Replace signup frgament with animation
-                fragmentManager
-                        .beginTransaction()
-                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
-                        .replace(R.id.frameContainer, new SignUp_Fragment(),
-                                Constants.SignUp_Fragment).commit();
                 break;
         }
     }
@@ -180,19 +130,19 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 
         // Check for both field is empty or not
         if (getPhone.equals("") || getPhone.isEmpty()) {
-            loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Hãy nhập số điện thoại");
+//            loginLayout.startAnimation(shakeAnimation);
+            showDialog("Hãy nhập số điện thoại");
         }
         if (getPassword.equals("") || getPassword.isEmpty()) {
-            loginLayout.startAnimation(shakeAnimation);
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Hãy nhập mật khẩu");
+//            loginLayout.startAnimation(shakeAnimation);
+            showDialog("Hãy nhập mật khẩu");
+        }
+        if(getPassword.length()<6 || getPassword.length()>24) {
+            showDialog("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự");
         }
         // Check if email id is valid or not
         else if (!m.find())
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Số điện thoại không đúng");
+            showDialog("Số điện thoại hoặc mật khẩu không đúng");
             // Else do login and do your stuff
         else {
             new ManagerLoginTask("first_time",getPhone,getPassword, this);
@@ -202,7 +152,22 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
 //                    .show();
         }
     }
-
+    public void showDialog(String text) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(getContext());
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
     @Override
     public void onPostExecute(Object o) {
         if (Boolean.TRUE.equals(o)) {
@@ -213,8 +178,7 @@ public class Login_Fragment extends Fragment implements OnClickListener, IAsyncT
             getActivity().startService(intent);
 
         } else {
-            new CustomToast().Show_Toast(getActivity(), view,
-                    "Số điện thoại hoặc mật khẩu không đúng");
+            showDialog("Số điện thoại hoặc mật khẩu không đúng");
         }
     }
 }

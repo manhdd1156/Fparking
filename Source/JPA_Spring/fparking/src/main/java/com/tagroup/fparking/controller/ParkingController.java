@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.tagroup.fparking.dto.ParkingDTO;
 import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.service.CityService;
 import com.tagroup.fparking.service.ParkingService;
@@ -114,7 +115,16 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+	// create parking
+		@PreAuthorize("hasAnyAuthority('OWNER')")
+		@RequestMapping(path = "", method = RequestMethod.POST)
+		public ResponseEntity<?> create(@RequestBody ParkingDTO parkingDTO) throws Exception {
 
+			Parking respone = parkingService.create(parkingDTO);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
+	
 	// update parking
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/update", method = RequestMethod.POST)

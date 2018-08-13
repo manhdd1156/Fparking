@@ -87,6 +87,8 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
 
         } catch (Exception ex) {
             Log.e("Error:", ex.getMessage());
+        }finally {
+
         }
         return null;
     }

@@ -44,22 +44,15 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home">
-
-        </activity>
+            android:label="@string/title_activity_home"></activity>
         <activity android:name=".profile.ProfileActivity" />
         <activity
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
         <activity android:name=".login.LoginActivity">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
-        <activity android:name=".login.SignUp_Fragment"></activity>
-        <activity android:name=".login.ForgotPasswordOtp_Fragment"></activity>
+        <activity android:name=".login.SignUp_Fragment" />
+        <activity android:name=".login.ForgotPasswordOtp_Fragment" />
         <activity
             android:name=".profile.ChangePassword"
             android:noHistory="true" />
@@ -82,11 +75,23 @@
             android:name="com.facebook.accountkit.ApplicationName"
             android:value="@string/app_name" />
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/google_maps_key" />
+
         <activity
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
-        <activity android:name=".dialog.DialogAddStaff"></activity>
+        <activity android:name=".dialog.DialogAddStaff" />
+        <activity android:name=".AddParkingInformation" />
+        <activity android:name=".AddParkingLocation">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
     </application>
 
 </manifest>

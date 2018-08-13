@@ -95,7 +95,7 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
                 oneBooking = jsonObj.getJSONObject(i);
                 int bookingID = oneBooking.getInt("id");
                 int status = oneBooking.getInt("status");
-                if (method.equals("homeget") && status != 1 && status != 2 ||oneBooking.getString("timein") == null || oneBooking.getString("timeout")==null) {
+                if (method.equals("homeget") && status != 1 && status != 2 || oneBooking.getString("timein") == null || oneBooking.getString("timeout")==null) {
                     continue;
                 }
                 else if (method.equals("statisticget")&& (oneBooking.getString("timein") == null || oneBooking.getString("timeout")==null)) {
@@ -211,6 +211,11 @@ class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
             JSONObject formData = new JSONObject();
             formData.put("id", b.getBookingID());
             formData.put("status", b.getStatus());
+//            if (b.getStatus() == 2) {
+//                formData.put("timein", b.getTimein());
+//            } else if (b.getStatus() == 3) {
+//                formData.put("timeout", b.getTimeout());
+//            }
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/update/", formData.toString(), "PUT");
 
             JSONObject jsonObj = new JSONObject(json);

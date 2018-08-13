@@ -64,6 +64,11 @@ public class Tariff implements Serializable {
 	public void setVehicletype(Vehicletype vehicletype) {
 		this.vehicletype = vehicletype;
 	}
+
+	@Override
+	public String toString() {
+		return "Tariff [id=" + id + ", price=" + price + ", parking=" + parking + ", vehicletype=" + vehicletype + "]";
+	}
 	
 
 }

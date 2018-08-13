@@ -2,6 +2,7 @@ package com.example.hung.fparking;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -13,10 +14,13 @@ import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerLoginTask;
+import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHandler {
     EditText name;
@@ -25,8 +29,8 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     EditText password;
     EditText changePassStatistic;
     TextView tvError;
-    TextView tvSuccess;
-    Button btnConfirm;
+    TextView tvSuccess, error;
+    Button btnConfirm, btnOK;
     AlertDialog dialog;
     ImageView backProfile;
 
@@ -62,23 +66,85 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
             @SuppressLint("ResourceAsColor")
             @Override
             public void onClick(View v) {
+                Pattern p = Pattern.compile(Constants.regEx);
+                String mathPhone = phone.getText().toString();
+                if (phone.getText().toString().contains("+84")) {
+                    mathPhone = phone.getText().toString().replace("+84", "0");
+                }
+                Matcher m = p.matcher(mathPhone);
+                if (!phone.getText().toString().isEmpty() && !m.find()) {
+                    tvSuccess.setText("Số điện thoại không đúng định dạng");
+                    tvSuccess.setTextColor(Color.RED);
+                    tvSuccess.setVisibility(View.VISIBLE);
+                } else {
 
-                tvSuccess.setVisibility(View.INVISIBLE);
-                AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
-                mBuilder.setView(mView);
-                dialog = mBuilder.create();
-                dialog.show();
-                btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
-                btnConfirm.setOnClickListener(
-                        new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                checkValidation();
-                            }
-                        });
-                tvError = (TextView) mView.findViewById(R.id.tvError);
-                password = (EditText) mView.findViewById(R.id.tbPassword);
+                    tvSuccess.setVisibility(View.INVISIBLE);
+                    AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
+                    View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                    mBuilder.setView(mView);
+                    dialog = mBuilder.create();
+                    dialog.show();
+                    tvError = (TextView) mView.findViewById(R.id.tvError);
+                    password = (EditText) mView.findViewById(R.id.tbPassword);
+                    btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
+
+                    btnConfirm.setOnClickListener(
+                            new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    try {
+                                        String passMD5 = getMD5Hex(password.getText().toString());
+                                        if (password.getText().toString().isEmpty() || password.getText().toString().equals("")) {
+                                            tvError.setText("Hãy nhập mật khẩu");
+                                            tvError.setVisibility(View.VISIBLE);
+                                        } else if (!passMD5.equals(Session.currentStaff.getPass())) {
+                                            tvError.setText("Mật khẩu không đúng, vui lòng nhập lại");
+                                            tvError.setVisibility(View.VISIBLE);
+                                        } else {
+                                            if (name.getText().toString().isEmpty() || name.getText().toString().equals("")) {
+                                                Session.currentStaff.setName(name.getHint().toString());
+                                            } else {
+                                                Session.currentStaff.setName(name.getText().toString());
+                                            }
+                                            if (address.getText().toString().isEmpty() || address.getText().toString().equals("")) {
+                                                Session.currentStaff.setAddress(address.getHint().toString());
+                                            } else {
+                                                Session.currentStaff.setAddress(address.getText().toString());
+                                            }
+                                            if (phone.getText().toString().isEmpty() || phone.getText().toString().equals("")) {
+                                                Session.currentStaff.setPhone(phone.getHint().toString());
+                                            } else {
+                                                String tempPhone = phone.getText().toString();
+                                                if(tempPhone.contains("+84")) {
+                                                    tempPhone = phone.getText().toString().replace("+84","0");
+                                                }
+                                                Session.currentStaff.setPhone(tempPhone);
+                                            }
+                                            new ManagerLoginTask("updateProfile", "", "", new IAsyncTaskHandler() {
+                                                @Override
+                                                public void onPostExecute(Object o) {
+                                                    if((boolean) o ) {
+                                                        tvSuccess.setText("Cập nhật thông tin thành công");
+                                                        tvSuccess.setTextColor(Color.GREEN);
+                                                        tvSuccess.setVisibility(View.VISIBLE);
+                                                        dialog.cancel();
+                                                    }else {
+                                                        dialog.cancel();
+                                                        showDialog("Số điện thoại đã tồn tại, cập nhật không thành công");
+                                                    }
+                                                    tvSuccess.setText("Cập nhật thông tin thành công");
+                                                    tvSuccess.setVisibility(View.VISIBLE);
+                                                    dialog.cancel();
+                                                }
+                                            });
+                                        }
+
+                                    } catch (Exception e) {
+                                        System.out.println("Lỗi ProfileActivity/checkValidation : " + e);
+                                    }
+                                }
+                            });
+                }
             }
 
         });
@@ -93,34 +159,21 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         address.setHint(Session.currentStaff.getAddress());
     }
 
-    public void checkValidation() {
-        try {
-            String passMD5 = getMD5Hex(password.getText().toString());
-            if (passMD5.equals(Session.currentStaff.getPass())) {
-                if (name.getText().toString().isEmpty() || name.getText().toString().equals("")) {
-                    Session.currentStaff.setName(name.getHint().toString());
-                } else {
-                    Session.currentStaff.setName(name.getText().toString());
-                }
-                if (address.getText().toString().isEmpty() || address.getText().toString().equals("")) {
-                    Session.currentStaff.setAddress(address.getHint().toString());
-                } else {
-                    Session.currentStaff.setAddress(address.getText().toString());
-                }
-                if (phone.getText().toString().isEmpty() || phone.getText().toString().equals("")) {
-                    Session.currentStaff.setPhone(phone.getHint().toString());
-                } else {
-                    Session.currentStaff.setPhone(phone.getText().toString());
-                }
-                new ManagerLoginTask("updateProfile", "", "", ProfileActivity.this);
-                tvError.setVisibility(View.INVISIBLE);
-            } else {
-                tvError.setVisibility(View.VISIBLE);
+    public void showDialog(String text) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
             }
-
-        } catch (Exception e) {
-            System.out.println("Lỗi ProfileActivity/checkValidation : " + e);
-        }
+        });
     }
 
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
