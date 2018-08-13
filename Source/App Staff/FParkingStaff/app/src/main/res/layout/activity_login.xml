@@ -80,7 +80,7 @@
             android:id="@+id/loginBtn"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="3dp"
+            android:layout_marginTop="20dp"
             android:background="@drawable/button_selector"
             android:padding="3dp"
             android:text="@string/login"
