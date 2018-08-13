@@ -136,6 +136,7 @@ public class BookingServiceImpl implements BookingService {
 			n.setType(1); // 1 : driver gửi cho parking
 			n.setStatus(0); // 0 : parking chưa nhận.
 			// b.setStatus(booking.getStatus());
+			System.out.println("===========================");
 			if (booking.getStatus() == 2) {
 
 				n.setEvent("checkin");
@@ -158,19 +159,20 @@ public class BookingServiceImpl implements BookingService {
 				f = fineService.create(f);
 				// parking bị phạt thì trừ luôn vào deposits
 				Parking p = parkingService.getById(b.getParking().getId());
-				p.setDeposits(p.getDeposits()-f.getPrice());
-				
+				p.setDeposits(p.getDeposits() - f.getPrice());
+
 				b.setStatus(0);
 				// tiền cọc < 100 thì ban parking
-				if(p.getDeposits()<100000) {
+				if (p.getDeposits() < 100000) {
 					p.setStatus(2);
 				}
 				parkingService.update(p);
-				n.setEvent("cancel");
+				n.setEvent("order");
 				n.setType(2);
-				n.setData("order");
+				n.setData("after");
 				Notification nn = notificationRepository.save(n);
-				parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() + 1);
+				System.out.println("nn.getParking_id = " + nn.getParking_id() + ", " + b.getParking().getCurrentspace());
+				parkingService.changeSpace(n.getParking_id(), b.getParking().getCurrentspace() + 1);
 				pusherService.trigger(nn.getDriver_id() + "dchannel", "order", "after");
 				return bookingRepository.save(b);
 			}
@@ -310,8 +312,8 @@ public class BookingServiceImpl implements BookingService {
 					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
 					Parking parking = parkingService.getById(booking.getParking().getId());
-					parking.setDeposits(parking.getDeposits() - totalPrice* booking.getComission());
-					if(parking.getDeposits()<100000) {
+					parking.setDeposits(parking.getDeposits() - totalPrice * booking.getComission());
+					if (parking.getDeposits() < 100000) {
 						parking.setStatus(2);
 					}
 					parkingService.update(parking);
@@ -374,20 +376,19 @@ public class BookingServiceImpl implements BookingService {
 			List<Booking> b = new ArrayList<>();
 			Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			if (type == 1) {
-				
+
 				List<Booking> bAll = bookingRepository.findAll();
-				
+
 				for (Booking booking : bAll) {
-					if (booking.getDrivervehicle().getDriver().getId() == t.getId()
-							&& booking.getStatus() == 3) {
+					if (booking.getDrivervehicle().getDriver().getId() == t.getId() && booking.getStatus() == 3) {
 						b.add(booking);
 					}
 				}
-			}else if(type == 2) {
+			} else if (type == 2) {
 				List<Booking> bAll = bookingRepository.findAll();
-				b.add(bAll.get(bAll.size()-1)); 
+				b.add(bAll.get(bAll.size() - 1));
 			}
-			
+
 			return b;
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
@@ -460,7 +461,7 @@ public class BookingServiceImpl implements BookingService {
 						count++;
 					}
 				}
-				if (count == 3) {
+				if (count >=3) {
 					driverService.block(booking.getDrivervehicle().getDriver());
 				}
 				bookingRepository.save(booking);

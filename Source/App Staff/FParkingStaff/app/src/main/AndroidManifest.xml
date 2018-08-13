@@ -55,7 +55,10 @@
         <activity
             android:name=".dialog.DialogActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />
-        <activity android:name=".login.MainActivity">
+        <activity android:name=".login.LoginActivity">
+
+        </activity>
+        <activity android:name=".IntroApplication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -66,7 +69,6 @@
             android:name=".ChangePassword"
             android:noHistory="true" />
         <activity android:name=".AlertDialog" />
-        <activity android:name=".Login"></activity>
     </application>
 
 </manifest>

@@ -35,7 +35,7 @@ public class HttpHandler {
             conn.setRequestMethod("GET");
             // read the response
             conn.setRequestProperty("Authorization", "Bearer " + Session.spref.getString("token", ""));
-//            conn.setConnectTimeout(4000);
+            conn.setConnectTimeout(4000);
             int status = conn.getResponseCode();
             if(status==HttpURLConnection.HTTP_OK) {
                 String message = conn.getResponseMessage();

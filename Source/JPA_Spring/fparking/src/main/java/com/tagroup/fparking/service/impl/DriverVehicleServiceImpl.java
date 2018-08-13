@@ -112,6 +112,10 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		System.out.println("DriverVehicleImp/getInfoDriverVehicle : " +noti);
 		if (noti != null) {
 			Long id = (Long) noti.getVehicle_id();
+			if(event.equals("cancel")) {
+				notificationService.deleteByNoti(new Notification());
+			}
+			System.out.println("===================   DriverVehicleImpl/GetInfoVehicle  event = "+ event);
 			return vehicleRepository.getOne(id);
 		}
 		return null;

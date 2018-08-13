@@ -1,6 +1,7 @@
 package com.example.hung.fparking.asynctask;
 
 import android.app.Activity;
+import android.app.ProgressDialog;
 import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Build;
@@ -17,6 +18,7 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParsePosition;
+import java.util.List;
 
 
 public class GetVehicleTask extends AsyncTask<Void, Void, Boolean> {
@@ -24,12 +26,23 @@ public class GetVehicleTask extends AsyncTask<Void, Void, Boolean> {
     private Activity activity;
 private int parkingID;
     private String event;
+
+    ProgressDialog pdLoading;
     public GetVehicleTask(int parkingID,String event, Activity activity) {
         this.activity = activity;
         this.parkingID = parkingID;
         this.event = event;
     }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+        pdLoading = new ProgressDialog(activity);
+        //this method will be running on UI thread
+        pdLoading.setMessage("\tĐợi xíu...");
+        pdLoading.setCancelable(false);
+        pdLoading.show();
 
+    }
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
     protected Boolean doInBackground(Void... params) {
@@ -86,7 +99,11 @@ private int parkingID;
         }
         return false;
     }
-
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+        pdLoading.dismiss();
+    }
 
 }
 

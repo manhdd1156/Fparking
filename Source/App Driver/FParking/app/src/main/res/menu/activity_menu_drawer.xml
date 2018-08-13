@@ -10,7 +10,7 @@
 
     <item
         android:id="@+id/nav_fine_history"
-        android:icon="@drawable/ic_menu_guide"
+        android:icon="@drawable/ic_menu_fine"
         android:title="Lịch sử phạt" />
 
     <item
@@ -25,7 +25,7 @@
 
     <item
         android:id="@+id/nav_feedback"
-        android:icon="@drawable/ic_menu_contact"
+        android:icon="@drawable/ic_menu_feedback"
         android:title="Phản hồi" />
 
     <item
@@ -40,6 +40,6 @@
 
     <item
         android:id="@+id/nav_logout"
-        android:icon="@drawable/ic_menu_guide"
+        android:icon="@drawable/ic_menu_logout"
         android:title="Đăng xuất" />
 </menu>

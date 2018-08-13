@@ -42,11 +42,11 @@
 									<form role="form" method="POST" action="">
 										<div class="form-group">
 											<label>Họ Tên:</label> 
-											<input type="text" class="form-control" name="name" value="${name }">
+											<input type="text" class="form-control" name="name" value="${name }" minlength="3" maxlength="50">
 										</div>
 										<div class="form-group">
 											<label>Số điện thoại:</label> 
-											<input type="tel" class="form-control" name="phone" value="${phonenumber }" placeholder="01665123651" pattern="^[0-9]*$" minlength="10" maxlength="11"  required >
+											<input type="tel" class="form-control" name="phone" value="${phonenumber }" placeholder="01665123651" pattern="^(09|01[2|6|8|9])+([0-9]{8})$" minlength="10" maxlength="11"  required >
 										</div>
 										<p style="color: green;">${messSuss }</p>
 										<p style="color: red;">${messError }</p>
