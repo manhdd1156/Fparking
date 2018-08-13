@@ -221,11 +221,11 @@
 
         <Spinner
             android:id="@+id/spinner2"
-            android:layout_width="364dp"
+            android:layout_width="319dp"
             android:layout_height="34dp"
-            android:layout_alignParentBottom="true"
-            android:layout_alignStart="@+id/tbNameSD"
-            android:layout_marginBottom="146dp" />
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/tbPassSD"
+            android:layout_marginTop="23dp" />
 
         <ImageView
             android:id="@+id/imageView4"
@@ -235,7 +235,12 @@
             android:layout_alignEnd="@+id/tbPassSD"
             android:layout_marginRight="30dp"
             app:srcCompat="@drawable/change" />
-
+        <View
+            android:layout_width="319dp"
+            android:layout_height="1px"
+            android:layout_alignStart="@+id/textView3"
+            android:layout_below="@+id/spinner2"
+            android:background="@color/white_greyish" />
 
     </RelativeLayout>
 
