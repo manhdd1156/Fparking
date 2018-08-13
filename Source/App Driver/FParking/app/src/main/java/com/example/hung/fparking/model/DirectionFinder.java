@@ -27,7 +27,7 @@ import com.example.hung.fparking.entity.Route;
 public class DirectionFinder {
 
     private static final String Direction_Url = "https://maps.googleapis.com/maps/api/directions/json?";
-    private static final String Google_API_Key = "AIzaSyB-_zDSvepKHFr8azMpWeRIQy6eDF-6dj4";
+    private static final String Google_API_Key = "AIzaSyAbDAGVd7M4EA7worMSJa-1K4LlP-uKzs0";
     private DirectionFinderListener listener;
     private String origin;
     private String destination;

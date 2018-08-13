@@ -38,6 +38,7 @@ import com.example.hung.fparking.asynctask.FineTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.NotificationTask;
 import com.example.hung.fparking.asynctask.ParkingInforTask;
+import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.FineDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
 import com.example.hung.fparking.entity.Route;
@@ -133,7 +134,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
             Intent intentCheckoutFlagment = new Intent(Direction.this, CheckOut.class);
             startActivity(intentCheckoutFlagment);
             finish();
-        }else{
+        } else {
             progessDialog.show();
         }
 
@@ -218,6 +219,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         mMap.setOnMyLocationButtonClickListener(new GoogleMap.OnMyLocationButtonClickListener() {
             @Override
             public boolean onMyLocationButtonClick() {
+                callLocationChangedListener();
                 userGesture = false;
                 return true;
             }
@@ -517,9 +519,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        if (textToSpeechNearPlace != null) {
-            textToSpeechNearPlace.shutdown();
-        }
+        textToSpeechNearPlace.shutdown();
         if (locationManager != null) {
             locationManager.removeUpdates(Direction.this);
         }

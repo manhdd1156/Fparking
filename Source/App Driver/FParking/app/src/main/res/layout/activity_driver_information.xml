@@ -123,6 +123,7 @@
             android:padding="10dp"
             android:singleLine="true"
             android:text="01647383196"
+            android:maxLength="11"
             android:textColor="@color/black"
             android:textSize="16sp" />
 
