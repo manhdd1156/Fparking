@@ -62,7 +62,7 @@
 										</div>
 										<div class="form-group">
 											<label>Số dư tài khoản:</label> 
-											<input type="number" class="form-control" name="deposits" value="${deposits }" min="0" required>
+											<input type="number" class="form-control" name="deposits" value="${deposits }" min="110000" max="2000000000" step="1" required>
 										</div>
 										<p style="color: green;">${messSuss }</p>
 										<p style="color: red;">${messError }</p>
