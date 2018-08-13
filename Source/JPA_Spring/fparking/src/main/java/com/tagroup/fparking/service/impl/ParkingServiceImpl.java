@@ -107,18 +107,31 @@ public class ParkingServiceImpl implements ParkingService {
 			t.setPrice(Double.parseDouble(parkingDTO.getSpace1()));
 			vt.setId((long)1);
 			t.setVehicletype(vt);
-		}else if(!parkingDTO.getSpace2().equals("")) {
+			t.setParking(p);
+			tariffRepository.save(t);
+			System.out.println("tariff1  = : " + t);
+		}
+		if(!parkingDTO.getSpace2().equals("")) {
+			t = new Tariff();
 			t.setPrice(Double.parseDouble(parkingDTO.getSpace2()));
 			vt.setId((long)2);
 			t.setVehicletype(vt);
-		}else if(!parkingDTO.getSpace3().equals("")) {
+			t.setParking(p);
+			tariffRepository.save(t);
+			System.out.println("tariff2  = : " + t);
+		}
+		
+		if(!parkingDTO.getSpace3().equals("")) {
+			t = new Tariff();
 			t.setPrice(Double.parseDouble(parkingDTO.getSpace3()));
 			vt.setId((long)3);
 			t.setVehicletype(vt);
+			t.setParking(p);
+			tariffRepository.save(t);
+			System.out.println("tariff3  = : " + t);
 		}
-		t.setParking(p);
 		System.out.println("tariff  = : " + t);
-		tariffRepository.save(t);
+		
 		System.out.println("parking = : " + p);
 		}catch(Exception e) {
 			System.out.println(e);

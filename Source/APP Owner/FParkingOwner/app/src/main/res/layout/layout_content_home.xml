@@ -50,12 +50,11 @@
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/parking_list_view"
-            android:layout_width="match_parent"
+            android:layout_width="370dp"
             android:layout_height="510dp"
-            android:layout_alignParentBottom="true"
             android:layout_below="@+id/imgInfor1"
-            android:layout_marginBottom="0dp"
-            android:layout_marginTop="20dp" />
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="15dp" />
 
         <TextView
             android:id="@+id/textView"
@@ -114,11 +113,11 @@
             android:id="@+id/imageViewAddParking"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/textView"
-            android:layout_alignParentEnd="true"
-            android:layout_marginEnd="113dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/ic_action_pass" />
+            android:layout_alignTop="@+id/textView"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="-3dp"
+            android:layout_toEndOf="@+id/tvTotalCar"
+            app:srcCompat="@drawable/ic_action_addparking" />
 
     </RelativeLayout>
 

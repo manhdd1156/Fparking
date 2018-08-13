@@ -162,12 +162,17 @@
 
     <Spinner
         android:id="@+id/spinner3"
-        android:layout_width="383dp"
+        android:layout_width="349dp"
         android:layout_height="wrap_content"
-        android:layout_alignParentBottom="false"
-        android:layout_alignParentStart="false"
+        android:layout_alignStart="@+id/tbNameAddStaff"
         android:layout_below="@+id/tbPassAddStaff"
-        android:layout_marginTop="10dp" />
+        android:layout_marginTop="23dp" />
+    <View
+        android:layout_width="285dp"
+        android:layout_height="1px"
+        android:layout_below="@+id/spinner3"
+        android:layout_centerHorizontal="true"
+        android:background="@color/white_greyish" />
 
 </RelativeLayout>
 

@@ -46,7 +46,7 @@
 										</div>
 										<div class="form-group">
 											<label>Số tiền nạp:</label> 
-											<input type="number" class="form-control" name="deposit"  value="110000" step="1" min="110000" required>
+											<input type="number" class="form-control" name="deposit" step="1" min="110000" max="2000000000" required>
 											<p style="color: green;">${messSuss }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>

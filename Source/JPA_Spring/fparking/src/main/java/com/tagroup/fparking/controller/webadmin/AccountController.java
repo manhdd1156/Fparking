@@ -273,13 +273,11 @@ public class AccountController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking", method = RequestMethod.GET)
 	public String accountParking(Map<String, Object> model) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		List<Parking> listParking;
 		try {
 			listParking = parkingService.getByStatus(1);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
-			return "error";
+			return "404";
 		}
 		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
 		double totalDeposit = 0;
@@ -290,14 +288,8 @@ public class AccountController {
 				m.put("address", parking.getAddress());
 				m.put("currentspace", parking.getCurrentspace());
 				m.put("totalspace", parking.getTotalspace());
-				if (parking.getDeposits() % 1 == 0) {
-					m.put("deposits", currencyVN.format((int) parking.getDeposits()));
-					totalDeposit += (int) parking.getDeposits();
-				} else {
-					m.put("deposits", currencyVN.format(parking.getDeposits()));
-					totalDeposit += parking.getDeposits();
-				}
-
+				m.put("deposits", currencyVN.format(parking.getDeposits()));
+				totalDeposit += parking.getDeposits();
 				arrayListParking.add(m);
 			}
 			model.put("listParking", arrayListParking);
@@ -318,8 +310,7 @@ public class AccountController {
 		try {
 			listParking = parkingService.getByStatus(0);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
-			return "error";
+			return "404";
 		}
 
 		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
@@ -331,13 +322,7 @@ public class AccountController {
 				m.put("address", parking.getAddress());
 				m.put("currentspace", parking.getCurrentspace());
 				m.put("totalspace", parking.getTotalspace());
-				if (parking.getDeposits() % 1 == 0) {
-					m.put("deposits", currencyVN.format((int) parking.getDeposits()));
-					totalDeposit += (int) parking.getDeposits();
-				} else {
-					m.put("deposits", currencyVN.format(parking.getDeposits()));
-					totalDeposit += parking.getDeposits();
-				}
+				m.put("deposits", currencyVN.format(parking.getDeposits()));
 
 				arrayListParking.add(m);
 			}
@@ -658,8 +643,7 @@ public class AccountController {
 		try {
 			listParking = parkingService.getByStatus(1);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra với hệ thống. Vui lòng thử lại!");
-			return "error";
+			return "404";
 		}
 
 		return "redirect:/account/parking";
@@ -691,21 +675,16 @@ public class AccountController {
 		} catch (Exception e) {
 			return "404";
 		}
-
 		model.put("address", parking.getAddress());
 		model.put("longitude", parking.getLongitude());
 		model.put("latitude", parking.getLatitude());
 		model.put("timeoc", parking.getTimeoc());
 		model.put("totalSpace", parking.getTotalspace());
-		if (parking.getDeposits() % 1 == 0) {
-			model.put("deposits", (int) parking.getDeposits());
-		} else {
-			model.put("deposits", parking.getDeposits());
-		}
+		model.put("deposits", parking.getDeposits());
 		return "editparking";
 	}
 
-	// save edit form parking by id
+	// submit form edited parking by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.POST)
 	public String saveEditParkingForm(Map<String, Object> model, @PathVariable Long id,
@@ -713,7 +692,8 @@ public class AccountController {
 			@RequestParam("latitude") Double latitude, @RequestParam("timeoc") String timeoc,
 			@RequestParam("totalSpace") Integer totalSpace, @RequestParam("deposits") Double deposits)
 			throws Exception {
-
+		System.out.println(deposits);
+		System.out.println("==========================");
 		Parking parking;
 		try {
 			parking = parkingService.getById(id);
@@ -747,12 +727,11 @@ public class AccountController {
 		model.put("latitude", parking2.getLatitude());
 		model.put("timeoc", parking2.getTimeoc());
 		model.put("totalSpace", parking2.getTotalspace());
-		if (parking.getDeposits() % 1 == 0) {
+		if (parking2.getDeposits() % 1 == 0) {
 			model.put("deposits", (int) parking2.getDeposits());
 		} else {
 			model.put("deposits", parking2.getDeposits());
 		}
-
 		return "editparking";
 	}
 

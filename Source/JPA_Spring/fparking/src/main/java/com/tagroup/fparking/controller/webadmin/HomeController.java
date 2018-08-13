@@ -122,7 +122,7 @@ public class HomeController {
 					arrayListParking.add(m);
 				}
 
-				//Pending
+				// Pending
 				if (parking.getStatus() == 3) {
 					m1.put("id", parking.getId());
 					m1.put("addressParking", parking.getAddress());
@@ -289,10 +289,12 @@ public class HomeController {
 			parking.setStatus(1);
 			parking.setDeposits(parking.getDeposits() + deposit);
 			parkingService.update(parking);
+			model.put("deposit", currencyVN.format(parking.getDeposits()));
+			model.put("address", parking.getAddress());
 		} catch (Exception e) {
 			return "404";
 		}
-		model.put("messSuss", "Nạp tiền thành công");
+		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
 
 		return "addmoneytoparking";
 	}
@@ -384,8 +386,8 @@ public class HomeController {
 
 		} catch (Exception e) {
 			HttpHeaders headers = new HttpHeaders();
-			headers.add("Location", "/404");    
-			return new ResponseEntity<String>(headers,HttpStatus.FOUND);
+			headers.add("Location", "/404");
+			return new ResponseEntity<String>(headers, HttpStatus.FOUND);
 		}
 	}
 }

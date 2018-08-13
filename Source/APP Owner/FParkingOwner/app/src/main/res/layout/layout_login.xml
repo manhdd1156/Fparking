@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
+    android:background="@drawable/car"
     android:padding="20dp">
 
     <ImageView
@@ -32,8 +33,8 @@
 
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
-            android:hint="Số điện thoại"
             android:gravity="center_vertical"
+            android:hint="Số điện thoại"
             android:inputType="phone"
             android:padding="10dp"
             android:singleLine="true"
@@ -47,7 +48,6 @@
             android:background="@color/white_greyish" />
 
 
-
         <EditText
             android:id="@+id/login_password"
             android:layout_width="fill_parent"
@@ -55,11 +55,11 @@
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"
-            android:textColor="@color/black"
+            android:hint="Mật khẩu"
             android:inputType="textPassword"
             android:padding="10dp"
             android:singleLine="true"
-            android:hint="Mật khẩu"
+            android:textColor="@color/black"
             android:textSize="16sp" />
 
         <View
@@ -111,7 +111,7 @@
         android:gravity="center"
         android:padding="5dp"
         android:text="@string/newUser"
-        android:textColor="@color/white"
+        android:textColor="@color/white_greyish"
         android:textSize="15sp" />
 
 </RelativeLayout>
