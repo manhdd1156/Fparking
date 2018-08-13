@@ -19,10 +19,12 @@ import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.security.Token;
+import com.tagroup.fparking.service.BookingService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.City;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
@@ -40,6 +42,8 @@ public class ParkingServiceImpl implements ParkingService {
 	private StaffService staffService;
 	@Autowired
 	private VehicleService vehicleService;
+	@Autowired
+	private BookingService bookingService;
 	@Autowired
 	private RatingRepository ratingRepository;
 	@Autowired
@@ -156,6 +160,20 @@ public class ParkingServiceImpl implements ParkingService {
 			} else if(t.getType().equals("STAFF")){
 				System.out.println("parkingServiceImpl/update STAFF");
 				Parking temp = parkingRepository.getOne(parking.getId());
+				List<Booking> b = bookingService.findByParking(temp);
+				int count = 0;
+				for (Booking booking : b) {
+					if(booking.getStatus()==1 || booking.getStatus()==2) {
+						count++;
+					}
+				}
+				System.out.println("ParkingServiceIml/Update currentspace = " + parking.getCurrentspace());
+				System.out.println("ParkingServiceIml/Update count = " + count);
+
+				if(parking.getCurrentspace()<count) {
+					System.out.println("====");
+					return null;
+				}
 				temp.setCurrentspace(parking.getCurrentspace());
 				parking = temp;
 			}else if(t.getType().equals("OWNER")) {
@@ -279,10 +297,12 @@ public class ParkingServiceImpl implements ParkingService {
 		try {
 			p = getById(parkingid);
 			p.setCurrentspace(space);
+			System.out.println(p);
 			return update(p);
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
+			System.out.println(e);
 		}
 
 		// TODO Auto-generated method stub

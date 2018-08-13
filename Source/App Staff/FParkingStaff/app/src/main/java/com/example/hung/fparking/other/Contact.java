@@ -21,9 +21,7 @@ public class Contact extends AppCompatActivity {
         backContact.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentBackContact = new Intent(Contact.this, HomeActivity.class);
-                startActivity(intentBackContact);
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+               finish();
             }
         });
     }

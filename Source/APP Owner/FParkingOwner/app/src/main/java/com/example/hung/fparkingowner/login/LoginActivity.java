@@ -217,7 +217,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
             startActivity( new Intent(this, HomeActivity.class));
             finish();
         } else {
-            showDialog("Đăng nhập không thành công");
+            showDialog("Số điện thoại hoặc mật khẩu không đúng");
         }
     }
 }

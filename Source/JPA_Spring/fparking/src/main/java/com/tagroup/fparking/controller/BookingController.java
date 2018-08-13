@@ -93,10 +93,6 @@ public class BookingController {
 	public ResponseEntity<?> getBookingByPId(@PathVariable Long id) throws Exception {
 
 		List<Booking> respone = bookingService.findByParking(parkingService.getById(id));
-		for (Booking booking : respone) {
-			System.out.println("Booking ====== "  + booking.toString() );
-		}
-		System.out.println("respone ==== "  + respone.toString());
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
@@ -115,7 +111,6 @@ public class BookingController {
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody BookingDTO bookingDTO) throws Exception {
-		System.out.println("=============");
 		Booking respone = bookingService.create(bookingDTO.getDriverid(), bookingDTO.getVehicleid(),
 				bookingDTO.getParkingid(), bookingDTO.getStatus());
 		return new ResponseEntity<>(respone, HttpStatus.OK);
@@ -146,7 +141,6 @@ public class BookingController {
 	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
 	@RequestMapping(path = "/update/infockbynoti", method = RequestMethod.PUT)
 	public ResponseEntity<?> getInfoCheckOut(@RequestBody Notification noti) throws Exception {
-		System.out.println("bookings/update/infocheckout : " + noti.toString());
 		Booking respone = bookingService.getInfoCheckOutByNoti(noti);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 

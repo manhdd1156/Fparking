@@ -16,6 +16,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
+import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerNotiTask;
 import com.example.hung.fparking.dialog.DialogActivity;
 import com.example.hung.fparking.HomeActivity;
@@ -34,7 +35,7 @@ public class Notification extends Service implements SubscriptionEventListener {
     public int onStartCommand(Intent intent, int flags, int startId) {
         PusherOptions options = new PusherOptions();
         options.setCluster("ap1");
-        if(Session.currentParking!=null) {
+        if (Session.currentParking != null) {
             Session.pusher = new Pusher(Constants.PUSHER_KEY, options);
             Session.channel = Session.pusher.subscribe(Session.currentParking.getId() + "schannel");
         }
@@ -49,6 +50,7 @@ public class Notification extends Service implements SubscriptionEventListener {
 //        return super.onStartCommand(intent, flags, startId);
         return START_STICKY;
     }
+
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -64,33 +66,38 @@ public class Notification extends Service implements SubscriptionEventListener {
     public void onEvent(String channelName, String eventName, final String data) {
         try {
 
-                if (eventName.toLowerCase().contains("order")) {
-                    createNotification("Có xe muốn đặt chỗ");
-                    System.out.println("noti order");
-                } else if (eventName.toLowerCase().contains("checkin")) {
-                    createNotification("Có xe muốn vào bãi");
-                    System.out.println("noti checkin");
-                } else if (eventName.toLowerCase().contains("checkout")) {
-                    createNotification("Có xe muốn thanh toán");
-                    System.out.println("noti checkout");
-                }else if(eventName.toLowerCase().contains("cancel") && data.contains("preorder")) {
-                    Session.homeActivity.runOnUiThread(new Runnable() {
+            if (eventName.toLowerCase().contains("order")) {
+                createNotification("Có xe muốn đặt chỗ");
+                System.out.println("noti order");
+            } else if (eventName.toLowerCase().contains("checkin")) {
+                createNotification("Có xe muốn vào bãi");
+                System.out.println("noti checkin");
+            } else if (eventName.toLowerCase().contains("checkout")) {
+                createNotification("Có xe muốn thanh toán");
+                System.out.println("noti checkout");
+            } else if (eventName.toLowerCase().contains("cancel") && data.contains("preorder")) {
+                Session.homeActivity.runOnUiThread(new Runnable() {
 
-                        @Override
-                        public void run() {
-            new ManagerNotiTask("delete");
-//                            Intent myIntent = new Intent(Session.homeActivity, HomeActivity.class);
-//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                            Session.homeActivity.finish();
-//                        startActivity(myIntent);
-                        Session.homeActivity.recreate();
+                    @Override
+                    public void run() {
+                        new ManagerNotiTask("delete", new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+                                Intent myIntent = new Intent(Notification.this, HomeActivity.class);
+                                myIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                Session.homeActivity.finish();
+                                startActivity(myIntent);
+                            }
+                        });
+
+//                        Session.homeActivity.recreate();
 //                        finish();
 
 
-                        }
-                    });
-                    return;
-                }
+                    }
+                });
+                return;
+            }
             createDialog(eventName, data);
         } catch (Exception e) {
             Log.e("Error notification : ", e.getMessage());
@@ -103,8 +110,8 @@ public class Notification extends Service implements SubscriptionEventListener {
             NotificationCompat.Builder mBuilder =
                     new NotificationCompat.Builder(this.getApplicationContext(), "notify_001");
             Intent ii = new Intent(this.getApplicationContext(), HomeActivity.class);
-            ii.putExtra("touchNoti","true");
-            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,ii, 0);
+            ii.putExtra("touchNoti", "true");
+            PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, ii, 0);
 
             NotificationCompat.BigTextStyle bigText = new NotificationCompat.BigTextStyle();
             bigText.bigText("Nhấn vào để xem chi tiết");
@@ -137,8 +144,8 @@ public class Notification extends Service implements SubscriptionEventListener {
     public void createDialog(String evenName, String data) {
 
         Intent i = new Intent(Notification.this, DialogActivity.class);
-        i.putExtra("eventName",evenName);
-        i.putExtra("data",data);
+        i.putExtra("eventName", evenName);
+        i.putExtra("data", data);
         startActivity(i);
 
     }

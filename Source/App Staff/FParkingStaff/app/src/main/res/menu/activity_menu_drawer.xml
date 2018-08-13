@@ -20,6 +20,10 @@
         android:id="@+id/nav_guide"
         android:icon="@drawable/ic_menu_guide"
         android:title="Hướng dẫn sử dụng" />
+    <item
+        android:id="@+id/Logout"
+        android:icon="@drawable/ic_action_back"
+        android:title="Đăng xuất" />
 
 
 

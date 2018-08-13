@@ -9,14 +9,12 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.hung.fparking.HomeActivity;
-import com.example.hung.fparking.IntroApplication;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.GetVehicleTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
-import com.example.hung.fparking.login.MainActivity;
 
 public class DialogActivity extends Activity  implements OnClickListener,IAsyncTaskHandler {
 
@@ -83,8 +81,9 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         b.setParkingID(Session.currentParking.getId());
                         b.setStatus(1);
                         new ManagerBookingTask("updatebystatus", b, null);
-                        Session.homeActivity.recreate();
                         finish();
+                        Session.homeActivity.recreate();
+
 //                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
 //                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
 //                        finish();
@@ -102,11 +101,17 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
                         b.setStatus(1);
-                        new ManagerBookingTask("cancel", b, null);
+                        new ManagerBookingTask("cancel", b, new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+
+                            }
+                        });
+                        finish();
 //                        showToastMessage("Cancel Button Clicked");
 //                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
 //                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-                        finish();
+
 //                        overridePendingTransition(0, 0);
 //                        startActivity(myIntent);
 //                        overridePendingTransition(0, 0);
@@ -125,7 +130,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
                         b.setStatus(2);
-                        new ManagerBookingTask("updatebystatus", b, null);
+                        new ManagerBookingTask("updatebystatus", b, DialogActivity.this);
                         Session.homeActivity.recreate();
                         finish();
 
@@ -138,7 +143,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
                         b.setStatus(2);
-                        new ManagerBookingTask("cancel", b, null);
+                        new ManagerBookingTask("cancel", b, DialogActivity.this);
 //                        showToastMessage("Cancel Button Clicked");
 //                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
 //                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
@@ -169,7 +174,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
                         b.setStatus(3);
-                        new ManagerBookingTask("cancel", b, null);
+                        new ManagerBookingTask("cancel", b, DialogActivity.this);
                         showToastMessage("Cancel Button Clicked");
 //                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
 //                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);

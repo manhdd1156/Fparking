@@ -7,6 +7,7 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 
+import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerNotiTask;
 
 public class CheckNetwork {
@@ -40,7 +41,12 @@ public class CheckNetwork {
                             createDialog();
                         } else {
                             mActivity.recreate();
-                            new ManagerNotiTask("get");
+                            new ManagerNotiTask("get", new IAsyncTaskHandler() {
+                                @Override
+                                public void onPostExecute(Object o) {
+
+                                }
+                            });
 //                            Intent intent = new Intent(mContext, IntroApplication.class);
 //                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 //                            mContext.startActivity(intent);

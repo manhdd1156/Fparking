@@ -136,7 +136,7 @@ public class NotificationServiceImpl implements NotificationService {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			
-			System.out.println("NotificationServiceIml/DeleteByNoti :" + notification.toString());
+			System.out.println("NotificationServiceIml/DeleteByNoti :" + t.getType() + "  : "  + notification.toString());
 			List<Notification> notilst = notificationRepository.findAll();
 			for (Notification noti : notilst) {
 				if (noti.getDriver_id() == t.getId() && noti.getType() == notification.getType()
