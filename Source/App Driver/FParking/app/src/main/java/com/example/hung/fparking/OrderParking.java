@@ -178,7 +178,6 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                     mPreferencesEditor.putString("vehicleID", vehicleID + "").commit();
                     mPreferencesEditor.putString("parkingID", parkingID + "").commit();
                     new BookingTask("create", vehicleID + "", parkingID + "", "", OrderParking.this);
-                    parkingSortDTOS = null;
                     counttime();
                 }
             }
@@ -322,7 +321,7 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                                         quickDialog.show();
                                         textViewAddressQB.setText(parkingSortDTOS.get(0).getAddress());
                                         textViewTotalTimeQB.setText(parkingSortDTOS.get(0).getTimeoc());
-                                        textViewPriceQB.setText(parkingDTOS.get(0).getCurrentspace() + "");
+                                        textViewPriceQB.setText(parkingSortDTOS.get(0).getTotalspace() - parkingDTOS.get(0).getCurrentspace() + "");
 
                                         buttonOK.setOnClickListener(new View.OnClickListener() {
                                             @Override
@@ -552,5 +551,12 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
                 }
             }, 2000);
         }
+    }
+
+    @Override
+    protected void onStop() {
+        super.onStop();
+        progessDialog.cancel();
+        yourCountDownTimer.cancel();
     }
 }

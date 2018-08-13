@@ -190,8 +190,14 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
         quickBooking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                VehicleDTO vehicleDTO = new VehicleDTO();
-                new VehicleTask("select", vehicleDTO, "vt", HomeActivity.this);
+
+                if (Session.currentDriver.getStatus().equals("0")) {
+                    textViewAlert.setText("Tài khoản bạn đang bị khóa!");
+                    notiDialog.show();
+                } else {
+                    VehicleDTO vehicleDTO = new VehicleDTO();
+                    new VehicleTask("select", vehicleDTO, "vt", HomeActivity.this);
+                }
             }
         });
 
@@ -240,7 +246,7 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
             if (locationManager != null) {
                 locationManager.removeUpdates(HomeActivity.this);
             }
-            Intent intentOrderFlagment = new Intent(HomeActivity.this, OrderParking.class);
+            Intent intentOrderFlagment = new Intent(HomeActivity.this, Direction.class);
             startActivity(intentOrderFlagment);
             finish();
         } else if (status == 2) {
