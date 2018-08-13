@@ -61,6 +61,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
         address = (EditText) findViewById(R.id.tbAddressSD);
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
         changePass = findViewById(R.id.tbPassSD);
+        changePass.setFocusable(false);
         sprinerParking = (Spinner) findViewById(R.id.spinner2);
         Intent ii = getIntent();
         staffid = ii.getStringExtra("staffid");

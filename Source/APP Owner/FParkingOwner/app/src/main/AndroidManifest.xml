@@ -50,6 +50,11 @@
             android:name=".change_space.NumberPickerActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
         <activity android:name=".login.LoginActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
         </activity>
         <activity android:name=".login.SignUp_Fragment" />
         <activity android:name=".login.ForgotPasswordOtp_Fragment" />
@@ -86,11 +91,7 @@
         <activity android:name=".dialog.DialogAddStaff" />
         <activity android:name=".AddParkingInformation" />
         <activity android:name=".AddParkingLocation">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
     </application>
 

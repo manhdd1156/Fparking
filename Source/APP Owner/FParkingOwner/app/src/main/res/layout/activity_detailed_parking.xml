@@ -183,8 +183,9 @@
             android:id="@+id/textView11"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/tbCloseTimeHour"
+            android:layout_alignEnd="@+id/btnDeleteDP"
             android:layout_alignTop="@+id/textView4"
+            android:layout_marginRight="5dp"
             android:text="Giờ đóng cửa:"
             android:textSize="18sp" />
 
@@ -346,8 +347,8 @@
             android:id="@+id/tbCloseTimeHour"
             android:layout_width="40dp"
             android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/textView11"
             android:layout_below="@+id/textView4"
-            android:layout_toEndOf="@+id/tvMoneyDP"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
             android:gravity="center_vertical"

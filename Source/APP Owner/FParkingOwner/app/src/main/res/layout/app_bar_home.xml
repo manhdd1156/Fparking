@@ -23,11 +23,5 @@
 
     <include layout="@layout/layout_content_home" />
 
-    <ImageView
-        android:id="@+id/imageView4"
-        android:layout_width="47dp"
-        android:layout_height="66dp"
-        app:srcCompat="@drawable/change" />
-
 
 </android.support.design.widget.CoordinatorLayout>
