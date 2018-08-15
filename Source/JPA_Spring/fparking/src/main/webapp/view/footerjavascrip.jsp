@@ -26,6 +26,7 @@
 
 <!-- Page-Level Demo Scripts - Tables - Use for reference -->
 <script src="assets/js/md5.js"></script>
+<script src="assets/js/toastr.min.js"></script>
 
 <script>
 	$(document).ready(function() {

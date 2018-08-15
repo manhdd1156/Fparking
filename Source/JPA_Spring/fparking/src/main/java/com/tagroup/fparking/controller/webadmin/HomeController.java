@@ -248,9 +248,8 @@ public class HomeController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/feedback/delete/{id}", method = RequestMethod.GET)
 	public String deleteFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {
+		Feedback feedbackupdate = new Feedback();
 		try {
-			Feedback feedbackupdate = new Feedback();
-
 			feedbackupdate = feedbackService.getById(id);
 			feedbackupdate.setStatus(2);
 			feedbackService.update(feedbackupdate);
@@ -281,6 +280,7 @@ public class HomeController {
 			model.put("content", feedbackupdate.getContent());
 			model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
 			model.put("resolve", feedbackupdate.getResolve());
+			model.put("type", 1);
 			model.put("messSucc", "Đã giải quyết!");
 			return "viewdetailfeedback";
 		}

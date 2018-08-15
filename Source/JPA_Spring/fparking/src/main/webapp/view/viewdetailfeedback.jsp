@@ -54,9 +54,6 @@
 											<textarea style="background-color: white;"
 												class="form-control" rows="10" name="resolve">${resolve }</textarea>
 										</div>
-										<dialog open>
-										<p style="color: green;">${messSucc }</p>
-										</dialog>
 										<div>
 											<a href="#" onclick="deleteFeedback2(${id });return false"
 												type="button" class="btn btn-danger">Xóa</a> <input
@@ -74,6 +71,14 @@
 	</div>
 	<!-- ===============FooterJavaScrip Start================= -->
 	<%@include file="footerjavascrip.jsp"%>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var type = ${type};
+		if(type==1){
+			toastr.success('${messSucc }', {timeOut: 5000})}
+	});
+	</script>
+
 	<!-- ===============FooterJavaScrip End================= -->
 </body>
 </html>

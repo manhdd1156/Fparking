@@ -44,11 +44,11 @@
 
 									<ul class="nav nav-tabs">
 										<li><a data-toggle="tab" href="#Infromation"
-											id="tabInfromation" class="text-success"><i class="fa fa-bookmark-o"></i>
-												Thông tin tài khoản</a></li>
+											id="tabInfromation" class="text-success"><i
+												class="fa fa-bookmark-o"></i> Thông tin tài khoản</a></li>
 										<li><a data-toggle="tab" href="#FineHistory"
-											id="tabFineHistory" class="text-success"><i class="fa fa-info"></i> Lịch sử
-												phạt</a></li>
+											id="tabFineHistory" class="text-success"><i
+												class="fa fa-info"></i> Lịch sử phạt</a></li>
 									</ul>
 
 									<div class="tab-content">
@@ -109,19 +109,20 @@
 																		<tr>
 																			<th>Ngày phạt</th>
 																			<th>Biển số xe</th>
-																			<th>Điển đếm</th>
+																			<th>Điển đến</th>
 																			<th>Số tiền bị phạt</th>
 																			<th>Trạng thái</th>
 																		</tr>
 																	</thead>
 																	<tbody>
-																		<c:forEach items="${ driverFine}" var="driverFine">
+																		<c:forEach items="${driverFine}"
+																			var="driverFineHistory">
 																			<tr>
-																				<td>${driverFine.dateFine }</td>
-																				<td>${driverFine.licenseplate }</td>
-																				<td>${driverFine.address }</td>
-																				<td>${driverFine.priceFine }</td>
-																				<td>${driverFine.status }</td>
+																				<td>${driverFineHistory.dateFine }</td>
+																				<td>${driverFineHistory.licenseplate }</td>
+																				<td>${driverFineHistory.address }</td>
+																				<td>${driverFineHistory.priceFine }</td>
+																				<td>${driverFineHistory.status }</td>
 																			</tr>
 																		</c:forEach>
 																	</tbody>
@@ -150,17 +151,17 @@
 
 		<!-- ===============FooterJavaScrip Start================= -->
 		<%@include file="footerjavascrip.jsp"%>
-	<script type="text/javascript">
-	$(document).ready(function(){
-		var type = ${type};
-		if(type==1){
-			$("#tabFineHistory").tab('show')
-			alert("Hello!");
-		}else{
-			$("#tabInfromation").tab('show')
-		}
-	});
-	</script>
+		<script type="text/javascript">
+			$(document).ready(function() {
+				var type = ${type}
+				;
+				if (type == 1) {
+					$("#tabFineHistory").tab('show')
+				} else {
+					$("#tabInfromation").tab('show')
+				}
+			});
+		</script>
 		<!-- ===============FooterJavaScrip End================= -->
 </body>
 </html>

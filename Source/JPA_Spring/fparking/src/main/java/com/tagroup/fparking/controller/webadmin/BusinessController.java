@@ -526,7 +526,7 @@ public class BusinessController {
 		return "managementrevenuebyfine";
 	}
 
-	// get detail revenue by booking whit id
+	// get detail revenue by booking with id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/revenue/detail/{id}", method = RequestMethod.GET)
 	public String getRevenueByID(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
@@ -641,7 +641,6 @@ public class BusinessController {
 
 		return "redirect:/business/feedback";
 	}
-
 	// resolve feedback
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.POST)
@@ -662,6 +661,7 @@ public class BusinessController {
 		model.put("content", feedbackupdate.getContent());
 		model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
 		model.put("resolve", feedbackupdate.getResolve());
+		model.put("type", 1);
 		model.put("messSucc", "Đã giải quyết!");
 		return "viewdetailfeedback";
 	}
