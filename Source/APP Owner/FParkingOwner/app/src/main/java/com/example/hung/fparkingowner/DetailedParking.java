@@ -18,25 +18,29 @@ import com.example.hung.fparkingowner.asynctask.GetCityTask;
 import com.example.hung.fparkingowner.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparkingowner.asynctask.ManagerParkingTask;
 import com.example.hung.fparkingowner.config.Session;
+import com.example.hung.fparkingowner.dto.CityDTO;
 import com.example.hung.fparkingowner.dto.ParkingDTO;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 
 
 public class DetailedParking extends AppCompatActivity implements IAsyncTaskHandler {
     Button btnUpdate, btnClose, btnDelete;
     AlertDialog dialog;
     EditText address, openHour, openMin, closeHour, closeMin, totalSpace, confirmPass, currentSpace;
-    TextView desposits, process, errorConfirmPass;
-    Button btnConfimPass;
+    TextView desposits, process,error, errorConfirmPass;
+    Button btnConfimPass,btnOK;
     ImageView backDP;
     Spinner sprinerCity;
-    String parkingid, city;
-    List<String> listCity;
-
+    String parkingid;
+    int cityid;
+    List<String> listCityString;
+    List<CityDTO> listCityDTO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -53,7 +57,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         desposits = (TextView) findViewById(R.id.tvMoneyDP);
         process = (TextView) findViewById(R.id.tvProcess);
         sprinerCity = (Spinner) findViewById(R.id.spinner);
-        listCity = new ArrayList<>();
+        listCityString = new ArrayList<>();
 
 
         btnUpdate = findViewById(R.id.btnUpdateDP);
@@ -64,12 +68,15 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         backDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(DetailedParking.this,HomeActivity.class);
                 finish();
+                startActivity(i);
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("=====================");
                 if (address.getText().toString().isEmpty() || address.getText().toString().equals("") ||
                         openHour.getText().toString().isEmpty() || openHour.getText().toString().equals("") ||
                         openMin.getText().toString().isEmpty() || openMin.getText().toString().equals("") ||
@@ -77,14 +84,19 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                         closeMin.getText().toString().isEmpty() || closeMin.getText().toString().equals("") ||
                         totalSpace.getText().toString().isEmpty() || totalSpace.getText().toString().equals("")
                         ) {
-                    process.setText("Hãy nhập các trường cần thay đổi");
-                    process.setVisibility(View.VISIBLE);
+                    showDialog("Hãy nhập các trường cần thay đổi",0);
+//                    process.setText("Hãy nhập các trường cần thay đổi");
+//                    process.setVisibility(View.VISIBLE);
                 }  else if(Integer.parseInt(openHour.getText().toString()) >23 || Integer.parseInt(openMin.getText().toString()) > 60 ||
                         Integer.parseInt(closeHour.getText().toString())>24 || Integer.parseInt(closeMin.getText().toString())>60){
-                    process.setText("Sai định dạng thời gian, vui lòng nhập lại");
+                    showDialog("Sai định dạng thời gian, vui lòng nhập lại",0);
+//                    process.setText("Sai định dạng thời gian, vui lòng nhập lại");
                 }else if(Integer.parseInt(openHour.getText().toString())>Integer.parseInt(closeHour.getText().toString()) ||
                         (Integer.parseInt(openHour.getText().toString())==Integer.parseInt(closeHour.getText().toString()) && Integer.parseInt(openMin.getText().toString())>Integer.parseInt(closeMin.getText().toString()))) {
-                    process.setText("Giờ đóng cửa phải muộn hơn giờ mở cửa, vui lòng nhập lại");
+                    showDialog("Giờ đóng cửa phải muộn hơn giờ mở cửa, vui lòng nhập lại",0);
+//                    process.setText("Giờ đóng cửa phải muộn hơn giờ mở cửa, vui lòng nhập lại");
+
+                }else {
                     onClickBtn("update");
                 }
             }
@@ -116,15 +128,19 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
             @Override
             public void onPostExecute(Object o) {
                 if (o instanceof List) {
-                    listCity = (ArrayList<String>) o;
-                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailedParking.this, android.R.layout.simple_spinner_item, listCity);
+                    listCityDTO = (ArrayList<CityDTO>) o;
+                    for(int i =0;i<listCityDTO.size();i++) {
+                        listCityString.add(listCityDTO.get(i).getCityName());
+                    }
+                    System.out.println(listCityString);
+                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailedParking.this, android.R.layout.simple_spinner_item, listCityString);
                     adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                     sprinerCity.setAdapter(adapter);
                     sprinerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            city = sprinerCity.getSelectedItem().toString();
-
+                            cityid = listCityDTO.get(sprinerCity.getSelectedItemPosition()).getCityID();
+                            System.out.println(cityid);
                         }
 
                         @Override
@@ -180,7 +196,8 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                                 closemin = "0" + closemin;
                             }
                             System.out.println(openHour.getText().toString() + " ===========================");
-                            p.setTimeoc(openHour.getText().toString() + ":" + openMin.getText().toString() + "-" + closeHour.getText().toString() + ":" + closeMin.getText().toString() + "h");
+                            p.setCity_id(cityid);
+                            p.setTimeoc(openhour + ":" + openmin + "-" + closehour + ":" + closemin + "h");
                             p.setStatus(4);
                         } else if (type.equals("close")) { // button is "tạm đóng"
                             p.setStatus(5);
@@ -194,7 +211,10 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             @Override
                             public void onPostExecute(Object o) {
                                 dialog.cancel();
-                                finish();
+                                showDialog("Thực hiện thành công",1);
+//                                Intent i = new Intent(DetailedParking.this,HomeActivity.class);
+//                                finish();
+//                                startActivity(i);
                             }
                         });
 
@@ -227,7 +247,27 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
 
         return sb.toString();
     }
-
+    public void showDialog(String text, final int type) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                if(type==1) {
+                    Intent i = new Intent(DetailedParking.this,HomeActivity.class);
+                    finish();
+                    startActivity(i);
+                }
+            }
+        });
+    }
     @SuppressLint("ResourceAsColor")
     @Override
     public void onPostExecute(Object o) {
@@ -246,7 +286,8 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                         closeMin.setText(plist.get(i).getTimeoc().substring(9, 11) + "");
                         totalSpace.setText(plist.get(i).getTotalspace() + "");
                         currentSpace.setText(plist.get(i).getCurrentspace() + "");
-                        desposits.setText(plist.get(i).getDeposits() + "");
+                        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+                        desposits.setText(currencyVN.format(plist.get(i).getDeposits() + ""));
                         sprinerCity.setSelection(plist.get(i).getCity_id());
                         // disable button when parkring is block, .....
                         if (plist.get(i).getStatus() == 2) {

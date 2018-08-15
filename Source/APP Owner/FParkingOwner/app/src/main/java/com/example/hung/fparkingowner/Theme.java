@@ -53,7 +53,7 @@ public class Theme extends AppCompatActivity {
 //        this.startService(myIntent);
 
         // kiểm tra có bật kết nối mạng không
-        checkNetwork = new CheckNetwork(Theme.this, getApplicationContext(), "Kết nối mạng đã bị tắt. Vui lòng bật kết nối mạng và thử lại trong ít phút nữa");
+        checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
         if (!checkNetwork.isNetworkConnected()) {
             checkNetwork.createDialog();
         } else {
@@ -68,7 +68,7 @@ public class Theme extends AppCompatActivity {
                         new ManagerLoginTask("second_time", null, "", new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
-                                checkNetwork = new CheckNetwork(Theme.this, getApplicationContext(), "Không kết nối được đến máy chủ.");
+                                checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
                                 if (Boolean.TRUE.equals(o)) {
                                     Intent myIntent = new Intent(Theme.this, Notification.class);
                                     Theme.this.startService(myIntent);

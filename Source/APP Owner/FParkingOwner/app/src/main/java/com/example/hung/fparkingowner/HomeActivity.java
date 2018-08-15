@@ -60,7 +60,6 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView backParkingManagement, addParking;
     AlertDialog dialog;
-    String[] CITYLIST = {"Bãi xe Trần ", "Bãi xe", "aaaaaaaaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaaassssssssssssssssssssssssssssssssssssssssssssssssaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa"};
     private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +68,8 @@ public class HomeActivity extends AppCompatActivity
 //        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         Session.homeActivity = HomeActivity.this;
         //Ánh xạ
-
+        Session.spref = getSharedPreferences("intro", 0);
+        editor = Session.spref.edit();
         addParking = findViewById(R.id.imageViewAddParking);
         addParking.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -135,7 +135,7 @@ public class HomeActivity extends AppCompatActivity
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            CheckNetwork checkNetwork = new CheckNetwork(HomeActivity.this, getApplicationContext(), "Kết nối mạng đã bị tắt. Vui lòng bật kết nối mạng và thử lại trong ít phút nữa");
+            CheckNetwork checkNetwork = new CheckNetwork(HomeActivity.this, getApplicationContext());
             if (!checkNetwork.isNetworkConnected()) {
                 checkNetwork.createDialog();
             } else {
@@ -148,6 +148,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public void recreate() {
         super.recreate();
+
     }
 
 
@@ -222,18 +223,12 @@ public class HomeActivity extends AppCompatActivity
              Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
              startActivity(intent);
              overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-//            Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
-//            startActivity(intentDK);
-//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }else if(id == R.id.Logout) {
              editor.putBoolean("first_time",true);
              editor.commit();
              Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
              finish();
              startActivity(intent);
-             Intent inttentPusher = new Intent(HomeActivity.this, Notification.class);
-             stopService(inttentPusher);
-             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
          }
 
 
@@ -264,6 +259,7 @@ public class HomeActivity extends AppCompatActivity
                         Intent intentDetail = new Intent(HomeActivity.this, DetailedParking.class);
                         intentDetail.putExtra("parkingid", plist.get(position).getId() + "");
                         startActivity(intentDetail);
+                        finish();
                     }
                 });
             } else if (o instanceof String) {

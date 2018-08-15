@@ -30,6 +30,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -39,13 +40,13 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
     EditText address;
     EditText password;
     EditText changePass;
-    TextView tvError;
-    TextView tvSuccess;
-    Button btnConfirm;
+    TextView tvError,tvTitle;
+    TextView tvSuccess,error;
+    Button btnConfirm,btnOK;
     AlertDialog dialog;
     Spinner sprinerParking;
     String staffid;
-    ImageView backProfile;
+    ImageView backProfile,imgResetpass;
     ArrayList<Integer> idParkinglist = new ArrayList<>();
     ArrayList<String> dropdownList = new ArrayList<>();
     int parkingidSelected;
@@ -65,7 +66,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
         sprinerParking = (Spinner) findViewById(R.id.spinner2);
         Intent ii = getIntent();
         staffid = ii.getStringExtra("staffid");
-
+        imgResetpass = (ImageView) findViewById(R.id.imgResetPass);
         backProfile = findViewById(R.id.imageViewBackProfile);
         backProfile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -73,7 +74,78 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                 finish();
             }
         });
+        imgResetpass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailStaffActivity.this);
+                View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
+                mBuilder.setView(mView);
+                dialog = mBuilder.create();
+                dialog.show();
+                tvTitle = (TextView) mView.findViewById(R.id.textView2);
+                tvTitle.setText("Đặt lại mật khẩu của nhân viên");
+                tvError = (TextView) mView.findViewById(R.id.tvError);
+                password = (EditText) mView.findViewById(R.id.tbPassword);
+                btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
+                btnConfirm.setOnClickListener(
+                        new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
 
+                                try {
+                                    String passMD5 = getMD5Hex(password.getText().toString());
+                                    if (password.getText().toString().isEmpty() || password.getText().toString().equals("")) {
+                                        tvError.setText("Hãy nhập mật khẩu");
+                                        tvError.setVisibility(View.VISIBLE);
+                                    } else if (!passMD5.equals(Session.currentOwner.getPass())) {
+                                        tvError.setText("Mật khẩu không đúng, vui lòng nhập lại");
+                                        tvError.setVisibility(View.VISIBLE);
+                                    } else {
+                                        StaffDTO staffDTO = new StaffDTO();
+                                        staffDTO.setId(Integer.parseInt(staffid));
+                                        if (name.getText().toString().isEmpty() || name.getText().toString().equals("")) {
+                                            staffDTO.setName(name.getHint().toString());
+                                        } else {
+                                            staffDTO.setName(name.getText().toString());
+                                        }
+                                        if (address.getText().toString().isEmpty() || address.getText().toString().equals("")) {
+                                            staffDTO.setAddress(address.getHint().toString());
+                                        } else {
+                                            staffDTO.setAddress(address.getText().toString());
+                                        }
+                                        if (phone.getText().toString().isEmpty() || phone.getText().toString().equals("")) {
+                                            staffDTO.setPhone(phone.getHint().toString());
+                                        } else {
+                                            staffDTO.setPhone(phone.getText().toString());
+                                        }
+                                        if(staffDTO.getPhone().contains("+84")) {
+                                            staffDTO.setPhone(staffDTO.getPhone().replace("+84","0"));
+                                        }
+                                        Random r = new java.util.Random ();
+                                        final String resetPass = Long.toString (r.nextLong () & Long.MAX_VALUE, 36);
+                                        staffDTO.setPass(getMD5Hex(resetPass));
+                                        staffDTO.setParking_id(parkingidSelected);
+                                        new ManagerStaffTask("update", staffDTO, new IAsyncTaskHandler() {
+                                            @Override
+                                            public void onPostExecute(Object o) {
+                                                dialog.cancel();
+                                                if((boolean) o) {
+                                                    showDialog("Mật khẩu được đặt lại là : " + resetPass, 1);
+                                                }else {
+                                                    showDialog("Thực hiện không thành công",0);
+                                                }
+
+                                            }
+                                        });
+                                    }
+
+                                } catch (Exception e) {
+                                    System.out.println("Lỗi ProfileActivity/checkValidation : " + e);
+                                }
+                            }
+                        });
+            }
+        });
         new ManagerParkingTask("getbyowner", null, new IAsyncTaskHandler() {
             @Override
             public void onPostExecute(Object o) {
@@ -117,17 +189,18 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                 }
                 Matcher m = p.matcher(mathPhone);
                 if (!phone.getText().toString().isEmpty() && !m.find()) {
-                    tvSuccess.setText("Số điện thoại không đúng định dạng");
-                    tvSuccess.setTextColor(Color.RED);
-                    tvSuccess.setVisibility(View.VISIBLE);
+                    showDialog("Số điện thoại không đúng định dạng",0);
+//                    tvSuccess.setText("Số điện thoại không đúng định dạng");
+//                    tvSuccess.setTextColor(Color.RED);
+//                    tvSuccess.setVisibility(View.VISIBLE);
                 } else if(changePass.getText().toString().equals("") || changePass.getText().toString().isEmpty()) {
-                    tvSuccess.setText("Hãy nhập mật khẩu");
-                    tvSuccess.setTextColor(Color.RED);
-                    tvSuccess.setVisibility(View.VISIBLE);
+                    showDialog("Hãy nhập mật khẩu",0);
                 } else if(changePass.getText().toString().length()<6 || changePass.getText().toString().length()>24) {
-                    tvSuccess.setText("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự");
-                    tvSuccess.setTextColor(Color.RED);
-                    tvSuccess.setVisibility(View.VISIBLE);
+                    showDialog("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự",0);
+
+//                    tvSuccess.setText("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự");
+//                    tvSuccess.setTextColor(Color.RED);
+//                    tvSuccess.setVisibility(View.VISIBLE);
                 }else {
                     tvSuccess.setVisibility(View.INVISIBLE);
                     AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailStaffActivity.this);
@@ -146,11 +219,13 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                     try {
                                         String passMD5 = getMD5Hex(password.getText().toString());
                                         if (password.getText().toString().isEmpty() || password.getText().toString().equals("")) {
-                                            tvError.setText("Hãy nhập mật khẩu");
-                                            tvError.setVisibility(View.VISIBLE);
+                                            showDialog("Hãy nhập mật khẩu",0);
+//                                            tvError.setText("Hãy nhập mật khẩu");
+//                                            tvError.setVisibility(View.VISIBLE);
                                         } else if (!passMD5.equals(Session.currentOwner.getPass())) {
-                                            tvError.setText("Mật khẩu không đúng, vui lòng nhập lại");
-                                            tvError.setVisibility(View.VISIBLE);
+                                            showDialog("Mật khẩu không đúng, vui lòng nhập lại",0);
+//                                            tvError.setText("Mật khẩu không đúng, vui lòng nhập lại");
+//                                            tvError.setVisibility(View.VISIBLE);
                                         } else {
                                             StaffDTO staffDTO = new StaffDTO();
                                             staffDTO.setId(Integer.parseInt(staffid));
@@ -177,9 +252,10 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                             new ManagerStaffTask("update", staffDTO, new IAsyncTaskHandler() {
                                                 @Override
                                                 public void onPostExecute(Object o) {
-                                                    tvSuccess.setText("Cập nhật thông tin thành công");
-                                                    tvSuccess.setTextColor(Color.GREEN);
-                                                    tvSuccess.setVisibility(View.VISIBLE);
+                                                    showDialog("Cập nhật thông tin thành công",1);
+//                                                    tvSuccess.setText("Cập nhật thông tin thành công");
+//                                                    tvSuccess.setTextColor(Color.GREEN);
+//                                                    tvSuccess.setVisibility(View.VISIBLE);
                                                     dialog.cancel();
                                                 }
                                             });
@@ -196,7 +272,27 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
         });
     }
 
-
+    public void showDialog(String text, final int type) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailStaffActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+                if(type==1) {
+                    Intent i = new Intent(DetailStaffActivity.this,StaffManagement.class);
+                    finish();
+                    startActivity(i);
+                }
+            }
+        });
+    }
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
         MessageDigest md = MessageDigest.getInstance("MD5");

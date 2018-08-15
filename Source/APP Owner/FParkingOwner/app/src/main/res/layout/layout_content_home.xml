@@ -78,7 +78,6 @@
             android:textSize="18sp" />
 
 
-
         <TextView
             android:id="@+id/tvTotalCar"
             android:layout_width="wrap_content"
@@ -86,7 +85,7 @@
             android:layout_alignBottom="@+id/textView6"
             android:layout_alignStart="@+id/textView2"
             android:layout_marginLeft="30dp"
-            android:text="TextView"
+            android:text="..."
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -96,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_alignBottom="@+id/textView"
             android:layout_alignStart="@+id/tvTotalCar"
-            android:text="TextView"
+            android:text="..."
             android:textSize="18sp"
             android:textStyle="bold" />
 
@@ -111,12 +110,12 @@
 
         <ImageView
             android:id="@+id/imageViewAddParking"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView"
-            android:layout_marginLeft="15dp"
-            android:layout_marginTop="-3dp"
-            android:layout_toEndOf="@+id/tvTotalCar"
+            android:layout_width="46dp"
+            android:layout_height="46dp"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="36dp"
+            android:layout_marginTop="116dp"
             app:srcCompat="@drawable/ic_action_addparking" />
 
     </RelativeLayout>
