@@ -66,12 +66,18 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             @Override
             public void onClick(View v) {
                 Pattern p = Pattern.compile(Constants.regEx);
+                Pattern name = Pattern.compile(Constants.regName);
 
                 Matcher m = p.matcher(tbPhone.getText().toString());
+                Matcher n = name.matcher(tbName.getText().toString());
                 if (!m.find()) {
                     new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.profile_layout),
                             "Số điện thoại không đúng");
-                } else {
+                } else if (!n.find()) {
+                    new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.profile_layout),
+                            "Tên từ 2 đến 50 ký tự không bao gồm ký tự đặc biệt");
+                }
+                else {
                     dialog.show();
                 }
 
@@ -133,7 +139,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             password.setText("");
             tbName.setText(Session.currentDriver.getName());
             tbPhone.setText(Session.currentDriver.getPhone());
-        }else {
+        } else {
             textViewAlert.setText("Đổi thông tin thất bại!");
             alertDialog.show();
         }

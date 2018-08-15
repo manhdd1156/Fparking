@@ -23,7 +23,7 @@ public class NotificationTask {
         } else if (type.equals("cancelcheckout")) {
             new DeleteNotification(data1, data2, action, container, "checkout").execute((Void) null);
         } else if (type.equals("after")) {
-            new DeleteNotification(data1, data2, action, container, "cancel").execute((Void) null);
+            new DeleteNotification(data1, data2, action, container, "order").execute((Void) null);
         }
     }
 }
@@ -118,12 +118,5 @@ class DeleteNotification extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-//        Intent intent = new Intent();
-//        if(success)
-//            intent.putExtra("result", "success!");
-//        else
-//            intent.putExtra("result", "failed");
-//        this.activity.setResult(RESULT_OK, intent);
-//        this.activity.finish();
     }
 }
