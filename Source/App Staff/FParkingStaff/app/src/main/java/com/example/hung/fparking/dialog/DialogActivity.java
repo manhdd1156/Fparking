@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.hung.fparking.HomeActivity;
@@ -19,22 +20,22 @@ import com.example.hung.fparking.dto.BookingDTO;
 public class DialogActivity extends Activity  implements OnClickListener,IAsyncTaskHandler {
 
     Button ok_btn, cancel_btn;
+    TextView tvLicensePlate,tvType,tvColor,tvTitle,tvDriverid;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-//        getActionBar().hide(); //hide the title bar
-        //getWindow().requestFeature(Window.FEATURE_NO_TITLE);
         setContentView(R.layout.activity_dialog);
-//Remove title bar
-//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
 
+       tvLicensePlate = (TextView) findViewById(R.id.tvLP);
+        tvType = (TextView) findViewById(R.id.tvType);
+      tvColor = (TextView) findViewById(R.id.tvColor);
+        tvTitle = (TextView) findViewById(R.id.title);
+        tvDriverid  = (TextView) findViewById(R.id.lbdriverid);
         ok_btn = (Button) findViewById(R.id.ok_btn_id);
         cancel_btn = (Button) findViewById(R.id.cancel_btn_id);
 
-//        ok_btn.setOnClickListener(this);
-//        cancel_btn.setOnClickListener(this);
         Intent intent = getIntent();
         String eventName = intent.getStringExtra("eventName");
         String data = intent.getStringExtra("data");
@@ -55,7 +56,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
 
             case R.id.cancel_btn_id:
 
-                showToastMessage("Cancel Button Clicked");
+//                showToastMessage("Cancel Button Clicked");
                 this.finish();
 
                 break;
@@ -79,6 +80,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                     public void onClick(View v) {
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
+                        b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(1);
                         new ManagerBookingTask("updatebystatus", b, null);
                         finish();
@@ -100,6 +102,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                     public void onClick(View v) {
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
+                        b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(1);
                         new ManagerBookingTask("cancel", b, new IAsyncTaskHandler() {
                             @Override
@@ -129,30 +132,22 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                     public void onClick(View v) {
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
+                        b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(2);
                         new ManagerBookingTask("updatebystatus", b, DialogActivity.this);
                         Session.homeActivity.recreate();
                         finish();
 
-//                startActivity(intent);
-                        // TODO Auto-generated method stub
                     }
                 });
                 cancel_btn.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View v) {
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
+                        b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(2);
                         new ManagerBookingTask("cancel", b, DialogActivity.this);
-//                        showToastMessage("Cancel Button Clicked");
-//                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
-//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         finish();
-//                        overridePendingTransition(0, 0);
-//                        startActivity(myIntent);
-//                        overridePendingTransition(0, 0);
-//                        Session.homeActivity.recreate();
-//                        finish();
                     }
                 });
 
@@ -163,6 +158,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                     public void onClick(View v) {
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
+                        b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(3);
                         new ManagerBookingTask("getInfoCheckout", b, DialogActivity.this);
 
@@ -173,6 +169,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                     public void onClick(View v) {
                         BookingDTO b = new BookingDTO();
                         b.setParkingID(Session.currentParking.getId());
+                        b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(3);
                         new ManagerBookingTask("cancel", b, DialogActivity.this);
                         showToastMessage("Cancel Button Clicked");

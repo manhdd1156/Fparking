@@ -38,14 +38,14 @@ public class VehicleController {
 		Vehicle respone = vehicleService.getVehicleByDriverVehicle(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-	
+
 	// get all vehicletype
-		@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
-		@RequestMapping(path = "/types", method = RequestMethod.GET)
-		public ResponseEntity<?> getAllVehicleType() throws Exception {
-			List<Vehicletype> respone = vehicleTypeService.getAll();
-			return new ResponseEntity<>(respone, HttpStatus.OK);
-		}
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER','STAFF')")
+	@RequestMapping(path = "/types", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllVehicleType() throws Exception {
+		List<Vehicletype> respone = vehicleTypeService.getAll();
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
 
 	// get drivervehicles by driverid
 	@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN','STAFF')")
@@ -69,7 +69,7 @@ public class VehicleController {
 	public ResponseEntity<?> getbydParkingid(@RequestParam("parkingid") Long parkingID,
 			@RequestParam("event") String event) throws Exception {
 		System.out.println("/api/vehicles/notifications : " + parkingID);
-		Vehicle respone = drivervehicleService.getInfoVehicle(parkingID, event);
+		DriverVehicle respone = drivervehicleService.getInfoVehicle(parkingID, event);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
@@ -77,16 +77,25 @@ public class VehicleController {
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/drivervehicles/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> updateDriverVehicle(@PathVariable Long id) throws Exception {
-		DriverVehicle respone = drivervehicleService.update(id);
+		DriverVehicle respone = drivervehicleService.updateStatus(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
 
 	// create DriverVehicle by licenseplate, type,color, driverid
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
 		DriverVehicle respone = vehicleService.create(drivervehicle);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
+	// change car of Driver
+	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+	@RequestMapping(path = "", method = RequestMethod.PUT)
+	public ResponseEntity<?> update(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
+		DriverVehicle respone = drivervehicleService.update(drivervehicle);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
@@ -96,7 +105,7 @@ public class VehicleController {
 	@RequestMapping(path = "", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
 		// System.out.println("=======");
-		 vehicleService.delete(drivervehicle);
+		vehicleService.delete(drivervehicle);
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 
 	}

@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
@@ -31,7 +32,9 @@ import com.example.hung.fparkingowner.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparkingowner.asynctask.ManagerParkingTask;
 import com.example.hung.fparkingowner.config.Session;
 import com.example.hung.fparkingowner.dto.ParkingDTO;
+import com.example.hung.fparkingowner.login.LoginActivity;
 import com.example.hung.fparkingowner.model.CheckNetwork;
+import com.example.hung.fparkingowner.notification.Notification;
 import com.example.hung.fparkingowner.other.Contact;
 import com.example.hung.fparkingowner.other.TermsAndConditions;
 import com.example.hung.fparkingowner.profile.ProfileActivity;
@@ -58,7 +61,7 @@ public class HomeActivity extends AppCompatActivity
     ImageView backParkingManagement, addParking;
     AlertDialog dialog;
     String[] CITYLIST = {"Bãi xe Trần ", "Bãi xe", "aaaaaaaaaaaaa", "aaaaaaaa", "aaaaaaaaa", "aaaaaaaaaaassssssssssssssssssssssssssssssssssssssssssssssssaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa", "aaaaaaaaa"};
-
+    private SharedPreferences.Editor editor;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,14 +74,19 @@ public class HomeActivity extends AppCompatActivity
         addParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
-                View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_parking, null);
-                mBuilder.setView(mView);
-                dialog = mBuilder.create();
-                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_dropdown_item_1line, CITYLIST);
-                MaterialBetterSpinner betterSpinner = (MaterialBetterSpinner) mView.findViewById(R.id.dropdownCity);
-                betterSpinner.setAdapter(arrayAdapter);
-                dialog.show();
+                Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
+                startActivity(intentDK);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+
+
+//                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+//                View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_parking, null);
+//                mBuilder.setView(mView);
+//                dialog = mBuilder.create();
+//                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_dropdown_item_1line, CITYLIST);
+//                MaterialBetterSpinner betterSpinner = (MaterialBetterSpinner) mView.findViewById(R.id.dropdownCity);
+//                betterSpinner.setAdapter(arrayAdapter);
+//                dialog.show();
             }
         });
         tvTotalParking = (TextView) findViewById(R.id.tvTotalParking);
@@ -211,10 +219,22 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intentStaff);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         } else if (id == R.id.nav_DK) {
-            Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
-            startActivity(intentDK);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        }
+             Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
+             startActivity(intent);
+             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+//            Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
+//            startActivity(intentDK);
+//            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }else if(id == R.id.Logout) {
+             editor.putBoolean("first_time",true);
+             editor.commit();
+             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+             finish();
+             startActivity(intent);
+             Intent inttentPusher = new Intent(HomeActivity.this, Notification.class);
+             stopService(inttentPusher);
+             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+         }
 
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);

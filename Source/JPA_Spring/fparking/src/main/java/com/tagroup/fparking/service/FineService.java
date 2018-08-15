@@ -13,5 +13,6 @@ public interface FineService {
 	public void delete(Long id)throws Exception;
 	public double getPriceByDrivervehicleId(Long id) throws Exception;
 	public List<Fine> getByDriverID(Long id) throws Exception;
+	public void resetFineOfDriver(Long id) throws Exception;
 	
 }

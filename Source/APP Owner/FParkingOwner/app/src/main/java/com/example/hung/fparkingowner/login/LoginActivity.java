@@ -58,6 +58,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         setContentView(R.layout.layout_login);
         Session.spref = getSharedPreferences("intro", 0);
         Session.homeActivity = LoginActivity.this;
+        editor = Session.spref.edit();
         // ánh xạ
         phoneNumber = (EditText) findViewById(R.id.phone);
         password = (EditText) findViewById(R.id.login_password);
@@ -213,6 +214,8 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     @Override
     public void onPostExecute(Object o) {
         if (Boolean.TRUE.equals(o)) {
+            editor.putBoolean("first_time",false);
+            editor.commit();
             System.out.println("Đăng nhập thành công");
             startActivity( new Intent(this, HomeActivity.class));
             finish();

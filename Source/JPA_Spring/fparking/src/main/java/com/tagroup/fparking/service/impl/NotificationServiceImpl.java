@@ -76,17 +76,17 @@ public class NotificationServiceImpl implements NotificationService {
 			Notification notification = notificationRepository.getOne(id);
 			notificationRepository.delete(notification);
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The Notification was not found");
 		}
 	}
 
 	@Override
-	public Notification findByParkingIDAndTypeAndEventAndStatus(Long parkingID, int type, String event, int status) {
+	public Notification findByParkingIDAndTypeAndEventAndStatus(Long parkingID,Long driverID, int type, String event, int status) {
 		List<Notification> notilst = notificationRepository.findAll();
 		for (Notification notification : notilst) {
 			System.out.println(notification.toString());
 			System.out.println(parkingID + ",type =" + type + ", event = " + event + ", statuys : " + status);
-			if (notification.getParking_id() == parkingID && notification.getType() == type
+			if (notification.getDriver_id() == driverID && notification.getParking_id() == parkingID && notification.getType() == type
 					&& notification.getEvent().equals(event) && notification.getStatus() == status) {
 
 				return notification;
@@ -100,9 +100,9 @@ public class NotificationServiceImpl implements NotificationService {
 	public Notification cancelNoti(Notification notification) throws Exception {
 		try {
 			if (notification == null) {
-				throw new APIException(HttpStatus.NO_CONTENT, "The Booking was not content");
+				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
 			}
-			Notification noti = findByParkingIDAndTypeAndEventAndStatus(notification.getParking_id(), 1,
+			Notification noti = findByParkingIDAndTypeAndEventAndStatus(notification.getParking_id(),notification.getDriver_id(), 1,
 					notification.getEvent(), 0);
 			System.out.println("BookingServerImp/deleteByStatus : " + noti);
 			noti.setType(2);
@@ -127,7 +127,7 @@ public class NotificationServiceImpl implements NotificationService {
 
 			return n;
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The Notification was not found");
 		}
 	}
 

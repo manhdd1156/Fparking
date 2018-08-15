@@ -48,32 +48,34 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
 
         // Check for both field is empty or not
         if (newPass.isEmpty() || cfPassword.isEmpty()) {
-            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
-                    "Hãy nhập đủ thông tin");
+//            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
+//                    "Hãy nhập đủ thông tin");
         }
         // Check lengh of pass
         else if (newPass.length() < 6 || newPass.length() > 24) {
-            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
-                    "Mật khẩu mới phải từ 6 đến 24 ký tự");
+//            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
+//                    "Mật khẩu mới phải từ 6 đến 24 ký tự");
         }
         // Check if old pass and new pass not match
-        else if (!newPass.equals(cfPassword))
-            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
-                    "Mật khẩu xác nhận không đúng, vui lòng nhập lại");
+        else if (!newPass.equals(cfPassword)) {
+
+        }
+//            new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.signup_password_layout),
+//                    "Mật khẩu xác nhận không đúng, vui lòng nhập lại");
             // Else do login and do your stuff
         else {
 
-            if (getIntent() != null) {
-                if (action.equals("forgot")) {
-                    DriverDTO driverDTO = new DriverDTO();
-                    driverDTO.setPhone(phone.getText().toString());
-                    new DriverLoginTask("phone", driverDTO, password.getText().toString(), SignUp_Fragment.this);
-                } else if (action.equals("register")) {
-                    DriverDTO driverDTO = new DriverDTO();
-                    driverDTO.setPhone(phone.getText().toString());
-                    new DriverLoginTask("create", driverDTO, password.getText().toString(), SignUp_Fragment.this);
-                }
-            }
+//            if (getIntent() != null) {
+//                if (action.equals("forgot")) {
+//                    DriverDTO driverDTO = new DriverDTO();
+//                    driverDTO.setPhone(phone.getText().toString());
+//                    new DriverLoginTask("phone", driverDTO, password.getText().toString(), SignUp_Fragment.this);
+//                } else if (action.equals("register")) {
+//                    DriverDTO driverDTO = new DriverDTO();
+//                    driverDTO.setPhone(phone.getText().toString());
+//                    new DriverLoginTask("create", driverDTO, password.getText().toString(), SignUp_Fragment.this);
+//                }
+//            }
         }
     }
     private void setProperties() {
@@ -123,7 +125,7 @@ public class SignUp_Fragment extends AppCompatActivity implements IAsyncTaskHand
         });
 
         // set ui
-        signup_password_title = findViewById(R.id.signup_password_title);
+//        signup_password_title = findViewById(R.id.signup_password_title);
         if (getIntent() != null) {
             if (action.equals("forgot")) {
                 signup_password_title.setText("Quên mật khẩu");

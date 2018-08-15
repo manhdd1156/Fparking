@@ -3,7 +3,9 @@ package com.example.hung.fparking.dto;
 public class BookingDTO {
     private int bookingID;
     private int parkingID;
-    private int drivervehicleID;
+    private int vehicleID;
+    private int driverID;
+    private int driverVehicleID;
     private String timein;
     private String timeout;
     private double price;
@@ -13,25 +15,24 @@ public class BookingDTO {
     private double comission;
     private double totalfine;
 
-    private double rating;
     private int status;
 
     public BookingDTO() {
 
     }
 
-    public BookingDTO(int bookingID, int parkingID, int drivervehicleID, String timein, String timeout, double price, String licensePlate, String typeCar, double rating, int status) {
+    public BookingDTO(int bookingID, int parkingID,int driverID, int vehicleID,int driverVehicleID, String timein, String timeout, double price, String licensePlate, String typeCar, int status) {
         this.bookingID = bookingID;
         this.parkingID = parkingID;
-        this.drivervehicleID = drivervehicleID;
+        this.driverID = driverID;
+        this.vehicleID = vehicleID;
         this.timein = timein;
         this.timeout = timeout;
         this.price = price;
         this.licensePlate = licensePlate;
         this.typeCar = typeCar;
-        this.rating = rating;
         this.status = status;
-
+        this.driverVehicleID = driverVehicleID;
     }
 
     public int getBookingID() {
@@ -42,6 +43,13 @@ public class BookingDTO {
         return parkingID;
     }
 
+    public int getDriverVehicleID() {
+        return driverVehicleID;
+    }
+
+    public void setDriverVehicleID(int driverVehicleID) {
+        this.driverVehicleID = driverVehicleID;
+    }
 
     public String getTimein() {
         return timein;
@@ -63,9 +71,6 @@ public class BookingDTO {
         return typeCar;
     }
 
-    public double getRating() {
-        return rating;
-    }
 
     public int getStatus() {
         return status;
@@ -79,12 +84,20 @@ public class BookingDTO {
         this.parkingID = parkingID;
     }
 
-    public int getDrivervehicleID() {
-        return drivervehicleID;
+    public int getVehicleID() {
+        return vehicleID;
     }
 
-    public void setDrivervehicleID(int drivervehicleID) {
-        this.drivervehicleID = drivervehicleID;
+    public void setVehicleID(int vehicleID) {
+        this.vehicleID = vehicleID;
+    }
+
+    public int getDriverID() {
+        return driverID;
+    }
+
+    public void setDriverID(int driverID) {
+        this.driverID = driverID;
     }
 
     public void setTimein(String timein) {
@@ -107,9 +120,6 @@ public class BookingDTO {
         this.typeCar = typeCar;
     }
 
-    public void setRating(double rating) {
-        this.rating = rating;
-    }
 
     public void setStatus(int status) {
         this.status = status;
@@ -144,16 +154,17 @@ public class BookingDTO {
         return "BookingDTO{" +
                 "bookingID=" + bookingID +
                 ", parkingID=" + parkingID +
-                ", drivervehicleID=" + drivervehicleID +
+                ", vehicleID=" + vehicleID +
+                ", driverID=" + driverID +
+                ", driverVehicleID=" + driverVehicleID +
                 ", timein='" + timein + '\'' +
                 ", timeout='" + timeout + '\'' +
                 ", price=" + price +
                 ", licensePlate='" + licensePlate + '\'' +
                 ", typeCar='" + typeCar + '\'' +
-                ", amount='" + amount + '\'' +
-                ", comission='" + comission + '\'' +
-                ", totalfine='" + totalfine + '\'' +
-                ", rating=" + rating +
+                ", amount=" + amount +
+                ", comission=" + comission +
+                ", totalfine=" + totalfine +
                 ", status=" + status +
                 '}';
     }

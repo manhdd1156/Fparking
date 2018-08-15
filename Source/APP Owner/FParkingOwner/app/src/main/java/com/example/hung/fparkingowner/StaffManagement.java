@@ -48,7 +48,6 @@ import java.util.regex.Pattern;
 public class StaffManagement extends AppCompatActivity implements IAsyncTaskHandler {
     ImageView backStaff, addStaff;
     TextView tvSlistName, tvSlistPhone;
-    ;
     EditText tbAddStaffName, tbAddStaffPhone, tbAddStaffAddress, tbAddStaffPass;
     Button btnConfirmAddStaff, btnOK;
     Spinner sprinerParking;

@@ -143,17 +143,7 @@
             android:layout_alignStart="@+id/textView3"
             android:layout_below="@+id/textView3"
             android:layout_marginTop="8dp"
-            android:text="Sức chứa:"
-            android:textSize="15sp" />
-
-        <TextView
-            android:id="@+id/textView6"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView3"
-            android:layout_below="@+id/textView4"
-            android:layout_marginTop="8dp"
-            android:text="Được đánh giá:"
+            android:text="Còn trống :"
             android:textSize="15sp" />
 
         <TextView
@@ -180,17 +170,6 @@
             android:textColor="#FFFFFF"
             android:textSize="7sp" />
 
-        <RatingBar
-            android:id="@+id/ratingBar2"
-            style="@style/Widget.AppCompat.RatingBar.Small"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textView6"
-            android:layout_marginLeft="20dp"
-            android:layout_marginTop="3dp"
-            android:layout_toEndOf="@+id/textView6"
-            android:rating="3" />
-
         <ListView
             android:id="@+id/cars_list"
             android:layout_width="300dp"
@@ -199,8 +178,17 @@
             android:layout_centerHorizontal="true"
             android:cacheColorHint="@color/black"
             android:clickable="true"
+            android:visibility="invisible"
             tools:layout_editor_absoluteX="42dp"
             tools:layout_editor_absoluteY="291dp" />
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/booking_list_view"
+            android:layout_width="378dp"
+            android:layout_height="397dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignTop="@+id/textView18"
+            android:layout_marginStart="18dp" />
     </RelativeLayout>
 
 

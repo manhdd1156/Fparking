@@ -2,8 +2,9 @@ package com.tagroup.fparking.dto;
 
 public class DriverVehicleDTO {
 
-	
+	private Long id;
 	private Long driverid;
+	private Long vehicleid;
 	private String licenseplate;
 	private String type;
 	private String color;
@@ -23,6 +24,26 @@ public class DriverVehicleDTO {
 
 
 	
+
+	public Long getId() {
+		return id;
+	}
+
+
+	public void setId(Long id) {
+		this.id = id;
+	}
+
+
+	public Long getVehicleid() {
+		return vehicleid;
+	}
+
+
+	public void setVehicleid(Long vehicleid) {
+		this.vehicleid = vehicleid;
+	}
+
 
 	public String getLicenseplate() {
 		return licenseplate;
