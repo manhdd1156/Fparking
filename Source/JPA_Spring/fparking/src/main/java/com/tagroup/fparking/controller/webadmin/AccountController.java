@@ -36,11 +36,11 @@ import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.domain.Admin;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Driver;
+import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Tariff;
-import com.tagroup.fparking.service.domain.Vehicle;
 
 @Controller
 @RequestMapping("/account")
@@ -117,6 +117,8 @@ public class AccountController {
 			@RequestParam(value = "dateTo", required = false) String dateTo,
 			@RequestParam(value = "type", required = false) Integer type) throws Exception {
 		Driver driver;
+		List<DriverVehicle> listDriverVehicleService;
+		ArrayList<Map<String, Object>> arrayListDriver = new ArrayList<>();
 		int check = 0;
 		// check date is null or not null
 		if (dateTo == null && dateFrom == null) {
@@ -135,11 +137,10 @@ public class AccountController {
 		}
 		try {
 			driver = driverService.getById(id);
+			listDriverVehicleService = driverVehicleService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
-		List<Vehicle> listDriver = vehicleService.getVehicleByDriver(driver.getPhone());
-		ArrayList<Map<String, Object>> arrayListDriver = new ArrayList<>();
 
 		// tab thong tin
 		if (driver.getStatus() == 1) {
@@ -150,12 +151,14 @@ public class AccountController {
 		model.put("name", driver.getName());
 		model.put("phonenumber", driver.getPhone());
 
-		for (Vehicle vehicle : listDriver) {
+		for (DriverVehicle driverVehicle : listDriverVehicleService) {
 			HashMap<String, Object> m = new HashMap<>();
-			m.put("licenseplate", vehicle.getLicenseplate());
-			m.put("color", vehicle.getColor());
-			m.put("typecar", vehicle.getVehicletype().getType());
-			arrayListDriver.add(m);
+			if (driverVehicle.getDriver().getId() == id && driverVehicle.getStatus() == 1) {
+				m.put("licenseplate", driverVehicle.getVehicle().getLicenseplate());
+				m.put("color", driverVehicle.getVehicle().getColor());
+				m.put("typecar", driverVehicle.getVehicle().getVehicletype().getType());
+				arrayListDriver.add(m);
+			}
 		}
 
 		String car = "";

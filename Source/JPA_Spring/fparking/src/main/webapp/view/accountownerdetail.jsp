@@ -113,7 +113,7 @@
 																			<td class="center"><a
 																				href="/account/parking/detail/${arrayListParking.id }">Xem</a></td>
 																			<td class="center"><a
-																				href="/account/parking/detail/${arrayListParking.id }">Sửa</a></td>
+																				href="/account/parking/edit/${arrayListParking.id }">Sửa</a></td>
 																		</tr>
 																	</c:forEach>
 																</tbody>
