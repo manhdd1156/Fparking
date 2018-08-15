@@ -526,7 +526,7 @@ public class BusinessController {
 		return "managementrevenuebyfine";
 	}
 
-	// get detail revenue by booking whit id
+	// get detail revenue by booking with id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/revenue/detail/{id}", method = RequestMethod.GET)
 	public String getRevenueByID(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
@@ -641,14 +641,14 @@ public class BusinessController {
 
 		return "redirect:/business/feedback";
 	}
-
 	// resolve feedback
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.POST)
 	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("resolve") String resolve) {
+		Feedback feedbackupdate = new Feedback();
+		sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 		try {
-			Feedback feedbackupdate = new Feedback();
 			feedbackupdate = feedbackService.getById(id);
 			feedbackupdate.setType(1);
 			feedbackupdate.setResolve(resolve);
@@ -656,7 +656,14 @@ public class BusinessController {
 		} catch (Exception e) {
 			return "404";
 		}
-		return "redirect:/business/feedback";
+		model.put("id", id);
+		model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
+		model.put("content", feedbackupdate.getContent());
+		model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
+		model.put("resolve", feedbackupdate.getResolve());
+		model.put("type", 1);
+		model.put("messSucc", "Đã giải quyết!");
+		return "viewdetailfeedback";
 	}
 
 }

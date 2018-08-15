@@ -46,7 +46,7 @@
 										</div>
 										<div class="form-group">
 											<label>Mức tiền phạt:</label> 
-											<input type="number" class="form-control" name="priceFine" value="${price }" step="0.01" min="0" required>
+											<input type="number" class="form-control" name="priceFine" value="${price }" step="0.01" min="0" max="2000000000" required>
 											<p style="color: green;">${messEdit }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>
