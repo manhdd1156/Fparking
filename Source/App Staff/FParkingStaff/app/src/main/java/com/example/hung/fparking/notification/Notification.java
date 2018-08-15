@@ -61,6 +61,17 @@ public class Notification extends Service implements SubscriptionEventListener {
         Session.pusher.connect();
         Log.d("NotificationService", "Connected to pusher");
     }
+    public void disconnect() {
+        Session.pusher.disconnect();
+        Log.d("NotificationService", "Disconnect to pusher");
+    }
+
+    @Override
+    public void onDestroy() {
+        disconnect();
+        super.onDestroy();
+
+    }
 
     @Override
     public void onEvent(String channelName, String eventName, final String data) {

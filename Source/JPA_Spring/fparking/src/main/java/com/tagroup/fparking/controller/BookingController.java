@@ -67,15 +67,15 @@ public class BookingController {
 
 	}
 
-	// get booking by notification.
-	@PreAuthorize("hasAnyAuthority('STAFF')")
-	@RequestMapping(path = "/notifications", method = RequestMethod.PUT)
-	public ResponseEntity<?> getByNotification(@RequestBody Notification noti) throws Exception {
-		// System.out.println("bookings/update/status : " + noti.toString());
-		Booking respone = bookingService.getByNoti(noti);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-
-	}
+//	// get booking by notification.
+//	@PreAuthorize("hasAnyAuthority('STAFF')")
+//	@RequestMapping(path = "/notifications", method = RequestMethod.PUT)
+//	public ResponseEntity<?> getByNotification(@RequestBody Notification noti) throws Exception {
+//		// System.out.println("bookings/update/status : " + noti.toString());
+//		Booking respone = bookingService.getByNoti(noti);
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//
+//	}
 
 	// cancel booking from driver.
 	@PreAuthorize("hasAnyAuthority('DRIVER')")

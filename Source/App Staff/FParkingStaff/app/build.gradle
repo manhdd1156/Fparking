@@ -3,9 +3,9 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 27
     defaultConfig {
-        applicationId "com.example.hung.fparking"
+        applicationId "com.example.hung.fparkingstaff"
         minSdkVersion 19
-        targetSdkVersion 27
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
@@ -33,8 +33,12 @@ dependencies {
     implementation 'com.google.android.gms:play-services-places:15.0.1'
     implementation 'com.google.android.gms:play-services-location:15.0.1'
     implementation 'com.google.android.gms:play-services-maps:15.0.1'
+    implementation 'com.github.Vatican-Cameos:CarouselPicker:v1.1'
+    implementation 'com.android.support:cardview-v7:27.1.1'
+    implementation 'com.synnapps:carouselview:0.1.5'
+    implementation 'com.squareup.picasso:picasso:2.5.2'
     //Add Library
 //    compile 'com.github.Vatican-Cameos:CarouselPicker:v1.0'
-    implementation 'com.android.support:cardview-v7:27.1.1'
+//    implementation 'com.android.support:cardview-v7:27.1.1'
 
 }

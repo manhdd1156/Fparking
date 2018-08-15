@@ -68,7 +68,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/lbType" />
 
             <TextView
-                android:id="@+id/lbRating"
+                android:id="@+id/lbdriverid"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="32dp"
@@ -76,6 +76,7 @@
                 android:text="Đánh giá :"
                 android:textAppearance="?android:attr/textAppearanceLarge"
                 android:textSize="17sp"
+                android:visibility="invisible"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/lbColor" />
 
@@ -96,7 +97,7 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/lbRating"
+                app:layout_constraintTop_toBottomOf="@+id/lbdriverid"
                 app:layout_constraintVertical_bias="1.0">
 
                 <Button
@@ -162,6 +163,7 @@
                 android:layout_marginTop="8dp"
                 android:textSize="17sp"
                 android:textStyle="bold"
+                android:visibility="invisible"
                 app:layout_constraintStart_toEndOf="@+id/lbLicensePlate"
                 app:layout_constraintTop_toBottomOf="@+id/lbColor" />
         </android.support.constraint.ConstraintLayout>

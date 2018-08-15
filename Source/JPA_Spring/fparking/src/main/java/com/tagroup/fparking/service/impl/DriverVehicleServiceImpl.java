@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.dto.DriverFineDTO;
+import com.tagroup.fparking.dto.DriverVehicleDTO;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.FineRepository;
@@ -36,6 +37,7 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	NotificationRepository notificationRepository;
 	@Autowired
 	NotificationService notificationService;
+
 	@Override
 	public List<DriverVehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -62,12 +64,30 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 	@Override
-	public DriverVehicle update(Long id) {
-		
+	public DriverVehicle updateStatus(Long id) {
+
 		// TODO Auto-generated method stub
 		DriverVehicle dv = driverVehicleRepository.getOne(id);
 		dv.setStatus(0);
 		return driverVehicleRepository.save(dv);
+
+	}
+
+	@Override
+	public DriverVehicle update(DriverVehicleDTO drivervehicleDTO) {
+
+		List<DriverVehicle> dvList = getAll();
+		for (DriverVehicle driverVehicle2 : dvList) {
+			if(driverVehicle2.getId() == drivervehicleDTO.getId() )
+			{ 
+				DriverVehicle dv = new DriverVehicle();
+				dv.setId(drivervehicleDTO.getId());
+				dv.setVehicle(vehicleRepository.getOne(drivervehicleDTO.getVehicleid()));
+				return driverVehicleRepository.save(dv);
+				
+			}
+		}
+		return null;
 
 	}
 
@@ -104,19 +124,37 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		}
 		return dfList;
 	}
-	
+
 	@Override
-	public Vehicle getInfoVehicle(Long parkingID,String event) throws Exception {
+	public DriverVehicle getInfoVehicle(Long parkingID, String event) throws Exception {
 		// TODO Auto-generated method stub
-		Notification noti = notificationService.findByParkingIDAndTypeAndEventAndStatus(parkingID, 1, event, 0);
-		System.out.println("DriverVehicleImp/getInfoDriverVehicle : " +noti);
+		Notification noti = new Notification();
+		System.out.println("parkingid = " + parkingID + ", event =" + event);
+		// lấy thông tin notification mới nhất
+		List<Notification> notiList = notificationService.getAll();
+		for (int i = notiList.size() - 1; i >= 0; i--) {
+			System.out.println(notiList.get(i));
+			if (notiList.get(i).getParking_id() == parkingID && notiList.get(i).getEvent().equals(event)
+					&& notiList.get(i).getType() == 1) {
+				noti = notiList.get(i);
+				System.out.println("lay dc noti");
+				break;
+			}
+		}
+		// trả về drivervehicle
 		if (noti != null) {
-			Long id = (Long) noti.getVehicle_id();
-			if(event.equals("cancel")) {
+
+			if (event.equals("cancel")) {
 				notificationService.deleteByNoti(new Notification());
 			}
-			System.out.println("===================   DriverVehicleImpl/GetInfoVehicle  event = "+ event);
-			return vehicleRepository.getOne(id);
+			List<DriverVehicle> dvList = getAll();
+			for (DriverVehicle driverVehicle : dvList) {
+				if (driverVehicle.getDriver().getId() == noti.getDriver_id()
+						&& driverVehicle.getVehicle().getId() == noti.getVehicle_id()) {
+					System.out.println("lay driverVehicle");
+					return driverVehicle;
+				}
+			}
 		}
 		return null;
 	}
@@ -127,13 +165,11 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		List<DriverVehicle> dvlist = driverVehicleRepository.findAll();
 		List<DriverVehicle> dvreturn = new ArrayList<>();
 		for (DriverVehicle driverVehicle : dvlist) {
-			if(driverVehicle.getDriver().getId()==id && driverVehicle.getStatus()==1) {
+			if (driverVehicle.getDriver().getId() == id && driverVehicle.getStatus() == 1) {
 				dvreturn.add(driverVehicle);
 			}
 		}
 		return dvreturn;
 	}
-
-	
 
 }

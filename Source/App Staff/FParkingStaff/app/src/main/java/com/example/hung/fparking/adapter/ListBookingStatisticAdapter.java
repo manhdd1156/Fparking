@@ -52,16 +52,16 @@ public class ListBookingStatisticAdapter extends ArrayAdapter<BookingDTO> {
         }
         TextView tvBienso = (TextView) convertView.findViewById(R.id.tvBienso2);
         TextView tvTypeCar = (TextView) convertView.findViewById(R.id.tvTypeCar2);
-        TextView tvRating = (TextView) convertView.findViewById(R.id.tvRating2);
+//        TextView tvRating = (TextView) convertView.findViewById(R.id.tvRating2);
 //        final DateFormat df = new SimpleDateFormat("yyyy-MM-dd'T'hh:mm:ss.SSSZ");
 
         tvBienso.setText(dataModel.getLicensePlate());
         tvTypeCar.setText(dataModel.getTypeCar());
-        if (dataModel.getRating() < 3) {
-            tvRating.setText("Không tốt");
-        } else if (dataModel.getRating() >= 3) {
-            tvRating.setText("Tốt");
-        }
+//        if (dataModel.getRating() < 3) {
+//            tvRating.setText("Không tốt");
+//        } else if (dataModel.getRating() >= 3) {
+//            tvRating.setText("Tốt");
+//        }
         return convertView;
     }
 

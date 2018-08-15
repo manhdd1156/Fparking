@@ -68,14 +68,24 @@ private DriverRepository driverRepository;
 		List<Fine> flist = getAll();
 		double finePrice = 0;
 		for (Fine fine : flist) {
-			if(fine.getDrivervehicle().getId()==id && fine.getType()==1 && fine.getStatus()==0) {
+			if(fine.getDrivervehicle().getDriver().getId()==id && fine.getType()==0 && fine.getStatus()==0) { // type =0 : driver 
 				finePrice+=fine.getPrice();
 			}
 		}
 		System.out.println("FineServiceIml/getpriceByDriverVehicleId : finePrice = " + finePrice);
 		return finePrice;
 	}
-
+	@Override
+	public void resetFineOfDriver(Long id) throws Exception {
+		List<Fine> flist = getAll();
+		for (Fine fine : flist) {
+			if(fine.getDrivervehicle().getDriver().getId()==id && fine.getType()==0 && fine.getStatus()==1) { // type =0 : driver 
+				fine.setStatus(1);
+				fineRepository.save(fine);
+				System.out.println("xóa phạt thành công");
+			}
+		}
+	}
 	@Override
 	public List<Fine> getByDriverID(Long id) throws Exception {
 		// TODO Auto-generated method stub

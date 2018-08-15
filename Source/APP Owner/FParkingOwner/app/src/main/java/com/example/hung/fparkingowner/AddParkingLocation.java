@@ -106,8 +106,11 @@ public class AddParkingLocation extends AppCompatActivity implements OnMapReadyC
 
                 double lat = cameraLatLng.latitude;
                 double lng = cameraLatLng.longitude;
+                Intent i = new Intent(AddParkingLocation.this,AddParkingInformation.class);
+                i.putExtra("latitude",lat);
+                i.putExtra("longitude",lng);
+                startActivity(i);
 
-                startActivity(new Intent(AddParkingLocation.this, AddParkingInformation.class));
                 finish();
                 Log.e("Tọa độ: ", "Lat: " + lat + " Lng: " + lng);
             }

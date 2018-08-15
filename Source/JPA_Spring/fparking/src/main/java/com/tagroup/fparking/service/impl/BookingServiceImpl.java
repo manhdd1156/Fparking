@@ -187,7 +187,7 @@ public class BookingServiceImpl implements BookingService {
 	@Override
 	public Booking getByNoti(Notification noti) throws Exception {
 		try {
-			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),
+			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),noti.getDriver_id(),
 					1, noti.getEvent(), 0);
 			List<Booking> blist = bookingRepository.findAll();
 			for (Booking booking : blist) {
@@ -221,7 +221,7 @@ public class BookingServiceImpl implements BookingService {
 				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
 			}
 
-			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),
+			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(), noti.getDriver_id(),
 					1, noti.getEvent(), 0);
 
 			modelNoti.setType(2);
@@ -233,7 +233,6 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 5) {
-
 					booking.setStatus(1);
 					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() - 1);
 					System.out.println("booking = " + booking.toString());
@@ -253,7 +252,7 @@ public class BookingServiceImpl implements BookingService {
 					booking.setTimein(date);
 					booking.setComission(commisionService.getCommision());
 
-					double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getId());
+					double finePrice = fineService.getPriceByDrivervehicleId(booking.getDrivervehicle().getDriver().getId());
 					booking.setTotalfine(finePrice);
 					System.out.println("BookingServerImp/updatebystatus : booking : " + booking);
 					double price = tariffService.findByParkingAndVehicletype(n.getParking_id(),
@@ -268,8 +267,9 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 2) {
+					fineService.resetFineOfDriver(booking.getDrivervehicle().getDriver().getId());
 					booking.setStatus(3);
-
+					
 					return bookingRepository.save(booking);
 				}
 			}
@@ -290,8 +290,9 @@ public class BookingServiceImpl implements BookingService {
 			if (noti == null) {
 				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
 			}
-
-			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),
+			System.out.println("?????????????1");
+			System.out.println("NOTI = ===  " + noti);
+			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),noti.getDriver_id(),
 					1, noti.getEvent(), 0);
 			List<Booking> blist = bookingRepository.findAll();
 
@@ -300,7 +301,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == modelNoti.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == modelNoti.getVehicle_id()
 						&& booking.getStatus() == 2) {
-
+					System.out.println("?????????????2");
 					Date date = new Date();
 					booking.setTimeout(date);
 					long diff = booking.getTimeout().getTime() - booking.getTimein().getTime();
@@ -312,11 +313,13 @@ public class BookingServiceImpl implements BookingService {
 					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
 					Parking parking = parkingService.getById(booking.getParking().getId());
+					System.out.println("?????????????3");
 					parking.setDeposits(parking.getDeposits() - totalPrice * booking.getComission());
 					if (parking.getDeposits() < 100000) {
 						parking.setStatus(2);
 					}
 					parkingService.update(parking);
+					System.out.println("?????????????4");
 					booking.setStatus(3);
 					modelNoti.setType(2);
 					modelNoti.setData("ok");
@@ -386,7 +389,13 @@ public class BookingServiceImpl implements BookingService {
 				}
 			} else if (type == 2) {
 				List<Booking> bAll = bookingRepository.findAll();
-				b.add(bAll.get(bAll.size() - 1));
+				List<Booking> btemp = new ArrayList<>();
+				for (Booking booking : bAll) {
+					if(booking.getDrivervehicle().getDriver().getId()==t.getId()) {
+						btemp.add(booking);
+					}
+				}
+				b.add(btemp.get(btemp.size() - 1));
 			}
 
 			return b;
@@ -420,7 +429,7 @@ public class BookingServiceImpl implements BookingService {
 					&& booking.getDrivervehicle().getVehicle().getId() == bb.getVehicleid()
 					&& booking.getParking().getId() == bb.getParkingid() && booking.getStatus() == 5) {
 				Notification modelNoti = notificationService
-						.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(), 1, "order", 0);
+						.findByParkingIDAndTypeAndEventAndStatus(booking.getParking().getId(),bb.getDriverid(), 1, "order", 0);
 				notificationRepository.delete(modelNoti);
 				pusherService.trigger(booking.getParking().getId() + "schannel", "cancel", "preorder");
 				bookingRepository.delete(booking);

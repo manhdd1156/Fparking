@@ -16,7 +16,7 @@ public interface NotificationService {
 
 	public void delete(Long id) throws Exception;
 
-	public Notification findByParkingIDAndTypeAndEventAndStatus(Long parkingID, int type, String event, int status);
+	public Notification findByParkingIDAndTypeAndEventAndStatus(Long parkingID,Long driverID, int type, String event, int status);
 
 	public void deleteByNoti(Notification notification) throws Exception;
 

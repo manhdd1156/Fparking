@@ -38,7 +38,7 @@ private int parkingID;
         super.onPreExecute();
         pdLoading = new ProgressDialog(activity);
         //this method will be running on UI thread
-        pdLoading.setMessage("\tĐợi xíu...");
+        pdLoading.setMessage("\tĐang xử lý...");
         pdLoading.setCancelable(false);
         pdLoading.show();
 
@@ -55,8 +55,10 @@ private int parkingID;
             final TextView tvType = (TextView) activity.findViewById(R.id.tvType);
             final TextView tvColor = (TextView) activity.findViewById(R.id.tvColor);
             final TextView tvTitle = (TextView) activity.findViewById(R.id.title);
-            final TextView tvRate  = (TextView) activity.findViewById(R.id.tvRate);
-            final JSONObject jsonVehicleType = new JSONObject(jsonObj.getString("vehicletype"));
+            final TextView tvDriverid  = (TextView) activity.findViewById(R.id.lbdriverid);
+            final JSONObject jsonDriver= new JSONObject(jsonObj.getString("driver"));
+            final JSONObject jsonVehicle= new JSONObject(jsonObj.getString("vehicle"));
+            final JSONObject jsonVehicleType = new JSONObject(jsonVehicle.getString("vehicletype"));
             final String jsonRating = httpHandler.get(Constants.API_URL + "vehicles/ratings/" + jsonObj.getString("id"));
             System.out.println("json Rate <" + jsonRating +">");
 
@@ -73,17 +75,18 @@ private int parkingID;
                         }else if(event.contains("checkout")) {
                             tvTitle.setText("Có xe muốn thanh toán !");
                         }else if(event.contains("cancel")) {
-                            tvTitle.setText("Xe " + jsonObj.getString("licenseplate") + " đã hủy đặt chỗ!");
-                        }
-                        tvLicensePlate.setText(jsonObj.getString("licenseplate"));
-                        if(jsonRating.isEmpty() || jsonRating.contains("NaN") || Double.parseDouble(jsonRating) >= 3) {
-                            tvRate.setText("Tốt");
-                        }else if(Double.parseDouble(jsonRating) < 3 )
-                        {
-                            tvRate.setText("Không tốt");
+                            tvTitle.setText("Xe " + jsonVehicle.getString("licenseplate") + " đã hủy đặt chỗ!");
                         }
 
-                    tvColor.setText(jsonObj.getString("color"));
+                        tvLicensePlate.setText(jsonVehicle.getString("licenseplate"));
+//                        if(jsonRating.isEmpty() || jsonRating.contains("NaN") || Double.parseDouble(jsonRating) >= 3) {
+//                            tvRate.setText("Tốt");
+//                        }else if(Double.parseDouble(jsonRating) < 3 )
+//                        {
+//                            tvRate.setText("Không tốt");
+//                        }
+                        tvDriverid.setText(jsonDriver.getString("id"));
+                    tvColor.setText(jsonVehicle.getString("color"));
 
                     tvType.setText(jsonVehicleType.getString("type"));
                     // Stuff that updates the UI

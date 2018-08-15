@@ -77,7 +77,7 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
         super.onPreExecute();
         pdLoading = new ProgressDialog(activity);
         //this method will be running on UI thread
-        pdLoading.setMessage("\tĐợi xíu...");
+        pdLoading.setMessage("\tĐang xử lý...");
         pdLoading.setCancelable(false);
         pdLoading.show();
 
@@ -102,19 +102,21 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
                     continue;
                 }
                 double price = oneBooking.getDouble("price");
+                int driverVehicleID = oneBooking.getInt("id");
                 String timein = oneBooking.getString("timein");
                 String timeout = oneBooking.getString("timeout");
                 int parkingID = oneBooking.getJSONObject("parking").getInt("id");
                 int vehicleID = oneBooking.getJSONObject("drivervehicle").getJSONObject("vehicle").getInt("id");
+                int driverID = oneBooking.getJSONObject("drivervehicle").getJSONObject("driver").getInt("id");
                 String licenseplate = oneBooking.getJSONObject("drivervehicle").getJSONObject("vehicle").getString("licenseplate");
                 String color = oneBooking.getJSONObject("drivervehicle").getJSONObject("vehicle").getString("color");
                 String type = oneBooking.getJSONObject("drivervehicle").getJSONObject("vehicle").getJSONObject("vehicletype").getString("type");
-                String rating = httpHandler.get(Constants.API_URL + "vehicles/ratings/" + vehicleID);
-                System.out.println("Rating : " + rating);
-                if (rating.contains("NaN")) {
-                    rating = "3";
-                }
-                BookingDTO b = new BookingDTO(bookingID, parkingID, vehicleID, timein, timeout, price, licenseplate, type, Double.parseDouble(rating), status);
+//                String rating = httpHandler.get(Constants.API_URL + "vehicles/ratings/" + vehicleID);
+//                System.out.println("Rating : " + rating);
+//                if (rating.contains("NaN")) {
+//                    rating = "3";
+//                }
+                BookingDTO b = new BookingDTO(bookingID, parkingID,driverID, vehicleID,driverVehicleID, timein, timeout, price, licenseplate, type, status);
                 b.setTotalfine( oneBooking.getDouble("totalfine"));
                 b.setAmount( oneBooking.getDouble("amount"));
                 list.add(b);
@@ -160,7 +162,7 @@ class CreateBooking extends AsyncTask<Void, Void, Boolean> {
         try {
             JSONObject formData = new JSONObject();
             formData.put("parking_id", b.getParkingID());
-            formData.put("drivervehicle_id", b.getDrivervehicleID());
+            formData.put("drivervehicle_id", b.getDriverVehicleID());
 
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings", formData.toString(), "POST");
             JSONObject jsonObj = new JSONObject(json);
@@ -191,13 +193,13 @@ class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
     BookingDTO b;
-    Activity activity;
+//    Activity activity;
     boolean success = false;
     private SharedPreferences spref;
 
     public UpdateBooking(IAsyncTaskHandler container, BookingDTO b) {
         this.container = container;
-        this.activity = (Activity) container;
+//        this.activity = (Activity) container;
         this.b = b;
 //        spref = activity.getSharedPreferences("info",0);
     }
@@ -264,6 +266,7 @@ class UpdateBookingByStatus extends AsyncTask<Void, Void, String> {
         try {
             JSONObject formData = new JSONObject();
             formData.put("parking_id", bookingDTO.getParkingID());
+            formData.put("driver_id", bookingDTO.getDriverID());
             formData.put("type", 1);
             if (bookingDTO.getStatus() == 1) {  // lưu tạm biến bookingDTO.status là event. 1: order, 2: checkin, 3 : checkout
                 formData.put("event", "order");
@@ -305,7 +308,7 @@ class GetInfoCheckOut extends AsyncTask<Void, Void, String> {
 
     public GetInfoCheckOut(IAsyncTaskHandler container, BookingDTO bookingDTO) {
         this.container = container;
-        this.activity = (Activity) container;
+//        this.activity = (Activity) container;
         this.bookingDTO = bookingDTO;
     }
 
@@ -315,12 +318,13 @@ class GetInfoCheckOut extends AsyncTask<Void, Void, String> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
+            Log.e("booking precheckout:", bookingDTO.toString());
             formData.put("parking_id", bookingDTO.getParkingID());
+            formData.put("driver_id", bookingDTO.getDriverID());
             formData.put("type", 1);
             if (bookingDTO.getStatus() == 3) {
                 formData.put("event", "checkout");
             }
-
             formData.put("status", 0);
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/update/infockbynoti", formData.toString(), "PUT");
 
@@ -389,7 +393,7 @@ class GetBookingByStatus extends AsyncTask<Void, Void, String> {
 
             formData.put("status", 0);
             String json = httpHandler.requestMethod(Constants.API_URL + "bookings/notifications", formData.toString(), "PUT");
-
+//            System.out.println(Constants.API_URL + "bookings/notifications", formData.toString(), "PUT");
             JSONObject jsonObj = new JSONObject(json);
             System.out.println("getbookingbystatusTask : " + json);
             Log.e(" GetBooking : ", jsonObj.toString());
@@ -438,6 +442,7 @@ class CancelTask extends AsyncTask<Void, Void, Boolean> {
         try {
             JSONObject formData = new JSONObject();
             formData.put("parking_id", bookingDTO.getParkingID());
+            formData.put("driver_id", bookingDTO.getDriverID());
             formData.put("type", 1);
             if (bookingDTO.getStatus() == 1) {  // lưu tạm biến bookingDTO.status là event. 1: order, 2: checkin, 3 : checkout
                 formData.put("event", "order");
