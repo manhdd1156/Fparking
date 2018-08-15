@@ -44,15 +44,15 @@
 
 									<ul class="nav nav-tabs">
 										<li><a data-toggle="tab" href="#Infromation"
-											class="text-success"><i class="fa fa-bookmark-o"></i>
+											id="tabInfromation" class="text-success"><i class="fa fa-bookmark-o"></i>
 												Thông tin tài khoản</a></li>
 										<li><a data-toggle="tab" href="#FineHistory"
-											class="text-success"><i class="fa fa-info"></i> Lịch sử
+											id="tabFineHistory" class="text-success"><i class="fa fa-info"></i> Lịch sử
 												phạt</a></li>
 									</ul>
 
 									<div class="tab-content">
-										<div id="Infromation" class="tab-pane fade in active">
+										<div id="Infromation" class="tab-pane fade in">
 											<div class="table-responsive panel">
 												<table class="table">
 													<tbody>
@@ -86,57 +86,81 @@
 												<div class="col-lg-12">
 													<div class="panel panel-default">
 														<div class="panel-heading">Tổng số tiền phạt:
-															${totalPriceFine } </div>
+															${totalPriceFine }</div>
+														<form action="" method="GET">
+															<div>
+																<br>
+																<p class="col-lg-12">
+																	Từ <input type="date" name="dateFrom"
+																		value="${dateFrom }"> đến <input type="date"
+																		name="dateTo" value="${dateTo }"> <input
+																		type="hidden" name="type" value="1"> <input
+																		type="submit" value="Tìm">
+																</p>
+															</div>
+														</form>
+
 														<div class="panel-body">
-															<table width="100%"
-																class="table table-striped table-bordered table-hover"
-																id="dataTables-example">
-																<thead>
-																	<tr>
-																		<th>Ngày phạt</th>
-																		<th>Biển số xe</th>
-																		<th>Điển đếm</th>
-																		<th>Số tiền bị phạt</th>
-																		<th>Trạng thái</th>
-																	</tr>
-																</thead>
-																<tbody>
-																	<c:forEach items="${ driverFine}" var="driverFine">
+															<div class="panel-body">
+																<table width="100%"
+																	class="table table-striped table-bordered table-hover"
+																	id="dataTables-example">
+																	<thead>
 																		<tr>
-																			<td>${driverFine.dateFine }</td>
-																			<td>${driverFine.licenseplate }</td>
-																			<td>${driverFine.address }</td>
-																			<td>${driverFine.priceFine }</td>
-																			<td>${driverFine.status }</td>
+																			<th>Ngày phạt</th>
+																			<th>Biển số xe</th>
+																			<th>Điển đếm</th>
+																			<th>Số tiền bị phạt</th>
+																			<th>Trạng thái</th>
 																		</tr>
-																	</c:forEach>
-																</tbody>
-															</table>
-															<!-- /.table-responsive -->
+																	</thead>
+																	<tbody>
+																		<c:forEach items="${ driverFine}" var="driverFine">
+																			<tr>
+																				<td>${driverFine.dateFine }</td>
+																				<td>${driverFine.licenseplate }</td>
+																				<td>${driverFine.address }</td>
+																				<td>${driverFine.priceFine }</td>
+																				<td>${driverFine.status }</td>
+																			</tr>
+																		</c:forEach>
+																	</tbody>
+																</table>
+																<!-- /.table-responsive -->
+															</div>
+															<!-- /.panel-body -->
 														</div>
-														<!-- /.panel-body -->
+														<!-- /.panel -->
 													</div>
-													<!-- /.panel -->
+													<!-- /.col-lg-12 -->
 												</div>
-												<!-- /.col-lg-12 -->
 											</div>
 										</div>
-									</div>
 
+									</div>
 								</div>
 							</div>
 						</div>
 					</div>
 				</div>
 			</div>
+			<!-- ===============Content End================= -->
 		</div>
-		<!-- ===============Content End================= -->
-	</div>
-	<!-- ===============Body End================= -->
+		<!-- ===============Body End================= -->
 
-	<!-- ===============FooterJavaScrip Start================= -->
-	<%@include file="footerjavascrip.jsp"%>
-	<!-- ===============FooterJavaScrip End================= -->
-
+		<!-- ===============FooterJavaScrip Start================= -->
+		<%@include file="footerjavascrip.jsp"%>
+	<script type="text/javascript">
+	$(document).ready(function(){
+		var type = ${type};
+		if(type==1){
+			$("#tabFineHistory").tab('show')
+			alert("Hello!");
+		}else{
+			$("#tabInfromation").tab('show')
+		}
+	});
+	</script>
+		<!-- ===============FooterJavaScrip End================= -->
 </body>
 </html>

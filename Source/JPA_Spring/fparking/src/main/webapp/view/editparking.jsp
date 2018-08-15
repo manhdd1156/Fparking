@@ -42,15 +42,15 @@
 									<form role="form" method="POST" action="">
 										<div class="form-group">
 											<label>Địa chỉ:</label> 
-											<textarea class="form-control" name="address" rows="2" required>"${address }</textarea>
+											<input type="text" class="form-control" name="address" value="${address }" minlength="3" maxlength="100" required>
 										</div>
 										<div class="form-group">
 											<label>Kinh độ:</label> 
-											<input type="number" class="form-control" name="longitude" value="${longitude }" step="0.000000000001" required>
+											<input type="number" class="form-control" name="longitude" value="${longitude }" min="-180" max="180"  step="0.000000000001"  required>
 										</div>
 										<div class="form-group">
 											<label>Vĩ độ:</label> 
-											<input type="number" class="form-control" name="latitude" value="${latitude }" step="0.000000000001" required>
+											<input type="number" class="form-control" name="latitude" value="${latitude }" min="-180" max="180" step="0.000000000001" required>
 										</div>
 										<div class="form-group">
 											<label>Tổng số chỗ:</label> 

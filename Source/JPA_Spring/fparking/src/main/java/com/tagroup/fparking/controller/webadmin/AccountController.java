@@ -112,9 +112,27 @@ public class AccountController {
 	// get detail account by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/detail/{id}", method = RequestMethod.GET)
-	public String getInforDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+	public String getInforDriver(Map<String, Object> model, @PathVariable Long id,
+			@RequestParam(value = "dateFrom", required = false) String dateFrom,
+			@RequestParam(value = "dateTo", required = false) String dateTo,
+			@RequestParam(value = "type", required = false) Integer type) throws Exception {
 		Driver driver;
+		int check = 0;
+		// check date is null or not null
+		if (dateTo == null && dateFrom == null) {
+			check = 0;
+		} else {
+			if (dateFrom.length() > 0 && dateTo.length() == 0)
+				check = 1;
+			if (dateFrom.length() == 0 && dateTo.length() > 0)
+				check = 2;
+			if (dateFrom.length() > 0 && dateTo.length() > 0)
+				check = 3;
+		}
+
+		if (type == null) {
+			type = 0;
+		}
 		try {
 			driver = driverService.getById(id);
 		} catch (Exception e) {
@@ -159,21 +177,100 @@ public class AccountController {
 		dfList = driverVehicleService.findByDriverId(id);
 		double totalPriceFine = 0;
 		ArrayList<Map<String, Object>> arrayListdriverVehiclet = new ArrayList<>();
-		for (DriverFineDTO driverFineDTO : dfList) {
-			HashMap<String, Object> m = new HashMap<>();
+		if (type == 1) {
+			switch (check) {
+			case 1:
+				for (DriverFineDTO driverFineDTO : dfList) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (driverFineDTO.getDate() != null
+							&& driverFineDTO.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						m.put("dateFine", sdf.format(driverFineDTO.getDate()));
+						m.put("licenseplate", driverFineDTO.getLicenseplate());
+						m.put("address", driverFineDTO.getNameParking());
+						m.put("status", driverFineDTO.getStatus());
+						m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
 
-			m.put("dateFine", driverFineDTO.getDate());
-			m.put("licenseplate", driverFineDTO.getLicenseplate());
-			m.put("address", driverFineDTO.getNameParking());
-			m.put("status", driverFineDTO.getStatus());
-			m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
+						if (driverFineDTO.getStatus() == "Chưa thu") {
+							totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+						}
+					}
+					model.put("dateFrom", dateFrom);
+					arrayListdriverVehiclet.add(m);
+				}
+				break;
+			case 2:
+				for (DriverFineDTO driverFineDTO : dfList) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (driverFineDTO.getDate() != null
+							&& driverFineDTO.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("dateFine", sdf.format(driverFineDTO.getDate()));
+						m.put("licenseplate", driverFineDTO.getLicenseplate());
+						m.put("address", driverFineDTO.getNameParking());
+						m.put("status", driverFineDTO.getStatus());
+						m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
 
-			if (driverFineDTO.getStatus() == "Chưa thu") {
-				totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+						if (driverFineDTO.getStatus() == "Chưa thu") {
+							totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+						}
+					}
+					model.put("dateTo", dateTo);
+					arrayListdriverVehiclet.add(m);
+				}
+				break;
+			case 3:
+				for (DriverFineDTO driverFineDTO : dfList) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (driverFineDTO.getDate() != null
+							&& driverFineDTO.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& driverFineDTO.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("dateFine", sdf.format(driverFineDTO.getDate()));
+						m.put("licenseplate", driverFineDTO.getLicenseplate());
+						m.put("address", driverFineDTO.getNameParking());
+						m.put("status", driverFineDTO.getStatus());
+						m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
+
+						if (driverFineDTO.getStatus() == "Chưa thu") {
+							totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+						}
+					}
+					model.put("dateTo", dateTo);
+					arrayListdriverVehiclet.add(m);
+				}
+				model.put("dateFrom", dateFrom);
+				model.put("dateTo", dateTo);
+				break;
+			default:
+				for (DriverFineDTO driverFineDTO : dfList) {
+					HashMap<String, Object> m = new HashMap<>();
+					m.put("dateFine", sdf.format(driverFineDTO.getDate()));
+					m.put("licenseplate", driverFineDTO.getLicenseplate());
+					m.put("address", driverFineDTO.getNameParking());
+					m.put("status", driverFineDTO.getStatus());
+					m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
+					if (driverFineDTO.getStatus() == "Chưa thu") {
+						totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+					}
+					arrayListdriverVehiclet.add(m);
+				}
+				break;
 			}
+		} else {
+			for (DriverFineDTO driverFineDTO : dfList) {
+				HashMap<String, Object> m = new HashMap<>();
+				m.put("dateFine", sdf.format(driverFineDTO.getDate()));
+				m.put("licenseplate", driverFineDTO.getLicenseplate());
+				m.put("address", driverFineDTO.getNameParking());
+				m.put("status", driverFineDTO.getStatus());
+				m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
 
-			arrayListdriverVehiclet.add(m);
+				if (driverFineDTO.getStatus() == "Chưa thu") {
+					totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+				}
+
+				arrayListdriverVehiclet.add(m);
+			}
 		}
+
 		model.put("driverFine", arrayListdriverVehiclet);
 		model.put("totalPriceFine", currencyVN.format(totalPriceFine));
 
@@ -325,7 +422,7 @@ public class AccountController {
 				m.put("currentspace", parking.getCurrentspace());
 				m.put("totalspace", parking.getTotalspace());
 				m.put("deposits", currencyVN.format(parking.getDeposits()));
-
+				totalDeposit += parking.getDeposits();
 				arrayListParking.add(m);
 			}
 			model.put("listParking", arrayListParking);
@@ -710,6 +807,12 @@ public class AccountController {
 		try {
 			parkingService.update(parking);
 		} catch (Exception e) {
+			model.put("address", address);
+			model.put("longitude", longitude + "");
+			model.put("latitude", latitude + "");
+			model.put("timeoc", timeoc);
+			model.put("totalSpace", totalSpace);
+			model.put("deposits", deposits);
 			model.put("messError", "Sửa không thành công!");
 			return "editparking";
 		}

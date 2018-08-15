@@ -111,9 +111,9 @@
 																			<td>${arrayListParking.timeoc }</td>
 																			<td>${arrayListParking.desposits }</td>
 																			<td class="center"><a
-																				href="/account/patking/detail/${arrayListParking.id }">Xem</a></td>
+																				href="/account/parking/detail/${arrayListParking.id }">Xem</a></td>
 																			<td class="center"><a
-																				href="/account/patking/detail/${arrayListParking.id }">Sửa</a></td>
+																				href="/account/parking/detail/${arrayListParking.id }">Sửa</a></td>
 																		</tr>
 																	</c:forEach>
 																</tbody>

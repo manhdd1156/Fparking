@@ -234,8 +234,7 @@ public class HomeController {
 		try {
 			feedbackService.update(feedback);
 		} catch (Exception e) {
-			model.put("messError", "Đã có lỗi xảy ra. Vui lòng thử lại");
-			return "error";
+			return "404";
 		}
 		model.put("id", id);
 		model.put("inforFeedBack", feedback.getName() + "_" + feedback.getPhone());
@@ -261,11 +260,35 @@ public class HomeController {
 
 		return "redirect:/home";
 	}
+	
+	// resolve feedback
+		@PreAuthorize("hasAnyAuthority('ADMIN')")
+		@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.POST)
+		public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
+				@RequestParam("resolve") String resolve) {
+			Feedback feedbackupdate = new Feedback();
+			sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+			try {
+				feedbackupdate = feedbackService.getById(id);
+				feedbackupdate.setType(1);
+				feedbackupdate.setResolve(resolve);
+				feedbackService.update(feedbackupdate);
+			} catch (Exception e) {
+				return "404";
+			}
+			model.put("id", id);
+			model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
+			model.put("content", feedbackupdate.getContent());
+			model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
+			model.put("resolve", feedbackupdate.getResolve());
+			model.put("messSucc", "Đã giải quyết!");
+			return "viewdetailfeedback";
+		}
 
 	// go to add money
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/addmoney/{id}", method = RequestMethod.GET)
-	public String getFỏmMoneyToParking(Map<String, Object> model, @PathVariable("id") Long id) {
+	public String getFormMoneyToParking(Map<String, Object> model, @PathVariable("id") Long id) {
 		Parking parking = new Parking();
 		try {
 			parking = parkingService.getById(id);
