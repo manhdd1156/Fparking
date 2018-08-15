@@ -530,7 +530,7 @@ public class HomeActivity extends AppCompatActivity
                             + "   Thời gian đỗ : " + formatterHour.format(diffInHours) + " giờ \n"
                             + "Số tiền bị phạt : " + currencyVN.format(Session.bookingTemp.getTotalfine()) + "\n"
                             + "          Tổng giá : " + formatter.format(Session.bookingTemp.getAmount()) + " vnđ")
-                            .setPositiveButton("Yes", dialogClickListener).setCancelable(false).show();
+                            .setPositiveButton("Xác nhận", dialogClickListener).setCancelable(false).show();
 
                 } catch (ParseException e) {
                     e.printStackTrace();

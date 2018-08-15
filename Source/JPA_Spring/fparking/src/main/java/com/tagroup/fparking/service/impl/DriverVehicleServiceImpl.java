@@ -129,13 +129,15 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	public DriverVehicle getInfoVehicle(Long parkingID, String event) throws Exception {
 		// TODO Auto-generated method stub
 		Notification noti = new Notification();
-
+		System.out.println("parkingid = " + parkingID + ", event =" + event);
 		// lấy thông tin notification mới nhất
 		List<Notification> notiList = notificationService.getAll();
 		for (int i = notiList.size() - 1; i >= 0; i--) {
+			System.out.println(notiList.get(i));
 			if (notiList.get(i).getParking_id() == parkingID && notiList.get(i).getEvent().equals(event)
 					&& notiList.get(i).getType() == 1) {
 				noti = notiList.get(i);
+				System.out.println("lay dc noti");
 				break;
 			}
 		}
@@ -149,6 +151,7 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 			for (DriverVehicle driverVehicle : dvList) {
 				if (driverVehicle.getDriver().getId() == noti.getDriver_id()
 						&& driverVehicle.getVehicle().getId() == noti.getVehicle_id()) {
+					System.out.println("lay driverVehicle");
 					return driverVehicle;
 				}
 			}
