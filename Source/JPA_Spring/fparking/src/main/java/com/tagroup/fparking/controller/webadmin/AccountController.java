@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.tagroup.fparking.dto.DriverFineDTO;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.AdminService;
 import com.tagroup.fparking.service.BookingService;
@@ -36,11 +35,11 @@ import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.domain.Admin;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Driver;
+import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Tariff;
-import com.tagroup.fparking.service.domain.Vehicle;
 
 @Controller
 @RequestMapping("/account")
@@ -112,16 +111,37 @@ public class AccountController {
 	// get detail account by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/detail/{id}", method = RequestMethod.GET)
-	public String getInforDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
-		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+	public String getInforDriver(Map<String, Object> model, @PathVariable Long id,
+			@RequestParam(value = "dateFrom", required = false) String dateFrom,
+			@RequestParam(value = "dateTo", required = false) String dateTo,
+			@RequestParam(value = "type", required = false) Integer type) throws Exception {
 		Driver driver;
+		List<DriverVehicle> listDriverVehicleService;
+		ArrayList<Map<String, Object>> arrayListDriver = new ArrayList<>();
+		List<Fine> listFine;
+		int check = 0;
+		// check date is null or not null
+		if (dateTo == null && dateFrom == null) {
+			check = 0;
+		} else {
+			if (dateFrom.length() > 0 && dateTo.length() == 0)
+				check = 1;
+			if (dateFrom.length() == 0 && dateTo.length() > 0)
+				check = 2;
+			if (dateFrom.length() > 0 && dateTo.length() > 0)
+				check = 3;
+		}
+
+		if (type == null) {
+			type = 0;
+		}
 		try {
+			listFine = fineService.getAll();
 			driver = driverService.getById(id);
+			listDriverVehicleService = driverVehicleService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
-		List<Vehicle> listDriver = vehicleService.getVehicleByDriver(driver.getPhone());
-		ArrayList<Map<String, Object>> arrayListDriver = new ArrayList<>();
 
 		// tab thong tin
 		if (driver.getStatus() == 1) {
@@ -132,12 +152,14 @@ public class AccountController {
 		model.put("name", driver.getName());
 		model.put("phonenumber", driver.getPhone());
 
-		for (Vehicle vehicle : listDriver) {
+		for (DriverVehicle driverVehicle : listDriverVehicleService) {
 			HashMap<String, Object> m = new HashMap<>();
-			m.put("licenseplate", vehicle.getLicenseplate());
-			m.put("color", vehicle.getColor());
-			m.put("typecar", vehicle.getVehicletype().getType());
-			arrayListDriver.add(m);
+			if (driverVehicle.getDriver().getId() == id && driverVehicle.getStatus() == 1) {
+				m.put("licenseplate", driverVehicle.getVehicle().getLicenseplate());
+				m.put("color", driverVehicle.getVehicle().getColor());
+				m.put("typecar", driverVehicle.getVehicle().getVehicletype().getType());
+				arrayListDriver.add(m);
+			}
 		}
 
 		String car = "";
@@ -155,25 +177,124 @@ public class AccountController {
 		model.put("TotalCar", car);
 
 		// tab lich su phat
-		List<DriverFineDTO> dfList = new ArrayList<>();
-		dfList = driverVehicleService.findByDriverId(id);
 		double totalPriceFine = 0;
 		ArrayList<Map<String, Object>> arrayListdriverVehiclet = new ArrayList<>();
-		for (DriverFineDTO driverFineDTO : dfList) {
-			HashMap<String, Object> m = new HashMap<>();
+		if (type == 1) {
+			switch (check) {
+			case 1:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("address", fine.getParking().getAddress());
+						m.put("status", fine.getStatus());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
 
-			m.put("dateFine", driverFineDTO.getDate());
-			m.put("licenseplate", driverFineDTO.getLicenseplate());
-			m.put("address", driverFineDTO.getNameParking());
-			m.put("status", driverFineDTO.getStatus());
-			m.put("priceFine", currencyVN.format(driverFineDTO.getPrice()));
+						if (fine.getStatus() == 0) {
+							model.put("status", "Chưa thu");
+							totalPriceFine = totalPriceFine + fine.getPrice();
+						} else {
+							model.put("status", "Đã thu");
+						}
+						arrayListdriverVehiclet.add(m);
+					}
+					model.put("dateFrom", dateFrom);
+				}
+				model.put("type", type);
+				break;
+			case 2:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 23:59:59").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("address", fine.getParking().getAddress());
+						m.put("status", fine.getStatus());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
 
-			if (driverFineDTO.getStatus() == "Chưa thu") {
-				totalPriceFine = totalPriceFine + driverFineDTO.getPrice();
+						if (fine.getStatus() == 0) {
+							model.put("status", "Chưa thu");
+							totalPriceFine = totalPriceFine + fine.getPrice();
+						} else {
+							model.put("status", "Đã thu");
+						}
+						arrayListdriverVehiclet.add(m);
+					}
+					model.put("dateTo", dateFrom);
+				}
+				model.put("type", type);
+				break;
+			case 3:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 23:59:59").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("address", fine.getParking().getAddress());
+						m.put("status", fine.getStatus());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+
+						if (fine.getStatus() == 0) {
+							model.put("status", "Chưa thu");
+							totalPriceFine = totalPriceFine + fine.getPrice();
+						} else {
+							model.put("status", "Đã thu");
+						}
+						arrayListdriverVehiclet.add(m);
+					}
+				}
+				model.put("type", type);
+				model.put("dateFrom", dateFrom);
+				model.put("dateTo", dateTo);
+				break;
+			default:
+				for (Fine fine : listFine) {
+					HashMap<String, Object> m = new HashMap<>();
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 23:59:59").getTime()) {
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("address", fine.getParking().getAddress());
+						m.put("status", fine.getStatus());
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+
+						if (fine.getStatus() == 0) {
+							model.put("status", "Chưa thu");
+							totalPriceFine = totalPriceFine + fine.getPrice();
+						} else {
+							model.put("status", "Đã thu");
+						}
+						arrayListdriverVehiclet.add(m);
+					}
+				}
+				model.put("type", type);
+				break;
 			}
-
-			arrayListdriverVehiclet.add(m);
+		} else {
+		for (Fine fine : listFine) {
+			HashMap<String, Object> m = new HashMap<>();
+			if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null) {
+				m.put("dateFine", sdf.format(fine.getDate()));
+				m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+				m.put("address", fine.getParking().getAddress());
+				m.put("priceFine", currencyVN.format(fine.getPrice()));
+				if (fine.getStatus() == 0) {
+					m.put("status", "Chưa thu");
+					totalPriceFine = totalPriceFine + fine.getPrice();
+				} else {
+					m.put("status", "Đã thu");
+				}
+				arrayListdriverVehiclet.add(m);
+			}
 		}
+		 }
+		model.put("type", type);
 		model.put("driverFine", arrayListdriverVehiclet);
 		model.put("totalPriceFine", currencyVN.format(totalPriceFine));
 
@@ -325,7 +446,7 @@ public class AccountController {
 				m.put("currentspace", parking.getCurrentspace());
 				m.put("totalspace", parking.getTotalspace());
 				m.put("deposits", currencyVN.format(parking.getDeposits()));
-
+				totalDeposit += parking.getDeposits();
 				arrayListParking.add(m);
 			}
 			model.put("listParking", arrayListParking);
@@ -710,6 +831,12 @@ public class AccountController {
 		try {
 			parkingService.update(parking);
 		} catch (Exception e) {
+			model.put("address", address);
+			model.put("longitude", longitude + "");
+			model.put("latitude", latitude + "");
+			model.put("timeoc", timeoc);
+			model.put("totalSpace", totalSpace);
+			model.put("deposits", deposits);
 			model.put("messError", "Sửa không thành công!");
 			return "editparking";
 		}

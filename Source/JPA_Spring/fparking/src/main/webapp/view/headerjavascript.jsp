@@ -6,7 +6,7 @@
     <meta name="author" content="">
 
     <!-- Bootstrap Core CSS -->
-    <base href="http://192.168.119.243:9000/">
+    <base href="http://fparking.net:8080/">
     
     <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
 
@@ -21,7 +21,9 @@
 
     <!-- Custom Fonts -->
     <link href="assets/vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
+    
+    <!--toastr  mess-->
+	 <link href="assets/css/toastr.min.css" rel="stylesheet">
     <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
     <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
     <!--[if lt IE 9]>

@@ -42,7 +42,7 @@
 									<form role="form" method="POST" action="">
 										<div class="form-group">
 											<label>Họ Tên:</label> 
-											<input type="text" class="form-control" name="name" value="${name }" minlength="3" maxlength="50">
+											<input type="text" class="form-control" name="name" value="${name }" minlength="3" maxlength="45">
 										</div>
 										<div class="form-group">
 											<label>Số điện thoại:</label> 

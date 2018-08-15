@@ -8,7 +8,6 @@ import com.tagroup.fparking.service.domain.Vehicle;
 
 public interface DriverVehicleService {
 	public List<DriverVehicle> getAll();
-
 	public DriverVehicle getById(Long id)throws Exception;
 	public DriverVehicle create(DriverVehicle drivervehicle)throws Exception;
 	public DriverVehicle update(Long id)throws Exception;
