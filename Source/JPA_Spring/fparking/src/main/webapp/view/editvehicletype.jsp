@@ -42,7 +42,7 @@
 									<form role="form" method="POST" action="">
 										<div class="form-group">
 											<label>Loại xe:</label> 
-											<input type="text" class="form-control" name="vehicletype" value="${type}">
+											<input type="text" class="form-control" name="vehicletype" value="${type}" required>
 											<p style="color: green;">${messSuss }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>
