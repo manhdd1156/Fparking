@@ -3,28 +3,28 @@ package com.example.hung.fparkingowner.model;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.support.v7.app.AlertDialog;
 
-import com.example.hung.fparkingowner.Theme;
 
 public class CheckNetwork {
 
     private final Activity mActivity;
     private final Context mContext;
-    private String content;
 
-    public CheckNetwork(Activity mActivity, Context mContext, String content) {
+    public CheckNetwork(Activity mActivity, Context mContext) {
         this.mActivity = mActivity;
         this.mContext = mContext;
-        this.content = content;
     }
 
     public boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
-
-        return cm.getActiveNetworkInfo() != null;
+        NetworkInfo netInfo = cm.getActiveNetworkInfo();
+        if (netInfo != null && netInfo.isConnectedOrConnecting()) {
+            return true;
+        }
+        return false;
     }
 
     public void createDialog() {
@@ -38,16 +38,14 @@ public class CheckNetwork {
                         if (!isNetworkConnected()) {
                             createDialog();
                         } else {
-                            Intent intent = new Intent(mContext, Theme.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            mContext.startActivity(intent);
+                            mActivity.recreate();
                         }
                         break;
                 }
             }
         };
         builder.setTitle("RẤT TIẾC :-(")
-                .setMessage(content)
+                .setMessage("Kết nối mạng đã bị tắt. Vui lòng kết nối mạng và thử lại")
                 .setPositiveButton("THỬ LẠI", dialogClickListener).setCancelable(false).show();
         try {
         } catch (Exception e) {

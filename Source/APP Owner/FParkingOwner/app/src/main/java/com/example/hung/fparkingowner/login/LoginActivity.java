@@ -1,7 +1,11 @@
 package com.example.hung.fparkingowner.login;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.SharedPreferences;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AlertDialog;
@@ -24,6 +28,7 @@ import com.example.hung.fparkingowner.config.Session;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.example.hung.fparkingowner.model.CheckNetwork;
 import com.facebook.accountkit.AccountKitLoginResult;
 import com.facebook.accountkit.ui.AccountKitActivity;
 import com.facebook.accountkit.ui.AccountKitConfiguration;
@@ -60,6 +65,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
         Session.homeActivity = LoginActivity.this;
         editor = Session.spref.edit();
         // ánh xạ
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         phoneNumber = (EditText) findViewById(R.id.phone);
         password = (EditText) findViewById(R.id.login_password);
         loginButton = (Button) findViewById(R.id.loginBtn);
@@ -95,6 +101,29 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
 
                 break;
         }
+    }
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            CheckNetwork checkNetwork = new CheckNetwork(LoginActivity.this, getApplicationContext());
+            if (!checkNetwork.isNetworkConnected()) {
+                checkNetwork.createDialog();
+            } else {
+                System.out.println("đã có mạng");
+//                recreate();
+            }
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
     private void otp() {
         LoginType loginType = LoginType.PHONE;

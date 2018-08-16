@@ -15,6 +15,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.TextView;
 
@@ -34,6 +35,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class StatisticalActivity extends AppCompatActivity implements IAsyncTaskHandler {
     private static final String TAG = "Statistical";
@@ -44,6 +46,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     TextView tvTotalMoney;
     TextView tvDateError;
     ImageView backStatistical;
+    LinearLayout chooseFromDate, chooseToDate;
     Button btnShow;
     Date fromDate;
     Date toDate;
@@ -59,10 +62,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         setContentView(R.layout.activity_statistical);
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         lv = (ListView) findViewById(R.id.cars_list2);
-        tvFromDate = (TextView) findViewById(R.id.tvFromDate);
-        tvToDate = (TextView) findViewById(R.id.tvToDate);
+        tvFromDate = (TextView) findViewById(R.id.tvFromD);
+        tvToDate = (TextView) findViewById(R.id.tvToD);
         tvTotalCar = (TextView) findViewById(R.id.tvTotalCar);
         tvTotalMoney = (TextView) findViewById(R.id.tvMoney);
+        chooseFromDate = (LinearLayout) findViewById(R.id.chooseFromDate);
+        chooseToDate = findViewById(R.id.chooseToDate);
         tvDateError = (TextView) findViewById(R.id.tvDateError);
         btnShow = (Button) findViewById(R.id.btnStat);
         backStatistical = findViewById(R.id.imageViewBackStatistical);
@@ -77,7 +82,21 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         BookingDTO b = new BookingDTO();
         b.setParkingID(Session.currentStaff.getParking_id());
         new ManagerBookingTask("statisticget", b, StatisticalActivity.this);
-        tvToDate.setOnClickListener(new View.OnClickListener() {
+
+        chooseFromDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar calendar = Calendar.getInstance();
+                int year = calendar.get(Calendar.YEAR);
+                int month = calendar.get(Calendar.MONTH);
+                int day = calendar.get(Calendar.DAY_OF_MONTH);
+                DatePickerDialog dialog = new DatePickerDialog(
+                        StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener1, year, month, day);
+                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dialog.show();
+            }
+        });
+        chooseToDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar calendar = Calendar.getInstance();
@@ -89,19 +108,6 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dialog.show();
 
-            }
-        });
-        tvFromDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener1, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
             }
         });
         btnShow.setOnClickListener(new View.OnClickListener() {
@@ -192,58 +198,81 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
             }
         }
     };
+
     @Override
     protected void onResume() {
         super.onResume();
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
+
     @Override
     protected void onPause() {
         super.onPause();
         unregisterReceiver(receiver);
     }
+
     @Override
     public void onPostExecute(Object o) {
         List<BookingDTO> lstBooking = (List<BookingDTO>) o;
         List<BookingDTO> lstBookingAdapter = new ArrayList<>();
         double money = 0;
-        if (toDate==null && fromDate==null) {
-            for (int i = 0; i < lstBooking.size(); i++) {
-                money += lstBooking.get(i).getAmount();
-            }
-            tvTotalCar.setText(lstBooking.size() + "");
-            NumberFormat formatter = new DecimalFormat("###,###");
-            tvTotalMoney.setText(formatter.format(money) + " vnđ");
-            ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBooking, this);
-            lv.setAdapter(arrayAdapter);
-
-        } else if(toDate != null || fromDate != null){
-            for (int i = 0; i < lstBooking.size(); i++) {
-                final DateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-                final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                try {
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    if (fromDate != null && toDate==null && lstBooking.get(i).getTimeout().isEmpty() && datein.getTime() <= fromDate.getTime()) {
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
-                        continue;
-                    } else if (fromDate!=null && toDate!=null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
-                    }
-                } catch (ParseException e) {
-                    System.out.println("lỗi in onPost StatisticalActivity : " + e);
+        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
+        try {
+            if (toDate == null && fromDate == null) {
+                for (int i = 0; i < lstBooking.size(); i++) {
+                    money += lstBooking.get(i).getAmount();
                 }
+                tvTotalCar.setText(lstBooking.size() + "");
+
+//            NumberFormat formatter = new DecimalFormat("###,###");
+                tvTotalMoney.setText(currencyVN.format(money));
+                ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBooking, this);
+                lv.setAdapter(arrayAdapter);
+
+            } else {
+
+                if (fromDate != null && toDate == null) {
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        if (datein.getTime() <= fromDate.getTime()) {
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+
+                        }
+
+                    }
+
+                } else if (toDate == null || fromDate != null) {
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        if (datein.getTime() >= fromDate.getTime()) {
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+
+                        }
+
+                    }
+                } else if (toDate != null || fromDate != null) {
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        if (fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+                        }
+                    }
+                }
+                tvTotalCar.setText(lstBookingAdapter.size() + "");
+
+                tvTotalMoney.setText(currencyVN.format(money) + " vnđ");
+                ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBookingAdapter, this);
+                lv.setAdapter(arrayAdapter);
             }
-//            System.out.println("size = " + lstBookingAdapter.size() + ";");
-            tvTotalCar.setText(lstBookingAdapter.size() + "");
-            NumberFormat formatter = new DecimalFormat("###,###");
-
-            tvTotalMoney.setText(formatter.format(money) + " vnđ");
-            ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBookingAdapter, this);
-            lv.setAdapter(arrayAdapter);
-
+        } catch (ParseException e) {
+            System.out.println("lỗi in onPost StatisticalActivity : " + e);
         }
         Log.d("Statistical_onPost: ", lstBooking.toString());
 

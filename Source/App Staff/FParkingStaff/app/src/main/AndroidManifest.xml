@@ -55,9 +55,8 @@
         <activity
             android:name=".dialog.DialogActivity"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />
-        <activity android:name=".login.LoginActivity">
+        <activity android:name=".login.LoginActivity"/>
 
-        </activity>
         <activity android:name=".IntroApplication">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

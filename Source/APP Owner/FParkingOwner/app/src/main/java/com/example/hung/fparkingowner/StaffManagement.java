@@ -237,7 +237,7 @@ public class StaffManagement extends AppCompatActivity implements IAsyncTaskHand
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            CheckNetwork checkNetwork = new CheckNetwork(StaffManagement.this, getApplicationContext(),"Kết nối mạng đã bị tắt. Vui lòng bật kết nối mạng và thử lại trong ít phút nữa");
+            CheckNetwork checkNetwork = new CheckNetwork(StaffManagement.this, getApplicationContext());
             if (!checkNetwork.isNetworkConnected()) {
                 checkNetwork.createDialog();
             } else {
