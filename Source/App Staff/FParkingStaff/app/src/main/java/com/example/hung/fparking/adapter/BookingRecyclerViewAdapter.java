@@ -3,7 +3,6 @@ package com.example.hung.fparking.adapter;
 import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -12,34 +11,24 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.example.hung.fparking.HomeActivity;
 import com.example.hung.fparking.R;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
-import com.example.hung.fparking.config.Session;
-import com.example.hung.fparking.dialog.DialogActivity;
 import com.example.hung.fparking.dto.BookingDTO;
-import com.example.hung.fparking.notification.Notification;
 
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class BookingRecyclerViewAdapter extends RecyclerView
         .Adapter<BookingRecyclerViewAdapter
         .DataObjectHolder> {
-    private static String LOG_TAG = "StaffRecyclerViewAdapter";
+    private static String LOG_TAG = "BookingRecyclerViewAdapter";
     private ArrayList<BookingDTO> mDataset;
     private static MyClickListener myClickListener;
     AlertDialog dialog;
@@ -88,7 +77,7 @@ public class BookingRecyclerViewAdapter extends RecyclerView
     public DataObjectHolder onCreateViewHolder(ViewGroup parent,
                                                int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.bookings_list, parent, false);
+                .inflate(R.layout.layout_bookings_list, parent, false);
 
         DataObjectHolder dataObjectHolder = new DataObjectHolder(view);
         return dataObjectHolder;

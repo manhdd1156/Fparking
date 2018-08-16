@@ -15,6 +15,7 @@ import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.NotificationRepository;
+import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.security.Token;
@@ -52,7 +53,9 @@ public class BookingServiceImpl implements BookingService {
 	private FineService fineService;
 	@Autowired
 	private ParkingService parkingService;
-
+	@Autowired
+	private OwnerRepository ownerRepository;
+	
 	@Autowired
 	private DriverVehicleRepository driverVehicleRepository;
 	@Autowired
@@ -290,7 +293,6 @@ public class BookingServiceImpl implements BookingService {
 			if (noti == null) {
 				throw new APIException(HttpStatus.NO_CONTENT, "The Notification was not content");
 			}
-			System.out.println("?????????????1");
 			System.out.println("NOTI = ===  " + noti);
 			Notification modelNoti = notificationService.findByParkingIDAndTypeAndEventAndStatus(noti.getParking_id(),noti.getDriver_id(),
 					1, noti.getEvent(), 0);
@@ -301,7 +303,6 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == modelNoti.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == modelNoti.getVehicle_id()
 						&& booking.getStatus() == 2) {
-					System.out.println("?????????????2");
 					Date date = new Date();
 					booking.setTimeout(date);
 					long diff = booking.getTimeout().getTime() - booking.getTimein().getTime();
@@ -313,13 +314,11 @@ public class BookingServiceImpl implements BookingService {
 					totalPrice += booking.getTotalfine();
 					booking.setAmount(totalPrice);
 					Parking parking = parkingService.getById(booking.getParking().getId());
-					System.out.println("?????????????3");
 					parking.setDeposits(parking.getDeposits() - totalPrice * booking.getComission());
 					if (parking.getDeposits() < 100000) {
 						parking.setStatus(2);
 					}
 					parkingService.update(parking);
-					System.out.println("?????????????4");
 					booking.setStatus(3);
 					modelNoti.setType(2);
 					modelNoti.setData("ok");
@@ -354,7 +353,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<Booking> findByParking(Parking parking) throws Exception {
-
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			return bookingRepository.findByParking(parking);
 		} catch (Exception e) {
@@ -477,6 +476,21 @@ public class BookingServiceImpl implements BookingService {
 			}
 		}
 
+	}
+
+	@Override
+	public List<Booking> findByOwner() throws Exception {
+		// TODO Auto-generated method stub
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		List<Parking> plist = parkingRepository.findByOwner(ownerRepository.getOne(t.getId()));
+		List<Booking> returnBookingList = new ArrayList<>();
+		for (Parking parking : plist) {
+			List<Booking> bTemp = findByParking(parking);
+			for (Booking booking : bTemp) {
+				returnBookingList.add(booking);
+			}
+		}
+		return returnBookingList;
 	}
 
 }

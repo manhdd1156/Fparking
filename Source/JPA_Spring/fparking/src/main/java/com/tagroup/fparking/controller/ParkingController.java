@@ -18,6 +18,7 @@ import com.tagroup.fparking.dto.ParkingDTO;
 import com.tagroup.fparking.dto.ParkingTariffDTO;
 import com.tagroup.fparking.service.CityService;
 import com.tagroup.fparking.service.ParkingService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.City;
 import com.tagroup.fparking.service.domain.Parking;
 
@@ -76,7 +77,28 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+	
+	
+	// get fines of parkings by time
+		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+		@RequestMapping(path = "/time", method = RequestMethod.GET)
+		public ResponseEntity<?> getFineParkingByTime(@RequestParam("parkingid") Long parkingid,
+				@RequestParam("fromtime") String fromtime,@RequestParam("totime") String totime,@RequestParam("method") Long method) throws Exception {
+			System.out.println("parkingid =" + parkingid + ",fromtime =<" + fromtime + ">, totime =<" + totime +">,method= " + method);
+			double respone = parkingService.getFineParkingByTime(parkingid,fromtime,totime, method);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
+		}
+		
+		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+		@RequestMapping(path = "/testtt", method = RequestMethod.GET)
+		public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") Long type) throws Exception {
+
+			String respone = "OK";
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
+		
 	// get tariff by parking id = ?
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)

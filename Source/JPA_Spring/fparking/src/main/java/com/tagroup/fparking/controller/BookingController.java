@@ -87,7 +87,7 @@ public class BookingController {
 
 	}
 
-	// get booking by parking id = ?
+	// get booking by parking id = ? 
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/parkings/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getBookingByPId(@PathVariable Long id) throws Exception {
@@ -96,7 +96,15 @@ public class BookingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+	// get booking by owner id = ? 
+		@PreAuthorize("hasAnyAuthority('OWNER')")
+		@RequestMapping(path = "/owners", method = RequestMethod.GET)
+		public ResponseEntity<?> getBookingByOId() throws Exception {
+					System.out.println("bookings/owners");
+			List<Booking> respone = bookingService.findByOwner();
+			return new ResponseEntity<>(respone, HttpStatus.OK);
 
+		}
 	// get booking by driver id and type ?    type = 1 : lấy ra list booking có status =3, type = 2 : lấy ra booking mới nhất
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
 	@RequestMapping(path = "/drivers", method = RequestMethod.GET)

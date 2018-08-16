@@ -146,7 +146,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                         });
             }
         });
-        new ManagerParkingTask("getbyowner", null, new IAsyncTaskHandler() {
+        new ManagerParkingTask("getbyowner", null,null, new IAsyncTaskHandler() {
             @Override
             public void onPostExecute(Object o) {
                 final ArrayList<ParkingDTO> plist;

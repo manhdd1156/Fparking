@@ -1,8 +1,12 @@
 	package com.tagroup.fparking.service.impl;
 
+import java.text.DateFormat;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -20,12 +24,14 @@ import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.BookingService;
+import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.City;
+import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Rating;
@@ -50,6 +56,8 @@ public class ParkingServiceImpl implements ParkingService {
 	private OwnerRepository ownerRepository;
 	@Autowired
 	private TariffRepository tariffRepository;
+	@Autowired
+	private FineService fineService;
 	@Autowired
 	private CityRepository cityRepository;
 	@Override
@@ -164,14 +172,17 @@ public class ParkingServiceImpl implements ParkingService {
 				int count = 0;
 				for (Booking booking : b) {
 					if(booking.getStatus()==1 || booking.getStatus()==2) {
+//						System.out.println("count Booking : " + booking);
 						count++;
 					}
 				}
 				System.out.println("ParkingServiceIml/Update currentspace = " + parking.getCurrentspace());
 				System.out.println("ParkingServiceIml/Update count = " + count);
 
-				if(parking.getCurrentspace()<count) {
-					System.out.println("====");
+				if(temp.getTotalspace() - parking.getCurrentspace()<count) {
+//					System.out.println("total = " + temp.getTotalspace() + ";current = " + parking.getCurrentspace());
+//					System.out.println("ParkingServiceIml/Update count = " + count);
+//					System.out.println("====");
 					return null;
 				}
 				temp.setCurrentspace(parking.getCurrentspace());
@@ -349,6 +360,53 @@ public class ParkingServiceImpl implements ParkingService {
 		return returnList;
 		}
 		return null;
+	}
+			// tìm tổng số tiền bãi xe bị phạt theo thời gian nhập vào
+	@Override
+	public double getFineParkingByTime(Long parkingid, String fromtime, String totime, Long method) throws Exception {
+		double returnprice = 0;
+		try {
+//		System.out.println("parkingid =" + parkingid + ",fromtime =<" + fromtime + ">, totime =<" + totime +">,method= " + method);
+		List<Fine> finelist = fineService.getAll();
+		
+//		final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+		if(method==0) {
+			for (Fine fine : finelist) {
+				if(fine.getParking().getId()==parkingid) {
+					returnprice+=fine.getPrice();
+				}
+			}
+		}else if(method==1 && !fromtime.isEmpty() && totime.isEmpty()) {
+			 Long datein = Long.parseLong(fromtime);
+			for (Fine fine : finelist) {
+				if(fine.getParking().getId()==parkingid && fine.getDate().getTime()>=datein) {
+					returnprice+=fine.getPrice();
+					
+				}
+			}
+		}else if(method==1 && fromtime.isEmpty() && !totime.isEmpty()) {
+			Long dateout = Long.parseLong(fromtime);
+			for (Fine fine : finelist) {
+				if(fine.getParking().getId()==parkingid && fine.getDate().getTime()<=dateout) {
+					returnprice+=fine.getPrice();
+					
+				}
+			}
+		}else if(method==1 && !fromtime.isEmpty() && !totime.isEmpty()) {
+			Long datein = Long.parseLong(fromtime);
+			Long dateout = Long.parseLong(fromtime);
+			for (Fine fine : finelist) {
+				if(fine.getParking().getId()==parkingid &&fine.getDate().getTime()>=datein && fine.getDate().getTime()<=dateout) {
+					returnprice+=fine.getPrice();
+					
+				}
+			}
+		}
+		
+		}catch(Exception e) {
+			System.out.println(e);
+		}
+		return returnprice;
 	}
 
 }

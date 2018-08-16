@@ -7,6 +7,18 @@
     android:background="@color/background"
     tools:context=".StatisticalActivity">
 
+    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+        android:id="@+id/dropdownParking"
+        android:layout_width="137dp"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/lbTotalCar"
+        android:layout_marginBottom="-140dp"
+        android:layout_toEndOf="@+id/imageViewBackStatistical"
+        android:hint="Bãi xe"
+        android:textColor="@color/black"
+        android:textSize="16sp" />
+
+
     <ImageView
         android:id="@+id/imageView9"
         android:layout_width="wrap_content"
@@ -69,7 +81,7 @@
         android:layout_height="52dp"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
-        android:background="@drawable/button_selector2"
+        android:background="@drawable/button_selector3"
         android:text="THỐNG KÊ"
         android:textColor="#FFFFFF" />
 
@@ -77,8 +89,8 @@
         android:id="@+id/lbTotalCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDateError"
-        android:layout_marginTop="10dp"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="140dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Lượt thanh toán:" />
 
@@ -109,17 +121,6 @@
         android:layout_toEndOf="@+id/lbTotalCar"
         android:text="..."
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvDateError"
-        android:layout_width="338dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp"
-        android:text="Hãy chọn ngày lớn hơn"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/tvFromD"

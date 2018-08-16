@@ -9,7 +9,8 @@ import com.tagroup.fparking.service.domain.Parking;
 
 public interface BookingService {
 	public List<Booking> findByParking(Parking parking) throws Exception;
-
+	public List<Booking> findByOwner() throws Exception;
+	
 	public List<Booking> getAll() throws Exception;
 
 	public Booking getById(Long id) throws Exception;

@@ -101,7 +101,7 @@ public class AddParkingInformation extends AppCompatActivity implements IAsyncTa
                     }
 
                     ParkingDTO parkingDTO = new ParkingDTO(0,tbAddressAddParking.getText().toString(),0,0,"",latitude+"",longitude+"",3,tbOpenTimeAddParking.getText().toString(),Integer.parseInt(tbSpace.getText().toString()),cityID,price9,price1629,price3445);
-                    new ManagerParkingTask("add", parkingDTO, new IAsyncTaskHandler() {
+                    new ManagerParkingTask("add", parkingDTO,null, new IAsyncTaskHandler() {
                         @Override
                         public void onPostExecute(Object o) {
                             if((boolean)o) {
