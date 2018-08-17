@@ -54,6 +54,4 @@ private FinetariffRepository finetariffRepository;
 		
 		return finetariffRepository.findByVehicletype(vehicletype);
 	}
-	
-
 }

@@ -55,7 +55,7 @@ public class BusinessController {
 	// get commission
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/commission", method = RequestMethod.GET)
-	public String commissiomDetail(Map<String, Object> model) throws Exception {
+	public String commissionDetail(Map<String, Object> model) throws Exception {
 		List<Commision> listCommission;
 		try {
 			listCommission = commissionService.getAll();
@@ -77,7 +77,7 @@ public class BusinessController {
 	// edit commission
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/commission", method = RequestMethod.POST)
-	public String saveEditCommission(Map<String, Object> model, @RequestParam("commission") double commission)
+	public String editCommission(Map<String, Object> model, @RequestParam("commission") double commission)
 			throws Exception {
 
 		List<Commision> listCommission;
@@ -89,13 +89,13 @@ public class BusinessController {
 		Commision comm;
 		try {
 			comm = commissionService.getById(listCommission.get(listCommission.size() - 1).getId());
+			comm.setCommision(commission / 100);
+			commissionService.update(comm);
+			model.put("messEdit", "Sửa thành công!");
 		} catch (Exception e) {
 			return "404";
 		}
-		comm.setCommision(commission / 100);
-		commissionService.update(comm);
-		model.put("messEdit", "Sửa thành công!");
-
+		
 		List<Commision> listCommission2;
 		try {
 			listCommission2 = commissionService.getAll();
@@ -202,18 +202,22 @@ public class BusinessController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/managementfine", method = RequestMethod.GET)
 	public String getAllFineType(Map<String, Object> model) throws Exception {
-		List<Finetariff> listFineTariff = fineTariffService.getAll();
+		List<Finetariff> listFineTariff;
 		ArrayList<Map<String, Object>> arrayListFineTariff = new ArrayList<>();
-		for (Finetariff finetariff : listFineTariff) {
-			HashMap<String, Object> m = new HashMap<>();
-			double pricefine = finetariff.getPrice();
-			m.put("price", currencyVN.format(finetariff.getPrice()));
-			m.put("id", finetariff.getId());
-			m.put("vehicletype", finetariff.getVehicletype().getType());
+		try {
+			listFineTariff = fineTariffService.getAll();
+			for (Finetariff finetariff : listFineTariff) {
+				HashMap<String, Object> m = new HashMap<>();
+				double pricefine = finetariff.getPrice();
+				m.put("price", currencyVN.format(finetariff.getPrice()));
+				m.put("id", finetariff.getId());
+				m.put("vehicletype", finetariff.getVehicletype().getType());
+				arrayListFineTariff.add(m);
+			}
 
-			arrayListFineTariff.add(m);
+		} catch (Exception e) {
+			// TODO: handle exception
 		}
-
 		model.put("arrayListFineTariff", arrayListFineTariff);
 		return "managementfine";
 	}
@@ -221,7 +225,7 @@ public class BusinessController {
 	// go to form edit price fine
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/managementfine/edit/{id}", method = RequestMethod.GET)
-	public String editFineTypeForm(Map<String, Object> model, @PathVariable("id") long id) throws Exception {
+	public String getFormEditFineType(Map<String, Object> model, @PathVariable("id") long id) throws Exception {
 		Finetariff fineTariff;
 		try {
 			fineTariff = fineTariffService.getById(id);
@@ -241,7 +245,7 @@ public class BusinessController {
 	// save price fine
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/managementfine/edit/{id}", method = RequestMethod.POST)
-	public String saveFineTypeForm(Map<String, Object> model, @PathVariable("id") long id,
+	public String editFineType(Map<String, Object> model, @PathVariable("id") long id,
 			@RequestParam("priceFine") Double price) throws Exception {
 		Finetariff fineTariff;
 		try {

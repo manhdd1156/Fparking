@@ -111,7 +111,7 @@ public class AccountController {
 	// get detail account by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/detail/{id}", method = RequestMethod.GET)
-	public String getInforDriver(Map<String, Object> model, @PathVariable Long id,
+	public String accountDriverDetail(Map<String, Object> model, @PathVariable Long id,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
 			@RequestParam(value = "dateTo", required = false) String dateTo,
 			@RequestParam(value = "type", required = false) Integer type) throws Exception {
@@ -298,7 +298,7 @@ public class AccountController {
 		model.put("driverFine", arrayListdriverVehiclet);
 		model.put("totalPriceFine", currencyVN.format(totalPriceFine));
 
-		return "acountdriverdetail";
+		return "detailacountdriver";
 	}
 
 	// block account by id
@@ -308,11 +308,11 @@ public class AccountController {
 		Driver driver;
 		try {
 			driver = driverService.getById(id);
+			driver.setStatus(0);
+			driverService.update(driver);
 		} catch (Exception e) {
 			return "404";
 		}
-		driver.setStatus(0);
-		driverService.update(driver);
 		List<Driver> listDriver = driverService.getByStatus(1);
 		if (listDriver != null && listDriver.size() > 0) {
 			model.put("listDriver", listDriver);
@@ -348,7 +348,7 @@ public class AccountController {
 	// get form edited by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/editaccount/{id}", method = RequestMethod.GET)
-	public String editAccountDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
+	public String getFormEditAccountDriver(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Driver driver;
 		try {
 			driver = driverService.getById(id);
@@ -364,7 +364,7 @@ public class AccountController {
 	// submit change driver's account
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/driver/editaccount/{id}", method = RequestMethod.POST)
-	public String saveAccountDriver(Map<String, Object> model, @PathVariable("id") Long id,
+	public String editAccountDriver(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("name") String name, @RequestParam("phone") String phone) throws Exception {
 		Driver driver = new Driver();
 		model.put("id", id);
@@ -427,7 +427,7 @@ public class AccountController {
 	// get all blockaccount parking by id with status = 0
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/block", method = RequestMethod.GET)
-	public String blockAccountParking(Map<String, Object> model) throws Exception {
+	public String getAllblockAccountParking(Map<String, Object> model) throws Exception {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		List<Parking> listParking;
 		try {
@@ -461,7 +461,7 @@ public class AccountController {
 	// get detail parking by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/detail/{id}", method = RequestMethod.GET)
-	public String accountDriverDetail(Map<String, Object> model, @PathVariable("id") Long id,
+	public String accountParkingDetail(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
 			@RequestParam(value = "dateTo", required = false) String dateTo,
 			@RequestParam(value = "type", required = false) Integer type) throws Exception {
@@ -491,7 +491,6 @@ public class AccountController {
 		if (type == null) {
 			type = 0;
 		}
-		System.out.println("---------Type:" + type);
 		model.put("type", type);
 		try {
 			parking = parkingService.getById(id);
@@ -791,7 +790,7 @@ public class AccountController {
 	// go to edit form parking
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.GET)
-	public String getEditParkingForm(Map<String, Object> model, @PathVariable Long id) throws Exception {
+	public String getFormAccountParking(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Parking parking;
 		try {
 			parking = parkingService.getById(id);
@@ -810,7 +809,7 @@ public class AccountController {
 	// submit form edited parking by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.POST)
-	public String saveEditParkingForm(Map<String, Object> model, @PathVariable Long id,
+	public String editAccountParking(Map<String, Object> model, @PathVariable Long id,
 			@RequestParam("address") String address, @RequestParam("longitude") Double longitude,
 			@RequestParam("latitude") Double latitude, @RequestParam("timeoc") String timeoc,
 			@RequestParam("totalSpace") Integer totalSpace, @RequestParam("deposits") Double deposits)
@@ -1001,14 +1000,12 @@ public class AccountController {
 	// go to form edit
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/admin/editaccount", method = RequestMethod.GET)
-	public String editAccountAdmin(Map<String, Object> model) throws Exception {
+	public String getFormEditAccountAdmin(Map<String, Object> model) throws Exception {
 		try {
 			Token token = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 			Long id = token.getId();
-			System.out.println("------------------------id" + id);
 			Admin admin = adminService.getById(id);
 			model.put("username", admin.getUsername());
-			System.out.println("lỗi go to edit form---" + id);
 		} catch (Exception e) {
 			return "404";
 		}
@@ -1018,7 +1015,7 @@ public class AccountController {
 	// change pass admin
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/admin/editaccount", method = RequestMethod.POST)
-	public String saveAccountAdmin(Map<String, Object> model, @RequestParam("oldPassword") String oldpass,
+	public String changePassAdmin(Map<String, Object> model, @RequestParam("oldPassword") String oldpass,
 			@RequestParam("newPassword") String newpass, @RequestParam("re_Password") String repass) throws Exception {
 
 		try {
