@@ -24,7 +24,7 @@ import java.util.List;
 
 public class ManagerParkingTask {
 
-    public ManagerParkingTask(String method, ParkingDTO parkingDTO, IAsyncTaskHandler container) {
+    public ManagerParkingTask(String method, ParkingDTO parkingDTO,ArrayList<ParkingDTO> pList, IAsyncTaskHandler container) {
 
         if (method.equals("getbyowner")) {
             new GetParkingTask(container).execute((Void) null);
@@ -32,6 +32,8 @@ public class ManagerParkingTask {
             new UpdateParkingTask(container, parkingDTO).execute((Void) null);
         } else if (method.equals("add")) {
             new AddParkingTask(container, parkingDTO).execute((Void) null);
+        }else if(method.equals("getFines")) {
+            new GetFinesTask(container,parkingDTO,pList).execute((Void) null);
         }
     }
 
@@ -96,7 +98,62 @@ class GetParkingTask extends AsyncTask<Void, Void, List> {
 
 
 }
+class GetFinesTask extends AsyncTask<Void, Void, String> {
 
+    int id;
+    IAsyncTaskHandler container;
+    String time;
+    ParkingDTO parkingDTO;
+    ArrayList<ParkingDTO> pList;
+    public GetFinesTask(IAsyncTaskHandler container,ParkingDTO parkingDTO,ArrayList<ParkingDTO> pList) {
+        this.time = time;
+        this.parkingDTO = parkingDTO;
+        this.container = container;
+        this.pList = pList;
+    }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+    }
+
+    @Override
+    protected String doInBackground(Void... voids) {
+        HttpHandler httpHandler = new HttpHandler();
+        String json="";
+        double totalJson=0;
+        try {
+            if(pList==null) {
+                json = httpHandler.get(Constants.API_URL + "parkings/time?parkingid=" + parkingDTO.getId()
+                        + "&fromtime=" + parkingDTO.getTimeoc() + "&totime=" + parkingDTO.getAddress()
+                        + "&method=" + parkingDTO.getStatus()); // lưu tạm biến fromTime là timein, biến address là ToTime, biến status là loại get full hay get theo date
+                totalJson = Double.parseDouble(json);
+            }else {
+                for(int i =0;i<pList.size();i++) {
+                    json = httpHandler.get(Constants.API_URL + "parkings/time?parkingid=" + pList.get(i).getId()
+                            + "&fromtime=" + pList.get(i).getTimeoc() + "&totime=" + pList.get(i).getAddress()
+                            + "&method=" + pList.get(i).getStatus()); // lưu tạm biến fromTime là timein, biến address là ToTime, biến status là loại get full hay get theo date
+                    totalJson+= Double.parseDouble(json);
+                }
+            }
+
+
+
+        } catch (Exception ex) {
+            Log.e("Error:", ex.getMessage());
+        }finally {
+
+        }
+        return totalJson+"";
+    }
+    @Override
+    protected void onPostExecute(String returnString) {
+        super.onPostExecute(returnString);
+        container.onPostExecute(returnString);
+    }
+
+
+}
 class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;

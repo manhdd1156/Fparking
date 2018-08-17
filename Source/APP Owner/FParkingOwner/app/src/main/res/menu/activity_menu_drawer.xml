@@ -7,7 +7,10 @@
         android:id="@+id/nav_members"
         android:icon="@drawable/ic_menu_history"
         android:title="Quản lý nhân viên" />
-
+    <item
+        android:id="@+id/nav_statistic"
+        android:icon="@drawable/ic_menu_history"
+        android:title="Thống kê" />
     <item
         android:id="@+id/nav_contact"
         android:icon="@drawable/ic_menu_contact"

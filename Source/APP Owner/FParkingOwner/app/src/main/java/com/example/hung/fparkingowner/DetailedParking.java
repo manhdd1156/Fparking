@@ -148,7 +148,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
 
                         }
                     });
-                    new ManagerParkingTask("getbyowner", null, DetailedParking.this);
+                    new ManagerParkingTask("getbyowner", null,null, DetailedParking.this);
                 }
             }
         }).execute((Void) null);
@@ -207,7 +207,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             p.setStatus(1);
                         }
 
-                        new ManagerParkingTask("update", p, new IAsyncTaskHandler() {
+                        new ManagerParkingTask("update", p,null, new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
                                 dialog.cancel();

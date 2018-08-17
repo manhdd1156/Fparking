@@ -108,7 +108,7 @@ public class HomeActivity extends AppCompatActivity
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-        new ManagerParkingTask("getbyowner", null, this);
+        new ManagerParkingTask("getbyowner", null,null, this);
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         headerView = navigationView.getHeaderView(0);
@@ -210,16 +210,21 @@ public class HomeActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-         if (id == R.id.nav_contact) {
 
-            Intent intentContact = new Intent(HomeActivity.this, Contact.class);
-            startActivity(intentContact);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else if (id == R.id.nav_members) {
+        if (id == R.id.nav_members) {
             Intent intentStaff = new Intent(HomeActivity.this, StaffManagement.class);
             startActivity(intentStaff);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else if (id == R.id.nav_DK) {
+        } else if (id == R.id.nav_statistic) {
+            Intent intentStatistic = new Intent(HomeActivity.this, StatisticalActivity.class);
+            startActivity(intentStatistic);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }
+        else if (id == R.id.nav_contact) {
+            Intent intentContact = new Intent(HomeActivity.this, Contact.class);
+            startActivity(intentContact);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }  else if (id == R.id.nav_DK) {
              Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
              startActivity(intent);
              overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);

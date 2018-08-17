@@ -99,6 +99,7 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
                     continue;
                 }
                 else if (method.equals("statisticget")&& (oneBooking.getString("timein") == null || oneBooking.getString("timeout")==null)) {
+                    System.out.println("???????????????? " + oneBooking.getString("timein")  + "; " + oneBooking.getString("timeout"));
                     continue;
                 }
                 double price = oneBooking.getDouble("price");

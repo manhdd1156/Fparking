@@ -16,8 +16,11 @@ import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.BookingDTO;
 import com.example.hung.fparking.dto.ParkingDTO;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+
+import java.util.ArrayList;
 
 /**
  * Created by klot on 3/7/2018.
@@ -31,6 +34,8 @@ public class ManagerParkingTask {
             new GetParkingTask(parkingDTO.getId(),container).execute((Void) null);
         }else if(method.equals("update")) {
             new UpdateParkingTask(container,parkingDTO).execute((Void) null);
+        }else if(method.equals("getFines")) {
+            new GetFinesTask(container,parkingDTO).execute((Void) null);
         }
     }
 
@@ -95,6 +100,52 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
+    }
+
+
+}
+class GetFinesTask extends AsyncTask<Void, Void, String> {
+
+    int id;
+    IAsyncTaskHandler container;
+    String time;
+    ParkingDTO parkingDTO;
+    public GetFinesTask(IAsyncTaskHandler container,ParkingDTO parkingDTO) {
+        this.time = time;
+        this.parkingDTO = parkingDTO;
+        this.container = container;
+    }
+    @Override
+    protected void onPreExecute() {
+        super.onPreExecute();
+
+    }
+
+    @Override
+    protected String doInBackground(Void... voids) {
+        HttpHandler httpHandler = new HttpHandler();
+        String json="";
+        try {
+            json = httpHandler.get(Constants.API_URL + "parkings/time?parkingid=" + parkingDTO.getId()
+                    + "&fromtime=" + parkingDTO.getTimeoc() + "&totime=" + parkingDTO.getAddress()
+                    +"&method=" + parkingDTO.getStatus()); // lưu tạm biến fromTime là timein, biến address là ToTime, biến status là loại get full hay get theo date
+
+
+            System.out.println(Constants.API_URL + "parkings/time?parkingid=" + parkingDTO.getId()
+                    + "&fromtime=" + parkingDTO.getTimeoc() + "&totime=" + parkingDTO.getAddress()
+                    +"&method=" + parkingDTO.getStatus());
+
+        } catch (Exception ex) {
+            Log.e("Error:", ex.getMessage());
+        }finally {
+
+        }
+        return json;
+    }
+    @Override
+    protected void onPostExecute(String returnString) {
+        super.onPostExecute(returnString);
+        container.onPostExecute(returnString);
     }
 
 

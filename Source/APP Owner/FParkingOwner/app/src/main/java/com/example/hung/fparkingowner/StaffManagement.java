@@ -149,7 +149,7 @@ public class StaffManagement extends AppCompatActivity implements IAsyncTaskHand
                         }
                     }
                 });
-                new ManagerParkingTask("getbyowner", null, new IAsyncTaskHandler() {
+                new ManagerParkingTask("getbyowner", null,null, new IAsyncTaskHandler() {
                     @Override
                     public void onPostExecute(Object o) {
                         final ArrayList<ParkingDTO> plist;

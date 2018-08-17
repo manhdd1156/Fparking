@@ -163,6 +163,8 @@ public class NotificationServiceImpl implements NotificationService {
 		List<Notification> notilst = notificationRepository.findAll();
 		for (Notification noti : notilst) {
 				if(t.getType().toLowerCase().contains("driver") && noti.getType()==2) {
+					
+					Thread.sleep(3000);
 					pusherService.trigger(noti.getDriver_id() + "dchannel", noti.getEvent(), noti.getData());
 				}else if(t.getType().toLowerCase().contains("staff") && noti.getType()==1) {
 					pusherService.trigger(noti.getParking_id() + "schannel", noti.getEvent(), noti.getData());

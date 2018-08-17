@@ -218,7 +218,7 @@ public class HomeActivity extends AppCompatActivity
                 setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
             } else {
-                showDialog("Số chỗ trống không thể nhỏ hơn số xe trong bãi");
+                showDialog("Vẫn còn xe trong bãi, thay đổi không thành công");
             }
         }
     }
