@@ -100,7 +100,7 @@ public class ParkingController {
 		}
 		
 	// get tariff by parking id = ?
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('DRIVER','OWNER')")
 	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
 	public ResponseEntity<?> getTariffByBId(@PathVariable Long id) throws Exception {
 
@@ -146,7 +146,17 @@ public class ParkingController {
 			return new ResponseEntity<>(respone, HttpStatus.OK);
 
 		}
-	
+		
+		// update tariff by parking 
+		@PreAuthorize("hasAnyAuthority('OWNER')")
+		@RequestMapping(path = "/tariff/update", method = RequestMethod.GET)
+		public ResponseEntity<?> updatetariff(@RequestParam("parkingid") Long parkingid,@RequestParam("price9") double price9,@RequestParam("price916") double price916,@RequestParam("price1629") double price1629) throws Exception {
+
+			Parking respone = parkingService.updatetariff(parkingid,price9,price916,price1629);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+
+		}
+		
 	// update parking
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/update", method = RequestMethod.POST)

@@ -1,207 +1,487 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
     android:background="@color/background"
     tools:context=".DetailStaffActivity">
 
 
-    <ImageView
-        android:id="@+id/imageView9"
+    <RelativeLayout
+        android:id="@+id/relativeLayout5"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView9"
+            android:layout_width="wrap_content"
+            android:layout_height="50dp"
+            android:scaleType="fitXY"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:srcCompat="@drawable/header"
+            tools:layout_editor_absoluteX="0dp"
+            tools:layout_editor_absoluteY="0dp" />
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="Thêm bãi xe"
+            android:textColor="@color/whitetext"
+            android:textSize="15sp"
+            android:textStyle="bold"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:layout_editor_absoluteX="141dp"
+            tools:layout_editor_absoluteY="16dp" />
+
+    </RelativeLayout>
+
+    <ScrollView
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/header"
-        tools:layout_editor_absoluteX="0dp"
-        tools:layout_editor_absoluteY="0dp" />
+        android:layout_height="0dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/relativeLayout5">
 
-    <TextView
-        android:id="@+id/textView2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="14dp"
-        android:text="Thêm bãi xe"
-        android:textColor="@color/whitetext"
-        android:textSize="15sp"
-        android:textStyle="bold"
-        tools:layout_editor_absoluteX="141dp"
-        tools:layout_editor_absoluteY="16dp" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
-    <EditText
-        android:id="@+id/tbAddressAddParking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/imageView9"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="15dp"
-        android:background="@android:color/transparent"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Địa chỉ"
-        android:inputType="text"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+                <fragment
+                    android:id="@+id/map"
+                    android:name="com.google.android.gms.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="302dp"
+                    tools:context=".HomeActivity" />
 
-    <View
-        android:layout_width="285dp"
-        android:layout_height="1px"
-        android:layout_below="@+id/tbAddressAddParking"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white_greyish" />
+                <RelativeLayout
+                    android:id="@+id/relativeLayoutID"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_alignParentTop="true"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginRight="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@drawable/layout_search">
 
 
-    <EditText
-        android:id="@+id/tbOpenTimeAddParking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tbAddressAddParking"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="7dp"
-        android:background="@android:color/transparent"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Giờ hoạt động"
-        android:inputType="text"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+                    <fragment
+                        android:id="@+id/place_autocomplete_fragment_home"
+                        android:name="com.google.android.gms.location.places.ui.PlaceAutocompleteFragment"
+                        android:layout_width="280dp"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentStart="true"
+                        android:layout_centerVertical="true" />
 
-    <View
-        android:layout_width="285dp"
-        android:layout_height="1px"
-        android:layout_below="@+id/tbOpenTimeAddParking"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white_greyish" />
+                    <ImageView
+                        android:id="@+id/imageView_search_voiceAP"
+                        android:layout_width="51dp"
+                        android:layout_height="match_parent"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentTop="true"
+                        android:layout_marginEnd="1dp"
+                        android:layout_marginTop="0dp"
+                        android:src="@drawable/ic_action_micro" />
 
 
-    <EditText
-        android:id="@+id/tbPrice9AddParking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tbSpace"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="7dp"
-        android:background="@android:color/transparent"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Giá xe 2-9 chỗ/1 giờ"
-        android:inputType="number"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+                </RelativeLayout>
 
-    <View
-        android:layout_width="285dp"
-        android:layout_height="1px"
-        android:layout_below="@+id/tbPrice9AddParking"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white_greyish" />
+                <ImageView
+                    android:id="@+id/imageViewLocation"
+                    android:layout_width="37dp"
+                    android:layout_height="51dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="130dp"
+                    android:src="@drawable/parking_icon" />
 
-    <EditText
-        android:id="@+id/tbPrice16to29AddParking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tbPrice9AddParking"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="7dp"
-        android:background="@android:color/transparent"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Giá xe 16-29 chỗ/1 giờ"
-        android:inputType="number"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+            </RelativeLayout>
 
-    <View
-        android:layout_width="285dp"
-        android:layout_height="1px"
-        android:layout_below="@+id/tbPrice16to29AddParking"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white_greyish" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
-    <EditText
-        android:id="@+id/tbPrice34to45AddParking"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tbPrice16to29AddParking"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="7dp"
-        android:background="@android:color/transparent"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Giá xe 34-45 chỗ/1 giờ"
-        android:inputType="number"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/textView3"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Địa chỉ:"
+                    android:textSize="18sp" />
 
-    <View
-        android:layout_width="285dp"
-        android:layout_height="1px"
-        android:layout_below="@+id/tbPrice34to45AddParking"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white_greyish" />
-    <EditText
-        android:id="@+id/tbSpace"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/tbOpenTimeAddParking"
-        android:layout_marginLeft="23dp"
-        android:layout_marginTop="7dp"
-        android:background="@android:color/transparent"
-        android:drawablePadding="8dp"
-        android:gravity="center_vertical"
-        android:hint="Số chỗ đỗ"
-        android:inputType="number"
-        android:padding="10dp"
-        android:singleLine="true"
-        android:textColor="#000000"
-        android:textSize="16sp" />
+                <EditText
+                    android:id="@+id/tbAddressAP"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:layout_alignStart="@id/textView3"
+                    android:layout_below="@id/textView3"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:inputType="text"
+                    android:nextFocusDown="@id/tbOpenTimeHourAP"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
 
-    <View
-        android:layout_width="285dp"
-        android:layout_height="1px"
-        android:layout_below="@+id/tbSpace"
-        android:layout_centerHorizontal="true"
-        android:background="@color/white_greyish" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tbAddressAP"
+                    android:layout_marginLeft="33dp"
+                    android:background="@color/white_greyish" />
 
-    <Button
-        android:id="@+id/btnUpdate"
-        android:layout_width="match_parent"
-        android:layout_height="38dp"
-        android:layout_alignParentBottom="true"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/button_selector"
-        android:text="THÊM"
-        android:textColor="#FFFFFF"
-        android:textStyle="bold" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView4"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Giờ mở cửa:"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/tbOpenTimeHourAP"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/textView4"
+                    android:layout_below="@+id/textView4"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@id/tbOpenTimeMinAP"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tbOpenTimeHourAP"
+                    android:layout_marginLeft="33dp"
+                    android:background="@color/white_greyish" />
+
+                <TextView
+                    android:id="@+id/textView9"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/tbOpenTimeHourAP"
+                    android:layout_toEndOf="@+id/tbOpenTimeHourAP"
+                    android:text=":" />
+
+                <EditText
+                    android:id="@+id/tbOpenTimeMinAP"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView4"
+                    android:layout_toEndOf="@+id/textView9"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="00"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@id/tbCloseTimeHourAP"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <EditText
+                    android:id="@+id/tbCloseTimeHourAP"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@+id/textView11"
+                    android:layout_below="@+id/textView4"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@id/tbCloseTimeMinAP"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <TextView
+                    android:id="@+id/textView11"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/textView4"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginEnd="25dp"
+                    android:text="Giờ đóng cửa:"
+                    android:textSize="18sp" />
+
+                <TextView
+                    android:id="@+id/textView7"
+                    android:layout_width="25dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@+id/tbOpenTimeHourAP"
+                    android:layout_toEndOf="@+id/tbCloseTimeHourAP"
+                    android:text=":" />
+
+                <EditText
+                    android:id="@+id/tbCloseTimeMinAP"
+                    android:layout_width="40dp"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/textView4"
+                    android:layout_toEndOf="@+id/textView7"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="00"
+                    android:inputType="number"
+                    android:maxLength="2"
+                    android:nextFocusDown="@id/tbTotalSpaceAP"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
+                    android:id="@+id/dropdownCityAP"
+                    android:layout_width="158dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignTop="@+id/textView5"
+                    android:hint="Tỉnh/Thành phố"
+                    android:textColor="@color/black" />
+
+                <View
+                    android:layout_width="55dp"
+                    android:layout_height="1px"
+                    android:layout_alignStart="@id/tbTotalSpaceAP"
+
+                    android:layout_below="@+id/tbTotalSpaceAP"
+                    android:background="@color/white_greyish" />
 
 
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Số chỗ "
+                    android:textSize="18sp" />
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/dropdownCity"
-        android:layout_width="285dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/tbPrice34to45AddParking"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="7dp"
-        android:hint="Tỉnh/Thành phố"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
+                <TextView
+                    android:id="@+id/textView8"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/textView5"
+                    android:layout_marginStart="20dp"
+                    android:layout_toEndOf="@id/textView5"
+                    android:text="Còn trống"
+                    android:textSize="18sp" />
+
+                <EditText
+                    android:id="@+id/tbTotalSpaceAP"
+                    android:layout_width="55dp"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/textView5"
+                    android:layout_below="@+id/textView5"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="0"
+                    android:inputType="number"
+                    android:maxLength="3"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tbTotalSpaceAP"
+                    android:layout_marginLeft="33dp"
+                    android:background="@color/white_greyish" />
+
+                <EditText
+                    android:id="@+id/tbCurrentSpaceAP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/textView8"
+                    android:layout_below="@+id/textView5"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:enabled="false"
+                    android:gravity="center_vertical"
+                    android:hint="0"
+                    android:inputType="none"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <TextView
+                    android:id="@+id/textView10"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:text="Tiền đặt cọc:"
+                    android:textSize="18sp"
+                    android:textStyle="italic" />
+
+                <TextView
+                    android:id="@+id/tvMoneyAP"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBaseline="@id/textView10"
+                    android:layout_marginLeft="20dp"
+                    android:layout_toEndOf="@id/textView10"
+                    android:text="TextView"
+                    android:textSize="18sp"
+                    android:textStyle="bold|italic"
+                    tools:text="0" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
 
 
-</RelativeLayout>
+                <EditText
+                    android:id="@+id/tbPrice9AddParking2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="30dp"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="Giá xe 2-9 chỗ/1 giờ"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tbPrice9AddParking2"
+                    android:layout_marginLeft="33dp"
+                    android:background="@color/white_greyish" />
+
+
+                <EditText
+                    android:id="@+id/tbPrice16to29AddParking2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignStart="@id/tbPrice9AddParking2"
+                    android:layout_below="@id/tbPrice9AddParking2"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="Giá xe 16-29 chỗ/1 giờ"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tbPrice16to29AddParking2"
+                    android:layout_marginLeft="33dp"
+                    android:background="@color/white_greyish" />
+
+
+                <EditText
+                    android:id="@+id/tbPrice34to45AddParking2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_alignStart="@id/tbPrice16to29AddParking2"
+                    android:layout_below="@id/tbPrice16to29AddParking2"
+                    android:layout_marginTop="10dp"
+                    android:background="@android:color/transparent"
+                    android:drawablePadding="8dp"
+                    android:gravity="center_vertical"
+                    android:hint="Giá xe 34-45 chỗ/1 giờ"
+                    android:inputType="number"
+                    android:padding="10dp"
+                    android:singleLine="true"
+                    android:textColor="#000000"
+                    android:textSize="16sp" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1px"
+                    android:layout_below="@+id/tbPrice34to45AddParking2"
+                    android:layout_marginLeft="33dp"
+                    android:background="@color/white_greyish" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginBottom="20dp">
+
+                <Button
+                    android:id="@+id/btnAddParking"
+                    android:layout_width="match_parent"
+                    android:layout_height="42dp"
+                    android:layout_marginBottom="200dp"
+                    android:background="@drawable/button_selector"
+                    android:paddingBottom="20dp"
+                    android:text="THÊM"
+                    android:textColor="#FFFFFF"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintLeft_toLeftOf="parent"
+                    app:layout_constraintRight_toRightOf="parent" />
+
+            </RelativeLayout>
+
+        </LinearLayout>
+    </ScrollView>
+
+
+</android.support.constraint.ConstraintLayout>
 

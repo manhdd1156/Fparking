@@ -59,6 +59,7 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView backParkingManagement, addParking;
+
     AlertDialog dialog;
     private SharedPreferences.Editor editor;
     @Override
@@ -74,7 +75,7 @@ public class HomeActivity extends AppCompatActivity
         addParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
+                Intent intentDK = new Intent(HomeActivity.this, AddParkingInformation.class);
                 startActivity(intentDK);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 

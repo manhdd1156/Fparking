@@ -25,6 +25,7 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.hung.fparkingowner.asynctask.GetBookingTask;
@@ -32,7 +33,6 @@ import com.example.hung.fparkingowner.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparkingowner.asynctask.ManagerParkingTask;
 import com.example.hung.fparkingowner.config.Session;
 import com.example.hung.fparkingowner.dto.BookingDTO;
-import com.example.hung.fparkingowner.dto.CityDTO;
 import com.example.hung.fparkingowner.dto.ParkingDTO;
 import com.example.hung.fparkingowner.model.CheckNetwork;
 import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
@@ -54,14 +54,17 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     Button btnOK;
     LinearLayout chooseFromDate, chooseToDate;
     Button btnShow;
+    ArrayList<String> listParkingString;
+
     Date fromDate;
     Date toDate;
-    ArrayList<ParkingDTO> ParkingDTO;
+    ArrayList<ParkingDTO> listParkingDTO;
     String[] PARKINGLIST = {};
     private int parkingidSelected;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
+    Spinner sprinerParking;
     private int DEFAULT_TYPE = 0;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
     private DatePickerDialog.OnDateSetListener mDateSetListener2;
@@ -84,50 +87,42 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         chooseToDate = findViewById(R.id.chooseToDate);
         btnShow = (Button) findViewById(R.id.btnStat);
         backStatistical = findViewById(R.id.imageViewBackStatistical);
+        sprinerParking = (Spinner) findViewById(R.id.spinnerStatistic);
+        listParkingString = new ArrayList<>();
         //recycleView
         mRecyclerView = (RecyclerView) findViewById(R.id.statistic_list_view);
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
-//        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(StatisticalActivity.this, android.R.layout.simple_dropdown_item_1line, PARKINGLIST);
-//        betterSpinner = (MaterialBetterSpinner) findViewById(R.id.dropdownParking);
-//        betterSpinner.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-//            @Override
-//            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-//                for (int i = 0; i < ParkingDTO.size(); i++) {
-//                    if (PARKINGLIST[position].equals(ParkingDTO.get(i).getAddress())) {
-//                        parkingidSelected = ParkingDTO.get(i).getId();
-//                    }
-//                }
-//                Log.e("parkingidSelected: ", parkingidSelected + "");
-//            }
-//        });
-//        new ManagerParkingTask("getbyowner", null, null, new IAsyncTaskHandler() {
-//            @Override
-//            public void onPostExecute(Object o) {
-//                ParkingDTO = (ArrayList<ParkingDTO>) o;
-//                if (ParkingDTO.size() > 0) {
-//                    StatisticalActivity.this.runOnUiThread(new Runnable() {
-//
-//                        @Override
-//                        public void run() {
-//                            try {
-//                                PARKINGLIST = new String[ParkingDTO.size()];
-//                                System.out.println(PARKINGLIST);
-//                                for (int i = 0; i < ParkingDTO.size(); i++) {
-//                                    PARKINGLIST[i] = ParkingDTO.get(i).getAddress();
-//                                }
-//                                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(StatisticalActivity.this, android.R.layout.simple_dropdown_item_1line, PARKINGLIST);
-//                                betterSpinner.setAdapter(arrayAdapter);
-//                            } catch (Exception e) {
-//                                System.out.println("lỗi getvehicletask : " + e);
-//                            }
-//                        }
-//                    });
-//
-//                }
-//            }
-//        });
+        new ManagerParkingTask("getbyowner", null, null, new IAsyncTaskHandler() {
+            @Override
+            public void onPostExecute(Object o) {
+                System.out.println("oooooooooooooooooo = " + o);
+                listParkingDTO = (ArrayList<ParkingDTO>) o;
+                if (listParkingDTO.size() > 0) {
+                    for(int i = 0; i< listParkingDTO.size(); i++) {
+                        listParkingString.add(listParkingDTO.get(i).getAddress());
+                    }
+                    System.out.println("========================= " + listParkingString);
+                    ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_spinner_item, listParkingString);
+                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                    sprinerParking.setAdapter(adapter);
+                    sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                        @Override
+                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                            parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition()).getId();
+                            System.out.println(parkingidSelected);
+                        }
+
+                        @Override
+                        public void onNothingSelected(AdapterView<?> adapterView) {
+
+                        }
+                    });
+
+                }
+            }
+        });
         backStatistical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -136,8 +131,6 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
-//        BookingDTO b = new BookingDTO();
-//        b.setParkingID(Session.currentStaff.getParking_id());
         new GetBookingTask(StatisticalActivity.this).execute((Void) null);
 
         chooseFromDate.setOnClickListener(new View.OnClickListener() {
@@ -312,7 +305,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
             if (fromDate == null && toDate == null && String.valueOf(parkingidSelected) == null) {         // khi không chọn gì cả, thì select all
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < ParkingDTO.size(); i++) {
+                for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
                     p.setId(plistTemp.get(i).getId());
                     p.setTimeoc("");
@@ -336,7 +329,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
             } else if (fromDate != null && toDate == null && String.valueOf(parkingidSelected) == null) {            // khi chọn ngày mà k chọn bãi xe
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < ParkingDTO.size(); i++) {
+                for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
                     p.setId(plistTemp.get(i).getId());
                     p.setTimeoc(fromDate.getTime() + "");
@@ -365,7 +358,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 }
             } else if (fromDate == null && toDate != null && String.valueOf(parkingidSelected) == null) {                // khi chọn ngày mà k chọn bãi xe
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < ParkingDTO.size(); i++) {
+                for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
                     p.setId(plistTemp.get(i).getId());
                     p.setTimeoc("");
@@ -394,7 +387,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 }
             } else if (fromDate != null && toDate != null && String.valueOf(parkingidSelected) == null) {                // khi chọn ngày mà k chọn bãi xe
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < ParkingDTO.size(); i++) {
+                for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
                     p.setId(plistTemp.get(i).getId());
                     p.setTimeoc(fromDate.getTime() + "");

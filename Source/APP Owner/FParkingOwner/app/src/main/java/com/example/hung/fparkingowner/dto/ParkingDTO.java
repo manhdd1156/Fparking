@@ -176,6 +176,9 @@ public class ParkingDTO {
                 ", timeoc='" + timeoc + '\'' +
                 ", totalspace=" + totalspace +
                 ", city_id=" + city_id +
+                ", price9=" + price9 +
+                ", price1629=" + price1629 +
+                ", price3445=" + price3445 +
                 '}';
     }
 }

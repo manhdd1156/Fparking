@@ -89,6 +89,7 @@ public class ParkingServiceImpl implements ParkingService {
 				returnList.add(parking);
 			}
 		}
+		System.out.println("get parking by Owner = " + returnList.size() + " ,... " + returnList);
 		return returnList;
 	}
 	@Override
@@ -203,9 +204,11 @@ public class ParkingServiceImpl implements ParkingService {
 				} else if (parking.getStatus() == 5 || parking.getStatus()==6 ||// status = 5-6 : chờ phê duyệt đóng hoặc xóa
 						parking.getStatus()== 1) {    // status = 1 : Hủy đóng hoặc hủy xóa
 					System.out.println("parkingServiceImpl/update : staus  =  1 5 6 7 8");
-					Parking temp = parkingRepository.getOne(parking.getId());															
+					Parking temp = parkingRepository.getOne(parking.getId());	
+					System.out.println("temp parking = " + temp);
 					temp.setStatus(parking.getStatus());
 					parking = temp;
+					System.out.println("parking = " + parking);
 				}
 			}
 				
@@ -407,6 +410,44 @@ public class ParkingServiceImpl implements ParkingService {
 			System.out.println(e);
 		}
 		return returnprice;
+	}
+
+	@Override
+	public Parking updatetariff(Long parkingid, double price9, double price916, double price1629) throws Exception {
+		// TODO Auto-generated method stub
+		Tariff t = new Tariff();
+//		System.out.println("parking : " + p);
+		Parking p= parkingRepository.getOne(parkingid);
+//		System.out.println("parking = : " + p);
+		Vehicletype vt = new Vehicletype();
+		if(!(price9+"").equals("")) {
+			t.setPrice(price9);
+			vt.setId((long)1);
+			t.setVehicletype(vt);
+			t.setParking(p);
+			tariffRepository.save(t);
+			System.out.println("tariff1  = : " + t);
+		}
+		if(!(price916+"").equals("")) {
+			t = new Tariff();
+			t.setPrice(price916);
+			vt.setId((long)2);
+			t.setVehicletype(vt);
+			t.setParking(p);
+			tariffRepository.save(t);
+			System.out.println("tariff2  = : " + t);
+		}
+		
+		if((price1629+"").equals("")) {
+			t = new Tariff();
+			t.setPrice(price1629);
+			vt.setId((long)3);
+			t.setVehicletype(vt);
+			t.setParking(p);
+			tariffRepository.save(t);
+			System.out.println("tariff3  = : " + t);
+		}
+		return p;
 	}
 
 }
