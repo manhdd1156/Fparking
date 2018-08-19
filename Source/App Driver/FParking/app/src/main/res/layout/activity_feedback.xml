@@ -52,7 +52,7 @@
         <ImageView
             android:id="@+id/imageView25"
             android:layout_width="352dp"
-            android:layout_height="450dp"
+            android:layout_height="440dp"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="68dp"
@@ -65,7 +65,7 @@
             android:layout_height="394dp"
             android:layout_alignStart="@+id/imageViewBackFeedback"
             android:layout_alignTop="@+id/imageView25"
-            android:layout_marginLeft="15dp"
+            android:layout_marginLeft="20dp"
             android:layout_marginTop="25dp"
             android:background="@android:color/transparent"
             android:ems="10"
