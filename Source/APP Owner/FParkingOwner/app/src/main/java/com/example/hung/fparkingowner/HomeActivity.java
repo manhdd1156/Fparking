@@ -7,6 +7,7 @@ import android.content.IntentFilter;
 import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.annotation.DrawableRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -21,7 +22,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -34,11 +34,9 @@ import com.example.hung.fparkingowner.config.Session;
 import com.example.hung.fparkingowner.dto.ParkingDTO;
 import com.example.hung.fparkingowner.login.LoginActivity;
 import com.example.hung.fparkingowner.model.CheckNetwork;
-import com.example.hung.fparkingowner.notification.Notification;
 import com.example.hung.fparkingowner.other.Contact;
 import com.example.hung.fparkingowner.other.TermsAndConditions;
 import com.example.hung.fparkingowner.profile.ProfileActivity;
-import com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -59,6 +57,7 @@ public class HomeActivity extends AppCompatActivity
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     ImageView backParkingManagement, addParking;
+
     AlertDialog dialog;
     private SharedPreferences.Editor editor;
     @Override
@@ -74,7 +73,7 @@ public class HomeActivity extends AppCompatActivity
         addParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent intentDK = new Intent(HomeActivity.this, AddParkingLocation.class);
+                Intent intentDK = new Intent(HomeActivity.this, AddParkingInformation.class);
                 startActivity(intentDK);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
 
@@ -261,10 +260,11 @@ public class HomeActivity extends AppCompatActivity
                         .MyClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-                        Intent intentDetail = new Intent(HomeActivity.this, DetailedParking.class);
+
+                        Intent intentDetail = new Intent(HomeActivity.this, DetailParkingActivity.class);
                         intentDetail.putExtra("parkingid", plist.get(position).getId() + "");
+                        Session.currentParking = plist.get(position);
                         startActivity(intentDetail);
-                        finish();
                     }
                 });
             } else if (o instanceof String) {
@@ -331,9 +331,26 @@ class MyRecyclerViewAdapter extends RecyclerView
     public void onBindViewHolder(DataObjectHolder holder, int position) {
         holder.address.setText(mDataset.get(position).getAddress());
         holder.slot.setText(mDataset.get(position).getTotalspace() + "");
-        if (mDataset.get(position).getStatus() == 2 || mDataset.get(position).getStatus() == 3 ||
-                mDataset.get(position).getStatus() == 4 || mDataset.get(position).getStatus() == 5 || mDataset.get(position).getStatus() == 6) {
+        if(mDataset.get(position).getStatus()==2) {
+            holder.imgCancel.setBackgroundResource(R.drawable.warning);
             holder.imgCancel.setVisibility(View.VISIBLE);
+            System.out.println("2" +mDataset.get(position).getAddress());
+        }else if(mDataset.get(position).getStatus()==3) {
+            holder.imgCancel.setBackgroundResource(R.drawable.clock);
+            holder.imgCancel.setVisibility(View.VISIBLE);
+            System.out.println("3"+mDataset.get(position).getAddress());
+        }else if(mDataset.get(position).getStatus()==4) {
+            holder.imgCancel.setBackgroundResource(R.drawable.refresh);
+            holder.imgCancel.setVisibility(View.VISIBLE);
+            System.out.println("4"+mDataset.get(position).getAddress());
+        }else if(mDataset.get(position).getStatus()==5) {
+            holder.imgCancel.setBackgroundResource(R.drawable.close);
+            holder.imgCancel.setVisibility(View.VISIBLE);
+            System.out.println("5"+mDataset.get(position).getAddress());
+        }else if(mDataset.get(position).getStatus()==6) {
+            holder.imgCancel.setBackgroundResource(R.drawable.delete);
+            holder.imgCancel.setVisibility(View.VISIBLE);
+            System.out.println("6"+mDataset.get(position).getAddress());
         }
     }
 

@@ -69,9 +69,9 @@ public class StaffManagement extends AppCompatActivity implements IAsyncTaskHand
 //        new ManagerParkingTask("getbyowner", null, new IAsyncTaskHandler() {
 //            @Override
 //            public void onPostExecute(Object o) {
-//                final ArrayList<ParkingDTO> plist;
+//                final ArrayList<listParkingDTO> plist;
 //                if (o instanceof List) {
-//                    plist = (ArrayList<ParkingDTO>) o;
+//                    plist = (ArrayList<listParkingDTO>) o;
 //                    for (int i = 0; i < plist.size(); i++) {
 //                        idParkinglist.add(plist.get(i).getId());
 //                        dropdownList.add(plist.get(i).getAddress());

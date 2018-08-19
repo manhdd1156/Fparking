@@ -61,7 +61,7 @@
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:visibility="invisible"
-                app:srcCompat="@drawable/warning" />
+                app:srcCompat="@drawable/refresh" />
 
             <TextView
                 android:id="@+id/tvSpacee"

@@ -15,6 +15,7 @@ import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.example.hung.fparkingowner.asynctask.GetCityTask;
+import com.example.hung.fparkingowner.asynctask.GetTariffTask;
 import com.example.hung.fparkingowner.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparkingowner.asynctask.ManagerParkingTask;
 import com.example.hung.fparkingowner.config.Session;
@@ -23,24 +24,25 @@ import com.example.hung.fparkingowner.dto.ParkingDTO;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
-public class DetailedParking extends AppCompatActivity implements IAsyncTaskHandler {
+public class DetailParkingActivity extends AppCompatActivity implements IAsyncTaskHandler {
     Button btnUpdate, btnClose, btnDelete;
     AlertDialog dialog;
-    EditText address, openHour, openMin, closeHour, closeMin, totalSpace, confirmPass, currentSpace;
-    TextView desposits, process,error, errorConfirmPass;
-    Button btnConfimPass,btnOK;
+    EditText address, openHour, openMin, closeHour, closeMin, totalSpace, confirmPass, currentSpace, price9, price916, price1648;
+    TextView desposits, process, error, errorConfirmPass;
+    Button btnConfimPass, btnOK;
     ImageView backDP;
     Spinner sprinerCity;
     String parkingid;
     int cityid;
     List<String> listCityString;
     List<CityDTO> listCityDTO;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +56,9 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         closeMin = (EditText) findViewById(R.id.tbCloseTimeMin);
         totalSpace = (EditText) findViewById(R.id.tbTotalSpace);
         currentSpace = (EditText) findViewById(R.id.tbCurrentSpace);
+        price9 = (EditText) findViewById(R.id.tbPrice9DetailParking);
+        price916 = (EditText) findViewById(R.id.tbPrice16to29DetailParking);
+        price1648 = (EditText) findViewById(R.id.tbPrice34to45DetailParking);
         desposits = (TextView) findViewById(R.id.tvMoneyDP);
         process = (TextView) findViewById(R.id.tvProcess);
         sprinerCity = (Spinner) findViewById(R.id.spinner);
@@ -68,35 +73,41 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         backDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(DetailedParking.this,HomeActivity.class);
+//                Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
+//                finish();
+//                startActivity(i);
+                Session.homeActivity.recreate();
                 finish();
-                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                System.out.println("=====================");
-                if (address.getText().toString().isEmpty() || address.getText().toString().equals("") ||
-                        openHour.getText().toString().isEmpty() || openHour.getText().toString().equals("") ||
-                        openMin.getText().toString().isEmpty() || openMin.getText().toString().equals("") ||
-                        closeHour.getText().toString().isEmpty() || closeHour.getText().toString().equals("") ||
-                        closeMin.getText().toString().isEmpty() || closeMin.getText().toString().equals("") ||
-                        totalSpace.getText().toString().isEmpty() || totalSpace.getText().toString().equals("")
-                        ) {
-                    showDialog("Hãy nhập các trường cần thay đổi",0);
-//                    process.setText("Hãy nhập các trường cần thay đổi");
-//                    process.setVisibility(View.VISIBLE);
-                }  else if(Integer.parseInt(openHour.getText().toString()) >23 || Integer.parseInt(openMin.getText().toString()) > 60 ||
-                        Integer.parseInt(closeHour.getText().toString())>24 || Integer.parseInt(closeMin.getText().toString())>60){
-                    showDialog("Sai định dạng thời gian, vui lòng nhập lại",0);
-//                    process.setText("Sai định dạng thời gian, vui lòng nhập lại");
-                }else if(Integer.parseInt(openHour.getText().toString())>Integer.parseInt(closeHour.getText().toString()) ||
-                        (Integer.parseInt(openHour.getText().toString())==Integer.parseInt(closeHour.getText().toString()) && Integer.parseInt(openMin.getText().toString())>Integer.parseInt(closeMin.getText().toString()))) {
-                    showDialog("Giờ đóng cửa phải muộn hơn giờ mở cửa, vui lòng nhập lại",0);
+                if (address.getText().toString().isEmpty() || address.getText().toString().equals("")) {
+                    showDialog("Hãy nhập địa chỉ", 0);
+                } else if (openHour.getText().toString().isEmpty() || openHour.getText().toString().equals("")
+                        || openMin.getText().toString().isEmpty() || openMin.getText().toString().equals("")
+                        || closeHour.getText().toString().isEmpty() || closeHour.getText().toString().equals("")
+                        || closeMin.getText().toString().isEmpty() || closeMin.getText().toString().equals("")) {
+                    showDialog("Hãy nhập giờ mở - đóng cửa", 0);
+                } else if (totalSpace.getText().toString().isEmpty() || totalSpace.getText().toString().equals("")) {
+                    showDialog("Hãy nhập số chỗ", 0);
+                } else if ((price9.getText().toString().isEmpty() || price9.getText().toString().equals("")) && (price916.getText().toString().isEmpty() || price916.getText().toString().equals("")) && (price1648.getText().toString().isEmpty() || price1648.getText().toString().equals(""))) {
+                    showDialog("Hãy nhập giá xe ", 0);
+                } else if (Integer.parseInt(openHour.getText().toString()) > 23 || Integer.parseInt(openMin.getText().toString()) > 59
+                        || Integer.parseInt(closeHour.getText().toString()) > 24 || Integer.parseInt(closeMin.getText().toString()) > 59
+                        || (Integer.parseInt(closeHour.getText().toString()) == 24 && Integer.parseInt(closeMin.getText().toString()) > 0)) {
+                    showDialog("Thời gian không hợp lệ", 0);
+                } else if (Integer.parseInt(openHour.getText().toString()) > Integer.parseInt(closeHour.getText().toString()) ||
+                        (Integer.parseInt(openHour.getText().toString()) == Integer.parseInt(closeHour.getText().toString()) && Integer.parseInt(openMin.getText().toString()) > Integer.parseInt(closeMin.getText().toString()))) {
+                    showDialog("Giờ đóng cửa phải muộn hơn giờ mở cửa, vui lòng nhập lại", 0);
 //                    process.setText("Giờ đóng cửa phải muộn hơn giờ mở cửa, vui lòng nhập lại");
 
-                }else {
+                } else if (totalSpace.getText().length() > 3 || Integer.parseInt(totalSpace.getText().toString()) < 1 || Integer.parseInt(totalSpace.getText().toString()) > 200) {
+                    showDialog("Số chỗ phải lớn hơn 0 và nhỏ hơn 200", 0);
+                } else {
                     onClickBtn("update");
                 }
             }
@@ -129,11 +140,11 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
             public void onPostExecute(Object o) {
                 if (o instanceof List) {
                     listCityDTO = (ArrayList<CityDTO>) o;
-                    for(int i =0;i<listCityDTO.size();i++) {
+                    for (int i = 0; i < listCityDTO.size(); i++) {
                         listCityString.add(listCityDTO.get(i).getCityName());
                     }
                     System.out.println(listCityString);
-                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailedParking.this, android.R.layout.simple_spinner_item, listCityString);
+                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailParkingActivity.this, android.R.layout.simple_spinner_item, listCityString);
                     adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                     sprinerCity.setAdapter(adapter);
                     sprinerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -148,14 +159,15 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
 
                         }
                     });
-                    new ManagerParkingTask("getbyowner", null,null, DetailedParking.this);
+                    new GetTariffTask(Integer.parseInt(parkingid), DetailParkingActivity.this).execute((Void) null);
+//                    new ManagerParkingTask("getbyowner", null,null, DetailParkingActivity.this);
                 }
             }
         }).execute((Void) null);
     }
 
     public void onClickBtn(final String type) {
-        android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+        android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailParkingActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
         mBuilder.setView(mView);
         confirmPass = (EditText) mView.findViewById(R.id.tbPassword);
@@ -174,11 +186,10 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                         errorConfirmPass.setVisibility(View.VISIBLE);
                     } else {
                         ParkingDTO p = new ParkingDTO();
-                        p.setId(Integer.parseInt(parkingid));
                         if (type.equals("update")) {   // button is "cập nhật"
 
-                            p.setAddress(address.getText().toString());
-                            p.setTotalspace(Integer.parseInt(totalSpace.getText().toString()));
+                            Session.currentParking.setAddress(address.getText().toString());
+                            Session.currentParking.setTotalspace(Integer.parseInt(totalSpace.getText().toString()));
                             String openhour = openHour.getText().toString();
                             if (openhour.length() < 2) {
                                 openhour = "0" + openhour;
@@ -196,23 +207,34 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                                 closemin = "0" + closemin;
                             }
                             System.out.println(openHour.getText().toString() + " ===========================");
-                            p.setCity_id(cityid);
-                            p.setTimeoc(openhour + ":" + openmin + "-" + closehour + ":" + closemin + "h");
-                            p.setStatus(4);
+                            Session.currentParking.setCity_id(cityid);
+                            Session.currentParking.setTimeoc(openhour + ":" + openmin + "-" + closehour + ":" + closemin + "h");
+
+                            if (!price9.getText().toString().isEmpty()) {
+                                Session.currentParking.setPrice9(Double.parseDouble(price9.getText().toString()));
+                            }
+                            if (!price1648.getText().toString().isEmpty()) {
+                                Session.currentParking.setPrice1629(Double.parseDouble(price1648.getText().toString()));
+                            }
+                            if (!price1648.getText().toString().isEmpty()) {
+                                Session.currentParking.setPrice3445(Double.parseDouble(price1648.getText().toString()));
+                            }
+
+                            Session.currentParking.setStatus(4);
                         } else if (type.equals("close")) { // button is "tạm đóng"
-                            p.setStatus(5);
+                            Session.currentParking.setStatus(5);
                         } else if (type.equals("delete")) { // button is "Xóa"
-                            p.setStatus(6);
+                            Session.currentParking.setStatus(6);
                         } else if (type.equals("cancelclose") || type.equals("canceldelete")) {// button is "Hủy đóng" or "Hủy Xóa"
-                            p.setStatus(1);
+                            Session.currentParking.setStatus(1);
                         }
 
-                        new ManagerParkingTask("update", p,null, new IAsyncTaskHandler() {
+                        new ManagerParkingTask("update", Session.currentParking, null, new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
                                 dialog.cancel();
-                                showDialog("Thực hiện thành công",1);
-//                                Intent i = new Intent(DetailedParking.this,HomeActivity.class);
+                                showDialog("Thực hiện thành công", 1);
+//                                Intent i = new Intent(DetailParkingActivity.this,HomeActivity.class);
 //                                finish();
 //                                startActivity(i);
                             }
@@ -247,8 +269,9 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
 
         return sb.toString();
     }
+
     public void showDialog(String text, final int type) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailParkingActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
@@ -260,37 +283,40 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
             @Override
             public void onClick(View v) {
                 dialog.cancel();
-                if(type==1) {
-                    Intent i = new Intent(DetailedParking.this,HomeActivity.class);
+                if (type == 1) {
+                    Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
                     finish();
                     startActivity(i);
                 }
             }
         });
     }
+
     @SuppressLint("ResourceAsColor")
     @Override
     public void onPostExecute(Object o) {
         System.out.println("O = " + o);
-        final ArrayList<ParkingDTO> plist;
         try {
-            if (o instanceof List) {
-                plist = (ArrayList<ParkingDTO>) o;
+            if (o instanceof ParkingDTO) {
+               Session.currentParking = (ParkingDTO)o;
+                System.out.println("onpost DetailParking : " + Session.currentParking);
 
-                for (int i = 0; i < plist.size(); i++) {
-                    if (plist.get(i).getId() == Integer.parseInt(parkingid)) {
-                        address.setText(plist.get(i).getAddress());
-                        openHour.setText(plist.get(i).getTimeoc().substring(0, 2) + "");
-                        openMin.setText(plist.get(i).getTimeoc().substring(3, 5) + "");
-                        closeHour.setText(plist.get(i).getTimeoc().substring(6, 8) + "");
-                        closeMin.setText(plist.get(i).getTimeoc().substring(9, 11) + "");
-                        totalSpace.setText(plist.get(i).getTotalspace() + "");
-                        currentSpace.setText(plist.get(i).getCurrentspace() + "");
-                        NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-                        desposits.setText(currencyVN.format(plist.get(i).getDeposits() + ""));
-                        sprinerCity.setSelection(plist.get(i).getCity_id());
+
+                        address.setText(Session.currentParking.getAddress());
+                        openHour.setText(Session.currentParking.getTimeoc().substring(0, 2) + "");
+                        openMin.setText(Session.currentParking.getTimeoc().substring(3, 5) + "");
+                        closeHour.setText(Session.currentParking.getTimeoc().substring(6, 8) + "");
+                        closeMin.setText(Session.currentParking.getTimeoc().substring(9, 11) + "");
+                        totalSpace.setText(Session.currentParking.getTotalspace() + "");
+                        currentSpace.setText(Session.currentParking.getCurrentspace() + "");
+                        NumberFormat formatter = new DecimalFormat("###,###");
+                        desposits.setText(formatter.format(Session.currentParking.getDeposits()) + "");
+                        price9.setText(Session.currentParking.getPrice9() + "");
+                        price916.setText(Session.currentParking.getPrice1629() + "");
+                        price1648.setText(Session.currentParking.getPrice3445() + "");
+                        sprinerCity.setSelection(Session.currentParking.getCity_id());
                         // disable button when parkring is block, .....
-                        if (plist.get(i).getStatus() == 2) {
+                        if (Session.currentParking.getStatus() == 2) {
                             btnUpdate.setEnabled(false);
                             btnClose.setEnabled(false);
                             btnDelete.setEnabled(false);
@@ -299,7 +325,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             btnDelete.setBackgroundResource(R.drawable.button_selector2);
                             process.setText("Bãi xe đã bị khóa, hãy liên hệ admin");
                             process.setVisibility(View.VISIBLE);
-                        } else if (plist.get(i).getStatus() == 3) {
+                        } else if (Session.currentParking.getStatus() == 3) {
                             btnUpdate.setEnabled(false);
                             btnClose.setEnabled(false);
                             btnDelete.setEnabled(false);
@@ -309,11 +335,11 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             process.setText("Yêu cầu tạo mới của bạn sẽ được xử lý trong 24 giờ");
                             process.setVisibility(View.VISIBLE);
 
-                        } else if (plist.get(i).getStatus() == 4) {
+                        } else if (Session.currentParking.getStatus() == 4) {
                             process.setText("Yêu cầu cập nhật của bạn sẽ được xử lý trong 24 giờ");
                             process.setVisibility(View.VISIBLE);
 
-                        } else if (plist.get(i).getStatus() == 5) {
+                        } else if (Session.currentParking.getStatus() == 5) {
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
                             btnUpdate.setBackgroundResource(R.drawable.button_selector2);
@@ -321,7 +347,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             btnClose.setText("HỦY ĐÓNG");
                             process.setText("Yêu cầu tạm đóng bãi của bạn sẽ được xử lý trong 24 giờ");
                             process.setVisibility(View.VISIBLE);
-                        } else if (plist.get(i).getStatus() == 6) {
+                        } else if (Session.currentParking.getStatus() == 6) {
                             btnUpdate.setEnabled(false);
                             btnClose.setEnabled(false);
                             btnUpdate.setBackgroundResource(R.drawable.button_selector2);
@@ -331,8 +357,6 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             process.setVisibility(View.VISIBLE);
                         }
                     }
-                }
-            }
         } catch (Exception e) {
             System.out.println("lỗi onPost ở DetailParkingActivity : " + e);
         }

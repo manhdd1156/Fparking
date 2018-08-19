@@ -360,7 +360,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
         try {
             double distanceValue = distination.distanceTo(location);
 //            Log.e("khoảng cách", distanceValue + "");
-            if (distanceValue <= 500) {
+            if (distanceValue <= 50) {
                 buttonCheckin.setBackground(getResources().getDrawable(R.drawable.button_selector2));
                 buttonCheckin.setEnabled(true);
                 if (noti) {
@@ -433,7 +433,7 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     }
 
     public void createNotification(String title) {
-        Intent intent = new Intent(this, Direction.class);
+        Intent intent = new Intent(this, HomeActivity.class);
 //        intent.putExtra("NotificationMessage", "order");
         intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP | Intent.FLAG_ACTIVITY_CLEAR_TOP);
         PendingIntent pIntent = PendingIntent.getActivity(this, (int) System.currentTimeMillis(), intent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -519,7 +519,11 @@ public class Direction extends FragmentActivity implements OnMapReadyCallback, D
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        textToSpeechNearPlace.shutdown();
+        try {
+            textToSpeechNearPlace.shutdown();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
         if (locationManager != null) {
             locationManager.removeUpdates(Direction.this);
         }

@@ -12,6 +12,7 @@ import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.domain.Owner;
+import com.tagroup.fparking.service.domain.Staff;
 
 @Service
 public class OwnerServiceImpl implements OwnerService {
@@ -39,7 +40,20 @@ public class OwnerServiceImpl implements OwnerService {
 	@Override
 	public Owner create(Owner owner) {
 		// TODO Auto-generated method stub
-		return ownerRepository.save(owner);
+		try {
+			List<Owner> olist = getAll();
+			for (Owner o : olist) {
+				if (o.getPhone().equals(owner.getPhone())) {
+					throw new APIException(HttpStatus.CONFLICT, "phone of Owner is Exist");
+				} else {
+					System.out.println("=======");
+					return ownerRepository.save(owner);
+				}
+			}
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.BAD_REQUEST, "Error");
+		}
+		return null;
 
 	}
 

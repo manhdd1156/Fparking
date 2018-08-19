@@ -67,8 +67,8 @@ public class ForgotPassword_Fragment extends Fragment implements OnClickListener
 //                        .beginTransaction()
 //                        .setCustomAnimations(R.anim.right_enter, R.anim.left_out)
 //                        .replace(R.id.frameContainer,
-//                                new ForgotPasswordOtp_Fragment(),
-//                                Constants.ForgotPasswordOtp_Fragment).commit();
+//                                new ForgotPassOtp_Activity(),
+//                                Constants.ForgotPassOtp_Activity).commit();
                 break;
 
         }

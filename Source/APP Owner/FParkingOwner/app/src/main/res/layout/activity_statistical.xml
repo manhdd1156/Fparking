@@ -7,17 +7,6 @@
     android:background="@color/background"
     tools:context=".StatisticalActivity">
 
-    <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
-        android:id="@+id/dropdownParking"
-        android:layout_width="137dp"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/lbTotalCar"
-        android:layout_marginBottom="-140dp"
-        android:layout_toEndOf="@+id/imageViewBackStatistical"
-        android:hint="Bãi xe"
-        android:textColor="@color/black"
-        android:textSize="16sp" />
-
 
     <ImageView
         android:id="@+id/imageView9"
@@ -48,6 +37,7 @@
         android:paddingRight="10dp"
         android:scaleType="fitXY"
         app:srcCompat="@drawable/checkoutinfo" />
+
     <TextView
         android:id="@+id/textView2"
         android:layout_width="wrap_content"
@@ -226,6 +216,14 @@
         android:layout_alignTop="@+id/lbMoney"
         android:text="..."
         android:textStyle="bold" />
+
+    <Spinner
+        android:id="@+id/spinnerStatistic"
+        android:layout_width="301dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="107dp"
+        android:layout_toEndOf="@+id/imageViewBackStatistical" />
 
 
 </RelativeLayout>

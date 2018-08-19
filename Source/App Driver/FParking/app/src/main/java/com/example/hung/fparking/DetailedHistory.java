@@ -66,7 +66,7 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
             textViewLicensePlate.setText(myBookingDTO.getLicenseplate());
             textViewType.setText(myBookingDTO.getType());
             NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-            textViewTotalPrice.setText( currencyVN.format(myBookingDTO.getAmount()).toString());
+            textViewTotalPrice.setText(currencyVN.format(myBookingDTO.getAmount()).toString());
             textViewAddress.setText(myBookingDTO.getAddress());
             textViewTimeCheckinPH.setText(myBookingDTO.getTimeIn());
             textViewTimeCheckoutPH.setText(myBookingDTO.getTimeOut());
@@ -74,13 +74,20 @@ public class DetailedHistory extends AppCompatActivity implements IAsyncTaskHand
             final DateFormat df = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
             try {
                 Date date1 = df.parse(myBookingDTO.getTimeIn());
-                Date date2 = df.parse(myBookingDTO.getTimeOut());
-                long diff = date2.getTime() - date1.getTime();
-                textViewTime.setText(diff/(60*60*1000)+" Giờ");
+                if (!myBookingDTO.getTimeOut().equals("null")) {
+                    Date date2 = df.parse(myBookingDTO.getTimeOut());
+                    long diff = date2.getTime() - date1.getTime();
+                    if (diff / (60 * 60 * 1000) == 0) {
+                        textViewTime.setText("1 Giờ");
+                    } else if (diff % (60 * 60 * 1000) == 0) {
+                        textViewTime.setText((diff / (60 * 60 * 1000)) + " Giờ");
+                    } else {
+                        textViewTime.setText((diff / (60 * 60 * 1000) + 1) + " Giờ");
+                    }
+                }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
-
         }
     }
 

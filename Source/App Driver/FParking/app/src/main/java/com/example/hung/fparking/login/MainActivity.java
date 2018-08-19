@@ -1,6 +1,7 @@
 package com.example.hung.fparking.login;
 
 import android.content.Intent;
+import android.support.annotation.VisibleForTesting;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -29,7 +30,7 @@ import java.util.regex.Pattern;
 public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler {
 
     private static EditText phoneNumber, password;
-    private static Button loginButton;
+    public static Button loginButton;
     private static TextView forgotPassword, signUp;
 
     public static int APP_REQUEST_CODE = 3301;
@@ -93,8 +94,7 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
         if (getPhone.equals("") || getPhone.isEmpty()) {
             new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.login_layout),
                     "Hãy nhập số điện thoại");
-        }
-        if (getPassword.equals("") || getPassword.isEmpty()) {
+        } else if (getPassword.equals("") || getPassword.isEmpty()) {
 
             new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.login_layout),
                     "Hãy nhập mật khẩu");
@@ -188,7 +188,7 @@ public class MainActivity extends AppCompatActivity implements IAsyncTaskHandler
             intentSignup.putExtra("action", "forgot");
             startActivity(intentSignup);
             finish();
-        } else if(event.equals("register")){
+        } else if (event.equals("register")) {
             Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
             intentSignup.putExtra("action", "register");
             startActivity(intentSignup);

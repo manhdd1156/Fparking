@@ -30,6 +30,7 @@ dependencies {
     implementation 'com.pusher:pusher-java-client:1.5.0'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
+    androidTestImplementation 'com.android.support.test:rules:1.0.2'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.2'
     implementation 'com.google.android.gms:play-services-places:11.6.0'
     implementation 'com.google.android.gms:play-services-location:11.6.0'
@@ -47,5 +48,24 @@ dependencies {
 
     // progess bar
     implementation 'com.github.ybq:Android-SpinKit:1.1.0'
+
+    // Robolectric
+    testImplementation "org.robolectric:robolectric:3.8"
+
+    android {
+        testOptions {
+            unitTests {
+                includeAndroidResources = true
+            }
+        }
+    }
+
+    // ... more entries
+    testImplementation 'junit:junit:4.12'
+
+    // required if you want to use Mockito for unit tests
+    testImplementation 'org.mockito:mockito-core:2.7.22'
+    // required if you want to use Mockito for Android tests
+    androidTestImplementation 'org.mockito:mockito-android:2.7.22'
 
 }

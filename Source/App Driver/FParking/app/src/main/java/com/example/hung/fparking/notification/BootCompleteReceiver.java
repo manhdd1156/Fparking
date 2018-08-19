@@ -9,6 +9,5 @@ public class BootCompleteReceiver extends BroadcastReceiver {
     public void onReceive(Context context, Intent intent) {
             Intent pushIntent = new Intent(context, Notification.class);
             context.startService(pushIntent);
-
     }
 }

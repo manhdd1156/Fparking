@@ -181,11 +181,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
     private void goToMyLoggedInActivity() {
         if (event.equals("forgot")) {
 
-            Intent intentSignup = new Intent(getApplicationContext(), ForgotPasswordOtp_Fragment.class);
+            Intent intentSignup = new Intent(getApplicationContext(), ForgotPassOtp_Activity.class);
             intentSignup.putExtra("action", "forgot");
             startActivity(intentSignup);
         } else if(event.equals("register")){
-            Intent intentSignup = new Intent(getApplicationContext(), SignUp_Fragment.class);
+            Intent intentSignup = new Intent(getApplicationContext(), SignUpActivity.class);
             intentSignup.putExtra("action", "register");
             startActivity(intentSignup);
         }

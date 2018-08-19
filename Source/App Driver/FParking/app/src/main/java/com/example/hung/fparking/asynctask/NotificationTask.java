@@ -24,6 +24,8 @@ public class NotificationTask {
             new DeleteNotification(data1, data2, action, container, "checkout").execute((Void) null);
         } else if (type.equals("after")) {
             new DeleteNotification(data1, data2, action, container, "order").execute((Void) null);
+        } else if (type.equals("checknoti")) {
+            new CheckNotification(action, container).execute((Void) null);
         }
     }
 }
@@ -110,6 +112,36 @@ class DeleteNotification extends AsyncTask<Void, Void, Boolean> {
             Log.e("Xóa Noti: ", json);
         } catch (Exception ex) {
             Log.e("Error Delete Noti:", "");
+            ex.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+    }
+}
+
+class CheckNotification extends AsyncTask<Void, Void, Boolean> {
+
+    IAsyncTaskHandler container;
+    String action;
+
+    public CheckNotification(String action, IAsyncTaskHandler container) {
+        this.container = container;
+        this.action = action;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... voids) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+
+            String json = httpHandler.get(Constants.API_URL + "notifications/check");
+            Log.e("Nhận lại Noti: ", json);
+        } catch (Exception ex) {
             ex.printStackTrace();
         }
         return null;

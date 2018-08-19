@@ -11,4 +11,5 @@ public class Session {
     public static Pusher pusher;
     public static Channel channel;
     public static SharedPreferences spref;
+    public static int quickbook = 0;
 }
