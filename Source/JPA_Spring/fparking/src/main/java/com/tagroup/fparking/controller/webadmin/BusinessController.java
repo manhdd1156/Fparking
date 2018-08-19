@@ -77,39 +77,46 @@ public class BusinessController {
 	// edit commission
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/commission", method = RequestMethod.POST)
-	public String editCommission(Map<String, Object> model, @RequestParam("commission") double commission)
+	public String editCommission(Map<String, Object> model, @RequestParam("commission") String commission)
 			throws Exception {
 
 		List<Commision> listCommission;
+		Commision comm;
+		double commssionTrue = 0;
+		try {
+			commssionTrue = Double.parseDouble(commission);
+			if (commssionTrue > 100) {
+				return "404";
+			}
+		} catch (NumberFormatException e) {
+			return "404";
+		}
 		try {
 			listCommission = commissionService.getAll();
 		} catch (Exception e) {
 			return "404";
 		}
-		Commision comm;
 		try {
 			comm = commissionService.getById(listCommission.get(listCommission.size() - 1).getId());
-			comm.setCommision(commission / 100);
-			commissionService.update(comm);
-			model.put("messEdit", "Sửa thành công!");
-		} catch (Exception e) {
-			return "404";
-		}
-		
-		List<Commision> listCommission2;
-		try {
-			listCommission2 = commissionService.getAll();
-		} catch (Exception e) {
-			return "404";
-		}
-		if (listCommission != null && listCommission2.size() > 0) {
-			model.put("id", listCommission2.get(listCommission2.size() - 1).getId());
-			double com = listCommission2.get(listCommission2.size() - 1).getCommision() * 100;
+			comm.setCommision(commssionTrue / 100);
+			comm = commissionService.update(comm);
+			model.put("id", comm.getId());
+			double com = comm.getCommision() * 100;
 			if (com % 1 != 0) {
 				model.put("commission", com);
 			} else {
 				model.put("commission", (int) com);
 			}
+			model.put("messEdit", "Sửa thành công!");
+		} catch (Exception e) {
+			double com = commssionTrue;
+			if (com % 1 != 0) {
+				model.put("commission", com);
+			} else {
+				model.put("commission", (int) com);
+			}
+			model.put("messError", "Sửa không thành công!");
+			return "commission";
 		}
 		return "commission";
 	}
@@ -138,39 +145,48 @@ public class BusinessController {
 	// go to add form vehicletype
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/add", method = RequestMethod.GET)
-	public String addVehicletypeForm(Map<String, Object> model) throws Exception {
+	public String getFormVehicletype(Map<String, Object> model) throws Exception {
 		return "addvehicletype";
 	}
 
 	// add vehicletype
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/add", method = RequestMethod.POST)
-	public String addVehicletype(Map<String, Object> model, @RequestParam("vehicletype") Integer vehicletype,
-			@RequestParam("priceFine") Double priceFine) throws Exception {
+	public String addVehicletype(Map<String, Object> model, @RequestParam("vehicletype") String vehicletype,
+			@RequestParam("priceFine") String priceFine) throws Exception {
 		Vehicletype vt = new Vehicletype();
-		vt.setType(vehicletype + " chỗ");
-		Vehicletype vtCreated = vehicletypeService.create(vt);
-
-		Finetariff finetariff = new Finetariff();
-		finetariff.setPrice(priceFine);
-		finetariff.setVehicletype(vtCreated);
-		fineTariffService.create(finetariff);
-
-		List<Vehicletype> listVehicletype = vehicletypeService.getAll();
-		if (listVehicletype != null && listVehicletype.size() > 0) {
-			model.put("listVehicletype", listVehicletype);
-			model.put("totalType", listVehicletype.size());
-		} else {
-			model.put("totalType", 0);
+		double vehicletypeTrue = 0;
+		double priceFineTrue = 0;
+		try {
+			vehicletypeTrue = Integer.parseInt(vehicletype);
+			priceFineTrue = Double.parseDouble(priceFine);
+		} catch (NumberFormatException e) {
+			return "404";
 		}
-
-		return "managementvehicletype";
+		try {
+			vt.setType(vehicletype + " chỗ");
+			Vehicletype vtCreated = vehicletypeService.create(vt);
+			Finetariff finetariff = new Finetariff();
+			finetariff.setPrice(priceFineTrue);
+			finetariff.setVehicletype(vtCreated);
+			try {
+				finetariff = fineTariffService.create(finetariff);
+			} catch (Exception e) {
+				model.put("vehicletype", vehicletype);
+				model.put("priceFine", priceFine);
+				model.put("messError", "Thêm không thành công!");
+				return "addvehicletype";
+			}
+		} catch (Exception e) {
+			return "404";
+		}
+		return "redirect:/business/vehicletype";
 	}
 
 	// go to edit form vehicletype
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/edit/{id}", method = RequestMethod.GET)
-	public String editVehicletypeForm(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+	public String getFormEditVehicletype(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Vehicletype vehicletype;
 		try {
 			vehicletype = vehicletypeService.getById(id);
@@ -184,16 +200,24 @@ public class BusinessController {
 	// edit vehicletype
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/vehicletype/edit/{id}", method = RequestMethod.POST)
-	public String saveVehicletypeForm(Map<String, Object> model, @PathVariable("id") Long id,
+	public String editVehicletype(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("vehicletype") String typeVehicletype) throws Exception {
-		Vehicletype vehicletype = vehicletypeService.getById(id);
-		vehicletype.setType(typeVehicletype);
-		vehicletypeService.update(vehicletype);
-		model.put("messSuss", "Sửa thành công!");
+		try {
+			Vehicletype vehicletype = vehicletypeService.getById(id);
+			vehicletype.setType(typeVehicletype);
+			try {
+				vehicletype = vehicletypeService.update(vehicletype);
+				model.put("messSuss", "Sửa thành công!");
+				model.put("type", vehicletype.getType());
+			} catch (Exception e) {
+				model.put("messError", "Sửa không thành công!");
+				model.put("type", vehicletype.getType());
+				return "editvehicletype";
+			}
 
-		Vehicletype vehicletype2 = vehicletypeService.getById(id);
-		model.put("type", vehicletype2.getType());
-
+		} catch (Exception e) {
+			return "404";
+		}
 		return "editvehicletype";
 	}
 
@@ -253,17 +277,18 @@ public class BusinessController {
 		} catch (Exception e) {
 			return "404";
 		}
-		fineTariff.setPrice(price);
-		fineTariffService.update(fineTariff);
+		try {
+			fineTariff.setPrice(price);
+			fineTariff = fineTariffService.update(fineTariff);
+		} catch (Exception e) {
+			model.put("vehicletype", fineTariff.getVehicletype().getType());
+			model.put("price", currencyVN.format(price));
+			model.put("messError", "Sủa không thành công!");
+		}
 
 		Finetariff fineTariff2 = fineTariffService.getById(id);
-		model.put("vehicletype", fineTariff2.getVehicletype().getType());
-		double pricefine = fineTariff2.getPrice();
-		if (pricefine % 1 == 0) {
-			model.put("price", (int) pricefine);
-		} else {
-			model.put("price", fineTariff2.getPrice());
-		}
+		model.put("vehicletype", fineTariff.getVehicletype().getType());
+		model.put("price", currencyVN.format(fineTariff.getPrice()));
 		model.put("messEdit", "Sủa thành công!");
 		return "editfine";
 	}
@@ -567,7 +592,7 @@ public class BusinessController {
 	// get all feedback
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedback", method = RequestMethod.GET)
-	public String getAllFeedBack(Map<String, Object> model) throws Exception {
+	public String getAllFeedback(Map<String, Object> model) throws Exception {
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		List<Feedback> listFeedback;
 		try {
@@ -606,7 +631,7 @@ public class BusinessController {
 	// view feedback by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.GET)
-	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+	public String getFeedbackDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Feedback feedback = new Feedback();
 		SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 		try {
@@ -632,23 +657,22 @@ public class BusinessController {
 	// delete feedback
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedback/delete/{id}", method = RequestMethod.GET)
-	public String deleteFeedBack(Map<String, Object> model, @PathVariable("id") Long id) {
+	public String deleteFeedback(Map<String, Object> model, @PathVariable("id") Long id) {
 		try {
 			Feedback feedbackupdate = new Feedback();
-
 			feedbackupdate = feedbackService.getById(id);
 			feedbackupdate.setStatus(2);
 			feedbackService.update(feedbackupdate);
 		} catch (Exception e) {
 			return "404";
 		}
-
 		return "redirect:/business/feedback";
 	}
+
 	// resolve feedback
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/feedbackdetail/{id}", method = RequestMethod.POST)
-	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
+	public String resolveFeedback(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("resolve") String resolve) {
 		Feedback feedbackupdate = new Feedback();
 		sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
@@ -656,7 +680,19 @@ public class BusinessController {
 			feedbackupdate = feedbackService.getById(id);
 			feedbackupdate.setType(1);
 			feedbackupdate.setResolve(resolve);
-			feedbackService.update(feedbackupdate);
+			try {
+				feedbackupdate = feedbackService.update(feedbackupdate);
+
+			} catch (Exception e) {
+				model.put("id", id);
+				model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
+				model.put("content", feedbackupdate.getContent());
+				model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
+				model.put("resolve", feedbackupdate.getResolve());
+				model.put("type", 2);
+				model.put("messError", "Không thể lưu trạng thái!");
+				return "viewdetailfeedback";
+			}
 		} catch (Exception e) {
 			return "404";
 		}

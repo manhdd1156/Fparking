@@ -41,13 +41,16 @@
 								<div class="col-lg-12">
 									<form role="form" method="POST" action="">
 										<div class="form-group">
-											<label>Loại xe:</label> 
-											<input type="number" class="form-control" name="vehicletype" min="1" step="1" max="45" required>
+											<label>Loại xe:</label> <input type="number"
+												class="form-control" name="vehicletype" value="${vehicletype }" min="1" step="1"
+												max="45" required>
 										</div>
 										<div class="form-group">
-											<label>Mức tiền phạt:</label> 
-											<input type="number" class="form-control" name="priceFine" min="0.1" step="0.01" required>
+											<label>Mức tiền phạt:</label> <input type="number"
+												class="form-control" name="priceFine" value="${priceFine }" min="0.1" max="2000000000" step="0.01"
+												required>
 										</div>
+										<p style="color: red;">${messError }</p>
 										<button type="submit" class="btn btn-success">Thêm</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>
 									</form>

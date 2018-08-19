@@ -44,6 +44,7 @@
 											<label>Phần trăm chiết khấu(%):</label> 
 											<input type="number" class="form-control" name="commission" value="${commission }" step="0.01" min="0" max="100" required>
 											<p style="color: green;">${messEdit }</p>
+											<p style="color: red;">${messError }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>
