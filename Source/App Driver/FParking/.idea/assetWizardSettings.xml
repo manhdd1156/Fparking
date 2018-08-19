@@ -16,13 +16,26 @@
                             <entry key="actionbar">
                               <value>
                                 <PersistentState>
+                                  <option name="children">
+                                    <map>
+                                      <entry key="image">
+                                        <value>
+                                          <PersistentState>
+                                            <option name="values">
+                                              <map>
+                                                <entry key="paddingPercent" value="15" />
+                                              </map>
+                                            </option>
+                                          </PersistentState>
+                                        </value>
+                                      </entry>
+                                    </map>
+                                  </option>
                                   <option name="values">
                                     <map>
                                       <entry key="assetType" value="IMAGE" />
-                                      <entry key="imageAsset" value="C:\Users\NghiLan\Downloads\checked.png" />
-                                      <entry key="outputName" value="ic_car_default" />
-                                      <entry key="theme" value="CUSTOM" />
-                                      <entry key="themeColor" value="fe6621" />
+                                      <entry key="imageAsset" value="C:\Users\Hung\Desktop\cp\parkingslot.png" />
+                                      <entry key="outputName" value="ic_action_parkingslot" />
                                     </map>
                                   </option>
                                 </PersistentState>

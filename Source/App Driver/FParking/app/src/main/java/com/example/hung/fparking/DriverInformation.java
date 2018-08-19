@@ -141,7 +141,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             CheckNetwork checkNetwork = new CheckNetwork(DriverInformation.this, getApplicationContext());
             if (fineDTOS.size() > 0 || !checkNetwork.isNetworkConnected() || Session.currentDriver.getStatus().equals("0")) {
                 if (Session.currentDriver.getPhone().equals(tbPhone.getText().toString().trim())) {
-                    textViewAlert.setText("Hiện tại không thế đổi số điện thoại");
+                    textViewAlert.setText("Hiện tại không thể đổi số điện thoại");
                     alertDialog.show();
                 }
             } else {
