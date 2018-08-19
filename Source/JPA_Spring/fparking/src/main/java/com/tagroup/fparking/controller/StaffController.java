@@ -55,13 +55,13 @@ public class StaffController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 	// create staff
-		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
-		@RequestMapping(path = "", method = RequestMethod.POST)
-		public ResponseEntity<?> create(@RequestBody Staff Staff) throws Exception {
-			Staff respone = staffService.create(Staff);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody Staff Staff) throws Exception {
+		Staff respone = staffService.create(Staff);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
+	}
 	// update profile
 	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)

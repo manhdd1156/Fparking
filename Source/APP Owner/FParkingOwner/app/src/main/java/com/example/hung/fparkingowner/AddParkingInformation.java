@@ -1,12 +1,16 @@
 package com.example.hung.fparkingowner;
 
 import android.Manifest;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.drawable.BitmapDrawable;
 import android.location.Address;
 import android.location.Geocoder;
+import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
@@ -39,6 +43,7 @@ import com.example.hung.fparkingowner.config.Session;
 import com.example.hung.fparkingowner.dto.CityDTO;
 import com.example.hung.fparkingowner.dto.ParkingDTO;
 import com.example.hung.fparkingowner.login.LoginActivity;
+import com.example.hung.fparkingowner.model.CheckNetwork;
 import com.example.hung.fparkingowner.model.GPSTracker;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.places.AutocompleteFilter;
@@ -67,10 +72,12 @@ public class AddParkingInformation extends AppCompatActivity implements OnMapRea
     EditText tbAddressAddParking, tbOpenHourAddParking, tbOpenMinAddParking, tbCloseHourAddParking, tbCloseMinAddParking, tbSpace, tbPrice9AddParking, tbPrice16to29AddParking, tbPrice34to45AddParking;
 ScrollView scrollviewAddparking;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
+    ImageView backToHome;
     ArrayList<CityDTO> cityDTOS;
     TextView error;
     private GoogleMap mMap;
     View mMapView;
+
     String cityID;
     long latitude, longitude;
     Button btnAddParking, btnOK;
@@ -83,13 +90,9 @@ ScrollView scrollviewAddparking;
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_dialog_add_parking);
-//        Intent i = getIntent();
-//        latitude = i.getLongExtra("latitude", 0);
-//        longitude = i.getLongExtra("đasa", 0);
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         cityID = "";
         scrollviewAddparking = findViewById(R.id.scrollviewAddparking);
-//        System.out.println("latitude = " + latitude);
-//        System.out.println("longitude = " + longitude);
 
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
@@ -101,26 +104,13 @@ ScrollView scrollviewAddparking;
         View locationButton = ((View) mMapView.findViewById(Integer.parseInt("1")).getParent()).findViewById(Integer.parseInt("2"));
         RelativeLayout.LayoutParams rlp = (RelativeLayout.LayoutParams) locationButton.getLayoutParams();
 
-
-
-//        mapFragment.setOnTouchListener(new View.OnTouchListener() {
-//            @Override
-//            public boolean onTouch(View v, MotionEvent event) {
-//
-//
-//                if(event.getAction() == MotionEvent.ACTION_UP){
-////                    scrollviewAddparking.setVisibility(View.GONE);
-//
-//
-//
-//                    // Do what you want
-//                    return true;
-//                }
-//                return false;
-//
-//            }
-//        });
-        // position on right bottom
+        backToHome = (ImageView) findViewById(R.id.imageViewBackToHome);
+        backToHome.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                finish();
+            }
+        });
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, 0);
         rlp.addRule(RelativeLayout.ALIGN_PARENT_TOP, RelativeLayout.TRUE);
         rlp.setMargins(0, 500, 0, 0);
@@ -154,6 +144,29 @@ ScrollView scrollviewAddparking;
         searchPlace();
         setProperties();
 
+    }
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            CheckNetwork checkNetwork = new CheckNetwork(AddParkingInformation.this, getApplicationContext());
+            if (!checkNetwork.isNetworkConnected()) {
+                checkNetwork.createDialog();
+            } else {
+//                recreate();
+            }
+        }
+    };
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
 
     private void setProperties() {

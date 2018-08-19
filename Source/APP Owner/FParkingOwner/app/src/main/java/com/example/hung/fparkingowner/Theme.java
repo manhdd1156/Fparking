@@ -53,10 +53,10 @@ public class Theme extends AppCompatActivity {
 //        this.startService(myIntent);
 
         // kiểm tra có bật kết nối mạng không
-        checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
-        if (!checkNetwork.isNetworkConnected()) {
-            checkNetwork.createDialog();
-        } else {
+//        checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
+//        if (!checkNetwork.isNetworkConnected()) {
+//            checkNetwork.createDialog();
+//        } else {
             new Handler().postDelayed(new Runnable() {
                 @Override
                 public void run() {
@@ -83,7 +83,7 @@ public class Theme extends AppCompatActivity {
                     }
                 }
             }, SPLASH_TIME_OUT);
-        }
+//        }
 
     }
 

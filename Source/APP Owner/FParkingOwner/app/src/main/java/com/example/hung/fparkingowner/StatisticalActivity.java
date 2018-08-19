@@ -49,26 +49,22 @@ import java.util.Date;
 public class StatisticalActivity extends AppCompatActivity implements IAsyncTaskHandler {
     private static final String TAG = "Statistical";
 
-    TextView tvTotalMoney, tvDateError, tvParkingFines, tvTotalCar, tvToDate, tvFromDate, error;
+    TextView tvTotalMoney, tvParkingFines, tvTotalCar, tvToDate, tvFromDate, error;
     ImageView backStatistical;
     Button btnOK;
     LinearLayout chooseFromDate, chooseToDate;
     Button btnShow;
     ArrayList<String> listParkingString;
-
     Date fromDate;
     Date toDate;
     ArrayList<ParkingDTO> listParkingDTO;
-    String[] PARKINGLIST = {};
     private int parkingidSelected;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     Spinner sprinerParking;
-    private int DEFAULT_TYPE = 0;
     private DatePickerDialog.OnDateSetListener mDateSetListener1;
     private DatePickerDialog.OnDateSetListener mDateSetListener2;
-    MaterialBetterSpinner betterSpinner;
 
     @Override
 
@@ -104,7 +100,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         listParkingString.add(listParkingDTO.get(i).getAddress());
                     }
                     System.out.println("========================= " + listParkingString);
-                    ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_spinner_item, listParkingString);
+                    ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_dropdown_item_1line, listParkingString);
                     adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                     sprinerParking.setAdapter(adapter);
                     sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -219,13 +215,16 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
                         monthh = "0" + month;
                     }
+                    int daytemp = day+1;
+                    String dayytemp = daytemp + "";
                     if (day < 10) {
                         dayy = "0" + day;
+                        dayytemp = "0" + daytemp;
+
                     }
 
                     String date = year + "-" + monthh + "-" + dayy;
-
-                    toDate = sdf.parse(date);
+                    toDate = sdf.parse(year + "-" + monthh + "-" + dayytemp);
 //                    if(toDate.getTime()>fromDate.getTime())
 
                     tvToDate.setText(date);

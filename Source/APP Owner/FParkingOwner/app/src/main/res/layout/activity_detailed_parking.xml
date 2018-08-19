@@ -120,7 +120,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbAddressDP"
-                    android:layout_marginLeft="33dp"
+                    android:layout_alignStart="@id/tbAddressDP"
                     android:background="@color/white_greyish" />
 
             </RelativeLayout>
@@ -159,7 +159,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbOpenTimeHour"
-                    android:layout_marginLeft="33dp"
+                    android:layout_alignStart="@id/tbOpenTimeHour"
                     android:background="@color/white_greyish" />
                 <TextView
                     android:id="@+id/textView9"
@@ -313,7 +313,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbTotalSpace"
-                    android:layout_marginLeft="33dp"
+                    android:layout_alignStart="@id/tbTotalSpace"
                     android:background="@color/white_greyish" />
 
                 <EditText
@@ -354,7 +354,7 @@
                     android:layout_alignBaseline="@id/textView10"
                     android:layout_marginLeft="20dp"
                     android:layout_toEndOf="@id/textView10"
-                    android:text="TextView"
+                    android:text="..."
                     android:textSize="18sp"
                     android:textStyle="bold|italic" />
             </RelativeLayout>
@@ -384,7 +384,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbPrice9DetailParking"
-                    android:layout_marginLeft="33dp"
+                    android:layout_alignStart="@id/tbPrice9DetailParking"
                     android:background="@color/white_greyish" />
 
 
@@ -409,7 +409,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbPrice16to29DetailParking"
-                    android:layout_marginLeft="33dp"
+                    android:layout_alignStart="@id/tbPrice16to29DetailParking"
                     android:background="@color/white_greyish" />
 
 
@@ -435,7 +435,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbPrice34to45DetailParking"
-                    android:layout_marginLeft="33dp"
+                    android:layout_alignStart="@id/tbPrice34to45DetailParking"
                     android:background="@color/white_greyish" />
             </RelativeLayout>
 

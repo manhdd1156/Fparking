@@ -29,6 +29,8 @@ public class ManagerLoginTask {
             new OwnerLoginTask(phone, password, container).execute((Void) null);
         } else if (type.equals("second_time")) {
             new GetProfileTask(container).execute((Void) null);
+        } else if (type.equals("create")) {
+            new CreateTask(container,phone,password).execute((Void) null);
         } else if (type.equals("updateProfile")) {
             new UpdateProfileTask(container).execute((Void) null);
         } else if (type.equals("forgotpassword")) {
@@ -227,7 +229,50 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
         container.onPostExecute(false);
     }
 }
+class CreateTask extends AsyncTask<Void, Void, Boolean> {
 
+    private final IAsyncTaskHandler container;
+    String phone,password;
+    public CreateTask(IAsyncTaskHandler container,String phone,String password) {
+        this.container = container;
+this.phone = phone;
+this.password = password;
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.KITKAT)
+    @Override
+    protected Boolean doInBackground(Void... params) {
+        HttpHandler httpHandler = new HttpHandler();
+        try {
+
+            JSONObject formData = new JSONObject();
+            formData.put("name", "");
+            formData.put("phone", phone);
+            formData.put("address", "");
+            formData.put("password", password);
+
+
+            String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "owners", formData.toString(), "PUT");
+            JSONObject jsonObj = new JSONObject(jsonUpdate);
+            if (jsonObj != null) {
+                return true;
+            }
+        } catch (Exception e) {
+            Log.e("Exception", "create owner : " + e);
+        }
+        return false;
+    }
+
+    @Override
+    protected void onPostExecute(final Boolean success) {
+        container.onPostExecute(success);
+    }
+
+    @Override
+    protected void onCancelled() {
+        container.onPostExecute(false);
+    }
+}
 class UpdatePasswordTask extends AsyncTask<Void, Void, Boolean> {
 
     private final IAsyncTaskHandler container;

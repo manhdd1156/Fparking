@@ -188,17 +188,14 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                     mathPhone = phone.getText().toString().replace("+84", "0");
                 }
                 Matcher m = p.matcher(mathPhone);
-                if (!phone.getText().toString().isEmpty() && !m.find()) {
+                if(name.getText().toString().isEmpty() || name.getText().toString().equals("")) {
+                    showDialog("Hãy nhập tên",0);
+                }else if(phone.getText().toString().isEmpty() || phone.getText().toString().equals("")) {
+                    showDialog("Hãy nhập số điện thoại",0);
+                }
+                else if (!phone.getText().toString().isEmpty() && !m.find()) {
                     showDialog("Số điện thoại không đúng định dạng",0);
 //                    tvSuccess.setText("Số điện thoại không đúng định dạng");
-//                    tvSuccess.setTextColor(Color.RED);
-//                    tvSuccess.setVisibility(View.VISIBLE);
-                } else if(changePass.getText().toString().equals("") || changePass.getText().toString().isEmpty()) {
-                    showDialog("Hãy nhập mật khẩu",0);
-                } else if(changePass.getText().toString().length()<6 || changePass.getText().toString().length()>24) {
-                    showDialog("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự",0);
-
-//                    tvSuccess.setText("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự");
 //                    tvSuccess.setTextColor(Color.RED);
 //                    tvSuccess.setVisibility(View.VISIBLE);
                 }else {
@@ -252,7 +249,12 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                             new ManagerStaffTask("update", staffDTO, new IAsyncTaskHandler() {
                                                 @Override
                                                 public void onPostExecute(Object o) {
-                                                    showDialog("Cập nhật thông tin thành công",1);
+                                                    if((boolean)o) {
+                                                        showDialog("Cập nhật thông tin thành công",1);
+                                                    }
+                                                    else {
+                                                        showDialog("Số điện thoại đã tồn tại",0);
+                                                    }
 //                                                    tvSuccess.setText("Cập nhật thông tin thành công");
 //                                                    tvSuccess.setTextColor(Color.GREEN);
 //                                                    tvSuccess.setVisibility(View.VISIBLE);
@@ -334,7 +336,6 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                 name.setHint(slist.get(i).getName());
                 phone.setHint(slist.get(i).getPhone());
                 address.setHint(slist.get(i).getAddress());
-                changePass.setText(slist.get(i).getPass());
                 for (int j = 0; j < dropdownList.size(); j++) {
                     if (dropdownList.get(j).equals(slist.get(i).getParking_address())) {
                         sprinerParking.setSelection(j);
