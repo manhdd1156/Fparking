@@ -14,9 +14,9 @@ public class Constants {
     public static final String regEx = "(09|01[2|6|8|9])+([0-9]{8})\\b";
     //Fragments Tags
     public static final String Login_Fragment = "LoginActivity";
-    public static final String SignUp_Fragment = "SignUp_Fragment";
+    public static final String SignUp_Fragment = "SignUpActivity";
     public static final String ForgotPassword_Fragment = "ForgotPassword_Fragment";
-    public static final String ForgotPasswordOtp_Fragment = "ForgotPasswordOtp_Fragment";
+    public static final String ForgotPasswordOtp_Fragment = "ForgotPassOtp_Activity";
     public static final String ConfirmRegister_Fragment = "ConfirmRegister_Fragment";
     public static final int PICK_CONTACT_REQUEST = 1;
 }

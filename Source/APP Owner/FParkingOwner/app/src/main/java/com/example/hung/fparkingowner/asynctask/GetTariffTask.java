@@ -39,7 +39,7 @@ IAsyncTaskHandler container;
             String json = httpHandler.get(Constants.API_URL + "parkings/" + parkingID + "/tariffs");
             final JSONObject jsonObj = new JSONObject(json);
             System.out.println("GetTariffTask : " + jsonObj);
-            jsonObj.getJSONObject("city").getInt("id");
+//            jsonObj.getJSONObject("city").getInt("id");
             int id = jsonObj.getJSONObject("parking").getInt("id");
             String address = jsonObj.getJSONObject("parking").getString("address");
             int currentspace = jsonObj.getJSONObject("parking").getInt("currentspace");

@@ -1,6 +1,5 @@
 package com.example.hung.fparkingowner.login;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,7 +22,7 @@ import com.facebook.accountkit.PhoneNumber;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
-public class ForgotPasswordOtp_Fragment extends AppCompatActivity implements OnClickListener, IAsyncTaskHandler {
+public class ForgotPassOtp_Activity extends AppCompatActivity implements OnClickListener, IAsyncTaskHandler {
     private static View view;
     private static EditText otp;
     private static EditText newPassword;
@@ -148,7 +147,7 @@ getPhoneConfirm();
         return sb.toString();
     }
     public void showDialog(String text, final int type) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ForgotPasswordOtp_Fragment.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(ForgotPassOtp_Activity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();

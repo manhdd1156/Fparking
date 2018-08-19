@@ -28,10 +28,9 @@ import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
 
 
-public class DetailedParking extends AppCompatActivity implements IAsyncTaskHandler {
+public class DetailParkingActivity extends AppCompatActivity implements IAsyncTaskHandler {
     Button btnUpdate, btnClose, btnDelete;
     AlertDialog dialog;
     EditText address, openHour, openMin, closeHour, closeMin, totalSpace, confirmPass, currentSpace, price9, price916, price1648;
@@ -74,9 +73,13 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         backDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent i = new Intent(DetailedParking.this, HomeActivity.class);
+//                Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
+//                finish();
+//                startActivity(i);
+                Session.homeActivity.recreate();
                 finish();
-                startActivity(i);
+                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+
             }
         });
         btnUpdate.setOnClickListener(new View.OnClickListener() {
@@ -141,7 +144,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                         listCityString.add(listCityDTO.get(i).getCityName());
                     }
                     System.out.println(listCityString);
-                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailedParking.this, android.R.layout.simple_spinner_item, listCityString);
+                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailParkingActivity.this, android.R.layout.simple_spinner_item, listCityString);
                     adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                     sprinerCity.setAdapter(adapter);
                     sprinerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
@@ -156,15 +159,15 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
 
                         }
                     });
-                    new GetTariffTask(Integer.parseInt(parkingid), this).execute((Void) null);
-//                    new ManagerParkingTask("getbyowner", null,null, DetailedParking.this);
+                    new GetTariffTask(Integer.parseInt(parkingid), DetailParkingActivity.this).execute((Void) null);
+//                    new ManagerParkingTask("getbyowner", null,null, DetailParkingActivity.this);
                 }
             }
         }).execute((Void) null);
     }
 
     public void onClickBtn(final String type) {
-        android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+        android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailParkingActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_cf_pass_dialog, null);
         mBuilder.setView(mView);
         confirmPass = (EditText) mView.findViewById(R.id.tbPassword);
@@ -231,7 +234,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
                             public void onPostExecute(Object o) {
                                 dialog.cancel();
                                 showDialog("Thực hiện thành công", 1);
-//                                Intent i = new Intent(DetailedParking.this,HomeActivity.class);
+//                                Intent i = new Intent(DetailParkingActivity.this,HomeActivity.class);
 //                                finish();
 //                                startActivity(i);
                             }
@@ -268,7 +271,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
     }
 
     public void showDialog(String text, final int type) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailedParking.this);
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(DetailParkingActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
         mBuilder.setView(mView);
         final AlertDialog dialog = mBuilder.create();
@@ -281,7 +284,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
             public void onClick(View v) {
                 dialog.cancel();
                 if (type == 1) {
-                    Intent i = new Intent(DetailedParking.this, HomeActivity.class);
+                    Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
                     finish();
                     startActivity(i);
                 }
@@ -296,7 +299,7 @@ public class DetailedParking extends AppCompatActivity implements IAsyncTaskHand
         try {
             if (o instanceof ParkingDTO) {
                Session.currentParking = (ParkingDTO)o;
-
+                System.out.println("onpost DetailParking : " + Session.currentParking);
 
 
                         address.setText(Session.currentParking.getAddress());

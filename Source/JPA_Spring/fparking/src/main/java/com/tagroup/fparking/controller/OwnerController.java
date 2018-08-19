@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.tagroup.fparking.service.OwnerService;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.domain.Owner;
+import com.tagroup.fparking.service.domain.Staff;
 
 @RestController
 @RequestMapping("/api/owners")
@@ -37,6 +38,14 @@ public class OwnerController {
 		Owner respone = ownerService.getProfile();
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody Owner Owner) throws Exception {
+		Owner respone = ownerService.create(Owner);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// update profile
 	@PreAuthorize("hasAnyAuthority('OWNER')")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)

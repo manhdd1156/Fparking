@@ -13,6 +13,7 @@ import com.tagroup.fparking.repository.StaffRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
+import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
 import com.tagroup.fparking.service.domain.Staff;
 
@@ -89,7 +90,16 @@ public class StaffServiceImpl implements StaffService {
 					}
 				}
 			} else if (t.getType().equals("OWNER")) {
-				return staffRepository.save(staff);
+				List<Staff> slist = getAll();
+				for (Staff s : slist) {
+					if (s.getPhone().equals(staff.getPhone())) {
+						throw new APIException(HttpStatus.CONFLICT, "phone of Staff is Exist");
+					} else {
+						System.out.println("=======");
+						return staffRepository.save(staff);
+					}
+				}
+				return null;
 			}
 		} catch (Exception e) {
 			System.out.println(e);

@@ -58,15 +58,15 @@
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
 
         <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".login.SignUp_Fragment" />
-        <activity android:name=".login.ForgotPasswordOtp_Fragment" />
+        <activity android:name=".login.SignUpActivity" />
+        <activity android:name=".login.ForgotPassOtp_Activity" />
         <activity
             android:name=".profile.ChangePassword"
             android:noHistory="true" />
         <activity android:name=".dialog.AlertDialog" />
         <activity android:name=".other.Contact" />
         <activity android:name=".StaffManagement" />
-        <activity android:name=".DetailedParking" />
+        <activity android:name=".DetailParkingActivity" />
         <activity android:name=".DetailStaffActivity" />
         <activity android:name=".other.TermsAndConditions" />
         <activity android:name=".other.Guide" />
