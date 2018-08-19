@@ -33,7 +33,7 @@
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="14dp"
-            android:text="Time"
+            android:text="Chi tiết đỗ xe"
             android:textColor="@color/whitetext"
             android:textSize="15sp"
             android:textStyle="bold"
@@ -166,23 +166,6 @@
             android:gravity="center_vertical"
             android:text="N/A"
             android:textSize="13sp" />
-
-        <RatingBar
-            android:id="@+id/ratingBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="135dp" />
-
-        <TextView
-            android:id="@+id/textView11"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginBottom="154dp"
-            android:text="Đã được hủy" />
 
     </RelativeLayout>
 

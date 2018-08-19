@@ -76,6 +76,7 @@ class LoginTask extends AsyncTask<Void, Void, Boolean> {
                 Session.currentDriver.setName(jsonObj2.getString("name"));
                 Session.currentDriver.setPhone(jsonObj2.getString("phone"));
                 Session.currentDriver.setStatus(jsonObj2.getString("status"));
+                editor.putString("driverid", jsonObj2.getLong("id") + "").commit();
                 return true;
             }
         } catch (Exception e) {
@@ -142,7 +143,7 @@ class GetProfileTask extends AsyncTask<Void, Void, Boolean> {
             Session.currentDriver.setPhone(jsonObj2.getString("phone"));
             Session.currentDriver.setStatus(jsonObj2.getString("status"));
 
-            editor.putString("driverid", jsonObj2.getLong("id")+"");
+            editor.putString("driverid", jsonObj2.getLong("id") + "");
             editor.putBoolean("first_time", false);
             editor.commit();
             return true;
@@ -192,7 +193,8 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
             formData.put("phone", driverDTO.getPhone());
             String passMD5 = getMD5Hex(mPassword);
             formData.put("password", passMD5);
-            formData.put("status", 1);
+            formData.put("status", Session.currentDriver.getStatus());
+
             String json = httpHandler.requestMethod(Constants.API_URL + "drivers", formData.toString(), "PUT");
             // Check Json token
             JSONObject jsonObj = new JSONObject(json);
@@ -213,13 +215,13 @@ class UpdateProfileTask extends AsyncTask<Void, Void, Boolean> {
     @Override
     protected void onPostExecute(Boolean aBoolean) {
         super.onPostExecute(aBoolean);
-        container.onPostExecute(aBoolean, action);
+        container.onPostExecute(aBoolean, "");
     }
 
     @Override
     protected void onCancelled() {
         super.onCancelled();
-        container.onPostExecute(false, action);
+        container.onPostExecute(false, "");
     }
 
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {

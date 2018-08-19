@@ -98,6 +98,11 @@ public class Notification extends Service implements SubscriptionEventListener, 
         Log.d("NotificationService", "Connected to pusher");
     }
 
+    public void disconnect() {
+        Session.pusher.disconnect();
+        Log.d("NotificationService", "Disconnected to pusher");
+    }
+
     @Override
     public void onEvent(String channelName, String eventName, final String data) { //data = ok/cancel
         try {
@@ -106,7 +111,6 @@ public class Notification extends Service implements SubscriptionEventListener, 
                     new BookingTask("getorder", mPreferences.getString("drivervehicleID", ""), mPreferences.getString("parkingID", ""), "bookingid", Notification.this);
                     new NotificationTask("cancelorder", mPreferences.getString("vehicleID", ""), mPreferences.getString("parkingID", ""), "", null);
                     createNotification("Bạn đã đặt chỗ thành công");
-                    mPreferencesEditor.putInt("status", 1).commit();
                     if (HomeActivity.yourCountDownTimer != null) {
                         HomeActivity.yourCountDownTimer.cancel();
                     }
@@ -138,7 +142,7 @@ public class Notification extends Service implements SubscriptionEventListener, 
                     }
                 }
             } else if (data.contains("cancel")) {
-                if (eventName.toLowerCase().contains("order")) {
+                if (eventName.toLowerCase().contains("order") && Session.quickbook != 1) {
                     createNotification("Bãi xe không chấp nhận yêu cầu đặt chỗ của bạn");
                     if (OrderParking.yourCountDownTimer != null) {
                         OrderParking.yourCountDownTimer.cancel();
@@ -225,16 +229,26 @@ public class Notification extends Service implements SubscriptionEventListener, 
             }
         } else if (action.equals("newbooking")) {
             booking = (ArrayList<BookingDTO>) o;
-            BookingDTO bookingDTO = booking.get(0);
-            if (bookingDTO.getStatus() != 0 && bookingDTO.getStatus() != 3) {
-                mPreferencesEditor.putString("drivervehicleID", bookingDTO.getDriverVehicleID() + "");
-                mPreferencesEditor.putString("vehicleID", bookingDTO.getVehicleID() + "");
-                mPreferencesEditor.putString("parkingID", bookingDTO.getParkingID() + "");
-                mPreferencesEditor.putInt("status", bookingDTO.getStatus());
-                mPreferencesEditor.putString("bookingid", bookingDTO.getBookingID() + "").commit();
+            if (booking.size() > 0) {
+                BookingDTO bookingDTO = booking.get(0);
+                if (bookingDTO.getStatus() != 0 && bookingDTO.getStatus() != 3) {
+                    mPreferencesEditor.putString("drivervehicleID", bookingDTO.getDriverVehicleID() + "");
+                    mPreferencesEditor.putString("vehicleID", bookingDTO.getVehicleID() + "");
+                    mPreferencesEditor.putString("parkingID", bookingDTO.getParkingID() + "");
+                    mPreferencesEditor.putInt("status", bookingDTO.getStatus());
+                    mPreferencesEditor.putString("bookingid", bookingDTO.getBookingID() + "").commit();
+                } else {
+                    mPreferencesEditor.clear().commit();
+                }
             } else {
                 mPreferencesEditor.clear().commit();
             }
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        disconnect();
+        super.onDestroy();
     }
 }

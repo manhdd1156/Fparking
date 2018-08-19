@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -37,6 +38,8 @@ import in.goodiebag.carouselpicker.CarouselPicker;
 
 public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
 
+    private SharedPreferences mPreferences;
+    private SharedPreferences.Editor mPreferencesEditor;
     ImageView backCarsList;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
@@ -64,6 +67,10 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
         View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_car, null);
         mBuilder.setView(mView);
         dialog = mBuilder.create();
+
+        // tạo SharedPreferences
+        mPreferences = getSharedPreferences("driver", 0);
+        mPreferencesEditor = mPreferences.edit();
 
         //ánh xạ
         backCarsList = findViewById(R.id.imageViewBackCarsList);
@@ -173,6 +180,13 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
     public void onPostExecute(Object o, String action) {
         if (action.equals("vt")) {
             vehicle = (ArrayList<VehicleDTO>) o;
+
+            if (Session.spref.getString("vehicleID", "").equals("") && vehicle.size() > 0) {
+                Session.spref.edit().putString("vehicleID", vehicle.get(0).getVehicleID() + "").commit();
+                Session.spref.edit().putString("drivervehicleID", vehicle.get(0).getDriverVehicleID() + "").commit();
+                Log.e("Default vehicleID ", vehicle.get(0).getVehicleID() + "");
+            }
+
             mAdapter = new CarsListViewAdapter(vehicle);
             mRecyclerView.setAdapter(mAdapter);
 
@@ -180,11 +194,15 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
                     .MyClickListener() {
                 @Override
                 public void onItemClick(int position, View v) {
-
+                    Session.spref.edit().putString("vehicleID", vehicle.get(position).getVehicleID() + "").commit();
+                    Session.spref.edit().putString("drivervehicleID", vehicle.get(position).getDriverVehicleID() + "").commit();
+                    Log.e("Default vehicleID ", vehicle.get(position).getVehicleID() + "");
+                    mAdapter = new CarsListViewAdapter(vehicle);
+                    mRecyclerView.setAdapter(mAdapter);
                 }
 
                 @Override
-                public void onDeleteItemClick(final String licensePlate, View v) {
+                public void onDeleteItemClick(final String licensePlate, final String vehicleID, final int position, View v) {
 
                     DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
                         @Override
@@ -193,6 +211,21 @@ public class CarsList extends AppCompatActivity implements IAsyncTaskHandler {
                                 case DialogInterface.BUTTON_POSITIVE:
                                     VehicleDTO v = new VehicleDTO();
                                     v.setLicenseplate(licensePlate);
+                                    if (Session.spref.getString("vehicleID", "").equals(vehicleID)) {
+                                        if (vehicle.size() == 1) {
+                                            Session.spref.edit().putString("vehicleID", "").commit();
+                                            Session.spref.edit().putString("drivervehicleID", "").commit();
+                                            Log.e("Default vehicleID ", "");
+                                        } else if (position == 0) {
+                                            Session.spref.edit().putString("vehicleID", vehicle.get(1).getVehicleID() + "").commit();
+                                            Session.spref.edit().putString("drivervehicleID", vehicle.get(1).getDriverVehicleID() + "").commit();
+                                            Log.e("Default vehicleID ", vehicle.get(1).getVehicleID() + "");
+                                        } else {
+                                            Session.spref.edit().putString("vehicleID", vehicle.get(0).getVehicleID() + "").commit();
+                                            Session.spref.edit().putString("drivervehicleID", vehicle.get(0).getDriverVehicleID() + "").commit();
+                                            Log.e("Default vehicleID ", vehicle.get(0).getVehicleID() + "");
+                                        }
+                                    }
                                     DeleteVehicle(v);
                                     break;
                                 case DialogInterface.BUTTON_NEGATIVE:
@@ -237,7 +270,7 @@ class CarsListViewAdapter extends RecyclerView
             .OnClickListener {
         TextView licensePlate;
         TextView type;
-        ImageView imageDelete;
+        ImageView imageDelete, carDefault;
 //        TextView time;
 
         public DataObjectHolder(View itemView) {
@@ -245,6 +278,7 @@ class CarsListViewAdapter extends RecyclerView
             licensePlate = (TextView) itemView.findViewById(R.id.textViewLicensePlate);
             type = (TextView) itemView.findViewById(R.id.textViewType);
             imageDelete = itemView.findViewById(R.id.imageViewDelete);
+            carDefault = itemView.findViewById(R.id.carDefault);
             Log.i(LOG_TAG, "Adding Listener");
             itemView.setOnClickListener(this);
         }
@@ -275,12 +309,15 @@ class CarsListViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, final int position) {
+        if (Session.spref.getString("vehicleID", "").equals(mDataset.get(position).getVehicleID() + "")) {
+            holder.carDefault.setVisibility(View.VISIBLE);
+        }
         holder.licensePlate.setText(mDataset.get(position).getLicenseplate());
         holder.type.setText("Loại Xe: Xe " + mDataset.get(position).getType());
         holder.imageDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                myClickListener.onDeleteItemClick(mDataset.get(position).getLicenseplate(), v);
+                myClickListener.onDeleteItemClick(mDataset.get(position).getLicenseplate(), mDataset.get(position).getVehicleID() + "", position, v);
             }
         });
 
@@ -306,6 +343,6 @@ class CarsListViewAdapter extends RecyclerView
     public interface MyClickListener {
         public void onItemClick(int position, View v);
 
-        public void onDeleteItemClick(String licensePlate, View v);
+        public void onDeleteItemClick(String licensePlate, String vehicleID, int position, View v);
     }
 }
