@@ -44,6 +44,7 @@
 											<label>Loại xe:</label> 
 											<input type="text" class="form-control" name="vehicletype" value="${type}" required>
 											<p style="color: green;">${messSuss }</p>
+											<p style="color: red;">${messError }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>

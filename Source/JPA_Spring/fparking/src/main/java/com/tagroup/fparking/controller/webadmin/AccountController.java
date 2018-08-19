@@ -313,14 +313,8 @@ public class AccountController {
 		} catch (Exception e) {
 			return "404";
 		}
-		List<Driver> listDriver = driverService.getByStatus(1);
-		if (listDriver != null && listDriver.size() > 0) {
-			model.put("listDriver", listDriver);
-			model.put("totalAccount", listDriver.size());
-		} else {
-			model.put("totalAccount", 0);
-		}
-		return "accountdriver";
+		
+		return "redirect:/account/driver";
 	}
 
 	// unblock account by id
@@ -335,14 +329,8 @@ public class AccountController {
 		}
 		driver.setStatus(1);
 		driverService.update(driver);
-		List<Driver> listDriver = driverService.getByStatus(0);
-		if (listDriver != null && listDriver.size() > 0) {
-			model.put("listDriver", listDriver);
-			model.put("totalAccount", listDriver.size());
-		} else {
-			model.put("totalAccount", 0);
-		}
-		return "blockaccountdriver";
+		
+		return "redirect:/account/driver/block";
 	}
 
 	// get form edited by id
@@ -790,7 +778,7 @@ public class AccountController {
 	// go to edit form parking
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.GET)
-	public String getFormAccountParking(Map<String, Object> model, @PathVariable Long id) throws Exception {
+	public String getFormEditAccountParking(Map<String, Object> model, @PathVariable Long id) throws Exception {
 		Parking parking;
 		try {
 			parking = parkingService.getById(id);
@@ -828,7 +816,7 @@ public class AccountController {
 		parking.setTotalspace(totalSpace);
 		parking.setDeposits(deposits);
 		try {
-			parkingService.update(parking);
+			parking=parkingService.update(parking);
 		} catch (Exception e) {
 			model.put("address", address);
 			model.put("longitude", longitude + "");
@@ -840,19 +828,11 @@ public class AccountController {
 			return "editparking";
 		}
 		model.put("messSuss", "Sửa thành công!");
-
-		Parking parking2;
-		try {
-			parking2 = parkingService.getById(id);
-		} catch (Exception e) {
-			return "404";
-		}
-
-		model.put("address", parking2.getAddress());
-		model.put("longitude", parking2.getLongitude());
-		model.put("latitude", parking2.getLatitude());
-		model.put("timeoc", parking2.getTimeoc());
-		model.put("totalSpace", parking2.getTotalspace());
+		model.put("address", parking.getAddress());
+		model.put("longitude", parking.getLongitude());
+		model.put("latitude", parking.getLatitude());
+		model.put("timeoc", parking.getTimeoc());
+		model.put("totalSpace", parking.getTotalspace());
 		model.put("deposits", String.format("%.2f", parking.getDeposits()).replace(",", "."));
 		return "editparking";
 	}

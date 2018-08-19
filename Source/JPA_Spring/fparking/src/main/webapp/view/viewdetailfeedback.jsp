@@ -75,7 +75,10 @@
 	$(document).ready(function(){
 		var type = ${type};
 		if(type==1){
-			toastr.success('${messSucc }', {timeOut: 5000})}
+			toastr.success('${messSucc }', {timeOut: 5000})
+			}else if(type==2){
+				toastr.success('${messError }', {timeOut: 5000})
+			}
 	});
 	</script>
 

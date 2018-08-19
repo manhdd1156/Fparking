@@ -70,7 +70,7 @@
 												href="/account/parking/unblockaccount/${parking.id }">Mở
 													Khóa</a></td>
 											<td class="center"><a
-												href="/account/parking/detail/${parking.id }">Sửa</a></td>
+												href="/account/parking/edit/${parking.id }">Sửa</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>

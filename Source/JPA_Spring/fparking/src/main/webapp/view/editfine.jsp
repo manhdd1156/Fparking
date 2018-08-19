@@ -48,6 +48,7 @@
 											<label>Mức tiền phạt:</label> 
 											<input type="number" class="form-control" name="priceFine" value="${price }" step="0.01" min="0" max="2000000000" required>
 											<p style="color: green;">${messEdit }</p>
+											<p style="color: red;">${messError }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>
