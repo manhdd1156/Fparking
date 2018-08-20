@@ -30,7 +30,7 @@ import com.pusher.client.channel.SubscriptionEventListener;
 import org.json.JSONException;
 
 public class Notification extends Service implements SubscriptionEventListener {
-
+public boolean flag;
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
         PusherOptions options = new PusherOptions();
@@ -44,6 +44,7 @@ public class Notification extends Service implements SubscriptionEventListener {
         Session.channel.bind(Constants.PUSHER_CHECKIN_FROM_DRIVER, this);
         Session.channel.bind(Constants.PUSHER_CHECKOUT_FROM_DRIVER, this);
         Session.channel.bind(Constants.PUSHER_CANCEL_FROM_DRIVER, this);
+        Session.flagPause = true;
         connect();
 
 
@@ -58,12 +59,16 @@ public class Notification extends Service implements SubscriptionEventListener {
     }
 
     public void connect() {
+        flag  = true;
         Session.pusher.connect();
         Log.d("NotificationService", "Connected to pusher");
     }
     public void disconnect() {
         Session.pusher.disconnect();
         Log.d("NotificationService", "Disconnect to pusher");
+    }
+    public void changeFlag(boolean flag) {
+        this.flag = flag;
     }
 
     @Override
@@ -109,7 +114,9 @@ public class Notification extends Service implements SubscriptionEventListener {
                 });
                 return;
             }
+            if(Session.flagPause)    // flag là biến đánh dấu khi app đang onpause hay k, nếu onpause sẽ không tạo dialog mà chỉ tạo notification.
             createDialog(eventName, data);
+
         } catch (Exception e) {
             Log.e("Error notification : ", e.getMessage());
         }

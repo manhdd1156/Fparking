@@ -391,7 +391,7 @@
                     android:layout_toEndOf="@id/textView10"
                     android:text="0"
                     android:textSize="18sp"
-                    android:textStyle="bold|italic" />
+                    android:textStyle="bold" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -410,6 +410,7 @@
                     android:gravity="center_vertical"
                     android:hint="Giá xe 2-9 chỗ/1 giờ"
                     android:inputType="number"
+                    android:maxLength="8"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="#000000"
@@ -435,6 +436,7 @@
                     android:gravity="center_vertical"
                     android:hint="Giá xe 16-29 chỗ/1 giờ"
                     android:inputType="number"
+                    android:maxLength="8"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="#000000"
@@ -461,6 +463,7 @@
                     android:gravity="center_vertical"
                     android:hint="Giá xe 34-45 chỗ/1 giờ"
                     android:inputType="number"
+                    android:maxLength="8"
                     android:padding="10dp"
                     android:singleLine="true"
                     android:textColor="#000000"

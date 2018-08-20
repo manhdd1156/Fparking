@@ -17,7 +17,7 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="75dp">
+            android:layout_height="77dp">
 
             <ImageView
                 android:id="@+id/imageView7"
@@ -92,6 +92,7 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignStart="@+id/tvItemLicense"
+                android:paddingBottom="3dp"
                 android:text="Thanh toán lúc:" />
 
             <TextView
@@ -101,6 +102,7 @@
                 android:layout_alignParentBottom="true"
                 android:layout_marginLeft="5dp"
                 android:layout_toEndOf="@+id/textView33"
+                android:paddingBottom="3dp"
                 android:text="../../...."
                 android:textStyle="bold" />
 

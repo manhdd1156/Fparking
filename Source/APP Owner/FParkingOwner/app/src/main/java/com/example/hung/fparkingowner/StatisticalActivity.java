@@ -58,7 +58,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     Date fromDate;
     Date toDate;
     ArrayList<ParkingDTO> listParkingDTO;
-    private int parkingidSelected;
+    private int parkingidSelected, positionSpinner;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -90,24 +90,35 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         mRecyclerView.setHasFixedSize(true);
         mLayoutManager = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(mLayoutManager);
+        positionSpinner = 0;
         new ManagerParkingTask("getbyowner", null, null, new IAsyncTaskHandler() {
             @Override
             public void onPostExecute(Object o) {
                 System.out.println("oooooooooooooooooo = " + o);
                 listParkingDTO = (ArrayList<ParkingDTO>) o;
                 if (listParkingDTO.size() > 0) {
-                    for(int i = 0; i< listParkingDTO.size(); i++) {
+                    listParkingString.add("Tất cả");  // add index 0 = select all parking
+                    for (int i = 0; i < listParkingDTO.size(); i++) {
                         listParkingString.add(listParkingDTO.get(i).getAddress());
+//                        System.out.println("dia chỉ : " + listParkingDTO.get(i).getId() + ";" + listParkingDTO.get(i).getAddress());
                     }
-                    System.out.println("========================= " + listParkingString);
+//                    System.out.println("========================= " + listParkingString);
                     ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_dropdown_item_1line, listParkingString);
-                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+//                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                     sprinerParking.setAdapter(adapter);
                     sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition()).getId();
-                            System.out.println(parkingidSelected);
+//                            if(sprinerParking.getSelectedItemPosition()!=0) {
+//                            System.out.println("spinnerparking  = " + sprinerParking.getSelectedItemPosition());
+                            if (i == 0) {
+                                parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition()).getId();  // chọn index của combobox parking
+                            } else if (i > 0) {
+                                parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition() - 1).getId();
+                            }
+                            positionSpinner = i;
+//                            System.out.println("possiopn = " + i);
+//                            System.out.println("parkingidSelected : " + parkingidSelected);
                         }
 
                         @Override
@@ -115,10 +126,11 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
                         }
                     });
-
+                    new GetBookingTask(StatisticalActivity.this).execute((Void) null);
                 }
             }
         });
+
         backStatistical.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -127,7 +139,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
             }
         });
-        new GetBookingTask(StatisticalActivity.this).execute((Void) null);
+
 
         chooseFromDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -159,7 +171,10 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toDate != null && fromDate != null && toDate.getTime() < fromDate.getTime()) {
+                final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+
+                if (toDate != null && fromDate != null && toDate.getTime() <= fromDate.getTime()) {
+                    System.out.println("từ ngày : " + dateFormatter.format(fromDate) + " ; đến ngày :" + dateFormatter.format(toDate));
                     showDialog("Hãy chọn thời gian kết thúc muộn hơn");
                 } else {
                     BookingDTO b = new BookingDTO();
@@ -176,7 +191,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 try {
                     month = month + 1;
                     Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
                     String monthh = month + "";
                     String dayy = day + "";
@@ -189,7 +204,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         dayy = "0" + day;
                     }
 
-                    String date = year + "-" + monthh + "-" + dayy;
+                    String date = dayy + "-" + monthh + "-" + year;
 
                     fromDate = sdf.parse(date);
 
@@ -206,16 +221,15 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 try {
                     month = month + 1;
                     Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                     String monthh = month + "";
-                    day++;
                     String dayy = day + "";
 
                     if (month < 10) {
 
                         monthh = "0" + month;
                     }
-                    int daytemp = day+1;
+                    int daytemp = day + 1;
                     String dayytemp = daytemp + "";
                     if (day < 10) {
                         dayy = "0" + day;
@@ -223,8 +237,8 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
                     }
 
-                    String date = year + "-" + monthh + "-" + dayy;
-                    toDate = sdf.parse(year + "-" + monthh + "-" + dayytemp);
+                    String date = dayy + "-" + monthh + "-" + year;
+                    toDate = sdf.parse(dayytemp + "-" + monthh + "-" + year);
 //                    if(toDate.getTime()>fromDate.getTime())
 
                     tvToDate.setText(date);
@@ -292,6 +306,26 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         });
     }
 
+    public String formatMoney(double money) {
+        NumberFormat formatter = new DecimalFormat("###,###");
+        int temp = (int) money;
+        String returnMoney = formatter.format(temp);
+        if (temp > 1000000 && temp < 1000000000) {
+            if(temp %1000000 <999)  {
+                returnMoney = temp / 1000000 + "tr";
+            }else {
+                returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
+            }
+        } else if (temp > 1000000000) {
+            if(temp %1000000000 <999999)  {
+                returnMoney = temp / 1000000000 + "tỷ";
+            }else {
+                returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
+            }
+        }
+        return returnMoney;
+    }
+
     @Override
     public void onPostExecute(Object o) {
         ArrayList<BookingDTO> lstBooking = (ArrayList<BookingDTO>) o;
@@ -302,11 +336,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         final NumberFormat formatter = new DecimalFormat("###,###");
         try {
 
-            if (fromDate == null && toDate == null && String.valueOf(parkingidSelected) == null) {         // khi không chọn gì cả, thì select all
+            if (fromDate == null && toDate == null && positionSpinner == 0) {         // khi không chọn gì cả, thì select all
+                System.out.println("không chọn gì cả");
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
                 for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(plistTemp.get(i).getId());
+                    p.setId(listParkingDTO.get(i).getId());
                     p.setTimeoc("");
                     p.setAddress("");
                     p.setStatus(0);
@@ -316,7 +351,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
                     @Override
                     public void onPostExecute(Object o) {
-                        tvParkingFines.setText(formatter.format(Double.parseDouble(o.toString())) + "vnđ");
+                        tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString())) + " vnđ");
                     }
                 });
                 for (int i = 0; i < lstBooking.size(); i++) {
@@ -326,11 +361,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     money += lstBooking.get(i).getAmount();
                 }
 
-            } else if (fromDate != null && toDate == null && String.valueOf(parkingidSelected) == null) {            // khi chọn ngày mà k chọn bãi xe
+            } else if (fromDate != null && toDate == null && positionSpinner == 0) {            // khi chọn ngày mà k chọn bãi xe
+                System.out.println("từ ngày khác null còn lại null");
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
                 for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(plistTemp.get(i).getId());
+                    p.setId(listParkingDTO.get(i).getId());
                     p.setTimeoc(fromDate.getTime() + "");
                     p.setAddress("");
                     p.setStatus(1);
@@ -355,11 +391,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     }
 
                 }
-            } else if (fromDate == null && toDate != null && String.valueOf(parkingidSelected) == null) {                // khi chọn ngày mà k chọn bãi xe
+            } else if (fromDate == null && toDate != null && positionSpinner == 0) {                // khi chọn ngày mà k chọn bãi xe
+                System.out.println("đến ngày khác null còn lại null");
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
                 for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(plistTemp.get(i).getId());
+                    p.setId(listParkingDTO.get(i).getId());
                     p.setTimeoc("");
                     p.setAddress(toDate.getTime() + "");
                     p.setStatus(1);
@@ -384,11 +421,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     }
 
                 }
-            } else if (fromDate != null && toDate != null && String.valueOf(parkingidSelected) == null) {                // khi chọn ngày mà k chọn bãi xe
+            } else if (fromDate != null && toDate != null && positionSpinner == 0) {                // khi chọn ngày mà k chọn bãi xe
+                System.out.println("từ ngày và đến ngày khác null parking null");
                 ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
                 for (int i = 0; i < listParkingDTO.size(); i++) {
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(plistTemp.get(i).getId());
+                    p.setId(listParkingDTO.get(i).getId());
                     p.setTimeoc(fromDate.getTime() + "");
                     p.setAddress(toDate.getTime() + "");
                     p.setStatus(1);
@@ -411,7 +449,8 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         money += lstBooking.get(i).getAmount();
                     }
                 }
-            } else if (toDate == null && fromDate == null && String.valueOf(parkingidSelected) != null) {                  // khi k chọn ngày mà chọn bãi xe
+            } else if (toDate == null && fromDate == null && positionSpinner != 0) {                  // khi k chọn ngày mà chọn bãi xe
+                System.out.println("parking khác null còn lại null");
 
                 ParkingDTO p = new ParkingDTO();
                 p.setId(parkingidSelected);
@@ -422,17 +461,21 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
                     @Override
                     public void onPostExecute(Object o) {
-                        tvParkingFines.setText(formatter.format(Double.parseDouble(o.toString())) + "vnđ");
+                        tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString())) + " vnđ");
                     }
                 });
                 for (int i = 0; i < lstBooking.size(); i++) {
                     if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
                         continue;
-                    lstBookingAdapter.add(lstBooking.get(i));
-                    money += lstBooking.get(i).getAmount();
+                    if (lstBooking.get(i).getParkingID() == parkingidSelected) {
+                        lstBookingAdapter.add(lstBooking.get(i));
+                        money += lstBooking.get(i).getAmount();
+                    }
+
                 }
 
-            } else if (fromDate != null && toDate == null && String.valueOf(parkingidSelected) != null) {                 // khi  chọn cả ngày và bãi xe
+            } else if (fromDate != null && toDate == null && positionSpinner != 0) {                 // khi  chọn cả ngày và bãi xe
+                System.out.println("từ ngày và bãi xe khác null đến ngày null");
                 ParkingDTO p = new ParkingDTO();
                 p.setId(parkingidSelected);
                 p.setTimeoc(fromDate.getTime() + "");
@@ -450,9 +493,9 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
                         continue;
                     Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    System.out.println("timeOut1       = " + datein.toString());
-                    System.out.println("timeFromeDate1 = " + fromDate.toString());
-                    if (datein.getTime() >= fromDate.getTime()) {
+                    System.out.println("ngày dbi       = " + dateFormatter.format(datein));
+                    System.out.println("từ ngày = " + dateFormatter.format(fromDate));
+                    if (lstBooking.get(i).getParkingID() == parkingidSelected && datein.getTime() >= fromDate.getTime()) {
                         System.out.println("chọn");
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
@@ -461,7 +504,8 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
                 }
 
-            } else if (fromDate == null && toDate != null && String.valueOf(parkingidSelected) != null) {
+            } else if (fromDate == null && toDate != null && positionSpinner != 0) {
+                System.out.println("đến ngày và bãi xe khác null từ ngày null");
                 ParkingDTO p = new ParkingDTO();
                 p.setId(parkingidSelected);
                 p.setTimeoc("");
@@ -479,9 +523,9 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         continue;
                     final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                     Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    System.out.println("timeOut2       = " + datein.toString());
-                    System.out.println("timeFromeDate2 = " + toDate.toString());
-                    if (datein.getTime() <= toDate.getTime()) {
+                    System.out.println("ngày dbi       = " + dateFormatter.format(datein));
+                    System.out.println("đến ngày = " + dateFormatter.format(toDate));
+                    if (lstBooking.get(i).getParkingID() == parkingidSelected && datein.getTime() <= toDate.getTime()) {
                         System.out.println("chọn");
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
@@ -489,7 +533,8 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     }
 
                 }
-            } else if (fromDate != null && toDate != null && String.valueOf(parkingidSelected) != null) {
+            } else if (fromDate != null && toDate != null && positionSpinner != 0) {
+                System.out.println("tất cả không null");
                 ParkingDTO p = new ParkingDTO();
                 p.setId(parkingidSelected);
                 p.setTimeoc(fromDate.getTime() + "");
@@ -508,11 +553,11 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                     Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
 //                        System.out.println("timeOut3 = " +datein.toString());
-                    System.out.println(" ====A :" + fromDate.toString());
-                    System.out.println(" ====B :" + datein.toString());
-                    System.out.println(" ====C :" + toDate.toString());
-                    if (fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
-                        System.out.println("chọn");
+//                    System.out.println(" ====A :" + dateFormatter.format(fromDate));
+//                    System.out.println(" ====B :" + dateFormatter.format(datein));
+//                    System.out.println(" ====C :" + dateFormatter.format(toDate));
+                    if (lstBooking.get(i).getParkingID() == parkingidSelected && fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
+//                        System.out.println("chọn");
                         lstBookingAdapter.add(lstBooking.get(i));
                         money += lstBooking.get(i).getAmount();
                     }
@@ -520,7 +565,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
             }
             tvTotalCar.setText(lstBookingAdapter.size() + "");
 
-            tvTotalMoney.setText(formatter.format(money) + "vnđ");
+            tvTotalMoney.setText(formatMoney(money) + " vnđ");
             setAdapterView(lstBookingAdapter);
 
 //                ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBookingAdapter, this);
@@ -556,6 +601,8 @@ class StatisticRecyclerViewAdapter extends RecyclerView
 
         public DataObjectHolder(View itemView) {
             super(itemView);
+
+
             licenseplate = (TextView) itemView.findViewById(R.id.tvItemLicense);
             typecar = (TextView) itemView.findViewById(R.id.tvItemTypeCar);
             parkingfines = (TextView) itemView.findViewById(R.id.tvItemFines);
@@ -581,6 +628,7 @@ class StatisticRecyclerViewAdapter extends RecyclerView
         this.container = container;
         this.activity = (Activity) container;
         mDataset = myDataset;
+        formatMoney(5.2322151);
     }
 
     @Override
@@ -593,14 +641,35 @@ class StatisticRecyclerViewAdapter extends RecyclerView
         return dataObjectHolder;
     }
 
+    public String formatMoney(double money) {
+        NumberFormat formatter = new DecimalFormat("###,###");
+        int temp = (int) money;
+        String returnMoney = formatter.format(temp);
+        if (temp > 1000000 && temp < 1000000000) {
+            if(temp %1000000 <999)  {
+                returnMoney = temp / 1000000 + "tr";
+            }else {
+                returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
+            }
+        } else if (temp > 1000000000) {
+            if(temp %1000000000 <999999)  {
+                returnMoney = temp / 1000000000 + "tỷ";
+            }else {
+                returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
+            }
+        }
+        return returnMoney;
+    }
+
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
         NumberFormat formatter = new DecimalFormat("###,###");
         final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
         holder.licenseplate.setText(mDataset.get(position).getLicensePlate());
         holder.typecar.setText(mDataset.get(position).getTypeCar());
-        holder.parkingfines.setText(formatter.format(mDataset.get(position).getTotalfine()) + "vnđ");
-        holder.amount.setText(formatter.format(mDataset.get(position).getAmount()) + "vnđ");
+
+        holder.parkingfines.setText(formatMoney(mDataset.get(position).getTotalfine()) + " vnđ");
+        holder.amount.setText(formatMoney(mDataset.get(position).getAmount()) + " vnđ");
         try {
             holder.time.setText(dateFormatter.format(dateFormatter.parse(mDataset.get(position).getTimeout())));
         } catch (ParseException e) {

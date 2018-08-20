@@ -8,7 +8,7 @@
 
     <android.support.v7.widget.CardView
         android:id="@+id/card_view"
-        android:layout_width="fill_parent"
+        android:layout_width="match_parent"
         android:layout_height="85dp"
         android:layout_gravity="center"
         android:layout_margin="5dp"
@@ -17,15 +17,15 @@
 
         <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="66dp">
+            android:layout_height="match_parent">
 
             <Button
                 android:id="@+id/btnItemAccept"
                 android:layout_width="72dp"
                 android:layout_height="31dp"
-                android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="103dp"
+                android:layout_marginRight="5dp"
+                android:layout_toStartOf="@id/btnItemCancel"
                 android:background="@drawable/button_selector"
                 android:text="THANH TOÁN"
                 android:textColor="#FFFFFF"
@@ -37,7 +37,6 @@
                 android:layout_height="30dp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="18dp"
                 android:background="@drawable/button_selector"
                 android:text="HỦY"
                 android:textColor="#FFFFFF"
@@ -49,7 +48,7 @@
                 android:layout_height="39dp"
                 android:layout_alignParentStart="true"
                 android:layout_alignParentTop="true"
-                android:layout_marginTop="9dp"
+                android:layout_marginTop="12dp"
                 android:background="@drawable/carorder" />
 
 
@@ -57,8 +56,7 @@
                 android:id="@+id/tvItemLicense"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentTop="true"
-                android:layout_alignStart="@+id/tvItemTypeCar"
+                android:layout_toEndOf="@id/imageView7"
                 android:text="29L6-33212"
                 android:textColor="#000000"
                 android:textSize="18dp"
@@ -68,10 +66,9 @@
                 android:id="@+id/tvItemTypeCar"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_alignParentBottom="true"
-                android:layout_alignParentStart="true"
-                android:layout_marginBottom="11dp"
-                android:layout_marginStart="85dp"
+                android:layout_alignStart="@id/tvItemLicense"
+                android:layout_below="@id/tvItemLicense"
+                android:layout_marginTop="10dp"
                 android:text="dưới 9 chỗ" />
 
         </RelativeLayout>

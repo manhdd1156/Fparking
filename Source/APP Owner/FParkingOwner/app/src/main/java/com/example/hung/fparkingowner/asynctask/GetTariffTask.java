@@ -56,8 +56,14 @@ IAsyncTaskHandler container;
 
             JSONArray jsonArray =jsonObj.getJSONArray("tariffList");
             double price9 = jsonArray.getJSONObject(0).getDouble("price");
-            double price16 = jsonArray.getJSONObject(1).getDouble("price");
-            double price29 = jsonArray.getJSONObject(2).getDouble("price");
+            double price16 = 0;
+            double price29 = 0;
+            if(jsonArray.length()>1) {
+                price16 = jsonArray.getJSONObject(1).getDouble("price");
+            }
+            if(jsonArray.length()>2) {
+                price29 = jsonArray.getJSONObject(2).getDouble("price");
+            }
                parkingDTO = new ParkingDTO(id, address, currentspace, deposits, image, latitude, longitude, status, timeoc, totalspace, city_id, price9, price16, price29);
 
         } catch (Exception e) {

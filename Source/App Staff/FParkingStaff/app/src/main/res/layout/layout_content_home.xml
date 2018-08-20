@@ -8,11 +8,14 @@
     tools:context=".HomeActivity">
 
     <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/relativeLayout"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
         android:layout_centerHorizontal="true"
-        tools:layout_editor_absoluteX="103dp"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <ImageView
             android:id="@+id/imgHeader"
@@ -34,17 +37,6 @@
             android:scaleType="fitXY"
             app:srcCompat="@drawable/checkoutinfo" />
 
-        <ImageView
-            android:id="@+id/imgInfor2"
-            android:layout_width="match_parent"
-            android:layout_height="483dp"
-            android:layout_below="@+id/imgInfor1"
-            android:layout_marginBottom="0dp"
-            android:paddingLeft="10dp"
-            android:paddingRight="10dp"
-            android:scaleType="fitXY"
-            app:srcCompat="@drawable/checkoutinfo" />
-
         <TextView
             android:id="@+id/textView5"
             android:layout_width="151dp"
@@ -60,19 +52,7 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/textView18"
-            android:layout_width="151dp"
-            android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/textView5"
-            android:layout_alignTop="@+id/imgInfor2"
-            android:layout_marginTop="19dp"
-            android:drawableLeft="@drawable/ic_action_car"
-            android:gravity="center_vertical"
-            android:text="Các xe hiện tại"
-            android:textColor="@color/white_greyish"
-            android:textSize="16sp"
-            android:textStyle="bold" />
+
 
         <ImageView
             android:id="@+id/imageView15"
@@ -95,34 +75,21 @@
             android:textSize="15sp"
             android:textStyle="bold" />
 
-        <ScrollView
-            android:layout_width="240dp"
-            android:layout_height="36dp"
+        <TextView
+            android:id="@+id/tvAddress"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_below="@+id/imageView15"
-            android:layout_toEndOf="@+id/textView4">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical" >
-
-                <TextView
-                    android:id="@+id/tvAddress"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@+id/imageView15"
-                    android:layout_marginLeft="20dp"
-                    android:layout_toEndOf="@+id/textView3"
-                    android:text="Khâm Thiên - Hà Nội"
-                    android:textSize="15sp" />
-            </LinearLayout>
-        </ScrollView>
+            android:layout_marginLeft="20dp"
+            android:layout_toEndOf="@+id/textView3"
+            android:text="Khâm Thiên - Hà Nội"
+            android:textSize="15sp" />
 
         <TextView
             android:id="@+id/textView3"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignStart="@+id/cars_list"
+            android:layout_alignStart="@+id/textView5"
             android:layout_below="@+id/imageView15"
             android:layout_marginLeft="9dp"
             android:text="Bãi đỗ:"
@@ -132,7 +99,7 @@
             android:id="@+id/imageView19"
             android:layout_width="307dp"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/textView18"
+            android:layout_below="@+id/imgInfor1"
             android:layout_centerHorizontal="true"
             app:srcCompat="@drawable/line" />
 
@@ -142,7 +109,7 @@
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/textView3"
             android:layout_below="@+id/textView3"
-            android:layout_marginTop="8dp"
+            android:layout_marginTop="15dp"
             android:text="Còn trống :"
             android:textSize="15sp" />
 
@@ -160,35 +127,22 @@
             android:id="@+id/btnChange"
             android:layout_width="54dp"
             android:layout_height="23dp"
+            android:layout_alignTop="@id/textView4"
             android:layout_below="@+id/textView3"
             android:layout_marginLeft="20dp"
-            android:layout_marginTop="7dp"
             android:layout_toEndOf="@+id/tvSpace"
             android:background="@drawable/button_selector"
-            android:onClick="changeSpaceButtonClick"
             android:text="THAY ĐỔI"
             android:textColor="#FFFFFF"
             android:textSize="7sp" />
 
-        <ListView
-            android:id="@+id/cars_list"
-            android:layout_width="300dp"
-            android:layout_height="318dp"
-            android:layout_below="@+id/imageView19"
-            android:layout_centerHorizontal="true"
-            android:cacheColorHint="@color/black"
-            android:clickable="true"
-            android:visibility="invisible"
-            tools:layout_editor_absoluteX="42dp"
-            tools:layout_editor_absoluteY="291dp" />
-
         <android.support.v7.widget.RecyclerView
             android:id="@+id/booking_list_view"
-            android:layout_width="378dp"
-            android:layout_height="397dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignTop="@+id/textView18"
-            android:layout_marginStart="18dp" />
+            android:layout_width="365dp"
+            android:layout_height="492dp"
+            android:layout_below="@id/imageView19"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true" />
     </RelativeLayout>
 
 
