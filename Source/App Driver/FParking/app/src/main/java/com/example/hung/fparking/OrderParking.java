@@ -67,7 +67,8 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     private SharedPreferences.Editor mPreferencesEditor;
 
     ImageView backOrder, addCarOrder;
-    Button buttonDat_Cho, btnOK;
+    public Button buttonDat_Cho;
+    Button btnOK;
     public static TextView textViewEmptySpace, textViewSlots, textViewPrice, textViewTime, textViewAddress, textViewTitlePB, textViewAlert;
 
     //addcar view
@@ -557,6 +558,9 @@ public class OrderParking extends AppCompatActivity implements IAsyncTaskHandler
     protected void onStop() {
         super.onStop();
         progessDialog.cancel();
-        yourCountDownTimer.cancel();
+        if (yourCountDownTimer != null) {
+            yourCountDownTimer.cancel();
+        }
+
     }
 }

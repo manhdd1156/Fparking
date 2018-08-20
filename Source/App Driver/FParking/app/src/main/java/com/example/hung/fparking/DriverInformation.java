@@ -13,12 +13,16 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.hung.fparking.asynctask.DriverLoginTask;
+import com.example.hung.fparking.asynctask.FineTask;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.DriverDTO;
+import com.example.hung.fparking.dto.FineDTO;
 import com.example.hung.fparking.login.CustomToast;
+import com.example.hung.fparking.model.CheckNetwork;
 
+import java.util.ArrayList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,7 +33,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
     EditText password, tbName, tbPhone, tbPassword;
     TextView textViewAlert;
 
-    AlertDialog alertDialog;
+    AlertDialog alertDialog, dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +44,7 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(DriverInformation.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_dialog_confirm_pass, null);
         mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
+        dialog = mBuilder.create();
 
         // ánh xạ
         backInformation = findViewById(R.id.imageViewBackInformation);
@@ -76,9 +80,8 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
                 } else if (!n.find()) {
                     new CustomToast().Show_Toast(getApplicationContext(), findViewById(R.id.profile_layout),
                             "Tên từ 2 đến 50 ký tự không bao gồm ký tự đặc biệt");
-                }
-                else {
-                    dialog.show();
+                } else {
+                    new FineTask("getall", null, "fine", DriverInformation.this);
                 }
 
             }
@@ -133,7 +136,18 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
 
     @Override
     public void onPostExecute(Object o, String action) {
-        if (Boolean.TRUE.equals(o)) {
+        if (action.equals("fine")) {
+            ArrayList<FineDTO> fineDTOS = (ArrayList<FineDTO>) o;
+            CheckNetwork checkNetwork = new CheckNetwork(DriverInformation.this, getApplicationContext());
+            if (fineDTOS.size() > 0 || !checkNetwork.isNetworkConnected() || Session.currentDriver.getStatus().equals("0")) {
+                if (Session.currentDriver.getPhone().equals(tbPhone.getText().toString().trim())) {
+                    textViewAlert.setText("Hiện tại không thể đổi số điện thoại");
+                    alertDialog.show();
+                }
+            } else {
+                dialog.show();
+            }
+        } else if (Boolean.TRUE.equals(o)) {
             textViewAlert.setText("Đổi thông tin thành công!");
             alertDialog.show();
             password.setText("");
@@ -143,7 +157,6 @@ public class DriverInformation extends AppCompatActivity implements IAsyncTaskHa
             textViewAlert.setText("Đổi thông tin thất bại!");
             alertDialog.show();
         }
-
     }
 
     @Override

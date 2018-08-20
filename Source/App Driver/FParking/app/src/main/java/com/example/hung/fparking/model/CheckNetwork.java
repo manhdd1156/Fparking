@@ -22,6 +22,11 @@ public class CheckNetwork {
         this.content = content;
     }
 
+    public CheckNetwork(Activity mActivity, Context mContext) {
+        this.mActivity = mActivity;
+        this.mContext = mContext;
+    }
+
     public boolean isNetworkConnected() {
         ConnectivityManager cm = (ConnectivityManager) mContext.getSystemService(mContext.CONNECTIVITY_SERVICE);
 

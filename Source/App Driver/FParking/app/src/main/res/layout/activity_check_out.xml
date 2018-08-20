@@ -83,7 +83,7 @@
             android:layout_below="@+id/textViewTimeCheckoutTT"
             android:drawableLeft="@drawable/ic_action_timeoc"
             android:gravity="center_vertical"
-            android:text="N/A"
+            android:text="Chưa thanh toán"
             android:textSize="13sp" />
 
         <TextView
@@ -216,7 +216,7 @@
             android:layout_below="@+id/textViewTimeCheckinTT"
             android:drawableLeft="@drawable/ic_checkout_timeout"
             android:gravity="center_vertical"
-            android:text="N/A"
+            android:text="Chưa thanh toán"
             android:textSize="13sp" />
 
 

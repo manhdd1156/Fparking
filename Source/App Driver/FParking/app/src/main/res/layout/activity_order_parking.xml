@@ -52,7 +52,7 @@
                 android:layout_alignParentTop="true"
                 android:layout_marginEnd="12dp"
                 android:layout_marginTop="205dp"
-                android:text="234 Trần Duy Hưng"
+                android:text="N/A"
                 android:textColor="@color/whitetext" />
 
             <ImageView

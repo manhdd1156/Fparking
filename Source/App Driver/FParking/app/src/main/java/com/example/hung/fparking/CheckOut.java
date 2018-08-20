@@ -102,16 +102,18 @@ public class CheckOut extends AppCompatActivity implements IAsyncTaskHandler {
                     long diff = date2.getTime() - date1.getTime();
                     textViewTimeCheckoutTT.setText(myBookingDTO.getTimeOut());
                     if (diff / (60 * 60 * 1000) == 0) {
-                        textViewTotalTimeTT.setText("Dưới 1 Giờ");
+                        textViewTotalTimeTT.setText("1 Giờ");
+                    } else if (diff % (60 * 60 * 1000) == 0) {
+                        textViewTotalTimeTT.setText((diff / (60 * 60 * 1000)) + " Giờ");
                     } else {
-                        textViewTotalTimeTT.setText(diff / (60 * 60 * 1000) + " Giờ");
+                        textViewTotalTimeTT.setText((diff / (60 * 60 * 1000) + 1) + " Giờ");
                     }
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
             }
             NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-            textViewPrice.setText(currencyVN.format(myBookingDTO.getPrice()).toString());
+            textViewPrice.setText(currencyVN.format(myBookingDTO.getPrice()).toString() + "/Giờ");
             textViewTotalPrice.setText(currencyVN.format(myBookingDTO.getAmount()).toString());
             textViewLicensePlate.setText(myBookingDTO.getLicenseplate());
         }
