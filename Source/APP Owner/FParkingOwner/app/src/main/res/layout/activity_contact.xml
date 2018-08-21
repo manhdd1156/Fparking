@@ -12,9 +12,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="16dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        tools:layout_editor_absoluteY="0dp">
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent">
 
         <ImageView
             android:id="@+id/imageView9"
@@ -42,7 +44,7 @@
         <ImageView
             android:id="@+id/imageView13"
             android:layout_width="320dp"
-            android:layout_height="101dp"
+            android:layout_height="144dp"
             android:layout_below="@+id/textView13"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20dp"
@@ -103,11 +105,10 @@
             android:id="@+id/imageView26"
             android:layout_width="26dp"
             android:layout_height="22dp"
-            android:layout_alignStart="@+id/imageView13"
-            android:layout_alignTop="@+id/imageView13"
-            android:layout_marginLeft="30dp"
-            android:layout_marginTop="20dp"
-            app:srcCompat="@drawable/ic_contact_mail" />
+            android:layout_alignStart="@+id/imageView28"
+            android:layout_below="@+id/imageView28"
+            android:layout_marginTop="10dp"
+            app:srcCompat="@drawable/ic_action_mail" />
 
         <ImageView
             android:id="@+id/imageView27"
@@ -116,15 +117,15 @@
             android:layout_alignStart="@+id/imageView26"
             android:layout_below="@+id/imageView26"
             android:layout_marginTop="10dp"
-            app:srcCompat="@drawable/ic_contact_mylocation" />
+            app:srcCompat="@drawable/ic_action_mylocation" />
 
         <TextView
             android:id="@+id/textView12"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/imageView26"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="3dp"
+            android:layout_alignBottom="@+id/imageView26"
+            android:layout_marginBottom="4dp"
+            android:layout_marginLeft="5dp"
             android:layout_toEndOf="@+id/imageView26"
             android:text="contact@fparking.com"
             android:textColor="@color/white_greyish"
@@ -136,10 +137,32 @@
             android:layout_width="242dp"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/imageView27"
-            android:layout_marginLeft="10dp"
-            android:layout_marginTop="0dp"
+            android:layout_marginLeft="7dp"
             android:layout_toEndOf="@+id/imageView26"
             android:text="Trường Đại học FPT, KM29 Đại Lộ Thăng Long, Thạch Hoà, Thạch Thất, Hà Nội"
+            android:textColor="@color/white_greyish"
+            android:textSize="12sp"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imageView28"
+            android:layout_width="25dp"
+            android:layout_height="wrap_content"
+            android:layout_alignStart="@+id/imageView21"
+            android:layout_alignTop="@+id/imageView13"
+            android:layout_marginLeft="-10dp"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@drawable/ic_action_phone" />
+
+        <TextView
+            android:id="@+id/textView"
+            android:layout_width="wrap_content"
+            android:layout_height="23dp"
+            android:layout_alignTop="@+id/imageView28"
+            android:layout_marginLeft="7dp"
+            android:layout_marginTop="5dp"
+            android:layout_toEndOf="@+id/imageView28"
+            android:text="0128 8028 666"
             android:textColor="@color/white_greyish"
             android:textSize="12sp"
             android:textStyle="bold" />
