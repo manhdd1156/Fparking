@@ -185,11 +185,7 @@ public class HomeController {
 			model.put("totalTrasaction", totalTrasaction);
 
 			totalReveune = revenueByCommistion + revenueByFine;
-			if (totalReveune % 1 == 0) {
-				model.put("totalReveune", currencyVN.format(totalReveune));
-			} else {
-				model.put("totalReveune", currencyVN.format(totalReveune));
-			}
+			model.put("totalReveune", currencyVN.format(totalReveune));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return "404";
@@ -325,9 +321,7 @@ public class HomeController {
 			model.put("messError", "Nạp tiền không thành công!");
 			return "addmoneytoparking";
 		}
-
 		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
-
 		return "addmoneytoparking";
 	}
 
@@ -422,7 +416,4 @@ public class HomeController {
 		}
 	}
 
-	public String checkstr(String a, String b, int c) {
-		return "ahihi";
-	}
 }
