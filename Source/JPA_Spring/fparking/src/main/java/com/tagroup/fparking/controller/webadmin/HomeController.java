@@ -56,6 +56,8 @@ public class HomeController {
 	@Autowired
 	private TokenProvider tokenProvider;
 
+	//String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+	Locale locale = new Locale("vi", "VN");
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,7 +84,6 @@ public class HomeController {
 		List<Feedback> listFeedback;
 		List<Booking> listBooking;
 		List<Fine> listFine;
-
 		try {
 			listDriver = driverService.getAll();
 			listParking = parkingService.getAll();
@@ -259,31 +260,31 @@ public class HomeController {
 
 		return "redirect:/home";
 	}
-	
+
 	// resolve feedback
-		@PreAuthorize("hasAnyAuthority('ADMIN')")
-		@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.POST)
-		public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
-				@RequestParam("resolve") String resolve) {
-			Feedback feedbackupdate = new Feedback();
-			sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-			try {
-				feedbackupdate = feedbackService.getById(id);
-				feedbackupdate.setType(1);
-				feedbackupdate.setResolve(resolve);
-				feedbackService.update(feedbackupdate);
-			} catch (Exception e) {
-				return "404";
-			}
-			model.put("id", id);
-			model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
-			model.put("content", feedbackupdate.getContent());
-			model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
-			model.put("resolve", feedbackupdate.getResolve());
-			model.put("type", 1);
-			model.put("messSucc", "Đã giải quyết!");
-			return "viewdetailfeedback";
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.POST)
+	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
+			@RequestParam("resolve") String resolve) {
+		Feedback feedbackupdate = new Feedback();
+		sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+		try {
+			feedbackupdate = feedbackService.getById(id);
+			feedbackupdate.setType(1);
+			feedbackupdate.setResolve(resolve);
+			feedbackService.update(feedbackupdate);
+		} catch (Exception e) {
+			return "404";
 		}
+		model.put("id", id);
+		model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
+		model.put("content", feedbackupdate.getContent());
+		model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
+		model.put("resolve", feedbackupdate.getResolve());
+		model.put("type", 1);
+		model.put("messSucc", "Đã giải quyết!");
+		return "viewdetailfeedback";
+	}
 
 	// go to add money
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -329,7 +330,6 @@ public class HomeController {
 		List<Booking> listBooking;
 		double revenueCommission = 0;
 		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
-
 		try {
 			listBooking = bookingService.getAll();
 		} catch (Exception e) {
@@ -411,5 +411,9 @@ public class HomeController {
 			headers.add("Location", "/404");
 			return new ResponseEntity<String>(headers, HttpStatus.FOUND);
 		}
+	}
+
+	public String checkstr(String a, String b, int c) {
+		return "ahihi";
 	}
 }

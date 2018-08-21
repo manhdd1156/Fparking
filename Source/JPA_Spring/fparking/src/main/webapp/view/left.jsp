@@ -19,6 +19,7 @@
 				<ul class="nav nav-second-level">
 					<li><a href="/account/parking">Tài Khoản</a></li>
 					<li><a href="/account/parking/block">Tài Khoản bị khóa</a></li>
+					<li><a href="/account/parking/delete">Tài Khoản chờ xóa</a></li>
 				</ul> <!-- /.nav-second-level --></li>
 			<!-- ===============Tai khoan bai xe End================= -->
 			<!-- ===============Nghiep vu Start================= -->

@@ -445,6 +445,51 @@ public class AccountController {
 		model.put("totalDeposit", currencyVN.format(totalDeposit));
 		return "blockaccountparking";
 	}
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/parking/delete", method = RequestMethod.GET)
+	public String getAllDeleteAccountParking(Map<String, Object> model) throws Exception {
+		List<Parking> listParking;
+		try {
+			listParking = parkingService.getByStatus(6);
+		} catch (Exception e) {
+			return "404";
+		}
+
+		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
+		double totalDeposit = 0;
+		if (listParking != null && listParking.size() > 0) {
+			for (Parking parking : listParking) {
+				HashMap<String, Object> m = new HashMap<>();
+				m.put("id", parking.getId());
+				m.put("address", parking.getAddress());
+				m.put("currentspace", parking.getCurrentspace());
+				m.put("totalspace", parking.getTotalspace());
+				m.put("deposits", currencyVN.format(parking.getDeposits()));
+				totalDeposit += parking.getDeposits();
+				arrayListParking.add(m);
+			}
+			model.put("listParking", arrayListParking);
+			model.put("totalAccount", listParking.size());
+		} else {
+			model.put("totalAccount", 0);
+		}
+		model.put("totalDeposit", currencyVN.format(totalDeposit));
+		return "deleteaccountparking";
+	}
+	
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/parking/delete/{id}", method = RequestMethod.GET)
+	public String deleteAccountParking(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+		Parking parking;
+		try {
+			parking= parkingService.getById(id);
+			parking.setStatus(0);
+			parkingService.update(parking);
+		} catch (Exception e) {
+			return "404";
+		}
+		return "redirect:/account/parking/delete";
+	}
 
 	// get detail parking by id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")

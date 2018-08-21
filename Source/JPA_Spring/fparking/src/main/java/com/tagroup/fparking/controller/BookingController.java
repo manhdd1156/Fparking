@@ -52,7 +52,6 @@ public class BookingController {
 	public ResponseEntity<?> getbystatus(@RequestParam("status") int status) throws Exception {
 		Booking respone = bookingService.findByStatus(status);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
-
 	}
 
 	// get booking by parking id, drivervehicleid , status ?

@@ -62,7 +62,6 @@
 		});
 	});
 	function deleteFeedback1(id) {
-		var txt;
 		if (confirm("Bạn có muốn xóa?")) {
 			window.location.href = "/home/feedback/delete/" + id;
 		}
@@ -70,9 +69,15 @@
 	}
 
 	function deleteFeedback2(id) {
-		var txt;
 		if (confirm("Bạn có muốn xóa?")) {
 			window.location.href = "/business/feedback/delete/" + id;
+		}
+		return false;
+	}
+	
+	function deleteAccountParking(id) {
+		if (confirm("Bạn có muốn xóa?")) {
+			window.location.href = "/account/parking/delete/" + id;
 		}
 		return false;
 	}
