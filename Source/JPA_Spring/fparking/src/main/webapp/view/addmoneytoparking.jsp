@@ -48,6 +48,7 @@
 											<label>Số tiền nạp:</label> 
 											<input type="number" class="form-control" name="deposit" step="1" min="110000" max="2000000000" required>
 											<p style="color: green;">${messSuss }</p>
+											<p style="color: red;">${messError }</p>
 										</div>
 										<button type="submit" class="btn btn-success">Lưu</button>
 										<button type="reset" class="btn btn-success">Đặt lại</button>

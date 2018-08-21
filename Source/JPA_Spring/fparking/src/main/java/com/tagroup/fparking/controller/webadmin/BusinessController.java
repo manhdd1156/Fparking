@@ -284,6 +284,7 @@ public class BusinessController {
 			model.put("vehicletype", fineTariff.getVehicletype().getType());
 			model.put("price", currencyVN.format(price));
 			model.put("messError", "Sủa không thành công!");
+			return "editfine";
 		}
 
 		Finetariff fineTariff2 = fineTariffService.getById(id);

@@ -56,7 +56,8 @@ public class HomeController {
 	@Autowired
 	private TokenProvider tokenProvider;
 
-	//String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+	// String timeStamp = new
+	// SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	Locale locale = new Locale("vi", "VN");
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
@@ -309,14 +310,22 @@ public class HomeController {
 		Parking parking = new Parking();
 		try {
 			parking = parkingService.getById(id);
-			parking.setStatus(1);
-			parking.setDeposits(parking.getDeposits() + deposit);
-			parkingService.update(parking);
-			model.put("deposit", currencyVN.format(parking.getDeposits()));
-			model.put("address", parking.getAddress());
 		} catch (Exception e) {
 			return "404";
 		}
+		try {
+			parking.setStatus(1);
+			parking.setDeposits(parking.getDeposits() + deposit);
+			parking = parkingService.update(parking);
+			model.put("deposit", currencyVN.format(parking.getDeposits()));
+			model.put("address", parking.getAddress());
+		} catch (Exception e) {
+			model.put("deposit", deposit);
+			model.put("address", parking.getAddress());
+			model.put("messError", "Nạp tiền không thành công!");
+			return "addmoneytoparking";
+		}
+
 		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
 
 		return "addmoneytoparking";
