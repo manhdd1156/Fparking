@@ -90,8 +90,8 @@ public class StatisticRecyclerViewAdapter extends RecyclerView
         final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
         holder.licenseplate.setText(mDataset.get(position).getLicensePlate());
         holder.typecar.setText(mDataset.get(position).getTypeCar());
-        holder.parkingfines.setText(formatter.format(mDataset.get(position).getTotalfine())+"vnđ");
-        holder.amount.setText(formatter.format(mDataset.get(position).getAmount())+"vnđ");
+        holder.parkingfines.setText(formatMoney(mDataset.get(position).getTotalfine())+" vnđ");
+        holder.amount.setText(formatMoney(mDataset.get(position).getAmount())+" vnđ");
         try {
             holder.time.setText(dateFormatter.format(dateFormatter.parse(mDataset.get(position).getTimeout())));
         } catch (ParseException e) {
@@ -100,7 +100,25 @@ public class StatisticRecyclerViewAdapter extends RecyclerView
 
     }
 
-
+    public String formatMoney(double money) {
+        NumberFormat formatter = new DecimalFormat("###,###");
+        int temp = (int) money;
+        String returnMoney = formatter.format(temp);
+        if (temp > 1000000 && temp < 1000000000) {
+            if(temp %1000000 <999)  {
+                returnMoney = temp / 1000000 + "tr";
+            }else {
+                returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
+            }
+        } else if (temp > 1000000000) {
+            if(temp %1000000000 <999999)  {
+                returnMoney = temp / 1000000000 + "tỷ";
+            }else {
+                returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
+            }
+        }
+        return returnMoney;
+    }
 
 
     public void addItem(BookingDTO dataObj, int index) {

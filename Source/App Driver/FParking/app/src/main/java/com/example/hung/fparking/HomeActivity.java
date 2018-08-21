@@ -55,6 +55,7 @@ import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.entity.GetNearPlace;
 import com.example.hung.fparking.model.GPSTracker;
 import com.example.hung.fparking.other.Feedback;
+import com.example.hung.fparking.other.Guide;
 import com.example.hung.fparking.other.TermsAndConditions;
 import com.github.ybq.android.spinkit.SpinKitView;
 import com.github.ybq.android.spinkit.SpriteFactory;
@@ -340,6 +341,15 @@ public class HomeActivity extends AppCompatActivity implements OnMapReadyCallbac
                     }
                     Intent intentDK = new Intent(HomeActivity.this, TermsAndConditions.class);
                     startActivity(intentDK);
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                    break;
+                case R.id.nav_guide:
+                    if (locationManager != null) {
+                        locationManager.removeUpdates(HomeActivity.this);
+                    }
+                    Intent intentGuide = new Intent(HomeActivity.this, Guide.class);
+                    startActivity(intentGuide);
                     finish();
                     overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                     break;

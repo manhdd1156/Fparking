@@ -32,6 +32,14 @@ public class StaffController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
+//	// get staff
+//	@PreAuthorize("hasAnyAuthority('ADMIN', 'OWNER','STAFF')")
+//	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+//	public ResponseEntity<?> findByid(@PathVariable Long id) throws Exception {
+//		Staff respone = staffService.getById(id);
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//	}
+
 	// get list staff
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
@@ -40,13 +48,15 @@ public class StaffController {
 		List<Staff> respone = staffService.findByParking(parking);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+
 	// get list staff by owner id
-		@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
-		@RequestMapping(path = "/owners", method = RequestMethod.GET)
-		public ResponseEntity<?> findByOwner() throws Exception {
-			List<Staff> respone = staffService.findByOwner();
-			return new ResponseEntity<>(respone, HttpStatus.OK);
-		}
+	@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
+	@RequestMapping(path = "/owners", method = RequestMethod.GET)
+	public ResponseEntity<?> findByOwner() throws Exception {
+		List<Staff> respone = staffService.findByOwner();
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+
 	// get profile staff
 	@PreAuthorize("hasAnyAuthority('STAFF')")
 	@RequestMapping(path = "/profile", method = RequestMethod.GET)
@@ -54,6 +64,7 @@ public class StaffController {
 		Staff respone = staffService.getProfile();
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
+
 	// create staff
 	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
@@ -62,6 +73,7 @@ public class StaffController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+
 	// update profile
 	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)
@@ -70,12 +82,13 @@ public class StaffController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
-	// delete profile
-		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
-		@RequestMapping(path = "", method = RequestMethod.DELETE)
-		public ResponseEntity<?> delete(@RequestBody Staff Staff) throws Exception {
-			staffService.delete(Staff.getId());
-			return new ResponseEntity<>("OK", HttpStatus.OK);
 
-		}
+	// delete profile
+	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+	@RequestMapping(path = "", method = RequestMethod.DELETE)
+	public ResponseEntity<?> delete(@RequestBody Staff Staff) throws Exception {
+		staffService.delete(Staff.getId());
+		return new ResponseEntity<>("OK", HttpStatus.OK);
+
+	}
 }

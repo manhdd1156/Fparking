@@ -106,7 +106,7 @@ public class HomeActivity extends AppCompatActivity
         Session.container = this;
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
-        lv = (ListView) findViewById(R.id.cars_list);
+//        lv = (ListView) findViewById(R.id.cars_list);
 
 
         // recyleview
@@ -217,7 +217,7 @@ public class HomeActivity extends AppCompatActivity
                 System.out.println("ở trong activityressult");
                 setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
-            } else {
+            } else if(requestCode == RESULT_CANCELED){
                 showDialog("Vẫn còn xe trong bãi, thay đổi không thành công");
             }
         }
@@ -243,6 +243,7 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onResume() {
         super.onResume();
+        Session.flagPause = true;
         registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 
     }
@@ -259,6 +260,10 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onPause() {
         super.onPause();
+        Intent inttentPusher = new Intent(HomeActivity.this, Notification.class);
+//        stopService(inttentPusher);
+        Session.flagPause = false;
+//        overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         unregisterReceiver(receiver);
     }
 
@@ -306,6 +311,7 @@ public class HomeActivity extends AppCompatActivity
             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
             finish();
             startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
             Intent inttentPusher = new Intent(HomeActivity.this, Notification.class);
             stopService(inttentPusher);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
@@ -528,7 +534,7 @@ public class HomeActivity extends AppCompatActivity
                             + "    Thời gian ra : " + Session.bookingTemp.getTimeout() + "\n"
                             + "        Giá gửi xe : " + formatter.format(Session.bookingTemp.getPrice()) + " vnđ/giờ\n"
                             + "   Thời gian đỗ : " + formatterHour.format(diffInHours) + " giờ \n"
-                            + "Số tiền bị phạt : " + currencyVN.format(Session.bookingTemp.getTotalfine()) + "\n"
+                            + "Số tiền bị phạt : " + formatter.format(Session.bookingTemp.getTotalfine()) + " vnđ\n"
                             + "          Tổng giá : " + formatter.format(Session.bookingTemp.getAmount()) + " vnđ")
                             .setPositiveButton("Xác nhận", dialogClickListener).setCancelable(false).show();
 

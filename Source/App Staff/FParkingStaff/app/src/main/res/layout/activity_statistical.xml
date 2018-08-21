@@ -77,7 +77,7 @@
         android:id="@+id/lbTotalCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/tvDateError"
+        android:layout_below="@+id/tvFromD"
         android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Lượt thanh toán:" />
@@ -86,8 +86,8 @@
         android:id="@+id/lbMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="172dp"
+        android:layout_below="@id/lbTotalCar"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Tổng tiền:" />
 
@@ -95,8 +95,9 @@
         android:id="@+id/tvMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvTotalCar"
-        android:layout_alignTop="@+id/lbMoney"
+        android:layout_alignStart="@id/lbMoney"
+        android:layout_below="@id/lbMoney"
+        android:layout_marginTop="10dp"
         android:text="..."
         android:textStyle="bold" />
 
@@ -109,17 +110,6 @@
         android:layout_toEndOf="@+id/lbTotalCar"
         android:text="..."
         android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/tvDateError"
-        android:layout_width="338dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="107dp"
-        android:text="Hãy chọn ngày lớn hơn"
-        android:textColor="@android:color/holo_red_light"
-        android:visibility="invisible" />
 
     <TextView
         android:id="@+id/tvFromD"
@@ -154,8 +144,6 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/imageView4"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="-23dp"
-            android:layout_marginStart="35dp"
             android:layout_weight="1"
             android:text="Từ ngày"
             android:textColor="#000000"
@@ -213,6 +201,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
+        android:layout_alignBaseline="@id/lbMoney"
         android:layout_alignTop="@+id/lbTotalCar"
         android:layout_marginEnd="47dp"
         android:text="bãi xe bị phạt:" />
@@ -221,8 +210,8 @@
         android:id="@+id/tvParkingFines"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/tvMoney"
         android:layout_alignEnd="@+id/textView6"
-        android:layout_alignTop="@+id/lbMoney"
         android:text="..."
         android:textStyle="bold" />
 

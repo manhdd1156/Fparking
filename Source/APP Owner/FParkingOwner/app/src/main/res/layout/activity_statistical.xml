@@ -29,7 +29,7 @@
     <ImageView
         android:id="@+id/imageView4"
         android:layout_width="match_parent"
-        android:layout_height="138dp"
+        android:layout_height="183dp"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/imageView9"
         android:layout_marginTop="23dp"
@@ -79,8 +79,8 @@
         android:id="@+id/lbTotalCar"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="140dp"
+        android:layout_below="@id/spinnerStatistic"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Lượt thanh toán:" />
 
@@ -88,8 +88,8 @@
         android:id="@+id/lbMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="172dp"
+        android:layout_below="@id/lbTotalCar"
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Tổng tiền:" />
 
@@ -97,8 +97,9 @@
         android:id="@+id/tvMoney"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignStart="@+id/tvTotalCar"
-        android:layout_alignTop="@+id/lbMoney"
+        android:layout_alignStart="@+id/lbMoney"
+        android:layout_below="@id/lbMoney"
+        android:layout_marginTop="10dp"
         android:text="..."
         android:textStyle="bold" />
 
@@ -134,9 +135,9 @@
         android:id="@+id/chooseFromDate"
         android:layout_width="132dp"
         android:layout_height="19dp"
-        android:layout_above="@+id/imageView4"
+        android:layout_alignBaseline="@id/imageView4"
+        android:layout_below="@id/imageView9"
         android:layout_alignStart="@+id/imageViewBackStatistical"
-        android:layout_marginBottom="-23dp"
         android:orientation="horizontal">
 
         <TextView
@@ -145,8 +146,7 @@
             android:layout_height="wrap_content"
             android:layout_above="@+id/imageView4"
             android:layout_alignParentStart="true"
-            android:layout_marginBottom="-23dp"
-            android:layout_marginStart="35dp"
+            android:layout_marginStart="5dp"
             android:layout_weight="1"
             android:text="Từ ngày"
             android:textColor="#000000"
@@ -165,14 +165,14 @@
         android:id="@+id/chooseToDate"
         android:layout_width="127dp"
         android:layout_height="22dp"
+        android:layout_alignBaseline="@id/imageView4"
         android:layout_alignParentEnd="true"
-        android:layout_below="@+id/imageView9"
-        android:layout_marginEnd="15dp"
+        android:layout_below="@id/imageView9"
         android:orientation="horizontal">
 
         <TextView
             android:id="@+id/tvToDate"
-            android:layout_width="81dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
             android:layout_alignParentTop="true"
@@ -203,6 +203,7 @@
         android:id="@+id/textView6"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/lbMoney"
         android:layout_alignParentEnd="true"
         android:layout_alignTop="@+id/lbTotalCar"
         android:layout_marginEnd="47dp"
@@ -213,16 +214,17 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignEnd="@+id/textView6"
-        android:layout_alignTop="@+id/lbMoney"
+       android:layout_alignBaseline="@id/tvMoney"
         android:text="..."
         android:textStyle="bold" />
 
     <Spinner
         android:id="@+id/spinnerStatistic"
-        android:layout_width="301dp"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_marginTop="107dp"
+        android:layout_width="wrap_content"
+        android:layout_height="15dp"
+        android:layout_below="@id/tvFromD"
+
+        android:layout_marginTop="10dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical" />
 
 

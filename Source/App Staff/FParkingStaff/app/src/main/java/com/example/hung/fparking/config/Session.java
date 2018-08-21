@@ -20,4 +20,6 @@ public class Session {
     public static Activity homeActivity;
     public static BookingDTO bookingTemp;
     public static IAsyncTaskHandler container;
+    public static boolean flagPause;
+
 }

@@ -46,14 +46,16 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
-	// get parking by owner id
-		@PreAuthorize("hasAnyAuthority('OWNER')")
-		@RequestMapping(path = "/owners", method = RequestMethod.GET)
-		public ResponseEntity<?> getbyOid() throws Exception {
-			List<Parking> respone = parkingService.getByOId();
-			return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
+	// get parking by owner id
+	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@RequestMapping(path = "/owners", method = RequestMethod.GET)
+	public ResponseEntity<?> getbyOid() throws Exception {
+		List<Parking> respone = parkingService.getByOId();
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// get parkings by latitude and longitude
 	@PreAuthorize("hasAnyAuthority('DRIVER')")
 	@RequestMapping(value = "", params = { "latitude", "longitude" }, method = RequestMethod.GET)
@@ -71,34 +73,35 @@ public class ParkingController {
 	@RequestMapping(value = "/sort", params = { "latitude", "longitude" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getBySortLocation(@RequestParam("latitude") String latitude,
-			@RequestParam("longitude") String longitude,@RequestParam("vehicleid") Long vehicleid) throws Exception {
+			@RequestParam("longitude") String longitude, @RequestParam("vehicleid") Long vehicleid) throws Exception {
 
-		List<Parking> respone = parkingService.findSortByLatitudeANDLongitude(latitude, longitude,vehicleid);
+		List<Parking> respone = parkingService.findSortByLatitudeANDLongitude(latitude, longitude, vehicleid);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
-	
-	
+
 	// get fines of parkings by time
-		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
-		@RequestMapping(path = "/time", method = RequestMethod.GET)
-		public ResponseEntity<?> getFineParkingByTime(@RequestParam("parkingid") Long parkingid,
-				@RequestParam("fromtime") String fromtime,@RequestParam("totime") String totime,@RequestParam("method") Long method) throws Exception {
-			System.out.println("parkingid =" + parkingid + ",fromtime =<" + fromtime + ">, totime =<" + totime +">,method= " + method);
-			double respone = parkingService.getFineParkingByTime(parkingid,fromtime,totime, method);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+	@RequestMapping(path = "/time", method = RequestMethod.GET)
+	public ResponseEntity<?> getFineParkingByTime(@RequestParam("parkingid") Long parkingid,
+			@RequestParam("fromtime") String fromtime, @RequestParam("totime") String totime,
+			@RequestParam("method") Long method) throws Exception {
+		System.out.println("parkingid =" + parkingid + ",fromtime =<" + fromtime + ">, totime =<" + totime
+				+ ">,method= " + method);
+		double respone = parkingService.getFineParkingByTime(parkingid, fromtime, totime, method);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
-		
-		@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
-		@RequestMapping(path = "/testtt", method = RequestMethod.GET)
-		public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") Long type) throws Exception {
+	}
 
-			String respone = "OK";
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+	@RequestMapping(path = "/testtt", method = RequestMethod.GET)
+	public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") Long type) throws Exception {
 
-		}
-		
+		String respone = "OK";
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// get tariff by parking id = ?
 	@PreAuthorize("hasAnyAuthority('DRIVER','OWNER')")
 	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
@@ -118,15 +121,16 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+
 	// get All city
-		@PreAuthorize("hasAnyAuthority('OWNER','ADMIN')")
-		@RequestMapping(path = "/citys", method = RequestMethod.GET)
-		public ResponseEntity<?> getAllCity() throws Exception {
+	@PreAuthorize("hasAnyAuthority('OWNER','ADMIN')")
+	@RequestMapping(path = "/citys", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllCity() throws Exception {
 
-			List<City> respone = cityService.getAll();
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+		List<City> respone = cityService.getAll();
+		return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
+	}
 
 	// get Rating by parking id
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
@@ -137,26 +141,29 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+
 	// create parking
-		@PreAuthorize("hasAnyAuthority('OWNER')")
-		@RequestMapping(path = "", method = RequestMethod.POST)
-		public ResponseEntity<?> create(@RequestBody ParkingDTO parkingDTO) throws Exception {
+	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody ParkingDTO parkingDTO) throws Exception {
 
-			Parking respone = parkingService.create(parkingDTO);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+		Parking respone = parkingService.create(parkingDTO);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
 
-		}
-		
-		// update tariff by parking 
-		@PreAuthorize("hasAnyAuthority('OWNER')")
-		@RequestMapping(path = "/tariff/update", method = RequestMethod.GET)
-		public ResponseEntity<?> updatetariff(@RequestParam("parkingid") Long parkingid,@RequestParam("price9") double price9,@RequestParam("price916") double price916,@RequestParam("price1629") double price1629) throws Exception {
+	}
 
-			Parking respone = parkingService.updatetariff(parkingid,price9,price916,price1629);
-			return new ResponseEntity<>(respone, HttpStatus.OK);
+	// update tariff by parking
+	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@RequestMapping(path = "/tariff/update", method = RequestMethod.GET)
+	public ResponseEntity<?> updatetariff(@RequestParam("parkingid") Long parkingid,
+			@RequestParam("price9") double price9, @RequestParam("price916") double price916,
+			@RequestParam("price1629") double price1629) throws Exception {
 
-		}
-		
+		Parking respone = parkingService.updatetariff(parkingid, price9, price916, price1629);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+
 	// update parking
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/update", method = RequestMethod.POST)

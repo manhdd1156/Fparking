@@ -86,7 +86,12 @@ private int parkingID;
 //                            tvRate.setText("Không tốt");
 //                        }
                         tvDriverid.setText(jsonDriver.getString("id"));
-                    tvColor.setText(jsonVehicle.getString("color"));
+                        if(jsonVehicle.getString("color").isEmpty() || jsonVehicle.getString("color").equals("")) {
+                            tvColor.setText("Chưa xác định");
+                        }else {
+                            tvColor.setText(jsonVehicle.getString("color"));
+                        }
+
 
                     tvType.setText(jsonVehicleType.getString("type"));
                     // Stuff that updates the UI

@@ -9,22 +9,18 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.net.ConnectivityManager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ListView;
 import android.widget.TextView;
 
-import com.example.hung.fparking.adapter.BookingRecyclerViewAdapter;
-import com.example.hung.fparking.adapter.ListBookingStatisticAdapter;
 import com.example.hung.fparking.adapter.StatisticRecyclerViewAdapter;
 import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerBookingTask;
@@ -43,14 +39,13 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.List;
-import java.util.Locale;
 
 public class StatisticalActivity extends AppCompatActivity implements IAsyncTaskHandler {
     private static final String TAG = "Statistical";
 
-    TextView tvTotalMoney,tvDateError,tvParkingFines,tvTotalCar,tvToDate,tvFromDate;
+    TextView tvTotalMoney, tvParkingFines, tvTotalCar, tvToDate, tvFromDate, error;
     ImageView backStatistical;
+    Button btnOK;
     LinearLayout chooseFromDate, chooseToDate;
     Button btnShow;
     Date fromDate;
@@ -77,7 +72,6 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         tvParkingFines = (TextView) findViewById(R.id.tvParkingFines);
         chooseFromDate = (LinearLayout) findViewById(R.id.chooseFromDate);
         chooseToDate = findViewById(R.id.chooseToDate);
-        tvDateError = (TextView) findViewById(R.id.tvDateError);
         btnShow = (Button) findViewById(R.id.btnStat);
         backStatistical = findViewById(R.id.imageViewBackStatistical);
         //recycleView
@@ -129,10 +123,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         btnShow.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (toDate != null && fromDate != null && toDate.getTime() < fromDate.getTime()) {
-                    tvDateError.setVisibility(View.VISIBLE);
+                final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+
+                if (toDate != null && fromDate != null && toDate.getTime() <= fromDate.getTime()) {
+                    System.out.println("từ ngày : " + dateFormatter.format(fromDate) + " ; đến ngày :" + dateFormatter.format(toDate));
+                    showDialog("Hãy chọn thời gian kết thúc muộn hơn");
                 } else {
-                    tvDateError.setVisibility(View.INVISIBLE);
                     BookingDTO b = new BookingDTO();
                     b.setParkingID(Session.currentStaff.getParking_id());
                     new ManagerBookingTask("statisticget", b, StatisticalActivity.this);
@@ -147,7 +143,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 try {
                     month = month + 1;
                     Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
                     String monthh = month + "";
                     String dayy = day + "";
@@ -160,7 +156,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         dayy = "0" + day;
                     }
 
-                    String date = year + "-" + monthh + "-" + dayy;
+                    String date = dayy + "-" + monthh + "-" + year;
 
                     fromDate = sdf.parse(date);
 
@@ -177,22 +173,24 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 try {
                     month = month + 1;
                     Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
                     String monthh = month + "";
-                    day++;
                     String dayy = day + "";
 
                     if (month < 10) {
 
                         monthh = "0" + month;
                     }
+                    int daytemp = day+1;
+                    String dayytemp = daytemp + "";
                     if (day < 10) {
                         dayy = "0" + day;
+                        dayytemp = "0" + daytemp;
+
                     }
 
-                    String date = year + "-" + monthh + "-" + dayy;
-
-                    toDate = sdf.parse(date);
+                    String date = dayy + "-" + monthh + "-" + year;
+                    toDate = sdf.parse(dayytemp + "-" + monthh + "-" + year);
 //                    if(toDate.getTime()>fromDate.getTime())
 
                     tvToDate.setText(date);
@@ -241,6 +239,42 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
         });
     }
+
+    public void showDialog(String text) {
+        AlertDialog.Builder mBuilder = new AlertDialog.Builder(StatisticalActivity.this);
+        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+        mBuilder.setView(mView);
+        final AlertDialog dialog = mBuilder.create();
+        dialog.show();
+        error = (TextView) mView.findViewById(R.id.tvAlert);
+        btnOK = (Button) mView.findViewById(R.id.btnOK);
+        error.setText(text);
+        btnOK.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.cancel();
+            }
+        });
+    }
+    public String formatMoney(double money) {
+        NumberFormat formatter = new DecimalFormat("###,###");
+        int temp = (int) money;
+        String returnMoney = formatter.format(temp);
+        if (temp > 1000000 && temp < 1000000000) {
+            if(temp %1000000 <999)  {
+                returnMoney = temp / 1000000 + "tr";
+            }else {
+                returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
+            }
+        } else if (temp > 1000000000) {
+            if(temp %1000000000 <999999)  {
+                returnMoney = temp / 1000000000 + "tỷ";
+            }else {
+                returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
+            }
+        }
+        return returnMoney;
+    }
     @Override
     public void onPostExecute(Object o) {
         ArrayList<BookingDTO> lstBooking = (ArrayList<BookingDTO>) o;
@@ -260,7 +294,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 new ManagerParkingTask("getFines", p, new IAsyncTaskHandler() {
                     @Override
                     public void onPostExecute(Object o) {
-                        tvParkingFines.setText(formatter.format(Double.parseDouble(o.toString()))+"vnđ");
+                        tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString()))+" vnđ");
                     }
                 });
                 for (int i = 0; i < lstBooking.size(); i++) {
@@ -272,7 +306,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 tvTotalCar.setText(lstBookingAdapter.size() + "");
 
 
-                tvTotalMoney.setText(formatter.format(money) + "vnđ");
+                tvTotalMoney.setText(formatMoney(money) + " vnđ");
                 setAdapterView(lstBookingAdapter);
 //                ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBooking, this);
 //                lv.setAdapter(arrayAdapter);
@@ -291,15 +325,14 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                             tvParkingFines.setText(o.toString());
                         }
                     });
-                    System.out.println("fromDate1 =" + fromDate.getTime());
                     for (int i = 0; i < lstBooking.size(); i++) {
                         System.out.println("<" + lstBooking.get(i).getTimeout()+">");
                         final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                         if(lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
                             continue;
                         Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                        System.out.println("timeOut1       = " + datein.toString());
-                        System.out.println("timeFromeDate1 = " + fromDate.toString());
+                    System.out.println("ngày dbi       = " + dateFormatter.format(datein));
+                    System.out.println("từ ngày = " + dateFormatter.format(fromDate));
                         if (datein.getTime() >= fromDate.getTime()) {
                             System.out.println("chọn");
                             lstBookingAdapter.add(lstBooking.get(i));
@@ -327,8 +360,8 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                             continue;
                         final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                         Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                        System.out.println("timeOut2       = " + datein.toString());
-                        System.out.println("timeFromeDate2 = " + toDate.toString());
+                    System.out.println("ngày dbi       = " + dateFormatter.format(datein));
+                    System.out.println("đến ngày = " + dateFormatter.format(toDate));
                         if (datein.getTime() <= toDate.getTime()) {
                             System.out.println("chọn");
                             lstBookingAdapter.add(lstBooking.get(i));
@@ -356,9 +389,9 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                         final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
                         Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
 //                        System.out.println("timeOut3 = " +datein.toString());
-                        System.out.println(" ====A :" + fromDate.toString());
-                        System.out.println(" ====B :" + datein.toString());
-                        System.out.println(" ====C :" + toDate.toString());
+                    System.out.println(" ====A :" + dateFormatter.format(fromDate));
+                    System.out.println(" ====B :" + dateFormatter.format(datein));
+                    System.out.println(" ====C :" + dateFormatter.format(toDate));
                         if (fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
                             System.out.println("chọn");
                             lstBookingAdapter.add(lstBooking.get(i));
@@ -368,7 +401,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 }
                 tvTotalCar.setText(lstBookingAdapter.size() + "");
 
-                tvTotalMoney.setText(formatter.format(money) + "vnđ");
+                tvTotalMoney.setText(formatMoney(money) + " vnđ");
                 setAdapterView(lstBookingAdapter);
 //                ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBookingAdapter, this);
 //                lv.setAdapter(arrayAdapter);

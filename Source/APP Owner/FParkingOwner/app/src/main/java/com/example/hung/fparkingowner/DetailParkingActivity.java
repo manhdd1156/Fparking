@@ -96,9 +96,9 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                     showDialog("Hãy nhập số chỗ", 0);
                 } else if ((price9.getText().toString().isEmpty() || price9.getText().toString().equals("")) && (price916.getText().toString().isEmpty() || price916.getText().toString().equals("")) && (price1648.getText().toString().isEmpty() || price1648.getText().toString().equals(""))) {
                     showDialog("Hãy nhập giá xe ", 0);
-                } else if (Integer.parseInt(openHour.getText().toString()) > 23 || Integer.parseInt(openMin.getText().toString()) > 59
-                        || Integer.parseInt(closeHour.getText().toString()) > 24 || Integer.parseInt(closeMin.getText().toString()) > 59
-                        || (Integer.parseInt(closeHour.getText().toString()) == 24 && Integer.parseInt(closeMin.getText().toString()) > 0)) {
+                } else if (Integer.parseInt(openHour.getText().toString().trim()) > 23 || Integer.parseInt(openMin.getText().toString().trim()) > 59
+                        || Integer.parseInt(closeHour.getText().toString().trim()) > 24 || Integer.parseInt(closeMin.getText().toString().trim()) > 59
+                        || (Integer.parseInt(closeHour.getText().toString().trim()) == 24 && Integer.parseInt(closeMin.getText().toString().trim()) > 0)) {
                     showDialog("Thời gian không hợp lệ", 0);
                 } else if (Integer.parseInt(openHour.getText().toString()) > Integer.parseInt(closeHour.getText().toString()) ||
                         (Integer.parseInt(openHour.getText().toString()) == Integer.parseInt(closeHour.getText().toString()) && Integer.parseInt(openMin.getText().toString()) > Integer.parseInt(closeMin.getText().toString()))) {
@@ -284,14 +284,32 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
             public void onClick(View v) {
                 dialog.cancel();
                 if (type == 1) {
-                    Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
+                    Session.homeActivity.recreate();
                     finish();
-                    startActivity(i);
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
             }
         });
     }
-
+    public String formatMoney(double money) {
+        NumberFormat formatter = new DecimalFormat("###,###");
+        int temp = (int) money;
+        String returnMoney = formatter.format(temp);
+        if (temp > 1000000 && temp < 1000000000) {
+            if(temp %1000000 <999)  {
+                returnMoney = temp / 1000000 + "tr";
+            }else {
+                returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
+            }
+        } else if (temp > 1000000000) {
+            if(temp %1000000000 <999999)  {
+                returnMoney = temp / 1000000000 + "tỷ";
+            }else {
+                returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
+            }
+        }
+        return returnMoney;
+    }
     @SuppressLint("ResourceAsColor")
     @Override
     public void onPostExecute(Object o) {
@@ -310,13 +328,14 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                         totalSpace.setText(Session.currentParking.getTotalspace() + "");
                         currentSpace.setText(Session.currentParking.getCurrentspace() + "");
                         NumberFormat formatter = new DecimalFormat("###,###");
-                        desposits.setText(formatter.format(Session.currentParking.getDeposits()) + "");
-                        price9.setText(Session.currentParking.getPrice9() + "");
-                        price916.setText(Session.currentParking.getPrice1629() + "");
-                        price1648.setText(Session.currentParking.getPrice3445() + "");
+                        desposits.setText(formatMoney(Session.currentParking.getDeposits()) + " vnđ");
+                        price9.setText((int)Session.currentParking.getPrice9() + "");
+                        price916.setText((int)Session.currentParking.getPrice1629() + "");
+                        price1648.setText((int)Session.currentParking.getPrice3445() + "");
                         sprinerCity.setSelection(Session.currentParking.getCity_id());
                         // disable button when parkring is block, .....
                         if (Session.currentParking.getStatus() == 2) {
+                            System.out.println("status = 2");
                             btnUpdate.setEnabled(false);
                             btnClose.setEnabled(false);
                             btnDelete.setEnabled(false);
@@ -326,6 +345,7 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             process.setText("Bãi xe đã bị khóa, hãy liên hệ admin");
                             process.setVisibility(View.VISIBLE);
                         } else if (Session.currentParking.getStatus() == 3) {
+                            System.out.println("status = 3");
                             btnUpdate.setEnabled(false);
                             btnClose.setEnabled(false);
                             btnDelete.setEnabled(false);
@@ -336,10 +356,12 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             process.setVisibility(View.VISIBLE);
 
                         } else if (Session.currentParking.getStatus() == 4) {
+                            System.out.println("status = 4");
                             process.setText("Yêu cầu cập nhật của bạn sẽ được xử lý trong 24 giờ");
                             process.setVisibility(View.VISIBLE);
 
                         } else if (Session.currentParking.getStatus() == 5) {
+                            System.out.println("status = 5");
                             btnUpdate.setEnabled(false);
                             btnDelete.setEnabled(false);
                             btnUpdate.setBackgroundResource(R.drawable.button_selector2);
@@ -348,6 +370,7 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             process.setText("Yêu cầu tạm đóng bãi của bạn sẽ được xử lý trong 24 giờ");
                             process.setVisibility(View.VISIBLE);
                         } else if (Session.currentParking.getStatus() == 6) {
+                            System.out.println("status = 6");
                             btnUpdate.setEnabled(false);
                             btnClose.setEnabled(false);
                             btnUpdate.setBackgroundResource(R.drawable.button_selector2);

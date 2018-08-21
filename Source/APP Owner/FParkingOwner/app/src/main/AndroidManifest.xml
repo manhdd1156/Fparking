@@ -93,8 +93,6 @@
         <activity android:name=".dialog.DialogAddStaff" />
         <activity android:name=".AddParkingInformation" />
 
-        <activity android:name=".AddParkingLocation"></activity>
-
     </application>
 
 </manifest>
