@@ -277,23 +277,23 @@ public class AccountController {
 				break;
 			}
 		} else {
-		for (Fine fine : listFine) {
-			HashMap<String, Object> m = new HashMap<>();
-			if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null) {
-				m.put("dateFine", sdf.format(fine.getDate()));
-				m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-				m.put("address", fine.getParking().getAddress());
-				m.put("priceFine", currencyVN.format(fine.getPrice()));
-				if (fine.getStatus() == 0) {
-					m.put("status", "Chưa thu");
-					totalPriceFine = totalPriceFine + fine.getPrice();
-				} else {
-					m.put("status", "Đã thu");
+			for (Fine fine : listFine) {
+				HashMap<String, Object> m = new HashMap<>();
+				if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null) {
+					m.put("dateFine", sdf.format(fine.getDate()));
+					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+					m.put("address", fine.getParking().getAddress());
+					m.put("priceFine", currencyVN.format(fine.getPrice()));
+					if (fine.getStatus() == 0) {
+						m.put("status", "Chưa thu");
+						totalPriceFine = totalPriceFine + fine.getPrice();
+					} else {
+						m.put("status", "Đã thu");
+					}
+					arrayListdriverVehiclet.add(m);
 				}
-				arrayListdriverVehiclet.add(m);
 			}
 		}
-		 }
 		model.put("type", type);
 		model.put("driverFine", arrayListdriverVehiclet);
 		model.put("totalPriceFine", currencyVN.format(totalPriceFine));
@@ -313,7 +313,7 @@ public class AccountController {
 		} catch (Exception e) {
 			return "404";
 		}
-		
+
 		return "redirect:/account/driver";
 	}
 
@@ -329,7 +329,7 @@ public class AccountController {
 		}
 		driver.setStatus(1);
 		driverService.update(driver);
-		
+
 		return "redirect:/account/driver/block";
 	}
 
@@ -364,7 +364,14 @@ public class AccountController {
 			driver.setName(name);
 			driver.setPhone(phone);
 			if (driverService.validateDriver(driver)) {
-				driver = driverService.update(driver);
+				try {
+					driver = driverService.update(driver);
+				} catch (Exception e) {
+					model.put("name", driver.getName());
+					model.put("phonenumber", driverOld.getPhone());
+					model.put("messError", "Sửa không thành công!");
+					return "editdriver";
+				}
 				model.put("messSuss", "Sửa thành công!");
 			} else {
 				model.put("messError", "Số điện thoại đã tồn tại!");
@@ -372,10 +379,8 @@ public class AccountController {
 		} catch (Exception e) {
 			return "404";
 		}
-
 		model.put("name", driver.getName());
 		model.put("phonenumber", driver.getPhone());
-
 		return "editdriver";
 	}
 
@@ -444,6 +449,52 @@ public class AccountController {
 		}
 		model.put("totalDeposit", currencyVN.format(totalDeposit));
 		return "blockaccountparking";
+	}
+
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/parking/delete", method = RequestMethod.GET)
+	public String getAllDeleteAccountParking(Map<String, Object> model) throws Exception {
+		List<Parking> listParking;
+		try {
+			listParking = parkingService.getByStatus(6);
+		} catch (Exception e) {
+			return "404";
+		}
+
+		ArrayList<Map<String, Object>> arrayListParking = new ArrayList<>();
+		double totalDeposit = 0;
+		if (listParking != null && listParking.size() > 0) {
+			for (Parking parking : listParking) {
+				HashMap<String, Object> m = new HashMap<>();
+				m.put("id", parking.getId());
+				m.put("address", parking.getAddress());
+				m.put("currentspace", parking.getCurrentspace());
+				m.put("totalspace", parking.getTotalspace());
+				m.put("deposits", currencyVN.format(parking.getDeposits()));
+				totalDeposit += parking.getDeposits();
+				arrayListParking.add(m);
+			}
+			model.put("listParking", arrayListParking);
+			model.put("totalAccount", listParking.size());
+		} else {
+			model.put("totalAccount", 0);
+		}
+		model.put("totalDeposit", currencyVN.format(totalDeposit));
+		return "deleteaccountparking";
+	}
+
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/parking/delete/{id}", method = RequestMethod.GET)
+	public String deleteAccountParking(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+		Parking parking;
+		try {
+			parking = parkingService.getById(id);
+			parking.setStatus(0);
+			parkingService.update(parking);
+		} catch (Exception e) {
+			return "404";
+		}
+		return "redirect:/account/parking/delete";
 	}
 
 	// get detail parking by id
@@ -816,7 +867,7 @@ public class AccountController {
 		parking.setTotalspace(totalSpace);
 		parking.setDeposits(deposits);
 		try {
-			parking=parkingService.update(parking);
+			parking = parkingService.update(parking);
 		} catch (Exception e) {
 			model.put("address", address);
 			model.put("longitude", longitude + "");

@@ -56,6 +56,9 @@ public class HomeController {
 	@Autowired
 	private TokenProvider tokenProvider;
 
+	// String timeStamp = new
+	// SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
+	Locale locale = new Locale("vi", "VN");
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -82,7 +85,6 @@ public class HomeController {
 		List<Feedback> listFeedback;
 		List<Booking> listBooking;
 		List<Fine> listFine;
-
 		try {
 			listDriver = driverService.getAll();
 			listParking = parkingService.getAll();
@@ -183,11 +185,7 @@ public class HomeController {
 			model.put("totalTrasaction", totalTrasaction);
 
 			totalReveune = revenueByCommistion + revenueByFine;
-			if (totalReveune % 1 == 0) {
-				model.put("totalReveune", currencyVN.format(totalReveune));
-			} else {
-				model.put("totalReveune", currencyVN.format(totalReveune));
-			}
+			model.put("totalReveune", currencyVN.format(totalReveune));
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			return "404";
@@ -259,31 +257,31 @@ public class HomeController {
 
 		return "redirect:/home";
 	}
-	
+
 	// resolve feedback
-		@PreAuthorize("hasAnyAuthority('ADMIN')")
-		@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.POST)
-		public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
-				@RequestParam("resolve") String resolve) {
-			Feedback feedbackupdate = new Feedback();
-			sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-			try {
-				feedbackupdate = feedbackService.getById(id);
-				feedbackupdate.setType(1);
-				feedbackupdate.setResolve(resolve);
-				feedbackService.update(feedbackupdate);
-			} catch (Exception e) {
-				return "404";
-			}
-			model.put("id", id);
-			model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
-			model.put("content", feedbackupdate.getContent());
-			model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
-			model.put("resolve", feedbackupdate.getResolve());
-			model.put("type", 1);
-			model.put("messSucc", "Đã giải quyết!");
-			return "viewdetailfeedback";
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/home/feedbackdetail/{id}", method = RequestMethod.POST)
+	public String getFeedBackDetail(Map<String, Object> model, @PathVariable("id") Long id,
+			@RequestParam("resolve") String resolve) {
+		Feedback feedbackupdate = new Feedback();
+		sdf = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+		try {
+			feedbackupdate = feedbackService.getById(id);
+			feedbackupdate.setType(1);
+			feedbackupdate.setResolve(resolve);
+			feedbackService.update(feedbackupdate);
+		} catch (Exception e) {
+			return "404";
 		}
+		model.put("id", id);
+		model.put("inforFeedBack", feedbackupdate.getName() + "_" + feedbackupdate.getPhone());
+		model.put("content", feedbackupdate.getContent());
+		model.put("dateFeedBack", sdf.format(feedbackupdate.getDate()));
+		model.put("resolve", feedbackupdate.getResolve());
+		model.put("type", 1);
+		model.put("messSucc", "Đã giải quyết!");
+		return "viewdetailfeedback";
+	}
 
 	// go to add money
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
@@ -308,16 +306,22 @@ public class HomeController {
 		Parking parking = new Parking();
 		try {
 			parking = parkingService.getById(id);
-			parking.setStatus(1);
-			parking.setDeposits(parking.getDeposits() + deposit);
-			parkingService.update(parking);
-			model.put("deposit", currencyVN.format(parking.getDeposits()));
-			model.put("address", parking.getAddress());
 		} catch (Exception e) {
 			return "404";
 		}
+		try {
+			parking.setStatus(1);
+			parking.setDeposits(parking.getDeposits() + deposit);
+			parking = parkingService.update(parking);
+			model.put("deposit", currencyVN.format(parking.getDeposits()));
+			model.put("address", parking.getAddress());
+		} catch (Exception e) {
+			model.put("deposit", deposit);
+			model.put("address", parking.getAddress());
+			model.put("messError", "Nạp tiền không thành công!");
+			return "addmoneytoparking";
+		}
 		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
-
 		return "addmoneytoparking";
 	}
 
@@ -329,7 +333,6 @@ public class HomeController {
 		List<Booking> listBooking;
 		double revenueCommission = 0;
 		ArrayList<Map<String, Object>> arrayListBooking = new ArrayList<>();
-
 		try {
 			listBooking = bookingService.getAll();
 		} catch (Exception e) {
@@ -412,4 +415,5 @@ public class HomeController {
 			return new ResponseEntity<String>(headers, HttpStatus.FOUND);
 		}
 	}
+
 }

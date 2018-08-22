@@ -27,7 +27,7 @@ public class Finetariff implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy=GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 
 	private double price;
 
@@ -52,7 +52,7 @@ public class Finetariff implements Serializable {
 		this.vehicletype = vehicletype;
 	}
 
-	public void setId(int id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 

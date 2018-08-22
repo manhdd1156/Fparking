@@ -35,6 +35,7 @@ import com.example.hung.fparkingowner.dto.ParkingDTO;
 import com.example.hung.fparkingowner.login.LoginActivity;
 import com.example.hung.fparkingowner.model.CheckNetwork;
 import com.example.hung.fparkingowner.other.Contact;
+import com.example.hung.fparkingowner.other.Guide;
 import com.example.hung.fparkingowner.other.TermsAndConditions;
 import com.example.hung.fparkingowner.profile.ProfileActivity;
 
@@ -224,9 +225,13 @@ public class HomeActivity extends AppCompatActivity
             startActivity(intentContact);
             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }  else if (id == R.id.nav_DK) {
-             Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
-             startActivity(intent);
-             overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
+            startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+        }else if (id == R.id.nav_guide) {
+                Intent intentGuide = new Intent(HomeActivity.this, Guide.class);
+                startActivity(intentGuide);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
         }else if(id == R.id.Logout) {
              editor.putBoolean("first_time",true);
              editor.commit();

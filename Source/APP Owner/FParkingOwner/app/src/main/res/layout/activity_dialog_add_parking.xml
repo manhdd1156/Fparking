@@ -106,14 +106,14 @@
             android:layout_height="51dp"
             android:layout_alignParentTop="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="130dp"
+            android:layout_marginTop="112dp"
             android:src="@drawable/parking_icon" />
 
     </RelativeLayout>
 
     <ScrollView
-        android:layout_width="wrap_content"
-        android:layout_height="390dp"
+        android:layout_width="0dp"
+        android:layout_height="345dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -157,11 +157,10 @@
                     android:textSize="16sp" />
 
                 <View
+                    android:layout_width="350dp"
                     android:layout_height="1px"
-                    android:layout_width="match_parent"
                     android:layout_below="@+id/tbAddressAP"
-                    android:layout_alignStart="@id/tbAddressAP"
-                    android:layout_marginBottom="5dp"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/white_greyish" />
 
             </RelativeLayout>
@@ -198,10 +197,10 @@
                     android:textSize="16sp" />
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbOpenTimeHourAP"
-                    android:layout_alignStart="@id/tbOpenTimeHourAP"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/white_greyish" />
 
                 <TextView
@@ -291,20 +290,16 @@
 
                 <com.weiwangcn.betterspinner.library.material.MaterialBetterSpinner
                     android:id="@+id/dropdownCityAP"
-                    android:layout_width="158dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="62dp"
+                    android:layout_alignParentBottom="true"
                     android:layout_alignParentEnd="true"
-                    android:layout_alignTop="@+id/textView5"
+                    android:layout_marginEnd="13dp"
+                    android:layout_marginTop="21dp"
                     android:hint="Tỉnh/Thành phố"
                     android:textColor="@color/black" />
 
-                <View
-                    android:layout_width="55dp"
-                    android:layout_height="1px"
-                    android:layout_alignStart="@id/tbTotalSpaceAP"
 
-                    android:layout_below="@+id/tbTotalSpaceAP"
-                    android:background="@color/white_greyish" />
 
 
                 <TextView
@@ -344,10 +339,10 @@
                     android:textSize="16sp" />
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbTotalSpaceAP"
-                    android:layout_marginLeft="33dp"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/white_greyish" />
 
                 <EditText
@@ -403,7 +398,7 @@
                     android:id="@+id/tbPrice9AddParking2"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="30dp"
+                    android:layout_marginLeft="20dp"
                     android:layout_marginTop="10dp"
                     android:background="@android:color/transparent"
                     android:drawablePadding="8dp"
@@ -417,10 +412,10 @@
                     android:textSize="16sp" />
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbPrice9AddParking2"
-                    android:layout_alignStart="@id/tbPrice9AddParking2"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/white_greyish" />
 
 
@@ -443,10 +438,10 @@
                     android:textSize="16sp" />
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbPrice16to29AddParking2"
-                    android:layout_alignStart="@id/tbPrice16to29AddParking2"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/white_greyish" />
 
 
@@ -470,35 +465,29 @@
                     android:textSize="16sp" />
 
                 <View
-                    android:layout_width="match_parent"
+                    android:layout_width="350dp"
                     android:layout_height="1px"
                     android:layout_below="@+id/tbPrice34to45AddParking2"
-                    android:layout_alignStart="@id/tbPrice34to45AddParking2"
+                    android:layout_centerHorizontal="true"
                     android:background="@color/white_greyish" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-                <Button
-                    android:id="@+id/btnAddParking"
-                    android:layout_width="match_parent"
-                    android:layout_height="42dp"
-                    android:background="@drawable/button_selector"
-                    android:paddingBottom="10dp"
-                    android:paddingStart="10dp"
-                    android:text="THÊM"
-                    android:textColor="#FFFFFF"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toRightOf="parent" />
-
-            </RelativeLayout>
 
         </LinearLayout>
     </ScrollView>
+    <Button
+        android:id="@+id/btnAddParking"
+        android:layout_width="match_parent"
+        android:layout_height="42dp"
+        android:background="@drawable/button_selector3"
+        android:layout_alignParentBottom="true"
+        android:paddingStart="10dp"
+        android:text="THÊM"
+        android:textColor="#FFFFFF"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent" />
 
 
 </android.support.constraint.ConstraintLayout>

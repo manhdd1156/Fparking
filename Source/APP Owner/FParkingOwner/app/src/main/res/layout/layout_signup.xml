@@ -117,9 +117,9 @@
         android:layout_height="45dp"
         android:layout_alignParentStart="true"
         android:gravity="center"
-        android:text="ĐĂNG KÝ"
+        android:text="Đăng ký"
         android:textColor="@color/white_greyish"
-        android:textSize="35sp"
+        android:textSize="18sp"
         android:textStyle="bold"
         android:visibility="visible" />
 </RelativeLayout>
