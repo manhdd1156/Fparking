@@ -233,7 +233,7 @@ public class ParkingServiceImpl implements ParkingService {
 			List<Parking> plist = parkingRepository.findByLatitudeANDLongitude(latitude, longitude);
 			for (Parking parking : plist) {
 				System.out.println("current space = " + parking.getCurrentspace() +"; " +parking.getAddress());
-				if (parking.getStatus() == 1 && parking.getCurrentspace() >= 0) {
+				if (parking.getStatus() == 1 && parking.getCurrentspace() > 0) {
 					System.out.println("current space = " + parking.getCurrentspace());
 					System.out.println("xxxxxxxxxxxxxxxxxxxx : " + parking);
 					returnlist.add(parking);

@@ -50,9 +50,9 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
                         showDialog("Hãy nhập mật khẩu",0);
                     }
                     else if(!getMD5Hex(tbOldPass.getText().toString()).equals(Session.currentStaff.getPass())) { // when wrong password
-                        showDialog("mật khẩu cũ không đúng, vui lòng nhập lại",0);
+                        showDialog("Mật khẩu cũ không đúng, vui lòng nhập lại",0);
                     }else if(tbNewPass.getText().toString().length()<6 || tbNewPass.getText().toString().length()>24) { // when length < 6 %% > 24
-                        showDialog("mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự",0);
+                        showDialog("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự",0);
                     }
                     else if(!tbNewPass.getText().toString().equals(tbConfirmPass.getText().toString())) { // when confirm pass is wrong
                         showDialog("Xác nhận mật khẩu mới không giống, vui lòng nhập lại",0);
@@ -61,8 +61,18 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
                     }
                     else {
                         Session.currentStaff.setPass(getMD5Hex(tbNewPass.getText().toString()));
-                        new ManagerLoginTask("updateProfile", "", "", ChangePassword.this);
-                        showDialog("Đổi mật khẩu thành công",1);
+                        new ManagerLoginTask("updateProfile", "", "", new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+                                if((boolean)o) {
+                                    showDialog("Đổi mật khẩu thành công",1);
+                                }
+                                else {
+                                    showDialog("Đổi mật khẩu không thành công",0);
+                                }
+                            }
+                        });
+
                     }
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();

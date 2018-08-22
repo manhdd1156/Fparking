@@ -233,6 +233,7 @@ public class HomeActivity extends AppCompatActivity
              Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
              finish();
              startActivity(intent);
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
          }
 
 

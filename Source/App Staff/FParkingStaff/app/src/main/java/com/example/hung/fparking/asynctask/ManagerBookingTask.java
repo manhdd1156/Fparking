@@ -246,23 +246,22 @@ class UpdateBooking extends AsyncTask<Void, Void, Boolean> {
 
 }
 
-class UpdateBookingByStatus extends AsyncTask<Void, Void, String> {
+class UpdateBookingByStatus extends AsyncTask<Void, Void, Boolean> {
 
     IAsyncTaskHandler container;
-    Activity activity;
-    boolean success = false;
+//    Activity activity;
     BookingDTO bookingDTO;
 
     public UpdateBookingByStatus(IAsyncTaskHandler container, BookingDTO bookingDTO) {
         this.container = container;
-        this.activity = (Activity) container;
+//        this.activity = (Activity) container;
         this.bookingDTO = bookingDTO;
 //        spref = activity.getSharedPreferences("info",0);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.KITKAT)
     @Override
-    protected String doInBackground(Void... voids) {
+    protected Boolean doInBackground(Void... voids) {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
@@ -283,8 +282,8 @@ class UpdateBookingByStatus extends AsyncTask<Void, Void, String> {
             JSONObject jsonObj = new JSONObject(json);
             System.out.println("updatebookingbystatusTask : " + json);
             Log.e(" Updatebooking : ", jsonObj.toString());
-            success = true;
-            return json;
+            return true;
+//            return json;
 
         } catch (Exception ex) {
             Log.e("Error update booking:", ex.getMessage());
@@ -293,8 +292,9 @@ class UpdateBookingByStatus extends AsyncTask<Void, Void, String> {
     }
 
     @Override
-    protected void onPostExecute(String json) {
-        super.onPostExecute(json);
+    protected void onPostExecute(Boolean aBoolean) {
+        super.onPostExecute(aBoolean);
+        container.onPostExecute(aBoolean);
 
     }
 

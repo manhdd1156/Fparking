@@ -378,9 +378,13 @@ class StaffRecyclerViewAdapter extends RecyclerView
                                 new ManagerStaffTask("delete", stemp, new IAsyncTaskHandler() {
                                     @Override
                                     public void onPostExecute(Object o) {
-
+                    if((boolean) o) {
+                        showDialog("Xóa thành công");
+                    }else {
+                        showDialog("Xóa không thành công");
+                    }
                                         dialog.cancel();
-                                        showDialog("Xóa thành công");
+
 
                                     }
                                 });

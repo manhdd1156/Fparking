@@ -62,8 +62,17 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
                     }
                     else {
                         Session.currentOwner.setPass(getMD5Hex(tbNewPass.getText().toString()));
-                        new ManagerLoginTask("updateProfile", "", "", ChangePassword.this);
-                        showDialog("Đổi mật khẩu thành công",1);
+                        new ManagerLoginTask("updateProfile", "", "", new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+                                if((boolean) o) {
+                                    showDialog("Đổi mật khẩu thành công",1);
+                                }else {
+                                    showDialog("Đổi mật khẩu không thành công",0);
+                                }
+                            }
+                        });
+
                     }
                 } catch (NoSuchAlgorithmException e) {
                     e.printStackTrace();

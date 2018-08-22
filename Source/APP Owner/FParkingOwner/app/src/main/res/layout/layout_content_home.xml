@@ -74,7 +74,7 @@
             android:layout_alignStart="@+id/textView"
             android:layout_below="@+id/textView"
             android:layout_marginTop="15dp"
-            android:text="Số xe đang đỗ:"
+            android:text="Tổng số chỗ:"
             android:textSize="18sp" />
 
 

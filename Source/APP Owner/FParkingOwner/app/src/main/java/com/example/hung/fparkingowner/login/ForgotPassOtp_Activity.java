@@ -114,7 +114,11 @@ getPhoneConfirm();
                         new ManagerLoginTask("forgotpassword", temp.getText().toString(), getMD5Hex(newPassword.getText().toString()), new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
-                                showDialog("Đổi mật khẩu thành công", 1);
+                                if((boolean) o) {
+                                    showDialog("Đổi mật khẩu thành công", 1);
+                                }else {
+                                    showDialog("Đổi mật khẩu không thành công", 0);
+                                }
                             }
                         });
 
