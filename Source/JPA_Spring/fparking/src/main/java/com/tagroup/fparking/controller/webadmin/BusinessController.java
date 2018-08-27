@@ -1,4 +1,4 @@
-package com.tagroup.fparking.controller.webadmin;
+	package com.tagroup.fparking.controller.webadmin;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -559,7 +559,7 @@ public class BusinessController {
 	// get detail revenue by booking with id
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/revenue/detail/{id}", method = RequestMethod.GET)
-	public String getRevenueByID(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+	public String getCommissionDetail(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Booking bookingDetail;
 		SimpleDateFormat sdf = new SimpleDateFormat(" HH:mm:ss dd-MM-yyyy");
 		try {
@@ -586,7 +586,7 @@ public class BusinessController {
 		} catch (Exception e) {
 			return "404";
 		}
-		return "revenuebyparkingdetail";
+		return "commissionrevenuedetail";
 	}
 
 	// --------------------MANAGE FEEDBACK--------------------------------------

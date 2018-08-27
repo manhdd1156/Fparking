@@ -44,6 +44,5 @@ public class MvcConfig implements WebMvcConfigurer, WebServerFactoryCustomizer<C
 		factory.addErrorPages(new ErrorPage(HttpStatus.NOT_FOUND, "/404"));
 		factory.addErrorPages(new ErrorPage(HttpStatus.BAD_REQUEST, "/404"));
 		factory.addErrorPages(new ErrorPage(HttpStatus.METHOD_NOT_ALLOWED, "/404"));
-
 	}
 }
