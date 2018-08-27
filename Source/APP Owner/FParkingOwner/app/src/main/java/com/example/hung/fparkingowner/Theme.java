@@ -68,7 +68,7 @@ public class Theme extends AppCompatActivity {
                         new ManagerLoginTask("second_time", null, "", new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
-                                checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
+//                                checkNetwork = new CheckNetwork(Theme.this, getApplicationContext());
                                 if (Boolean.TRUE.equals(o)) {
                                     Intent myIntent = new Intent(Theme.this, Notification.class);
                                     Theme.this.startService(myIntent);
@@ -76,7 +76,10 @@ public class Theme extends AppCompatActivity {
                                     startActivity(homeIntent);
                                     finish();
                                 } else {
-                                 checkNetwork.createDialog();
+//                                 checkNetwork.createDialog();
+                                    Intent homeIntent = new Intent(Theme.this, LoginActivity.class);
+                                    startActivity(homeIntent);
+                                    finish();
                                 }
                             }
                         });

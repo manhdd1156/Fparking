@@ -85,11 +85,13 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         new ManagerBookingTask("updatebystatus", b, new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
-                                Session.homeActivity.finish();
-                                Intent intent = new Intent(DialogActivity.this, HomeActivity.class);
+//                                Session.homeActivity.finish();
+//                                Intent intent = new Intent(DialogActivity.this, HomeActivity.class);
+//                                finish();
+//                                startActivity(intent);
+//                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                                Session.homeActivity.recreate();
                                 finish();
-                                startActivity(intent);
-                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                             }
                         });
 

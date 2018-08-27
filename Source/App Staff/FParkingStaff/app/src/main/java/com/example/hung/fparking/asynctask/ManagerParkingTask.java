@@ -84,6 +84,7 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
                     try {
                         TextView tv = activity.findViewById(R.id.tvSpace);
                         tv.setText(Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+                        System.out.println("textview currentspace  = "  + tv.getText());
                     } catch (Exception e) {
                         System.out.println("lỗi getvehicletask : " + e);
                     }
@@ -91,7 +92,7 @@ class GetParkingTask extends AsyncTask<Void, Void, Boolean> {
             });
 
         } catch (Exception ex) {
-            Log.e("Error:", ex.getMessage());
+            Log.e("Get Parking Error:", ex.getMessage());
         }finally {
 
         }
@@ -177,8 +178,6 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
             JSONObject jsonObj = new JSONObject(json);
             Log.e(" Updateparking : ", jsonObj.toString());
 
-//            TextView tv = activity.findViewById(R.id.tvSpace);
-//            tv.setText(Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 
         }catch (Exception ex){
             Log.e("Error:", ex.getMessage());

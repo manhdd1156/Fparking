@@ -209,7 +209,7 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
 //            loginLayout.startAnimation(shakeAnimation);
             showDialog("Hãy nhập số điện thoại");
         }
-        if (getPassword.equals("") || getPassword.isEmpty()) {
+        else if (getPassword.equals("") || getPassword.isEmpty()) {
 //            loginLayout.startAnimation(shakeAnimation);
             showDialog("Hãy nhập mật khẩu");
         }

@@ -20,6 +20,7 @@
             android:layout_marginTop="100dp"
             android:background="@android:color/transparent"
             android:drawablePadding="8dp"
+            android:enabled="false"
             android:gravity="center_vertical"
             android:hint="@string/phone"
             android:inputType="phone"

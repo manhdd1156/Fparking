@@ -22,7 +22,6 @@ public interface ParkingService {
 	public List<Parking> findSortByLatitudeANDLongitude(String latitude, String longitude,Long vehicleid)throws Exception;
 	public double getFineParkingByTime(Long parkingid, String fromtime,String totime, Long method)throws Exception;
 
-    public String getRatingByPid(Long parkingId) throws Exception; 
     public ParkingTariffDTO getTariffByPid(Parking parking)throws Exception;
     public List<Parking> getByStatus(int status)throws Exception;
     public List<Parking> getByOwnerID(Long id) throws Exception;

@@ -187,9 +187,9 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
 
 
             if(p.getStatus()==4) {
-                json =  httpHandler.get(Constants.API_URL + "parkings/tariff/update?parkingid="+ p.getId() +"%price9="+p.getPrice9()+"&price916="+p.getPrice1629()+"&price1629="+p.getPrice3445());
+                json =  httpHandler.get(Constants.API_URL + "parkings/tariff/update?parkingid="+ p.getId() +"&price9="+p.getPrice9()+"&price916="+p.getPrice1629()+"&price1629="+p.getPrice3445());
             }
-
+            System.out.println(Constants.API_URL + "parkings/tariff/update?parkingid="+ p.getId() +"&price9="+p.getPrice9()+"&price916="+p.getPrice1629()+"&price1629="+p.getPrice3445());
             JSONObject jsonObj = new JSONObject(json);
             Log.e(" Updateparking : ", jsonObj.toString());
 

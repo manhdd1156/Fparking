@@ -11,12 +11,10 @@ import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.dto.DriverVehicleDTO;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
-import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.VehicletypeService;
 import com.tagroup.fparking.service.domain.DriverVehicle;
-import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Vehicle;
 
 @Service
@@ -29,8 +27,6 @@ public class VehicleServiceImpl implements VehicleService {
 	private DriverVehicleRepository drivervehicleRepository;
 	@Autowired
 	private DriverRepository driverRepository;
-	@Autowired
-	RatingRepository ratingRepository;
 
 	@Override
 	public List<Vehicle> getAll() {
@@ -133,23 +129,7 @@ public class VehicleServiceImpl implements VehicleService {
 		return listVT;
 	}
 
-	@Override
-	public double getRatingByVehicle(Vehicle vehicle) {
-		// TODO Auto-generated method stub
-		double totalrating = 0;
-		double count = 0;
-		List<DriverVehicle> driverVehicle = drivervehicleRepository.findByVehicle(vehicle);
-		for (DriverVehicle driverVehicle2 : driverVehicle) {
-			List<Rating> r = ratingRepository.findByDriver(driverVehicle2.getDriver());
-			for (Rating rating : r) {
-				if (rating.getType() == 2) {
-					count++;
-					totalrating += rating.getPoint();
-				}
-			}
-		}
-		return totalrating / count;
-	}
+	
 
 	@Override
 	public Vehicle findByLicenseplateAndStatus(String licenseplate, int status) throws Exception {

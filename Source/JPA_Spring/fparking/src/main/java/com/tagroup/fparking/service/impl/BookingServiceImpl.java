@@ -237,7 +237,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 5) {
 					Parking pTemp = parkingService.getById(n.getParking_id());
-					if(pTemp.getTotalspace()<= pTemp.getCurrentspace()) {
+					if(pTemp.getCurrentspace()<=0) {
 						n.setData("cancel");
 						n = notificationService.update(n);
 						delete(booking.getId());
@@ -279,7 +279,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 2) {
-					fineService.resetFineOfDriver(booking.getDrivervehicle().getDriver().getId()); // reset tiền phạt
+					
 					booking.setStatus(3);
 					
 					return bookingRepository.save(booking);
@@ -329,6 +329,8 @@ public class BookingServiceImpl implements BookingService {
 					}
 					parkingService.update(parking);
 					booking.setStatus(3);
+					fineService.resetFineOfDriver(booking.getDrivervehicle().getDriver().getId()); // reset tiền phạt
+					System.out.println("Xóa phạt thành công");
 					modelNoti.setType(2);
 					modelNoti.setData("ok");
 					modelNoti = notificationService.update(modelNoti);

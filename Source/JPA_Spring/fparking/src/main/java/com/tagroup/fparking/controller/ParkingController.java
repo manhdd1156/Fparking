@@ -132,15 +132,15 @@ public class ParkingController {
 
 	}
 
-	// get Rating by parking id
-	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-	@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)
-	public ResponseEntity<?> getRatebyPid(@PathVariable Long id) throws Exception {
-
-		String respone = parkingService.getRatingByPid(id);
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-
-	}
+//	// get Rating by parking id
+//	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
+//	@RequestMapping(path = "/{id}/rates", method = RequestMethod.GET)
+//	public ResponseEntity<?> getRatebyPid(@PathVariable Long id) throws Exception {
+//
+//		String respone = parkingService.getRatingByPid(id);
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//
+//	}
 
 	// create parking
 	@PreAuthorize("hasAnyAuthority('OWNER')")
@@ -158,7 +158,7 @@ public class ParkingController {
 	public ResponseEntity<?> updatetariff(@RequestParam("parkingid") Long parkingid,
 			@RequestParam("price9") double price9, @RequestParam("price916") double price916,
 			@RequestParam("price1629") double price1629) throws Exception {
-
+		System.out.println("parkingId = " + parkingid + ", price9 = " + price9 + ",price916 = " + price916 + ",price1629 = " + price1629);
 		Parking respone = parkingService.updatetariff(parkingid, price9, price916, price1629);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 

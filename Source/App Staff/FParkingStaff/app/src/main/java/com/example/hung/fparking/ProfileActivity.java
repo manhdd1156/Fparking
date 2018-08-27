@@ -161,12 +161,12 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     }
 
     public void setText() {
-        name.setText("");
-        phone.setText("");
-        address.setText("");
-        name.setHint(Session.currentStaff.getName());
-        phone.setHint(Session.currentStaff.getPhone());
-        address.setHint(Session.currentStaff.getAddress());
+        name.setText(Session.currentStaff.getName());
+        phone.setText(Session.currentStaff.getPhone());
+        address.setText(Session.currentStaff.getAddress());
+//        name.setHint(Session.currentStaff.getName());
+//        phone.setHint(Session.currentStaff.getPhone());
+//        address.setHint(Session.currentStaff.getAddress());
     }
 
     public void showDialog(String text) {
@@ -211,7 +211,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
     public void onPostExecute(Object o) {
         setText();
         tvSuccess.setText("Cập nhật thông tin thành công");
-        tvSuccess.setTextColor(android.R.color.holo_green_light);
+        tvSuccess.setTextColor(android.R.color.holo_green_dark);
         tvSuccess.setVisibility(View.VISIBLE);
         dialog.cancel();
     }

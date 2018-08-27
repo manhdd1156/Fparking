@@ -137,28 +137,33 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
             @Override
             public void onPostExecute(Object o) {
                 if (o instanceof List) {
-                    listCityDTO = (ArrayList<CityDTO>) o;
-                    for (int i = 0; i < listCityDTO.size(); i++) {
-                        listCityString.add(listCityDTO.get(i).getCityName());
-                    }
-                    System.out.println(listCityString);
-                    ArrayAdapter<String> adapter = new ArrayAdapter(DetailParkingActivity.this, android.R.layout.simple_spinner_item, listCityString);
-                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-                    sprinerCity.setAdapter(adapter);
-                    sprinerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            cityid = listCityDTO.get(sprinerCity.getSelectedItemPosition()).getCityID();
-                            System.out.println(cityid);
+                    try {
+                        listCityDTO = (ArrayList<CityDTO>) o;
+                        for (int i = 0; i < listCityDTO.size(); i++) {
+                            listCityString.add(listCityDTO.get(i).getCityName());
                         }
+                        System.out.println(listCityString);
+                        ArrayAdapter<String> adapter = new ArrayAdapter(DetailParkingActivity.this, android.R.layout.simple_spinner_item, listCityString);
+                        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                        sprinerCity.setAdapter(adapter);
+                        sprinerCity.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                cityid = listCityDTO.get(sprinerCity.getSelectedItemPosition()).getCityID();
+                                System.out.println(cityid);
+                            }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                        }
-                    });
-                    new GetTariffTask(Integer.parseInt(parkingid), DetailParkingActivity.this).execute((Void) null);
+                            }
+                        });
+                        new GetTariffTask(Integer.parseInt(parkingid), DetailParkingActivity.this).execute((Void) null);
 //                    new ManagerParkingTask("getbyowner", null,null, DetailParkingActivity.this);
+
+                    } catch (Exception e) {
+                        System.out.println(e);
+                    }
                 }
             }
         }).execute((Void) null);
@@ -212,7 +217,7 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                                 Session.currentParking.setPrice9(Double.parseDouble(price9.getText().toString()));
                             }
                             if (!price1648.getText().toString().isEmpty()) {
-                                Session.currentParking.setPrice1629(Double.parseDouble(price1648.getText().toString()));
+                                Session.currentParking.setPrice1629(Double.parseDouble(price916.getText().toString()));
                             }
                             if (!price1648.getText().toString().isEmpty()) {
                                 Session.currentParking.setPrice3445(Double.parseDouble(price1648.getText().toString()));
@@ -231,9 +236,10 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             @Override
                             public void onPostExecute(Object o) {
                                 dialog.cancel();
-                                if((boolean) o) {
+                                if ((boolean) o) {
+
                                     showDialog("Thực hiện thành công", 1);
-                                }else {
+                                } else {
                                     showDialog("Thực hiện không thành công", 0);
                                 }
 
@@ -295,95 +301,97 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
             }
         });
     }
+
     public String formatMoney(double money) {
         NumberFormat formatter = new DecimalFormat("###,###");
         int temp = (int) money;
         String returnMoney = formatter.format(temp);
         if (temp > 1000000 && temp < 1000000000) {
-            if(temp %1000000 <999)  {
+            if (temp % 1000000 < 999) {
                 returnMoney = temp / 1000000 + "tr";
-            }else {
+            } else {
                 returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
             }
         } else if (temp > 1000000000) {
-            if(temp %1000000000 <999999)  {
+            if (temp % 1000000000 < 999999) {
                 returnMoney = temp / 1000000000 + "tỷ";
-            }else {
+            } else {
                 returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
             }
         }
         return returnMoney;
     }
+
     @SuppressLint("ResourceAsColor")
     @Override
     public void onPostExecute(Object o) {
         System.out.println("O = " + o);
         try {
             if (o instanceof ParkingDTO) {
-               Session.currentParking = (ParkingDTO)o;
+                Session.currentParking = (ParkingDTO) o;
                 System.out.println("onpost DetailParking : " + Session.currentParking);
 
 
-                        address.setText(Session.currentParking.getAddress());
-                        openHour.setText(Session.currentParking.getTimeoc().substring(0, 2) + "");
-                        openMin.setText(Session.currentParking.getTimeoc().substring(3, 5) + "");
-                        closeHour.setText(Session.currentParking.getTimeoc().substring(6, 8) + "");
-                        closeMin.setText(Session.currentParking.getTimeoc().substring(9, 11) + "");
-                        totalSpace.setText(Session.currentParking.getTotalspace() + "");
-                        currentSpace.setText(Session.currentParking.getCurrentspace() + "");
-                        NumberFormat formatter = new DecimalFormat("###,###");
-                        desposits.setText(formatMoney(Session.currentParking.getDeposits()) + " vnđ");
-                        price9.setText((int)Session.currentParking.getPrice9() + "");
-                        price916.setText((int)Session.currentParking.getPrice1629() + "");
-                        price1648.setText((int)Session.currentParking.getPrice3445() + "");
-                        sprinerCity.setSelection(Session.currentParking.getCity_id());
-                        // disable button when parkring is block, .....
-                        if (Session.currentParking.getStatus() == 2) {
-                            System.out.println("status = 2");
-                            btnUpdate.setEnabled(false);
-                            btnClose.setEnabled(false);
-                            btnDelete.setEnabled(false);
-                            btnUpdate.setBackgroundResource(R.drawable.button_selector2);
-                            btnClose.setBackgroundResource(R.drawable.button_selector2);
-                            btnDelete.setBackgroundResource(R.drawable.button_selector2);
-                            process.setText("Bãi xe đã bị khóa, hãy liên hệ admin");
-                            process.setVisibility(View.VISIBLE);
-                        } else if (Session.currentParking.getStatus() == 3) {
-                            System.out.println("status = 3");
-                            btnUpdate.setEnabled(false);
-                            btnClose.setEnabled(false);
-                            btnDelete.setEnabled(false);
-                            btnUpdate.setBackgroundResource(R.drawable.button_selector2);
-                            btnClose.setBackgroundResource(R.drawable.button_selector2);
-                            btnDelete.setBackgroundResource(R.drawable.button_selector2);
-                            process.setText("Yêu cầu tạo mới của bạn sẽ được xử lý trong 24 giờ");
-                            process.setVisibility(View.VISIBLE);
+                address.setText(Session.currentParking.getAddress());
+                openHour.setText(Session.currentParking.getTimeoc().substring(0, 2) + "");
+                openMin.setText(Session.currentParking.getTimeoc().substring(3, 5) + "");
+                closeHour.setText(Session.currentParking.getTimeoc().substring(6, 8) + "");
+                closeMin.setText(Session.currentParking.getTimeoc().substring(9, 11) + "");
+                totalSpace.setText(Session.currentParking.getTotalspace() + "");
+                currentSpace.setText(Session.currentParking.getCurrentspace() + "");
+                NumberFormat formatter = new DecimalFormat("###,###");
+                desposits.setText(formatMoney(Session.currentParking.getDeposits()) + " vnđ");
+                price9.setText((int) Session.currentParking.getPrice9() + "");
+                price916.setText((int) Session.currentParking.getPrice1629() + "");
+                price1648.setText((int) Session.currentParking.getPrice3445() + "");
+                sprinerCity.setSelection(Session.currentParking.getCity_id());
+                // disable button when parkring is block, .....
+                if (Session.currentParking.getStatus() == 2) {
+                    System.out.println("status = 2");
+                    btnUpdate.setEnabled(false);
+                    btnClose.setEnabled(false);
+                    btnDelete.setEnabled(false);
+                    btnUpdate.setBackgroundResource(R.drawable.button_selector2);
+                    btnClose.setBackgroundResource(R.drawable.button_selector2);
+                    btnDelete.setBackgroundResource(R.drawable.button_selector2);
+                    process.setText("Bãi xe đã bị khóa, hãy liên hệ admin");
+                    process.setVisibility(View.VISIBLE);
+                } else if (Session.currentParking.getStatus() == 3) {
+                    System.out.println("status = 3");
+                    btnUpdate.setEnabled(false);
+                    btnClose.setEnabled(false);
+                    btnDelete.setEnabled(false);
+                    btnUpdate.setBackgroundResource(R.drawable.button_selector2);
+                    btnClose.setBackgroundResource(R.drawable.button_selector2);
+                    btnDelete.setBackgroundResource(R.drawable.button_selector2);
+                    process.setText("Yêu cầu tạo mới của bạn sẽ được xử lý trong 24 giờ");
+                    process.setVisibility(View.VISIBLE);
 
-                        } else if (Session.currentParking.getStatus() == 4) {
-                            System.out.println("status = 4");
+                } else if (Session.currentParking.getStatus() == 4) {
+                    System.out.println("status = 4");
 //                            process.setText("Yêu cầu cập nhật của bạn sẽ được xử lý trong 24 giờ");
-//                            process.setVisibility(View.VISIBLE);
+                    process.setVisibility(View.INVISIBLE);
 
-                        } else if (Session.currentParking.getStatus() == 5) {
-                            System.out.println("status = 5");
-                            btnUpdate.setEnabled(false);
-                            btnDelete.setEnabled(false);
-                            btnUpdate.setBackgroundResource(R.drawable.button_selector2);
-                            btnDelete.setBackgroundResource(R.drawable.button_selector2);
-                            btnClose.setText("HỦY ĐÓNG");
+                } else if (Session.currentParking.getStatus() == 5) {
+                    System.out.println("status = 5");
+                    btnUpdate.setEnabled(false);
+                    btnDelete.setEnabled(false);
+                    btnUpdate.setBackgroundResource(R.drawable.button_selector2);
+                    btnDelete.setBackgroundResource(R.drawable.button_selector2);
+                    btnClose.setText("HỦY ĐÓNG");
 //                            process.setText("Yêu cầu tạm đóng bãi của bạn sẽ được xử lý trong 24 giờ");
-//                            process.setVisibility(View.VISIBLE);
-                        } else if (Session.currentParking.getStatus() == 6) {
-                            System.out.println("status = 6");
-                            btnUpdate.setEnabled(false);
-                            btnClose.setEnabled(false);
-                            btnUpdate.setBackgroundResource(R.drawable.button_selector2);
-                            btnClose.setBackgroundResource(R.drawable.button_selector2);
-                            btnDelete.setText("HỦY XÓA");
-                            process.setText("Yêu cầu xóa bãi của bạn sẽ được xử lý trong 24 giờ");
-                            process.setVisibility(View.VISIBLE);
-                        }
-                    }
+                    process.setVisibility(View.INVISIBLE);
+                } else if (Session.currentParking.getStatus() == 6) {
+                    System.out.println("status = 6");
+                    btnUpdate.setEnabled(false);
+                    btnClose.setEnabled(false);
+                    btnUpdate.setBackgroundResource(R.drawable.button_selector2);
+                    btnClose.setBackgroundResource(R.drawable.button_selector2);
+                    btnDelete.setText("HỦY XÓA");
+                    process.setText("Yêu cầu xóa bãi của bạn sẽ được xử lý trong 24 giờ");
+                    process.setVisibility(View.VISIBLE);
+                }
+            }
         } catch (Exception e) {
             System.out.println("lỗi onPost ở DetailParkingActivity : " + e);
         }

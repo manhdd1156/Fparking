@@ -108,4 +108,11 @@ public class Fine implements Serializable {
 		this.parking = parking;
 	}
 
+	@Override
+	public String toString() {
+		return "Fine [id=" + id + ", date=" + date + ", status=" + status + ", type=" + type + ", price=" + price
+				+ ", drivervehicle=" + drivervehicle + ", parking=" + parking + "]";
+	}
+	
+
 }

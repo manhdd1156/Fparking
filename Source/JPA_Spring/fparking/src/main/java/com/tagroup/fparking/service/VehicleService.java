@@ -16,7 +16,6 @@ public interface VehicleService {
 	public void delete(Long id)throws Exception;
 	public Vehicle getVehicleByDriverVehicle(Long id)throws Exception;
 	public List<Vehicle> getVehicleByDriver(String phone)throws Exception;
-	public double getRatingByVehicle(Vehicle vehicle)throws Exception;
 	public Vehicle findByLicenseplateAndStatus(String licenseplate,int status) throws Exception;
 	
 }

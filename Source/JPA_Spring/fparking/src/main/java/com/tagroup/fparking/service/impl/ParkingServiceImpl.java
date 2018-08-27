@@ -20,7 +20,6 @@ import com.tagroup.fparking.dto.TariffSingle;
 import com.tagroup.fparking.repository.CityRepository;
 import com.tagroup.fparking.repository.OwnerRepository;
 import com.tagroup.fparking.repository.ParkingRepository;
-import com.tagroup.fparking.repository.RatingRepository;
 import com.tagroup.fparking.repository.TariffRepository;
 import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.BookingService;
@@ -34,7 +33,6 @@ import com.tagroup.fparking.service.domain.City;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Owner;
 import com.tagroup.fparking.service.domain.Parking;
-import com.tagroup.fparking.service.domain.Rating;
 import com.tagroup.fparking.service.domain.Staff;
 import com.tagroup.fparking.service.domain.Tariff;
 import com.tagroup.fparking.service.domain.Vehicle;
@@ -50,8 +48,6 @@ public class ParkingServiceImpl implements ParkingService {
 	private VehicleService vehicleService;
 	@Autowired
 	private BookingService bookingService;
-	@Autowired
-	private RatingRepository ratingRepository;
 	@Autowired
 	private OwnerRepository ownerRepository;
 	@Autowired
@@ -177,8 +173,8 @@ public class ParkingServiceImpl implements ParkingService {
 						count++;
 					}
 				}
-				System.out.println("ParkingServiceIml/Update currentspace = " + parking.getCurrentspace());
-				System.out.println("ParkingServiceIml/Update count = " + count);
+//				System.out.println("ParkingServiceIml/Update currentspace = " + parking.getCurrentspace());
+//				System.out.println("ParkingServiceIml/Update count = " + count);
 
 				if(temp.getTotalspace() - parking.getCurrentspace()<count) {
 //					System.out.println("total = " + temp.getTotalspace() + ";current = " + parking.getCurrentspace());
@@ -232,10 +228,10 @@ public class ParkingServiceImpl implements ParkingService {
 			List<Parking> returnlist = new ArrayList<>();
 			List<Parking> plist = parkingRepository.findByLatitudeANDLongitude(latitude, longitude);
 			for (Parking parking : plist) {
-				System.out.println("current space = " + parking.getCurrentspace() +"; " +parking.getAddress());
+//				System.out.println("current space = " + parking.getCurrentspace() +"; " +parking.getAddress());
 				if (parking.getStatus() == 1 && parking.getCurrentspace() > 0) {
-					System.out.println("current space = " + parking.getCurrentspace());
-					System.out.println("xxxxxxxxxxxxxxxxxxxx : " + parking);
+//					System.out.println("current space = " + parking.getCurrentspace());
+//					System.out.println("xxxxxxxxxxxxxxxxxxxx : " + parking);
 					returnlist.add(parking);
 				}
 			}
@@ -244,30 +240,6 @@ public class ParkingServiceImpl implements ParkingService {
 			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
 		}
 
-	}
-
-	@Override
-	public String getRatingByPid(Long parkingId) throws Exception {
-		try {
-			Parking p = parkingRepository.getOne(parkingId);
-			List<Staff> staffs = staffService.findByParking(parkingRepository.getOne(parkingId));
-			double totalPoint = 0;
-			double totalRating = 0;
-			for (Staff staff : staffs) {
-				List<Rating> ratings = ratingRepository.findByStaff(staff);
-
-				for (Rating rating : ratings) {
-					if (rating.getType() == 1) {
-						totalPoint += rating.getPoint();
-						totalRating++;
-					}
-				}
-			}
-			// TODO Auto-generated method stub
-			return new DecimalFormat("#0.00").format(totalPoint / totalRating);
-		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "Rating was not found");
-		}
 	}
 
 	@Override
@@ -428,7 +400,7 @@ public class ParkingServiceImpl implements ParkingService {
 			vt.setId((long)1);
 			t.setVehicletype(vt);
 			t.setParking(p);
-			tariffRepository.save(t);
+			t = tariffRepository.save(t);
 			System.out.println("tariff1  = : " + t);
 		}
 		if(!(price916+"").equals("")) {
@@ -437,17 +409,17 @@ public class ParkingServiceImpl implements ParkingService {
 			vt.setId((long)2);
 			t.setVehicletype(vt);
 			t.setParking(p);
-			tariffRepository.save(t);
+			t = tariffRepository.save(t);
 			System.out.println("tariff2  = : " + t);
 		}
 		
-		if((price1629+"").equals("")) {
+		if(!(price1629+"").equals("")) {
 			t = new Tariff();
 			t.setPrice(price1629);
 			vt.setId((long)3);
 			t.setVehicletype(vt);
 			t.setParking(p);
-			tariffRepository.save(t);
+			t = tariffRepository.save(t);
 			System.out.println("tariff3  = : " + t);
 		}
 		return p;

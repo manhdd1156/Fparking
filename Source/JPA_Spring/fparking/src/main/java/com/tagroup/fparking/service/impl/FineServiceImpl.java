@@ -79,10 +79,12 @@ private DriverRepository driverRepository;
 	public void resetFineOfDriver(Long id) throws Exception {
 		List<Fine> flist = getAll();
 		for (Fine fine : flist) {
+			System.out.println("Fine : " + fine);
 			if(fine.getDrivervehicle().getDriver().getId()==id && fine.getType()==0 && fine.getStatus()==0) { // type =0 : driver 
 				fine.setStatus(1);
-				fineRepository.save(fine);
-				System.out.println("xóa phạt thành công");
+				fine = fineRepository.save(fine);
+				System.out.println("xóa phạt : " + fine);
+				
 			}
 		}
 	}

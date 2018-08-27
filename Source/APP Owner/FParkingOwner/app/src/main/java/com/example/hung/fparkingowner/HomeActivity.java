@@ -46,18 +46,14 @@ import static com.example.hung.fparkingowner.config.Constants.PICK_CONTACT_REQUE
 
 public class HomeActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener, IAsyncTaskHandler {
-    ListView lv;
     TextView tvSpace, textViewMPhone;
     TextView tvTotalParking, tvTotalSpace;
-    NavigationView navigationView;
     View headerView;
     ImageView imageViewFParking;
-    EditText tbPass;
-    Button update;
     private RecyclerView mRecyclerView;
     private RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
-    ImageView backParkingManagement, addParking;
+    ImageView addParking;
 
     AlertDialog dialog;
     private SharedPreferences.Editor editor;
@@ -65,7 +61,6 @@ public class HomeActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-//        CheckNetworkReciever.thisregisterReceiver(CheckNetworkReciever, new IntentFilter(android.net.ConnectivityManager.CONNECTIVITY_ACTION));
         Session.homeActivity = HomeActivity.this;
         //Ánh xạ
         Session.spref = getSharedPreferences("intro", 0);
@@ -77,16 +72,6 @@ public class HomeActivity extends AppCompatActivity
                 Intent intentDK = new Intent(HomeActivity.this, AddParkingInformation.class);
                 startActivity(intentDK);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-
-
-//                android.support.v7.app.AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
-//                View mView = getLayoutInflater().inflate(R.layout.activity_dialog_add_parking, null);
-//                mBuilder.setView(mView);
-//                dialog = mBuilder.create();
-//                ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(HomeActivity.this, android.R.layout.simple_dropdown_item_1line, CITYLIST);
-//                MaterialBetterSpinner betterSpinner = (MaterialBetterSpinner) mView.findViewById(R.id.dropdownCity);
-//                betterSpinner.setAdapter(arrayAdapter);
-//                dialog.show();
             }
         });
         tvTotalParking = (TextView) findViewById(R.id.tvTotalParking);
@@ -160,11 +145,6 @@ public class HomeActivity extends AppCompatActivity
             if (resultCode == RESULT_OK) {
                 System.out.println("ở trong activityressult");
                 setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
-
-                // The user picked a contact.
-                // The Intent's data Uri identifies which contact was selected.
-
-                // Do something with the contact here (bigger example below)
             }
         }
     }
