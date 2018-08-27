@@ -173,13 +173,7 @@ public class ParkingServiceImpl implements ParkingService {
 						count++;
 					}
 				}
-//				System.out.println("ParkingServiceIml/Update currentspace = " + parking.getCurrentspace());
-//				System.out.println("ParkingServiceIml/Update count = " + count);
-
 				if(temp.getTotalspace() - parking.getCurrentspace()<count) {
-//					System.out.println("total = " + temp.getTotalspace() + ";current = " + parking.getCurrentspace());
-//					System.out.println("ParkingServiceIml/Update count = " + count);
-//					System.out.println("====");
 					return null;
 				}
 				temp.setCurrentspace(parking.getCurrentspace());
