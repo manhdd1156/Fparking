@@ -298,7 +298,7 @@ public class AccountController {
 		model.put("driverFine", arrayListdriverVehiclet);
 		model.put("totalPriceFine", currencyVN.format(totalPriceFine));
 
-		return "detailacountdriver";
+		return "acountdriverdetail";
 	}
 
 	// block account by id
@@ -451,9 +451,10 @@ public class AccountController {
 		return "blockaccountparking";
 	}
 
+	//get all Parking Waiting Deletion
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/delete", method = RequestMethod.GET)
-	public String getAllDeleteAccountParking(Map<String, Object> model) throws Exception {
+	public String getAllAccountParkingWaitingDeletion(Map<String, Object> model) throws Exception {
 		List<Parking> listParking;
 		try {
 			listParking = parkingService.getByStatus(6);
@@ -480,12 +481,13 @@ public class AccountController {
 			model.put("totalAccount", 0);
 		}
 		model.put("totalDeposit", currencyVN.format(totalDeposit));
-		return "deleteaccountparking";
+		return "parkingwaitingfordeletion";
 	}
 
+	//agreet To Delete Account Parking
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/delete/{id}", method = RequestMethod.GET)
-	public String deleteAccountParking(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
+	public String agreetToDeleteAccountParking(Map<String, Object> model, @PathVariable("id") Long id) throws Exception {
 		Parking parking;
 		try {
 			parking = parkingService.getById(id);
@@ -1060,7 +1062,14 @@ public class AccountController {
 					return "changepass";
 				} else if (newpass.equals(repass)) {
 					admin.setPassword(newpass);
-					adminService.update(admin);
+					try {
+						adminService.update(admin);
+					} catch (Exception e) {
+						model.put("messError", "Đổi mật khẩu không thành công!");
+						model.put("username", admin.getUsername());
+						return "changepass";
+					}
+
 				} else {
 					model.put("messError", "Mật khẩu và mật khẩu nhập lại không khớp!");
 					model.put("username", admin.getUsername());

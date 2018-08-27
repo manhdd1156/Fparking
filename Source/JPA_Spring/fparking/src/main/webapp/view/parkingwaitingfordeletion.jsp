@@ -65,8 +65,8 @@
 											<td>${parking.deposits }</td>
 											<td class="cente"><a
 												href="/account/parking/detail/${parking.id }">Xem</a></td>
-											<td class="center"><a
-												href="#" onclick="deleteAccountParking(${parking.id });return false">Xóa</a></td>
+											<td class="center"><a href="#"
+												onclick="deleteAccountParking(${parking.id });return false">Xóa</a></td>
 										</tr>
 									</c:forEach>
 								</tbody>

@@ -79,7 +79,7 @@ public class HomeController {
 	// go to home
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home", method = RequestMethod.GET)
-	public String fparkingLogoClick(Map<String, Object> model) {
+	public String homePage(Map<String, Object> model) {
 		List<Driver> listDriver;
 		List<Parking> listParking;
 		List<Feedback> listFeedback;
@@ -98,7 +98,7 @@ public class HomeController {
 				model.put("totalAccountDriver", 0);
 			}
 
-			if (listDriver != null && listDriver.size() > 0) {
+			if (listDriver != null && listParking.size() > 0) {
 				model.put("totalAccountParking", listParking.size());
 			} else {
 				model.put("totalAccountParking", 0);
@@ -187,7 +187,6 @@ public class HomeController {
 			totalReveune = revenueByCommistion + revenueByFine;
 			model.put("totalReveune", currencyVN.format(totalReveune));
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			return "404";
 		}
 
@@ -286,7 +285,7 @@ public class HomeController {
 	// go to add money
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/addmoney/{id}", method = RequestMethod.GET)
-	public String getFormMoneyToParking(Map<String, Object> model, @PathVariable("id") Long id) {
+	public String getFormAcceptNewParking(Map<String, Object> model, @PathVariable("id") Long id) {
 		Parking parking = new Parking();
 		try {
 			parking = parkingService.getById(id);
@@ -295,13 +294,13 @@ public class HomeController {
 		}
 		model.put("address", parking.getAddress());
 
-		return "addmoneytoparking";
+		return "acceptnewparking";
 	}
 
-	// add money
+	// accept new parking
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/addmoney/{id}", method = RequestMethod.POST)
-	public String addMoneyToParking(Map<String, Object> model, @PathVariable("id") Long id,
+	public String acceptNewParking(Map<String, Object> model, @PathVariable("id") Long id,
 			@RequestParam("deposit") Double deposit) {
 		Parking parking = new Parking();
 		try {
@@ -322,7 +321,7 @@ public class HomeController {
 			return "addmoneytoparking";
 		}
 		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
-		return "addmoneytoparking";
+		return "acceptnewparking";
 	}
 
 	// get all revenuve by commission
