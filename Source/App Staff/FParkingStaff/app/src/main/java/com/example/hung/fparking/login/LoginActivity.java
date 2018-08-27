@@ -77,11 +77,11 @@ public class LoginActivity extends AppCompatActivity implements OnClickListener,
 //            loginLayout.startAnimation(shakeAnimation);
             showDialog("Hãy nhập số điện thoại");
         }
-        if (getPassword.equals("") || getPassword.isEmpty()) {
+        else if (getPassword.equals("") || getPassword.isEmpty()) {
 //            loginLayout.startAnimation(shakeAnimation);
             showDialog("Hãy nhập mật khẩu");
         }
-        if(getPassword.length()<6 || getPassword.length()>24) {
+        else if(getPassword.length()<6 || getPassword.length()>24) {
             showDialog("Mật khẩu phải lớn hơn 6 và nhỏ hơn 24 kí tự");
         }
         // Check if email id is valid or not

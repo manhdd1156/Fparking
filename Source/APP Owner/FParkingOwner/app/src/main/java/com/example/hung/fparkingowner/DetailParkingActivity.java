@@ -73,11 +73,9 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
         backDP.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
-//                finish();
-//                startActivity(i);
-                Session.homeActivity.recreate();
+                Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
                 finish();
+                startActivity(i);
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
 
             }
@@ -233,7 +231,12 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             @Override
                             public void onPostExecute(Object o) {
                                 dialog.cancel();
-                                showDialog("Thực hiện thành công", 1);
+                                if((boolean) o) {
+                                    showDialog("Thực hiện thành công", 1);
+                                }else {
+                                    showDialog("Thực hiện không thành công", 0);
+                                }
+
 //                                Intent i = new Intent(DetailParkingActivity.this,HomeActivity.class);
 //                                finish();
 //                                startActivity(i);
@@ -284,8 +287,9 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
             public void onClick(View v) {
                 dialog.cancel();
                 if (type == 1) {
-                    Session.homeActivity.recreate();
+                    Intent i = new Intent(DetailParkingActivity.this, HomeActivity.class);
                     finish();
+                    startActivity(i);
                     overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
             }
@@ -357,8 +361,8 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
 
                         } else if (Session.currentParking.getStatus() == 4) {
                             System.out.println("status = 4");
-                            process.setText("Yêu cầu cập nhật của bạn sẽ được xử lý trong 24 giờ");
-                            process.setVisibility(View.VISIBLE);
+//                            process.setText("Yêu cầu cập nhật của bạn sẽ được xử lý trong 24 giờ");
+//                            process.setVisibility(View.VISIBLE);
 
                         } else if (Session.currentParking.getStatus() == 5) {
                             System.out.println("status = 5");
@@ -367,8 +371,8 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             btnUpdate.setBackgroundResource(R.drawable.button_selector2);
                             btnDelete.setBackgroundResource(R.drawable.button_selector2);
                             btnClose.setText("HỦY ĐÓNG");
-                            process.setText("Yêu cầu tạm đóng bãi của bạn sẽ được xử lý trong 24 giờ");
-                            process.setVisibility(View.VISIBLE);
+//                            process.setText("Yêu cầu tạm đóng bãi của bạn sẽ được xử lý trong 24 giờ");
+//                            process.setVisibility(View.VISIBLE);
                         } else if (Session.currentParking.getStatus() == 6) {
                             System.out.println("status = 6");
                             btnUpdate.setEnabled(false);

@@ -82,19 +82,17 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         b.setParkingID(Session.currentParking.getId());
                         b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(1);
-                        new ManagerBookingTask("updatebystatus", b, null);
-                        finish();
-                        Session.homeActivity.recreate();
+                        new ManagerBookingTask("updatebystatus", b, new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+                                Session.homeActivity.finish();
+                                Intent intent = new Intent(DialogActivity.this, HomeActivity.class);
+                                finish();
+                                startActivity(intent);
+                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                            }
+                        });
 
-//                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
-//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-//                        finish();
-//                        overridePendingTransition(0, 0);
-//                        startActivity(myIntent);
-//                        overridePendingTransition(0, 0);
-////
-
-//                startActivity(intent);
                         // TODO Auto-generated method stub
                     }
                 });
@@ -111,17 +109,6 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                             }
                         });
                         finish();
-//                        showToastMessage("Cancel Button Clicked");
-//                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
-//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-
-//                        overridePendingTransition(0, 0);
-//                        startActivity(myIntent);
-//                        overridePendingTransition(0, 0);
-//                        Session.homeActivity.recreate();
-//                        finish();
-
-//                startActivity(intent);
                         // TODO Auto-generated method stub
                     }
                 });

@@ -142,7 +142,7 @@ public class SignUpActivity extends AppCompatActivity implements IAsyncTaskHandl
                     @Override
                     public void onPostExecute(Object o) {
                         if ((boolean) o) {
-                            showDialog("Tạo mới thành công!", 1);
+                            showDialog("Tạo mới thành công", 1);
                         } else {
                             showDialog("Số điện thoại đã tồn tại", 0);
                         }

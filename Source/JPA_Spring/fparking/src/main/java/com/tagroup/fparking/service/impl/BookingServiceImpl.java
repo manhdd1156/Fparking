@@ -236,6 +236,15 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 5) {
+					Parking pTemp = parkingService.getById(n.getParking_id());
+					if(pTemp.getTotalspace()<= pTemp.getCurrentspace()) {
+						n.setData("cancel");
+						n = notificationService.update(n);
+						delete(booking.getId());
+						
+							pusherService.trigger(n.getDriver_id() + "dchannel", n.getEvent(), "cancel");
+							return null;
+					}
 					booking.setStatus(1);
 					parkingService.changeSpace(n.getParking_id(), booking.getParking().getCurrentspace() - 1);
 					System.out.println("booking = " + booking.toString());
@@ -270,7 +279,7 @@ public class BookingServiceImpl implements BookingService {
 						&& booking.getDrivervehicle().getDriver().getId() == n.getDriver_id()
 						&& booking.getDrivervehicle().getVehicle().getId() == n.getVehicle_id()
 						&& booking.getStatus() == 2) {
-					fineService.resetFineOfDriver(booking.getDrivervehicle().getDriver().getId());
+					fineService.resetFineOfDriver(booking.getDrivervehicle().getDriver().getId()); // reset tiền phạt
 					booking.setStatus(3);
 					
 					return bookingRepository.save(booking);

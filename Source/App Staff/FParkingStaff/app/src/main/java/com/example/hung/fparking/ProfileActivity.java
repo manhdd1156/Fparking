@@ -72,10 +72,22 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                     mathPhone = phone.getText().toString().replace("+84", "0");
                 }
                 Matcher m = p.matcher(mathPhone);
-                if (!phone.getText().toString().isEmpty() && !m.find()) {
-                    tvSuccess.setText("Số điện thoại không đúng định dạng");
-                    tvSuccess.setTextColor(Color.RED);
-                    tvSuccess.setVisibility(View.VISIBLE);
+                if(name.getText().toString().isEmpty() || name.getText().toString().equals("")) {
+                    showDialog("Hãy nhập tên");
+                }else if(address.getText().toString().isEmpty() || address.getText().toString().equals("")) {
+                    showDialog("Hãy nhập địa chỉ");
+                }else if(phone.getText().toString().isEmpty() || phone.getText().toString().equals("")) {
+                    showDialog("Hãy nhập số điện thoại");
+                }else if(name.getText().toString().length()<2 || name.getText().toString().length()>50) {
+                    showDialog("Tên phải lớn hơn 2 và nhỏ hơn 50 kí tự");
+                }else if(address.getText().toString().length()<3 || address.getText().toString().length()>100) {
+                    showDialog("Địa chỉ phải lớn hơn 3 và nhỏ hơn 100 ký tự");
+                }
+                else if (!phone.getText().toString().isEmpty() && !m.find()) {
+                    showDialog("Số điện thoại không đúng định dạng");
+//                    tvSuccess.setText("Số điện thoại không đúng định dạng");
+//                    tvSuccess.setTextColor(Color.RED);
+//                    tvSuccess.setVisibility(View.VISIBLE);
                 } else {
 
                     tvSuccess.setVisibility(View.INVISIBLE);
@@ -127,13 +139,11 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
                                                         tvSuccess.setText("Cập nhật thông tin thành công");
                                                         tvSuccess.setTextColor(Color.GREEN);
                                                         tvSuccess.setVisibility(View.VISIBLE);
-                                                        dialog.cancel();
                                                     }else {
-                                                        dialog.cancel();
                                                         showDialog("Số điện thoại đã tồn tại, cập nhật không thành công");
                                                     }
-                                                    tvSuccess.setText("Cập nhật thông tin thành công");
-                                                    tvSuccess.setVisibility(View.VISIBLE);
+//                                                    tvSuccess.setText("Cập nhật thông tin thành công");
+//                                                    tvSuccess.setVisibility(View.VISIBLE);
                                                     dialog.cancel();
                                                 }
                                             });

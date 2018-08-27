@@ -55,7 +55,7 @@ class GetStaffTask extends AsyncTask<Void, Void, List> {
         super.onPreExecute();
         pdLoading = new ProgressDialog(activity);
         //this method will be running on UI thread
-        pdLoading.setMessage("\tĐợi xíu...");
+        pdLoading.setMessage("\tĐang xử lý...");
         pdLoading.setCancelable(false);
         pdLoading.show();
 
