@@ -37,7 +37,7 @@ public class BookingController {
 	}
 
 	// get booking by booking id
-	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER','STAFF')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getbyid(@PathVariable Long id) throws Exception {
 		Booking respone = bookingService.getById(id);
@@ -55,7 +55,7 @@ public class BookingController {
 	}
 
 	// get booking by parking id, drivervehicleid , status ?
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/drivervehicle", method = RequestMethod.GET)
 	public ResponseEntity<?> getBookingByPId(@RequestParam("parkingid") Long parkingid,
 			@RequestParam("drivervehicleid") Long drivervehicleid, @RequestParam("status") int status)
@@ -77,7 +77,7 @@ public class BookingController {
 //	}
 
 	// cancel booking from driver.
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/drivers/cancel", method = RequestMethod.PUT)
 	public ResponseEntity<?> cancelBooking(@RequestBody BookingDTO booking) throws Exception {
 		// System.out.println("bookings/update/status : " + noti.toString());
@@ -96,7 +96,7 @@ public class BookingController {
 
 	}
 	// get booking by owner id = ? 
-		@PreAuthorize("hasAnyAuthority('OWNER')")
+		@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
 		@RequestMapping(path = "/owners", method = RequestMethod.GET)
 		public ResponseEntity<?> getBookingByOId() throws Exception {
 					System.out.println("bookings/owners");
@@ -115,7 +115,7 @@ public class BookingController {
 	}
 
 	// create new booking
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/create", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody BookingDTO bookingDTO) throws Exception {
 		Booking respone = bookingService.create(bookingDTO.getDriverid(), bookingDTO.getVehicleid(),
@@ -125,7 +125,7 @@ public class BookingController {
 	}
 
 	// update booking
-	@PreAuthorize("hasAnyAuthority('STAFF')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody Booking booking) throws Exception {
 

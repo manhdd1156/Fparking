@@ -101,6 +101,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/imgInfor1"
             android:layout_centerHorizontal="true"
+            android:visibility="invisible"
             app:srcCompat="@drawable/line" />
 
         <TextView

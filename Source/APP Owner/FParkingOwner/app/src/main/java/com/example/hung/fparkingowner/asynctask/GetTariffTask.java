@@ -77,6 +77,7 @@ IAsyncTaskHandler container;
     protected void onPostExecute(ParkingDTO parkingDTO) {
         super.onPostExecute(parkingDTO);
         container.onPostExecute(parkingDTO);
+        System.out.println(">>>>>>>>>kết thúc onpost getTariffTask<<<<<<");
     }
 }
 

@@ -3,6 +3,7 @@ package com.tagroup.fparking.service;
 import java.util.List;
 
 import com.tagroup.fparking.service.domain.Admin;
+import com.tagroup.fparking.service.domain.Staff;
 
 public interface AdminService {
 	public List<Admin> getAll();

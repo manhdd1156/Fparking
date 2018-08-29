@@ -264,6 +264,7 @@ public class StaffManagement extends AppCompatActivity implements IAsyncTaskHand
 
                         // ... tapped on the item container (row), so do something different
                         Intent intentDetail = new Intent(StaffManagement.this, DetailStaffActivity.class);
+                        finish();
                         intentDetail.putExtra("staffid", slist.get(position).getId() + "");
                         startActivity(intentDetail);
 
