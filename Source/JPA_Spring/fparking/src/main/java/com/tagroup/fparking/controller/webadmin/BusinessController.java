@@ -566,7 +566,9 @@ public class BusinessController {
 			model.put("timeout", sdf.format(bookingDetail.getTimeout()));
 			double totalTime = (bookingDetail.getTimeout().getTime() - bookingDetail.getTimein().getTime())
 					/ (60 * 60 * 1000);
-			if (totalTime % 1 == 0) {
+			if (totalTime == 0) {
+				model.put("totalTime", (int) totalTime + 1);
+			} else if (totalTime % 1 == 0) {
 				model.put("totalTime", (int) totalTime);
 			} else {
 				model.put("totalTime", (int) totalTime + 1);
@@ -575,8 +577,8 @@ public class BusinessController {
 			model.put("licenseplate", bookingDetail.getDrivervehicle().getVehicle().getLicenseplate());
 			model.put("price", currencyVN.format(bookingDetail.getPrice()));
 			model.put("totalFine", currencyVN.format(bookingDetail.getTotalfine()));
-			if (bookingDetail.getComission() * 100 % 1 == 0) {
-				model.put("commssion", (int) bookingDetail.getComission() * 100);
+			if ((bookingDetail.getComission() * 100) % 1 == 0) {
+				model.put("commssion",  (int)(bookingDetail.getComission() * 100));
 			} else {
 				model.put("commssion", bookingDetail.getComission() * 100);
 			}
