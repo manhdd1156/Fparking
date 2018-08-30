@@ -1,4 +1,4 @@
-	package com.tagroup.fparking.controller.webadmin;
+package com.tagroup.fparking.controller.webadmin;
 
 import java.text.DateFormat;
 import java.text.NumberFormat;
@@ -163,22 +163,21 @@ public class BusinessController {
 		} catch (NumberFormatException e) {
 			return "404";
 		}
+
 		try {
 			vt.setType(vehicletype + " chỗ");
 			Vehicletype vtCreated = vehicletypeService.create(vt);
 			Finetariff finetariff = new Finetariff();
 			finetariff.setPrice(priceFineTrue);
 			finetariff.setVehicletype(vtCreated);
-			try {
-				finetariff = fineTariffService.create(finetariff);
-			} catch (Exception e) {
-				model.put("vehicletype", vehicletype);
-				model.put("priceFine", priceFine);
-				model.put("messError", "Thêm không thành công!");
-				return "addvehicletype";
-			}
+			finetariff = fineTariffService.create(finetariff);
 		} catch (Exception e) {
-			return "404";
+			model.put("vehicletype", vehicletype);
+			model.put("priceFine", priceFine);
+			model.put("messError", "Thêm không thành công!");
+			System.out.println(e);
+			System.out.println("=====================");
+			return "addvehicletype";
 		}
 		return "redirect:/business/vehicletype";
 	}

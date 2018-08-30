@@ -31,6 +31,7 @@ public class Finetariff implements Serializable {
 
 	private double price;
 
+	private int type;
 	
 	@OneToOne(fetch = FetchType.EAGER)
 	@JoinColumn(name = "vehicletype_id", referencedColumnName = "id")
@@ -39,7 +40,7 @@ public class Finetariff implements Serializable {
 	public Finetariff() {
 	}
 
-	public long getId() {
+	public Long getId() {
 		return this.id;
 	}
 
@@ -61,6 +62,14 @@ public class Finetariff implements Serializable {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public int getType() {
+		return this.type;
+	}
+
+	public void setType(int type) {
+		this.type = type;
 	}
 
 }
