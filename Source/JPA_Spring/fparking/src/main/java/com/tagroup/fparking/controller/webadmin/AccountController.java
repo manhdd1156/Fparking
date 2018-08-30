@@ -63,6 +63,7 @@ public class AccountController {
 	@Autowired
 	private AdminService adminService;
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+	SimpleDateFormat sdfdetail = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 	NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
@@ -650,12 +651,14 @@ public class AccountController {
 					HashMap<String, Object> m = new HashMap<>();
 					if (booking.getParking().getId() == id && booking.getTimeout() != null
 							&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
-						m.put("timein", sdf.format(booking.getTimein()));
-						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("timein", sdfdetail.format(booking.getTimein()));
+						m.put("timeout", sdfdetail.format(booking.getTimeout()));
 						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
 						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
 								/ (60 * 60 * 1000);
-						if (totalTime % 1 == 0) {
+						if (totalTime == 0) {
+							m.put("totalTime", (int) totalTime + 1);
+						} else if (totalTime % 1 == 0) {
 							m.put("totalTime", (int) totalTime);
 						} else {
 							m.put("totalTime", (int) totalTime + 1);
@@ -664,7 +667,11 @@ public class AccountController {
 						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
 						m.put("price", currencyVN.format((booking.getPrice())));
 						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-						m.put("commssion", booking.getComission());
+						if ((booking.getComission() * 100) % 1 == 0) {
+							m.put("commission",  (int)(booking.getComission() * 100));
+						} else {
+							m.put("commission", booking.getComission() * 100);
+						}
 						m.put("amount", currencyVN.format(booking.getAmount()));
 						totalRevenue += booking.getAmount();
 						arrayListBooking.add(m);
@@ -678,12 +685,14 @@ public class AccountController {
 					if (booking.getParking().getId() == id && booking.getTimeout() != null
 							&& booking.getTimeout() != null
 							&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
-						m.put("timein", sdf.format(booking.getTimein()));
-						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("timein", sdfdetail.format(booking.getTimein()));
+						m.put("timeout", sdfdetail.format(booking.getTimeout()));
 						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
 						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
 								/ (60 * 60 * 1000);
-						if (totalTime % 1 == 0) {
+						if (totalTime == 0) {
+							m.put("totalTime", (int) totalTime + 1);
+						} else if (totalTime % 1 == 0) {
 							m.put("totalTime", (int) totalTime);
 						} else {
 							m.put("totalTime", (int) totalTime + 1);
@@ -692,7 +701,11 @@ public class AccountController {
 						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
 						m.put("price", currencyVN.format((booking.getPrice())));
 						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-						m.put("commssion", booking.getComission());
+						if ((booking.getComission() * 100) % 1 == 0) {
+							m.put("commission",  (int)(booking.getComission() * 100));
+						} else {
+							m.put("commission", booking.getComission() * 100);
+						}
 						m.put("amount", currencyVN.format(booking.getAmount()));
 						totalRevenue += booking.getAmount();
 						arrayListBooking.add(m);
@@ -707,12 +720,14 @@ public class AccountController {
 							&& booking.getTimeout() != null
 							&& booking.getTimeout().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 							&& booking.getTimeout().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
-						m.put("timein", sdf.format(booking.getTimein()));
-						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("timein", sdfdetail.format(booking.getTimein()));
+						m.put("timeout", sdfdetail.format(booking.getTimeout()));
 						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
 						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
 								/ (60 * 60 * 1000);
-						if (totalTime % 1 == 0) {
+						if (totalTime == 0) {
+							m.put("totalTime", (int) totalTime + 1);
+						} else if (totalTime % 1 == 0) {
 							m.put("totalTime", (int) totalTime);
 						} else {
 							m.put("totalTime", (int) totalTime + 1);
@@ -721,7 +736,11 @@ public class AccountController {
 						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
 						m.put("price", currencyVN.format((booking.getPrice())));
 						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-						m.put("commssion", booking.getComission());
+						if ((booking.getComission() * 100) % 1 == 0) {
+							m.put("commission",  (int)(booking.getComission() * 100));
+						} else {
+							m.put("commission", booking.getComission() * 100);
+						}
 						m.put("amount", currencyVN.format(booking.getAmount()));
 						totalRevenue += booking.getAmount();
 						arrayListBooking.add(m);
@@ -737,12 +756,14 @@ public class AccountController {
 					HashMap<String, Object> m = new HashMap<>();
 					if (booking.getParking().getId() == id && booking.getTimeout() != null
 							&& booking.getTimeout() != null) {
-						m.put("timein", sdf.format(booking.getTimein()));
-						m.put("timeout", sdf.format(booking.getTimeout()));
+						m.put("timein", sdfdetail.format(booking.getTimein()));
+						m.put("timeout", sdfdetail.format(booking.getTimeout()));
 						m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
 						double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
 								/ (60 * 60 * 1000);
-						if (totalTime % 1 == 0) {
+						if (totalTime == 0) {
+							m.put("totalTime", (int) totalTime + 1);
+						} else if (totalTime % 1 == 0) {
 							m.put("totalTime", (int) totalTime);
 						} else {
 							m.put("totalTime", (int) totalTime + 1);
@@ -751,7 +772,11 @@ public class AccountController {
 						m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
 						m.put("price", currencyVN.format((booking.getPrice())));
 						m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-						m.put("commssion", booking.getComission());
+						if ((booking.getComission() * 100) % 1 == 0) {
+							m.put("commission",  (int)(booking.getComission() * 100));
+						} else {
+							m.put("commission", booking.getComission() * 100);
+						}
 						m.put("amount", currencyVN.format(booking.getAmount()));
 						totalRevenue += booking.getAmount();
 						arrayListBooking.add(m);
@@ -764,12 +789,14 @@ public class AccountController {
 				HashMap<String, Object> m = new HashMap<>();
 				if (booking.getParking().getId() == id && booking.getTimeout() != null
 						&& booking.getTimeout() != null) {
-					m.put("timein", sdf.format(booking.getTimein()));
-					m.put("timeout", sdf.format(booking.getTimeout()));
+					m.put("timein", sdfdetail.format(booking.getTimein()));
+					m.put("timeout", sdfdetail.format(booking.getTimeout()));
 					m.put("type", booking.getDrivervehicle().getVehicle().getVehicletype().getType());
 					double totalTime = (booking.getTimeout().getTime() - booking.getTimein().getTime())
 							/ (60 * 60 * 1000);
-					if (totalTime % 1 == 0) {
+					if (totalTime == 0) {
+						m.put("totalTime", (int) totalTime + 1);
+					} else if (totalTime % 1 == 0) {
 						m.put("totalTime", (int) totalTime);
 					} else {
 						m.put("totalTime", (int) totalTime + 1);
@@ -778,7 +805,13 @@ public class AccountController {
 					m.put("licenseplate", booking.getDrivervehicle().getVehicle().getLicenseplate());
 					m.put("price", currencyVN.format((booking.getPrice())));
 					m.put("totalFine", currencyVN.format(booking.getTotalfine()));
-					m.put("commssion", booking.getComission());
+					if ((booking.getComission() * 100) % 1 == 0) {
+						m.put("commission",  (int)(booking.getComission() * 100)+1);
+					} else {
+						m.put("commission", booking.getComission() * 100);
+					}
+					System.out.println("Commission"+(booking.getComission() * 100) );
+					System.out.println("===================================================");
 					m.put("amount", currencyVN.format(booking.getAmount()));
 					totalRevenue += booking.getAmount();
 					arrayListBooking.add(m);

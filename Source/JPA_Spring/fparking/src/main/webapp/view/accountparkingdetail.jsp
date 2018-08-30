@@ -245,7 +245,7 @@
 																	<tr>
 																		<th>Thời gian vào</th>
 																		<th>Thời gian ra</th>
-																		<th>Tổng thời gian đỗ</th>
+																		<th>Tổng thời gian đỗ (H)</th>
 																		<th>Biển số xe</th>
 																		<th>Loại xe</th>
 																		<th>Giá</th>
@@ -265,7 +265,7 @@
 																			<td>${transactionParking.type }</td>
 																			<td>${transactionParking.price }</td>
 																			<td>${transactionParking.totalFine }</td>
-																			<td>${transactionParking.commssion }</td>
+																			<td>${transactionParking.commission }%</td>
 																			<td>${transactionParking.amount }</td>
 																		</tr>
 																	</c:forEach>

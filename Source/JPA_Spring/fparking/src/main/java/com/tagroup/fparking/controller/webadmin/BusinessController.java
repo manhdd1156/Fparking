@@ -582,8 +582,6 @@ public class BusinessController {
 			} else {
 				model.put("commssion", bookingDetail.getComission() * 100);
 			}
-			System.out.println("Commission: " + bookingDetail.getComission()*100);
-			System.out.println("===============================");
 			model.put("amount", currencyVN.format(bookingDetail.getAmount()));
 		} catch (Exception e) {
 			return "404";
