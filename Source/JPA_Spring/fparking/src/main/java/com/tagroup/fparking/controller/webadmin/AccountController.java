@@ -810,8 +810,6 @@ public class AccountController {
 					} else {
 						m.put("commission", booking.getComission() * 100);
 					}
-					System.out.println("Commission"+(booking.getComission() * 100) );
-					System.out.println("===================================================");
 					m.put("amount", currencyVN.format(booking.getAmount()));
 					totalRevenue += booking.getAmount();
 					arrayListBooking.add(m);
