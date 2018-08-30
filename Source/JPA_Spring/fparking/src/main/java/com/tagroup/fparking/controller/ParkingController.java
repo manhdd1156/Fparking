@@ -93,14 +93,14 @@ public class ParkingController {
 
 	}
 
-	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
-	@RequestMapping(path = "/testtt", method = RequestMethod.GET)
-	public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") Long type) throws Exception {
-
-		String respone = "OK";
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-
-	}
+//	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+//	@RequestMapping(path = "/testtt", method = RequestMethod.GET)
+//	public ResponseEntity<?> getBookingByDriverID(@RequestParam("type") Long type) throws Exception {
+//
+//		String respone = "OK";
+//		return new ResponseEntity<>(respone, HttpStatus.OK);
+//
+//	}
 
 	// get tariff by parking id = ?
 	@PreAuthorize("hasAnyAuthority('DRIVER','OWNER')")

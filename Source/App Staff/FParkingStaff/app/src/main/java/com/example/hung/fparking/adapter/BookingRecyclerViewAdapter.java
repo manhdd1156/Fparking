@@ -141,9 +141,9 @@ public class BookingRecyclerViewAdapter extends RecyclerView
 
                     AlertDialog.Builder builder = new AlertDialog.Builder(mContext);
 
-                    NumberFormat formatter = new DecimalFormat("###,###");
-                    NumberFormat formatterHour = new DecimalFormat("0.00");
-                    builder.setMessage("Bạn sẽ bị phạt nếu hủy đặt chỗ này!\n Bạn có muốn tiếp tục ?")
+//                    NumberFormat formatter = new DecimalFormat("###,###");
+//                    NumberFormat formatterHour = new DecimalFormat("0.00");
+                    builder.setMessage("Bạn sẽ bị phạt nếu hủy đơn đặt chỗ này!\n Bạn có muốn tiếp tục ?")
                             .setPositiveButton("Xác nhận", dialogClickListener)
                             .setNegativeButton("Hủy", dialogClickListener).setCancelable(false).show();
 
@@ -166,71 +166,6 @@ public class BookingRecyclerViewAdapter extends RecyclerView
 
                         }
                     });
-
-//                    BookingDTO b = new BookingDTO();
-//                    b.setParkingID(Session.currentParking.getId());
-//                    b.setStatus(3);
-//                    mDataset.get(position).setStatus(3);
-//                    new ManagerBookingTask("getInfoCheckout", mDataset.get(position), new IAsyncTaskHandler() {
-//                        @Override
-//                        public void onPostExecute(Object o) {
-//                            if(o instanceof String) {
-////                                DialogInterface.OnClickListener dialogClickListener = new DialogInterface.OnClickListener() {
-////                                    @Override
-////                                    public void onClick(DialogInterface dialog, int choice) {
-////                                        switch (choice) {
-////                                            case DialogInterface.BUTTON_POSITIVE:
-//////                                BookingDTO b = new BookingDTO();
-//////                                b.setParkingID(Session.currentParking.getId());
-//////                                b.setStatus(3);
-//////                                new ManagerBookingTask("updatebystatus", b, null);
-////                                                Session.homeActivity.recreate();
-////                                                break;
-////                                        }
-////                                    }
-////                                };
-//
-////                                AlertDialog.Builder builder = new AlertDialog.Builder(Session.homeActivity);
-//                                try {
-//                                    final DateFormat df = new SimpleDateFormat("hh:mm:ss dd-MM-yyyy");
-//                                    Date datein = df.parse(Session.bookingTemp.getTimein());
-//                                    Date dateout = df.parse(Session.bookingTemp.getTimeout());
-//
-//                                    NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
-//                                    long diff = dateout.getTime() - datein.getTime();
-//                                    double diffInHours = diff / ((double) 1000 * 60 * 60);
-//                                    NumberFormat formatter = new DecimalFormat("###,###");
-//                                    NumberFormat formatterHour = new DecimalFormat("0.00");
-////                                    builder.setMessage("\t\t\t\t\t\t\t\t\t\tHÓA ĐƠN THANH TOÁN \n\n"
-////                                            + "            Biển số : " + Session.bookingTemp.getLicensePlate() + "\n"
-////                                            + "            Loại xe : " + Session.bookingTemp.getTypeCar() + "\n"
-////                                            + " Thời gian vào : " + Session.bookingTemp.getTimein() + "\n"
-////                                            + "    Thời gian ra : " + Session.bookingTemp.getTimeout() + "\n"
-////                                            + "           Giá gửi xe : " + formatter.format(Session.bookingTemp.getPrice()) + " vnđ/giờ\n"
-////                                            + "   Thời gian đỗ : " + formatterHour.format(diffInHours) + " giờ \n"
-////                                            + "Số tiền bị phạt : " + currencyVN.format(Session.bookingTemp.getTotalfine()) + "\n"
-////                                            + "          Tổng giá : " + formatter.format(Session.bookingTemp.getAmount()) + " vnđ")
-////                                            .setPositiveButton("Yes", dialogClickListener).setCancelable(false).show();
-////                                    showDialog();
-//                                    Intent i = new Intent(mContext, AlertDialog.class);
-//                                    i.putExtra("StringAleart", "\t\t\t\t\t\t\t\t\t\tHÓA ĐƠN THANH TOÁN \n\n"
-//                                            + "            Biển số : " + Session.bookingTemp.getLicensePlate() + "\n"
-//                                            + "            Loại xe : " + Session.bookingTemp.getTypeCar() + "\n"
-//                                            + " Thời gian vào : " + Session.bookingTemp.getTimein() + "\n"
-//                                            + "    Thời gian ra : " + Session.bookingTemp.getTimeout() + "\n"
-//                                            + "           Giá gửi xe : " + formatter.format(Session.bookingTemp.getPrice()) + " vnđ/giờ\n"
-//                                            + "   Thời gian đỗ : " + formatterHour.format(diffInHours) + " giờ \n"
-//                                            + "Số tiền bị phạt : " + currencyVN.format(Session.bookingTemp.getTotalfine()) + "\n"
-//                                            + "          Tổng giá : " + formatter.format(Session.bookingTemp.getAmount()) + " vnđ");
-////                                    i.putExtra("data", data);
-//                                    activity.startActivity(i);
-//
-//                                } catch (ParseException e) {
-//                                    e.printStackTrace();
-//                                }
-//                            }
-//                        }
-//                    });
 
                     new ManagerBookingTask("getInfoCheckout", mDataset.get(position),container);
                 }

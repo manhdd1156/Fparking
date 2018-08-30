@@ -95,14 +95,14 @@ public class BookingServiceImpl implements BookingService {
 			// driverVehicleid, parkingid, status = 5,
 			Booking bb = new Booking();
 			Parking p = new Parking();
-
+//			System.out.println("BookingServiceIml/Create : driverid = " + driverid + ",vehicleid = " + vehicleid + ",parkingid = " + parkingid + ",status = " + status);
 			p.setId(parkingid);
 			DriverVehicle dv = driverVehicleRepository.findByDriverAndVehicle(driverRepository.getOne(driverid),
 					vehicleRepository.getOne(vehicleid));
 			bb.setDrivervehicle(dv);
 			bb.setParking(p);
 			bb.setStatus(5);
-
+			System.out.println("BookingServiceIml/Create : bb = " + bb.toString());
 			Booking b = bookingRepository.save(bb);
 			System.out.println("BookingServiceIml/Create : bb = " + b.toString());
 			if (b != null) {
@@ -120,7 +120,8 @@ public class BookingServiceImpl implements BookingService {
 			}
 			return b;
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The Booking was not found");
+//			System.out.println(e);
+			throw new APIException(HttpStatus.CONFLICT, "Something went wrong");
 		}
 
 	}
@@ -160,6 +161,7 @@ public class BookingServiceImpl implements BookingService {
 				f.setPrice(fineTariffService.getByVehicleType(b.getDrivervehicle().getVehicle().getVehicletype())
 						.getPrice());
 				f = fineService.create(f);
+//				System.out.println("=================1 fine = " + f);
 				// parking bị phạt thì trừ luôn vào deposits
 				Parking p = parkingService.getById(b.getParking().getId());
 				p.setDeposits(p.getDeposits() - f.getPrice());
@@ -169,7 +171,8 @@ public class BookingServiceImpl implements BookingService {
 				if (p.getDeposits() < 100000) {
 					p.setStatus(2);
 				}
-				parkingService.update(p);
+				p = parkingService.update(p);
+//				System.out.println("================2 p = " + p);
 				n.setEvent("order");
 				n.setType(2);
 				n.setData("after");
@@ -466,10 +469,12 @@ public class BookingServiceImpl implements BookingService {
 				f.setPrice(fineTariffService.getByVehicleType(booking.getDrivervehicle().getVehicle().getVehicletype())
 						.getPrice());
 				f = fineService.create(f);
+//				System.out.println("===================1 f = " + f);
 				booking.setStatus(0);
 				n.setEvent("cancel");
 				n.setData("order");
 				Notification nn = notificationRepository.save(n);
+//				System.out.println("==================2 nn = " + nn);
 				parkingService.changeSpace(nn.getParking_id(), booking.getParking().getCurrentspace() + 1);
 				pusherService.trigger(nn.getParking_id() + "schannel", "cancel", "order");
 				List<Fine> flist = fineService.getByDriverID(booking.getDrivervehicle().getDriver().getId());

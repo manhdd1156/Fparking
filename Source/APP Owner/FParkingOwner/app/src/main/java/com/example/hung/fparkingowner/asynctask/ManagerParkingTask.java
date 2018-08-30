@@ -184,13 +184,13 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
                 formData.put("city", new JSONObject().put("id", p.getCity_id()));
             }
             String json = httpHandler.requestMethod(Constants.API_URL + "parkings/update/", formData.toString(), "POST");
-
+            JSONObject jsonObj = new JSONObject(json);
 
             if(p.getStatus()==4) {
                 json =  httpHandler.get(Constants.API_URL + "parkings/tariff/update?parkingid="+ p.getId() +"&price9="+p.getPrice9()+"&price916="+p.getPrice1629()+"&price1629="+p.getPrice3445());
             }
             System.out.println(Constants.API_URL + "parkings/tariff/update?parkingid="+ p.getId() +"&price9="+p.getPrice9()+"&price916="+p.getPrice1629()+"&price1629="+p.getPrice3445());
-            JSONObject jsonObj = new JSONObject(json);
+            jsonObj = new JSONObject(json);
             Log.e(" Updateparking : ", jsonObj.toString());
 
             return true;

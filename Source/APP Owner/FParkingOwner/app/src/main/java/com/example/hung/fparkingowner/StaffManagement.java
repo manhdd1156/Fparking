@@ -149,37 +149,46 @@ public class StaffManagement extends AppCompatActivity implements IAsyncTaskHand
                         }
                     }
                 });
-                new ManagerParkingTask("getbyowner", null,null, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        final ArrayList<ParkingDTO> plist;
-                        if (o instanceof List) {
-                            plist = (ArrayList<ParkingDTO>) o;
 
-                            for (int i = 0; i < plist.size(); i++) {
-                                idParkinglist.add(plist.get(i).getId());
-                                dropdownList.add(plist.get(i).getAddress());
+                    new ManagerParkingTask("getbyowner", null, null, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            final ArrayList<ParkingDTO> plist;
+
+                            if (o instanceof List) {
+                                try {
+                                plist = (ArrayList<ParkingDTO>) o;
+
+                                for (int i = 0; i < plist.size(); i++) {
+                                    idParkinglist.add(plist.get(i).getId());
+                                    dropdownList.add(plist.get(i).getAddress());
+                                }
+                                parkingidSelected = idParkinglist.get(0);
+                                ArrayAdapter<String> adapter = new ArrayAdapter(mView.getContext(), android.R.layout.simple_spinner_item, dropdownList);
+                                adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                                sprinerParking.setAdapter(adapter);
+                                sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                                    @Override
+                                    public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                        parkingidSelected = idParkinglist.get(sprinerParking.getSelectedItemPosition());
+                                    }
+
+                                    @Override
+                                    public void onNothingSelected(AdapterView<?> adapterView) {
+
+                                    }
+                                });
+                                    dialog.show();
+                                }catch (Exception e) {
+                                    showDialog("Hãy tạo bãi xe trước",0);
+                                }
                             }
-                            parkingidSelected = idParkinglist.get(0);
-                            ArrayAdapter<String> adapter = new ArrayAdapter(mView.getContext(), android.R.layout.simple_spinner_item, dropdownList);
-                            adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-                            sprinerParking.setAdapter(adapter);
-                            sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                                @Override
-                                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                                    parkingidSelected = idParkinglist.get(sprinerParking.getSelectedItemPosition());
-                                }
 
-                                @Override
-                                public void onNothingSelected(AdapterView<?> adapterView) {
 
-                                }
-                            });
                         }
+                    });
 
-                    }
-                });
-                dialog.show();
+
 
             }
         });

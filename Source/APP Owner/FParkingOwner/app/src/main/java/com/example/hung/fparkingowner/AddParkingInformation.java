@@ -13,8 +13,10 @@ import android.location.Geocoder;
 import android.net.ConnectivityManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.PersistableBundle;
 import android.speech.RecognizerIntent;
 import android.speech.tts.TextToSpeech;
+import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AlertDialog;
@@ -69,7 +71,7 @@ import java.util.regex.Pattern;
 public class AddParkingInformation extends AppCompatActivity implements OnMapReadyCallback, IAsyncTaskHandler {
 
     String[] PARKINGLIST = {};
-    EditText tbAddressAddParking, tbOpenHourAddParking, tbOpenMinAddParking, tbCloseHourAddParking, tbCloseMinAddParking, tbSpace, tbPrice9AddParking, tbPrice16to29AddParking, tbPrice34to45AddParking;
+    EditText tbAddressAddParking, tbOpenHourAddParking, tbOpenMinAddParking, tbCloseHourAddParking, tbCloseMinAddParking, tbSpace,tbcurrentspace, tbPrice9AddParking, tbPrice16to29AddParking, tbPrice34to45AddParking;
 ScrollView scrollviewAddparking;
     private PlaceAutocompleteFragment placeAutocompleteFragment;
     ImageView backToHome;
@@ -79,7 +81,6 @@ ScrollView scrollviewAddparking;
     View mMapView;
 
     String cityID;
-    long latitude, longitude;
     Button btnAddParking, btnOK;
     Bitmap smallMarker;
     MaterialBetterSpinner betterSpinner;
@@ -156,10 +157,30 @@ ScrollView scrollviewAddparking;
             }
         }
     };
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState, @Nullable PersistableBundle persistentState) {
+        super.onCreate(savedInstanceState, persistentState);
+    }
+
+    @Override
+    public void recreate() {
+//        super.recreate();
+    finish();
+    startActivity(new Intent(this,AddParkingInformation.class));
+    }
+
+
     @Override
     protected void onResume() {
         super.onResume();
-        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            }
+        });
+
 
     }
 
@@ -175,7 +196,7 @@ ScrollView scrollviewAddparking;
         tbOpenMinAddParking = findViewById(R.id.tbOpenTimeMinAP);
         tbCloseHourAddParking = findViewById(R.id.tbCloseTimeHourAP);
         tbCloseMinAddParking = findViewById(R.id.tbCloseTimeMinAP);
-
+        tbcurrentspace = findViewById(R.id.tbCurrentSpaceAP);
         tbSpace = findViewById(R.id.tbTotalSpaceAP);
         tbPrice9AddParking = findViewById(R.id.tbPrice9AddParking2);
         tbPrice16to29AddParking = findViewById(R.id.tbPrice16to29AddParking2);
@@ -210,7 +231,12 @@ ScrollView scrollviewAddparking;
 //            }
 //        });
 
-
+        tbSpace.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                tbcurrentspace.setText(tbSpace.getText().toString());
+            }
+        });
         tbAddressAddParking.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -255,7 +281,7 @@ ScrollView scrollviewAddparking;
                         closemin = "0" + closemin;
                     }
                     String timeoc = openhour + ":" + openmin + "-" + closehour + ":" + closemin + "h";
-                    ParkingDTO parkingDTO = new ParkingDTO(0, tbAddressAddParking.getText().toString(), 0, 0, "", lat + "", lng + "", 3, timeoc, Integer.parseInt(tbSpace.getText().toString()), Integer.parseInt(cityID), price9, price1629, price3445);
+                    ParkingDTO parkingDTO = new ParkingDTO(0, tbAddressAddParking.getText().toString(), Integer.parseInt(tbcurrentspace.getText().toString()), 0, "", lat + "", lng + "", 3, timeoc, Integer.parseInt(tbSpace.getText().toString()), Integer.parseInt(cityID), price9, price1629, price3445);
                     new ManagerParkingTask("add", parkingDTO, null, new IAsyncTaskHandler() {
                         @Override
                         public void onPostExecute(Object o) {
@@ -373,7 +399,7 @@ ScrollView scrollviewAddparking;
         if (intent.resolveActivity(getPackageManager()) != null) {
             startActivityForResult(intent, 10);
         } else {
-            Toast.makeText(AddParkingInformation.this, "Khong ho tro", Toast.LENGTH_LONG).show();
+//            Toast.makeText(AddParkingInformation.this, "Khong ho tro", Toast.LENGTH_LONG).show();
         }
     }
 

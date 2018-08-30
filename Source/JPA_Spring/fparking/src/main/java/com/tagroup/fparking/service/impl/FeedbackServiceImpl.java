@@ -39,7 +39,7 @@ public class FeedbackServiceImpl implements FeedbackService {
 		Driver d = driverRepository.getOne(t.getId());
 		feedback.setName(d.getName());
 		feedback.setPhone(d.getPhone());
-		feedback.setType(1);
+		feedback.setType(0);
 		feedback.setStatus(0);
 		Date date = new Date();
 		feedback.setDate(date);
