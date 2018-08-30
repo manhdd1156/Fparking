@@ -806,7 +806,7 @@ public class AccountController {
 					m.put("price", currencyVN.format((booking.getPrice())));
 					m.put("totalFine", currencyVN.format(booking.getTotalfine()));
 					if ((booking.getComission() * 100) % 1 == 0) {
-						m.put("commission",  (int)(booking.getComission() * 100)+1);
+						m.put("commission",  (int)(booking.getComission() * 100));
 					} else {
 						m.put("commission", booking.getComission() * 100);
 					}
