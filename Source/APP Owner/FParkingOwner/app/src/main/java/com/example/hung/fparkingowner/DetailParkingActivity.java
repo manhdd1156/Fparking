@@ -139,10 +139,11 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                 if (o instanceof List) {
                     try {
                         listCityDTO = (ArrayList<CityDTO>) o;
+                        System.out.println("List cityDTO = " + listCityDTO);
                         for (int i = 0; i < listCityDTO.size(); i++) {
                             listCityString.add(listCityDTO.get(i).getCityName());
                         }
-                        System.out.println(listCityString);
+                        System.out.println("listCityString = " + listCityString);
                         ArrayAdapter<String> adapter = new ArrayAdapter(DetailParkingActivity.this, android.R.layout.simple_spinner_item, listCityString);
                         adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                         sprinerCity.setAdapter(adapter);
@@ -159,10 +160,11 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                             }
                         });
                         new GetTariffTask(Integer.parseInt(parkingid), DetailParkingActivity.this).execute((Void) null);
+                        System.out.println(">>>>>>>>>>>Kết thúc GetCityTask<<<<<<<<<<");
 //                    new ManagerParkingTask("getbyowner", null,null, DetailParkingActivity.this);
 
                     } catch (Exception e) {
-                        System.out.println(e);
+                        System.out.println("lỗi getCityTask : " + e);
                     }
                 }
             }
@@ -344,8 +346,12 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                 price9.setText((int) Session.currentParking.getPrice9() + "");
                 price916.setText((int) Session.currentParking.getPrice1629() + "");
                 price1648.setText((int) Session.currentParking.getPrice3445() + "");
-                sprinerCity.setSelection(Session.currentParking.getCity_id());
-                // disable button when parkring is block, .....
+                for(int i =0;i<listCityDTO.size();i++) {
+                    if(listCityDTO.get(i).getCityID()==Session.currentParking.getCity_id()) {
+                        sprinerCity.setSelection(i);
+                        break;
+                    }
+                }
                 if (Session.currentParking.getStatus() == 2) {
                     System.out.println("status = 2");
                     btnUpdate.setEnabled(false);

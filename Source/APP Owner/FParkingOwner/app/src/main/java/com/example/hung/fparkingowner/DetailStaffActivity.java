@@ -291,6 +291,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                     Intent i = new Intent(DetailStaffActivity.this,StaffManagement.class);
                     finish();
                     startActivity(i);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                 }
             }
         });
@@ -329,13 +330,10 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
         for (int i = 0; i < slist.size(); i++) {
             if (slist.get(i).getId() == Integer.parseInt(staffid)) {
 //                System.out.println("staff = " + slist.get(i).getParking_address());
-                name.setText("");
-                phone.setText("");
-                address.setText("");
-                changePass.setText("");
-                name.setHint(slist.get(i).getName());
-                phone.setHint(slist.get(i).getPhone());
-                address.setHint(slist.get(i).getAddress());
+                name.setText(slist.get(i).getName());
+                phone.setText(slist.get(i).getPhone());
+                address.setText(slist.get(i).getAddress());
+
                 for (int j = 0; j < dropdownList.size(); j++) {
                     if (dropdownList.get(j).equals(slist.get(i).getParking_address())) {
                         sprinerParking.setSelection(j);

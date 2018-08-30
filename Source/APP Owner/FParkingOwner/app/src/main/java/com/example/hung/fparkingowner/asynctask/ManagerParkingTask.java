@@ -199,8 +199,8 @@ class UpdateParkingTask extends AsyncTask<Void, Void, Boolean> {
 
         } catch (Exception ex) {
             Log.e("Error:", ex.getMessage());
+            return false;
         }
-        return false;
     }
 
     @Override

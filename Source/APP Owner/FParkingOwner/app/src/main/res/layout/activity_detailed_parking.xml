@@ -496,7 +496,8 @@
                     android:layout_marginBottom="200dp"
                     android:text="Yêu cầu của bạn sẽ được xử lý trong 24 giờ"
                     android:textColor="@android:color/holo_red_dark"
-                    android:textStyle="bold" />
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
             </RelativeLayout>
         </LinearLayout>
     </ScrollView>

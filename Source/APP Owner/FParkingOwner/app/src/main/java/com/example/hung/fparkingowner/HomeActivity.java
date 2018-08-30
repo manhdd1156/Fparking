@@ -325,10 +325,6 @@ class MyRecyclerViewAdapter extends RecyclerView
             holder.imgCancel.setBackgroundResource(R.drawable.clock);
             holder.imgCancel.setVisibility(View.VISIBLE);
             System.out.println("3"+mDataset.get(position).getAddress());
-        }else if(mDataset.get(position).getStatus()==4) {
-            holder.imgCancel.setBackgroundResource(R.drawable.refresh);
-            holder.imgCancel.setVisibility(View.VISIBLE);
-            System.out.println("4"+mDataset.get(position).getAddress());
         }else if(mDataset.get(position).getStatus()==5) {
             holder.imgCancel.setBackgroundResource(R.drawable.close);
             holder.imgCancel.setVisibility(View.VISIBLE);

@@ -28,6 +28,7 @@ import com.tagroup.fparking.service.ParkingService;
 import com.tagroup.fparking.service.StaffService;
 import com.tagroup.fparking.service.TariffService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.VehicletypeService;
 import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.City;
 import com.tagroup.fparking.service.domain.Fine;
@@ -43,7 +44,7 @@ public class ParkingServiceImpl implements ParkingService {
 	@Autowired
 	private ParkingRepository parkingRepository;
 	@Autowired
-	private StaffService staffService;
+	private VehicletypeService vehicletypeService;
 	@Autowired
 	private VehicleService vehicleService;
 	@Autowired
@@ -173,13 +174,7 @@ public class ParkingServiceImpl implements ParkingService {
 						count++;
 					}
 				}
-//				System.out.println("ParkingServiceIml/Update currentspace = " + parking.getCurrentspace());
-//				System.out.println("ParkingServiceIml/Update count = " + count);
-
 				if(temp.getTotalspace() - parking.getCurrentspace()<count) {
-//					System.out.println("total = " + temp.getTotalspace() + ";current = " + parking.getCurrentspace());
-//					System.out.println("ParkingServiceIml/Update count = " + count);
-//					System.out.println("====");
 					return null;
 				}
 				temp.setCurrentspace(parking.getCurrentspace());
@@ -390,38 +385,30 @@ public class ParkingServiceImpl implements ParkingService {
 	@Override
 	public Parking updatetariff(Long parkingid, double price9, double price916, double price1629) throws Exception {
 		// TODO Auto-generated method stub
-		Tariff t = new Tariff();
-//		System.out.println("parking : " + p);
-		Parking p= parkingRepository.getOne(parkingid);
-//		System.out.println("parking = : " + p);
-		Vehicletype vt = new Vehicletype();
-		if(!(price9+"").equals("")) {
-			t.setPrice(price9);
-			vt.setId((long)1);
-			t.setVehicletype(vt);
-			t.setParking(p);
-			t = tariffRepository.save(t);
-			System.out.println("tariff1  = : " + t);
-		}
-		if(!(price916+"").equals("")) {
-			t = new Tariff();
-			t.setPrice(price916);
-			vt.setId((long)2);
-			t.setVehicletype(vt);
-			t.setParking(p);
-			t = tariffRepository.save(t);
-			System.out.println("tariff2  = : " + t);
+		List<Tariff> tariffList = tariffRepository.findAll();
+		Parking p = getById(parkingid);
+		for (Tariff tariff : tariffList) {
+			if(tariff.getParking().getId()==parkingid) {
+				if(tariff.getVehicletype().getId()==1 && !(price9+"").equals("")) {
+					
+					tariff.setPrice(price9);
+					tariff = tariffRepository.save(tariff);
+					System.out.println("tariff1  = : " + tariff);
+				}
+				else if(tariff.getVehicletype().getId()==2 && !(price916+"").equals("")) {
+					tariff.setPrice(price916);
+					tariff = tariffRepository.save(tariff);
+					System.out.println("tariff2  = : " + tariff);
+				}
+				
+				else if(tariff.getVehicletype().getId()==3 &&!(price1629+"").equals("")) {
+					tariff.setPrice(price1629);
+					tariff = tariffRepository.save(tariff);
+					System.out.println("tariff3  = : " + tariff);
+				}
+			}
 		}
 		
-		if(!(price1629+"").equals("")) {
-			t = new Tariff();
-			t.setPrice(price1629);
-			vt.setId((long)3);
-			t.setVehicletype(vt);
-			t.setParking(p);
-			t = tariffRepository.save(t);
-			System.out.println("tariff3  = : " + t);
-		}
 		return p;
 	}
 

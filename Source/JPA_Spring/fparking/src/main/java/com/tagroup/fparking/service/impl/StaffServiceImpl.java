@@ -68,13 +68,13 @@ public class StaffServiceImpl implements StaffService {
 		// TODO Auto-generated method stub
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			if (t.getType().equals("STAFF")) {
+//			if (t.getType().equals("STAFF")) {
 				System.out.println("staffServiceimp/update staff = " + staff);
 				List<Staff> slist = getAll();
 				for (Staff s : slist) {
 					if (s.getId() == staff.getId()) {
 						staff.setParking(s.getParking());
-						if (staff.getPassword() == null)
+						if (staff.getPassword() == null && t.getType().equals("STAFF"))
 							staff.setPassword(s.getPassword());
 						boolean flag = false;
 						for (Staff staff2 : slist) {
@@ -89,18 +89,18 @@ public class StaffServiceImpl implements StaffService {
 
 					}
 				}
-			} else if (t.getType().equals("OWNER")) {
-				List<Staff> slist = getAll();
-				for (Staff s : slist) {
-					if (s.getPhone().equals(staff.getPhone())) {
-						throw new APIException(HttpStatus.CONFLICT, "phone of Staff is Exist");
-					} else {
-						System.out.println("=======");
-						return staffRepository.save(staff);
-					}
-				}
-				return null;
-			}
+//			} else if (t.getType().equals("OWNER")) {
+//				List<Staff> slist = getAll();
+//				for (Staff s : slist) {
+//					if (s.getPhone().equals(staff.getPhone())) {
+//						throw new APIException(HttpStatus.CONFLICT, "phone of Staff is Exist");
+//					} else {
+//						System.out.println("=======");
+//						return staffRepository.save(staff);
+//					}
+//				}
+//				return null;
+//			}
 		} catch (Exception e) {
 			System.out.println(e);
 		}

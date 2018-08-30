@@ -103,22 +103,18 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 //                        System.out.println("dia chỉ : " + listParkingDTO.get(i).getId() + ";" + listParkingDTO.get(i).getAddress());
                     }
 //                    System.out.println("========================= " + listParkingString);
-                    ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_dropdown_item_1line, listParkingString);
-//                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                    ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_spinner_item, listParkingString);
+                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
                     sprinerParking.setAdapter(adapter);
                     sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                         @Override
                         public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-//                            if(sprinerParking.getSelectedItemPosition()!=0) {
-//                            System.out.println("spinnerparking  = " + sprinerParking.getSelectedItemPosition());
                             if (i == 0) {
                                 parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition()).getId();  // chọn index của combobox parking
                             } else if (i > 0) {
                                 parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition() - 1).getId();
                             }
                             positionSpinner = i;
-//                            System.out.println("possiopn = " + i);
-//                            System.out.println("parkingidSelected : " + parkingidSelected);
                         }
 
                         @Override

@@ -52,18 +52,6 @@
         tools:layout_editor_absoluteX="141dp"
         tools:layout_editor_absoluteY="16dp" />
 
-    <ImageView
-        android:id="@+id/imgInfor1"
-        android:layout_width="match_parent"
-        android:layout_height="450dp"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/imageView4"
-        android:layout_marginTop="20dp"
-        android:paddingLeft="10dp"
-        android:paddingRight="10dp"
-        android:scaleType="fitXY"
-        app:srcCompat="@drawable/checkoutinfo" />
-
 
     <Button
         android:id="@+id/btnStat"
@@ -80,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinnerStatistic"
-        android:layout_marginTop="10dp"
+        android:layout_marginTop="-15dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Lượt thanh toán:" />
 
@@ -196,10 +184,8 @@
         android:id="@+id/statistic_list_view"
         android:layout_width="369dp"
         android:layout_height="470dp"
-        android:layout_alignParentBottom="true"
-        android:layout_alignTop="@+id/imgInfor1"
-        android:layout_centerHorizontal="true"
-        android:layout_marginBottom="49dp" />
+        android:layout_below="@+id/imageView4"
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:id="@+id/textView6"
@@ -223,11 +209,13 @@
     <Spinner
         android:id="@+id/spinnerStatistic"
         android:layout_width="wrap_content"
-        android:layout_height="15dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/tvFromD"
 
-        android:layout_marginTop="10dp"
-        android:layout_toEndOf="@+id/imageViewBackStatistical" />
+        android:layout_marginTop="-15dp"
+        android:layout_toEndOf="@+id/imageViewBackStatistical"
+        android:layoutMode="opticalBounds"
+        android:persistentDrawingCache="none" />
 
 
 </RelativeLayout>
