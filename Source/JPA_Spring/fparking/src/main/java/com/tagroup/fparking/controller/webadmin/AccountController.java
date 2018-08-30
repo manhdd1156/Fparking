@@ -184,7 +184,7 @@ public class AccountController {
 			case 1:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getType() == 0 && fine.getDate() != null
 							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
 						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
@@ -207,7 +207,7 @@ public class AccountController {
 			case 2:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getType() == 0 && fine.getDate() != null
 							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 23:59:59").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
 						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
@@ -230,7 +230,7 @@ public class AccountController {
 			case 3:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getType() == 0 && fine.getDate() != null
 							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 23:59:59").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
@@ -255,7 +255,7 @@ public class AccountController {
 			default:
 				for (Fine fine : listFine) {
 					HashMap<String, Object> m = new HashMap<>();
-					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null
+					if (fine.getDrivervehicle().getDriver().getId() == id && fine.getType() == 0 && fine.getDate() != null
 							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
 							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 23:59:59").getTime()) {
 						m.put("dateFine", sdf.format(fine.getDate()));
@@ -279,7 +279,7 @@ public class AccountController {
 		} else {
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getDrivervehicle().getDriver().getId() == id && fine.getDate() != null) {
+				if (fine.getDrivervehicle().getDriver().getId() == id && fine.getType() == 0 && fine.getDate() != null) {
 					m.put("dateFine", sdf.format(fine.getDate()));
 					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
 					m.put("address", fine.getParking().getAddress());
