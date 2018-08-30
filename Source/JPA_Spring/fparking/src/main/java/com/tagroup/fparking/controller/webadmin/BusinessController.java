@@ -232,7 +232,6 @@ public class BusinessController {
 			listFineTariff = fineTariffService.getAll();
 			for (Finetariff finetariff : listFineTariff) {
 				HashMap<String, Object> m = new HashMap<>();
-				double pricefine = finetariff.getPrice();
 				m.put("price", currencyVN.format(finetariff.getPrice()));
 				m.put("id", finetariff.getId());
 				m.put("vehicletype", finetariff.getVehicletype().getType());
@@ -240,7 +239,7 @@ public class BusinessController {
 			}
 
 		} catch (Exception e) {
-			// TODO: handle exception
+			return "404";
 		}
 		model.put("arrayListFineTariff", arrayListFineTariff);
 		return "managementfine";

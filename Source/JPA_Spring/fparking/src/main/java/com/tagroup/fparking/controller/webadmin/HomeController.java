@@ -59,6 +59,7 @@ public class HomeController {
 	// String timeStamp = new
 	// SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	Locale locale = new Locale("vi", "VN");
+
 	String timeStamp = new SimpleDateFormat("dd-MM-yyyy").format(Calendar.getInstance().getTime());
 	SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 	DateFormat sdf2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
@@ -170,15 +171,15 @@ public class HomeController {
 			double revenueByFine = 0;
 			double revenueByCommistion = 0;
 			for (Booking booking : listBooking) {
-				if (booking.getTimeout() != null && timeStamp.equals(sdf.format(booking.getTimeout()))
-						&& booking.getStatus() == 3) {
+				if (booking.getTimeout() != null && booking.getStatus() == 3
+						&& timeStamp.equals(sdf.format(booking.getTimeout()))) {
 					totalTrasaction += 1;
 					revenueByCommistion += booking.getAmount() * booking.getComission();
 				}
 			}
 
 			for (Fine fine : listFine) {
-				if (fine.getDate() != null && timeStamp.equals(sdf.format(fine.getDate())) && fine.getStatus() == 1) {
+				if (fine.getDate() != null && fine.getStatus() == 1 && timeStamp.equals(sdf.format(fine.getDate()))) {
 					revenueByCommistion += fine.getPrice();
 				}
 			}
