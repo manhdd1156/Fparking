@@ -323,82 +323,89 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void showDialogChangeCar(final List<BookingDTO> bookingList, final int position) {
-        // dialog đặt chỗ nhanh
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
-        View mView = getLayoutInflater().inflate(R.layout.quick_license_plate, null);
-        mBuilder.setView(mView);
-        mBuilder.setCancelable(true);
-        dialog = mBuilder.create();
+        try {
+            // dialog đặt chỗ nhanh
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(HomeActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.quick_license_plate, null);
+            mBuilder.setView(mView);
+            mBuilder.setCancelable(true);
+            dialog = mBuilder.create();
 
-        carouselPicker = (CarouselPicker) mView.findViewById(R.id.carouselPickerLicensePlatesQLS);
-        buttonOK = mView.findViewById(R.id.btnOKQLS);
-        buttonCancel = mView.findViewById(R.id.btnCancelQLS);
+            carouselPicker = (CarouselPicker) mView.findViewById(R.id.carouselPickerLicensePlatesQLS);
+            buttonOK = mView.findViewById(R.id.btnOKQLS);
+            buttonCancel = mView.findViewById(R.id.btnCancelQLS);
 
-        // sự kiện nút cancel dialog
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-                showDialogAddNewCar(bookingList,position);
+            // sự kiện nút cancel dialog
+            buttonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                    showDialogAddNewCar(bookingList, position);
 //
-            }
-        });
+                }
+            });
 
-        // sự kiện nút ok dialog
-        buttonOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                VehicleDTO vtemp = new VehicleDTO();
-                vtemp.setDriverVehicleID(bookingList.get(position).getDriverVehicleID());
-                vtemp.setVehicleID(vehicleIDSelected);
-                new VehicleTask("update", vtemp, bookingList.get(position).getDriverID() + "", new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        dialog.cancel();
-                            if((boolean) o) {
+            // sự kiện nút ok dialog
+            buttonOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    System.out.println("================");
+                    VehicleDTO vtemp = new VehicleDTO();
+                    vtemp.setDriverVehicleID(bookingList.get(position).getDriverVehicleID());
+                    vtemp.setId((long)bookingList.get(position).getBookingID()); // lưu tạm bookingid vào vtemp_id để gửi lên service thành booking_id
+                    vtemp.setVehicleID(vehicleIDSelected);
+                    System.out.println("=================2 " + vtemp);
+                    new VehicleTask("update", vtemp, bookingList.get(position).getDriverID() + "", new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            dialog.cancel();
+                            if ((boolean) o) {
 
                                 showDialog("Đổi thành công");
-                            }else {
+                            } else {
                                 showDialog("Đổi không thành công");
                             }
-                    }
-                });
-            }
-        });
-
-        carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                vehicleIDSelected = vList.get(position).getVehicleID();
-//                Log.e("drivervehicleID", vehicle.get(position).getDriverVehicleID() + "");
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-
-            }
-        });
-        new VehicleTask("select", null, bookingList.get(position).getDriverID() + "", new IAsyncTaskHandler() {
-            @Override
-            public void onPostExecute(Object o) {
-                vList = (ArrayList<VehicleDTO>) o;
-                ArrayList textItems = new ArrayList<>();
-                if (vList.size() > 0) {
-                    for (int i = 0; i < vList.size(); i++) {
-                        textItems.add(new CarouselPicker.TextItem(vList.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
-                    }
-                    vehicleIDSelected = vList.get(0).getVehicleID();
-                    CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(HomeActivity.this, textItems, 0);
-                    carouselPicker.setAdapter(textAdapter);
-                    dialog.show();
+                        }
+                    });
                 }
-            }
-        });
+            });
+
+            carouselPicker.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    vehicleIDSelected = vList.get(position).getVehicleID();
+//                Log.e("drivervehicleID", vehicle.get(position).getDriverVehicleID() + "");
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
+            new VehicleTask("select", null, bookingList.get(position).getDriverID() + "", new IAsyncTaskHandler() {
+                @Override
+                public void onPostExecute(Object o) {
+                    vList = (ArrayList<VehicleDTO>) o;
+                    ArrayList textItems = new ArrayList<>();
+                    if (vList.size() > 0) {
+                        for (int i = 0; i < vList.size(); i++) {
+                            textItems.add(new CarouselPicker.TextItem(vList.get(i).getLicenseplate(), 6)); // 5 is text size (sp)
+                        }
+                        vehicleIDSelected = vList.get(0).getVehicleID();
+                        CarouselPicker.CarouselViewAdapter textAdapter = new CarouselPicker.CarouselViewAdapter(HomeActivity.this, textItems, 0);
+                        carouselPicker.setAdapter(textAdapter);
+                        dialog.show();
+                    }
+                }
+            });
+        }catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 
@@ -425,6 +432,7 @@ public class HomeActivity extends AppCompatActivity
                     showDialog("Biển số xe không hợp lệ!");
                 } else {
                     VehicleDTO addnewcar = new VehicleDTO();
+                    addnewcar.setId((long)bookingList.get(pos).getBookingID()); // lưu tạm biến bookingid vào vehicleID để bên asynctask gửi lên server
                     addnewcar.setType(type);
                     addnewcar.setColor(editTextColor.getText().toString());
                     addnewcar.setLicenseplate(editTextLS1.getText().toString().toUpperCase() + "-" + editTextLS2.getText().toString());

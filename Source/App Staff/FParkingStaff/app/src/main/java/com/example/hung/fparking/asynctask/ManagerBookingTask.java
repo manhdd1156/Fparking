@@ -103,7 +103,7 @@ class GetBookingTask extends AsyncTask<Void, Void, List> {
                     continue;
                 }
                 double price = oneBooking.getDouble("price");
-                int driverVehicleID = oneBooking.getInt("id");
+                int driverVehicleID = oneBooking.getJSONObject("drivervehicle").getInt("id");
                 String timein = oneBooking.getString("timein");
                 String timeout = oneBooking.getString("timeout");
                 int parkingID = oneBooking.getJSONObject("parking").getInt("id");

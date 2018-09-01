@@ -5,15 +5,19 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.dto.DriverVehicleDTO;
+import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
+import com.tagroup.fparking.security.Token;
 import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.VehicletypeService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Vehicle;
 
@@ -27,7 +31,9 @@ public class VehicleServiceImpl implements VehicleService {
 	private DriverVehicleRepository drivervehicleRepository;
 	@Autowired
 	private DriverRepository driverRepository;
-
+	@Autowired
+	private BookingRepository bookingRepository;
+	
 	@Override
 	public List<Vehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -48,14 +54,25 @@ public class VehicleServiceImpl implements VehicleService {
 
 	@Override
 	public DriverVehicle create(DriverVehicleDTO drivervehicle) throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			Vehicle v = new Vehicle();
 			DriverVehicle dv = new DriverVehicle();
+			System.out.println(drivervehicle);
+			dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
 			Vehicle v1 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
 			Vehicle v2 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 0);
 			if (v1 != null && v2 == null) { // TH 2
 				System.out.println("VehicleServiceImpl/create/TH2 : v1 = " + v1.toString());
-				return drivervehicleRepository.save(dv);
+				dv.setVehicle(v1);
+				dv.setStatus(1);
+				dv = drivervehicleRepository.save(dv);
+				if(t.getType().equals("STAFF")) {
+				Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+				bookingUpdate.setDrivervehicle(dv);
+				bookingUpdate = bookingRepository.save(bookingUpdate);
+				}
+				return dv;
 			} else if (v1 == null && v2 != null) { // TH 1
 
 				v2.setColor(drivervehicle.getColor());
@@ -67,7 +84,13 @@ public class VehicleServiceImpl implements VehicleService {
 						.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v2);
 				if (dv != null) { // TH4
 					dv.setStatus(1);
-					return drivervehicleRepository.save(dv);
+					dv = drivervehicleRepository.save(dv);
+					if(t.getType().equals("STAFF")) {
+					Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+					bookingUpdate.setDrivervehicle(dv);
+					bookingUpdate = bookingRepository.save(bookingUpdate);
+					}
+					return dv;
 				} else if (dv == null) { // TH5
 					DriverVehicle dvtemp = new DriverVehicle();
 					dvtemp.setVehicle(v);
@@ -75,7 +98,13 @@ public class VehicleServiceImpl implements VehicleService {
 					dvtemp.setVehicle(v2);
 					dvtemp.setStatus(1);
 					System.out.println("VehicleServiceImpl/create/TH5 : dv = " + dvtemp.toString());
-					return drivervehicleRepository.save(dvtemp);
+					dvtemp = drivervehicleRepository.save(dvtemp);
+					if(t.getType().equals("STAFF")) {
+					Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+					bookingUpdate.setDrivervehicle(dvtemp);
+					bookingUpdate = bookingRepository.save(bookingUpdate);
+					}
+					return dvtemp;
 				}
 			} else if (v1 == null && v2 == null) { // TH3
 				// else v1== null và v2 == null
@@ -88,7 +117,13 @@ public class VehicleServiceImpl implements VehicleService {
 				dv.setVehicle(v);
 				dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
 				dv.setStatus(1);
-				return drivervehicleRepository.save(dv);
+				dv = drivervehicleRepository.save(dv);
+				if(t.getType().equals("STAFF")) {
+				Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+				bookingUpdate.setDrivervehicle(dv);
+				bookingUpdate = bookingRepository.save(bookingUpdate);
+				}
+				return dv;
 			}
 		} catch (Exception e) {
 			System.out.println(e);

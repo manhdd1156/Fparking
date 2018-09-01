@@ -45,31 +45,53 @@
 
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home" />
-        <activity android:name=".ProfileActivity" />
-        <activity android:name=".other.Contact" />
-        <activity android:name=".other.Guide" />
-        <activity android:name=".other.TermsAndConditions" />
-        <activity android:name=".StatisticalActivity" />
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".ProfileActivity" android:screenOrientation="portrait"
+            />
+        <activity android:name=".other.Contact"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".other.Guide"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".other.TermsAndConditions"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".StatisticalActivity"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".change_space.NumberPickerActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth"
+            android:screenOrientation="portrait"
+            />
         <activity
             android:name=".dialog.DialogActivity"
-            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar" />
-        <activity android:name=".login.LoginActivity"/>
+            android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar"
+            android:screenOrientation="portrait"
+            />
+        <activity android:name=".login.LoginActivity"
+            android:screenOrientation="portrait"
+            />
 
-        <activity android:name=".IntroApplication">
+        <activity android:name=".IntroApplication"
+            android:screenOrientation="portrait"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
         </activity>
         <activity
             android:name=".ChangePassword"
             android:noHistory="true" />
-        <activity android:name=".AlertDialog" />
+        <activity android:name=".AlertDialog"
+            android:screenOrientation="portrait"
+            />
     </application>
 
 </manifest>

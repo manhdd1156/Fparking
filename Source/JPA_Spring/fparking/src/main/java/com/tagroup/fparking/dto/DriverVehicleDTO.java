@@ -87,9 +87,12 @@ public class DriverVehicleDTO {
 
 	@Override
 	public String toString() {
-		return "DriverVehicleDTO [driverid=" + driverid + ", licenseplate=" + licenseplate + ", type=" + type
-				+ ", color=" + color + "]";
+		return "DriverVehicleDTO [id=" + id + ", driverid=" + driverid + ", vehicleid=" + vehicleid + ", licenseplate="
+				+ licenseplate + ", type=" + type + ", color=" + color + "]";
 	}
+
+
+	
 
 
 

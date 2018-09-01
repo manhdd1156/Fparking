@@ -278,12 +278,14 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     @Override
     public void onPostExecute(Object o) {
         ArrayList<BookingDTO> lstBooking = (ArrayList<BookingDTO>) o;
-        for(int i = 0;i<lstBooking.size();i++) {
-            if(lstBooking.get(i).getTimein().equals("null") && lstBooking.get(i).getTimeout().equals("null")) {
-                lstBooking.remove(lstBooking.get(i));
-                i--;
+        if(lstBooking!=null && lstBooking.size()>0) {
+            for (int i = 0; i < lstBooking.size(); i++) {
+                if (lstBooking.get(i).getTimein().equals("null") && lstBooking.get(i).getTimeout().equals("null")) {
+                    lstBooking.remove(lstBooking.get(i));
+                    i--;
+                }
             }
-        }
+
         ArrayList<BookingDTO> lstBookingAdapter = new ArrayList<>();
 
 
@@ -328,7 +330,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     new ManagerParkingTask("getFines", p, new IAsyncTaskHandler() {
                         @Override
                         public void onPostExecute(Object o) {
-                            tvParkingFines.setText(o.toString());
+                            tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString()))+" vnđ");
                         }
                     });
                     for (int i = 0; i < lstBooking.size(); i++) {
@@ -357,7 +359,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     new ManagerParkingTask("getFines", p, new IAsyncTaskHandler() {
                         @Override
                         public void onPostExecute(Object o) {
-                            tvParkingFines.setText(o.toString());
+                            tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString()))+" vnđ");
                         }
                     });
                     System.out.println("toDate2 = " + toDate.getTime());
@@ -385,7 +387,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     new ManagerParkingTask("getFines", p, new IAsyncTaskHandler() {
                         @Override
                         public void onPostExecute(Object o) {
-                            tvParkingFines.setText(o.toString());
+                            tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString()))+" vnđ");
                         }
                     });
                     System.out.println("fromDate3 =" + fromDate.getTime()  + " ;;;  toDate3 = " + toDate.getTime());
@@ -416,6 +418,6 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
             System.out.println("lỗi in onPost StatisticalActivity : " + e);
         }
         Log.d("Statistical_onPost: ", lstBooking.toString());
-
+        }
     }
 }

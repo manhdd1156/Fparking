@@ -42,7 +42,9 @@
             </intent-filter>
         </receiver>
 
-        <activity android:name=".Theme">
+        <activity
+            android:name=".Theme"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -51,27 +53,57 @@
         </activity>
         <activity
             android:name=".HomeActivity"
-            android:label="@string/title_activity_home"></activity>
-        <activity android:name=".profile.ProfileActivity" />
+            android:label="@string/title_activity_home"
+            android:screenOrientation="portrait"></activity>
+        <activity
+            android:name=".profile.ProfileActivity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".change_space.NumberPickerActivity"
+            android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Holo.Light.Dialog.NoActionBar.MinWidth" />
 
-        <activity android:name=".login.LoginActivity"></activity>
-        <activity android:name=".login.SignUpActivity" />
-        <activity android:name=".login.ForgotPassOtp_Activity" />
+        <activity
+            android:name=".login.LoginActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.SignUpActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".login.ForgotPassOtp_Activity"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".profile.ChangePassword"
-            android:noHistory="true" />
-        <activity android:name=".dialog.AlertDialog" />
-        <activity android:name=".other.Contact" />
-        <activity android:name=".StaffManagement" />
-        <activity android:name=".DetailParkingActivity" />
-        <activity android:name=".DetailStaffActivity" />
-        <activity android:name=".other.TermsAndConditions" />
-        <activity android:name=".other.Guide" />
-        <activity android:name=".dialog.DialogAddParking" />
-        <activity android:name=".StatisticalActivity" />
+            android:noHistory="true"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dialog.AlertDialog"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".other.Contact"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StaffManagement"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DetailParkingActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".DetailStaffActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".other.TermsAndConditions"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".other.Guide"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".dialog.DialogAddParking"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".StatisticalActivity"
+            android:screenOrientation="portrait" />
+
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
@@ -88,10 +120,15 @@
 
         <activity
             android:name="com.facebook.accountkit.ui.AccountKitActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/AppLoginTheme"
             tools:replace="android:theme" />
-        <activity android:name=".dialog.DialogAddStaff" />
-        <activity android:name=".AddParkingInformation" />
+        <activity
+            android:name=".dialog.DialogAddStaff"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AddParkingInformation"
+            android:screenOrientation="portrait" />
 
     </application>
 

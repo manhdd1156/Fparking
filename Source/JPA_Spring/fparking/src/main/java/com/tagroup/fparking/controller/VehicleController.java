@@ -17,6 +17,7 @@ import com.tagroup.fparking.dto.DriverVehicleDTO;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.VehicleService;
 import com.tagroup.fparking.service.VehicletypeService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Vehicle;
 import com.tagroup.fparking.service.domain.Vehicletype;
@@ -91,11 +92,12 @@ public class VehicleController {
 
 	}
 
-	// change car of Driver
+	// change car of Driver when checkin
 	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
-		DriverVehicle respone = drivervehicleService.update(drivervehicle);
+		System.out.println("drivervehicle = " + drivervehicle);
+		Booking respone = drivervehicleService.updateDrivervehicleToBooking(drivervehicle);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}

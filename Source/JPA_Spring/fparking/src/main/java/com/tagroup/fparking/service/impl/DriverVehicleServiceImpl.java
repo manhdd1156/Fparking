@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.tagroup.fparking.controller.error.APIException;
 import com.tagroup.fparking.dto.DriverFineDTO;
 import com.tagroup.fparking.dto.DriverVehicleDTO;
+import com.tagroup.fparking.repository.BookingRepository;
 import com.tagroup.fparking.repository.DriverRepository;
 import com.tagroup.fparking.repository.DriverVehicleRepository;
 import com.tagroup.fparking.repository.FineRepository;
@@ -17,6 +18,7 @@ import com.tagroup.fparking.repository.NotificationRepository;
 import com.tagroup.fparking.repository.VehicleRepository;
 import com.tagroup.fparking.service.DriverVehicleService;
 import com.tagroup.fparking.service.NotificationService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.DriverVehicle;
 import com.tagroup.fparking.service.domain.Fine;
 import com.tagroup.fparking.service.domain.Notification;
@@ -32,7 +34,8 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	private DriverRepository driverRepository;
 	@Autowired
 	private FineRepository fineRepository;
-
+	@Autowired
+	private BookingRepository bookingRepository;
 	@Autowired
 	NotificationRepository notificationRepository;
 	@Autowired
@@ -74,21 +77,34 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 	@Override
-	public DriverVehicle update(DriverVehicleDTO drivervehicleDTO) {
-
+	public Booking updateDrivervehicleToBooking(DriverVehicleDTO drivervehicleDTO) {
+		try {
+		System.out.println(drivervehicleDTO);
+		DriverVehicle dv = new DriverVehicle();
+		dv.setVehicle(vehicleRepository.getOne(drivervehicleDTO.getVehicleid()));
 		List<DriverVehicle> dvList = getAll();
+		// tìm id trong list drivervehicle để lấy driverid 
 		for (DriverVehicle driverVehicle2 : dvList) {
-			if(driverVehicle2.getId() == drivervehicleDTO.getId() )
+			if(driverVehicle2.getId() == drivervehicleDTO.getId())
 			{ 
-				DriverVehicle dv = new DriverVehicle();
-				dv.setId(drivervehicleDTO.getId());
-				dv.setVehicle(vehicleRepository.getOne(drivervehicleDTO.getVehicleid()));
-				return driverVehicleRepository.save(dv);
-				
+				dv.setDriver(driverVehicle2.getDriver());
+				break;
 			}
 		}
-		return null;
-
+		for (DriverVehicle driverVehicle2 : dvList) {
+			if(driverVehicle2.getDriver() == dv.getDriver() && driverVehicle2.getVehicle() == dv.getVehicle())
+			{ 
+				dv.setId(driverVehicle2.getId());
+				break;
+			}
+		}
+		Booking bookingUpdate = bookingRepository.getOne(drivervehicleDTO.getDriverid());
+			bookingUpdate.setDrivervehicle(dv);
+			
+		return bookingRepository.save(bookingUpdate);
+		}catch (Exception e) {
+			throw new APIException(HttpStatus.CONFLICT, "Something went wrong");
+		}
 	}
 
 	@Override

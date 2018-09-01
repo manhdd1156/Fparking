@@ -8,6 +8,7 @@ import com.example.hung.fparking.config.Session;
 import com.example.hung.fparking.dto.TypeDTO;
 import com.example.hung.fparking.dto.VehicleDTO;
 import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -66,7 +67,6 @@ class GetVehicle extends AsyncTask<Void, Void, Boolean> {
 
                 vehicle.add(new VehicleDTO((long) vehicleID, driverVehicleID, status, vehicleID, licenseplate, type, vehicleTypeID, color));
             }
-
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -98,42 +98,44 @@ class AddVehicle extends AsyncTask<Void, Void, Boolean> {
         HttpHandler httpHandler = new HttpHandler();
         try {
             JSONObject formData = new JSONObject();
+            formData.put("id", v.getId()); // lưu tạm biến bookingid vào id
             formData.put("driverid", action);
             formData.put("licenseplate", v.getLicenseplate());
             formData.put("color", v.getColor());
             formData.put("type", v.getType());
             String result = httpHandler.requestMethod(Constants.API_URL + "vehicles", formData.toString(), "POST");
+            JSONObject jsonObject = new JSONObject(result);
 //            Log.e("toa do: ", Constants.API_URL + "vehicles" + Session.currentDriver.getId() + v.getLicenseplate() + result);
 
-            if (result.contains("ok")) {
-                String json = httpHandler.get(Constants.API_URL + "vehicles/drivers/" + action);
-//                Log.e("toa do: ", Constants.API_URL + "vehicles/drivers/" + action);
-                JSONArray jsonArray = new JSONArray(json);
-
-                for (int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject c = jsonArray.getJSONObject(i);
-
-                    int driverVehicleID = c.getInt("id");
-                    int status = c.getInt("status");
-
-                    JSONObject vehicleObject = c.getJSONObject("vehicle");
-                    int vehicleID = vehicleObject.getInt("id");
-                    String licenseplate = vehicleObject.getString("licenseplate");
-                    String color = vehicleObject.getString("color");
-
-                    JSONObject vehicletype = vehicleObject.getJSONObject("vehicletype");
-                    int vehicleTypeID = vehicletype.getInt("id");
-                    String type = vehicletype.getString("type");
-//                    (Long id, int driverVehicleID, int status, int vehicleID, String licenseplate, String type, int vehicleTypeID, String color) {
-                    vehicle.add(new VehicleDTO((long) vehicleID, driverVehicleID, status, vehicleID, licenseplate, type, vehicleTypeID, color));
-                }
+//            if (result.contains("ok")) {
+//                String json = httpHandler.get(Constants.API_URL + "vehicles/drivers/" + action);
+////                Log.e("toa do: ", Constants.API_URL + "vehicles/drivers/" + action);
+//                JSONArray jsonArray = new JSONArray(json);
+//
+//                for (int i = 0; i < jsonArray.length(); i++) {
+//                    JSONObject c = jsonArray.getJSONObject(i);
+//
+//                    int driverVehicleID = c.getInt("id");
+//                    int status = c.getInt("status");
+//
+//                    JSONObject vehicleObject = c.getJSONObject("vehicle");
+//                    int vehicleID = vehicleObject.getInt("id");
+//                    String licenseplate = vehicleObject.getString("licenseplate");
+//                    String color = vehicleObject.getString("color");
+//
+//                    JSONObject vehicletype = vehicleObject.getJSONObject("vehicletype");
+//                    int vehicleTypeID = vehicletype.getInt("id");
+//                    String type = vehicletype.getString("type");
+////                    (Long id, int driverVehicleID, int status, int vehicleID, String licenseplate, String type, int vehicleTypeID, String color) {
+//                    vehicle.add(new VehicleDTO((long) vehicleID, driverVehicleID, status, vehicleID, licenseplate, type, vehicleTypeID, color));
+//                }
                 return true;
-            }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return null;
+        return false;
     }
 
     @Override
@@ -161,13 +163,16 @@ class UpdateVehicle extends AsyncTask<Void, Void, Boolean> {
         try {
             JSONObject formData = new JSONObject();
             formData.put("id", v.getDriverVehicleID());
-            formData.put("vehicleid", v.getLicenseplate());
+            formData.put("driverid", v.getId()); // lưu tạm biến booking_id vào driverid
+            formData.put("vehicleid", v.getVehicleID());
 //            formData.put("color", v.getColor());
 //            formData.put("type", v.getType());
             String result = httpHandler.requestMethod(Constants.API_URL + "vehicles", formData.toString(), "PUT");
+            System.out.println(formData);
 //            Log.e("toa do: ", Constants.API_URL + "vehicles" + Session.currentDriver.getId() + v.getLicenseplate() + result);
+            JSONObject jsonObj = new JSONObject(result);
 
-            if (result.contains("ok")) {
+//            if (result.contains("ok")) {
 //                String json = httpHandler.get(Constants.API_URL + "vehicles/drivers/" + action);
 ////                Log.e("toa do: ", Constants.API_URL + "vehicles/drivers/" + action);
 //                JSONArray jsonArray = new JSONArray(json);
@@ -190,7 +195,7 @@ class UpdateVehicle extends AsyncTask<Void, Void, Boolean> {
 //                    vehicle.add(new VehicleDTO((long) vehicleID, driverVehicleID, status, vehicleID, licenseplate, type, vehicleTypeID, color));
 //                }
                 return true;
-            }
+//            }
 
         } catch (Exception e) {
             e.printStackTrace();
