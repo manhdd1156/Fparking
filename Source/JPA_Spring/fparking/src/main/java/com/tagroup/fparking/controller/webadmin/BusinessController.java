@@ -299,7 +299,6 @@ public class BusinessController {
 	public String getAllRevenueByCommission(Map<String, Object> model,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
 			@RequestParam(value = "dateTo", required = false) String dateTo) throws Exception {
-
 		int check = 0;
 		List<Booking> listBooking;
 		double revenueCommission = 0;
@@ -421,7 +420,12 @@ public class BusinessController {
 	@RequestMapping(path = "/revenue/fine", method = RequestMethod.GET)
 	public String getAllRevenueByFine(Map<String, Object> model,
 			@RequestParam(value = "dateFrom", required = false) String dateFrom,
-			@RequestParam(value = "dateTo", required = false) String dateTo) throws Exception {
+			@RequestParam(value = "dateTo", required = false) String dateTo,
+			@RequestParam(value = "statusSelection", required = false) String statusSelection) throws Exception {
+
+		if (statusSelection == null || statusSelection.isEmpty()) {
+			statusSelection = "1";
+		}
 
 		int check = 0;
 		List<Fine> listFine;
@@ -450,23 +454,44 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate() != null
-						&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
-					}
+				if (statusSelection.equals("1")) {
+					if (fine.getStatus() == 1 && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
 
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+					}
+				} else {
+					if (fine.getStatus() == 0 && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
+
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+					}
 				}
+
 			}
 			model.put("revenueFine", currencyVN.format(revenueFine));
 			model.put("arrayListFine", arrayListFine);
@@ -476,22 +501,42 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate() != null
-						&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
-					}
+				if (statusSelection.equals("1")) {
+					if (fine.getStatus() == 1 && fine.getDate() != null
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
 
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+					}
+				} else {
+					if (fine.getStatus() == 0 && fine.getDate() != null
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
+
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+					}
 				}
 			}
 			model.put("revenueFine", currencyVN.format(revenueFine));
@@ -503,23 +548,44 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate() != null
-						&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
-						&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
+				if(statusSelection.equals("1")) {
+					if (fine.getStatus() == 1 && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
 					}
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
+				}else {
+					if (fine.getStatus() == 0 && fine.getDate() != null
+							&& fine.getDate().getTime() >= sdf2.parse(dateFrom + " 00:00:00").getTime()
+							&& fine.getDate().getTime() <= sdf2.parse(dateTo + " 24:00:00").getTime()) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+					}
 				}
+				
 			}
 			model.put("revenueFine", currencyVN.format(revenueFine));
 			model.put("arrayListFine", arrayListFine);
@@ -530,27 +596,47 @@ public class BusinessController {
 			// get fine
 			for (Fine fine : listFine) {
 				HashMap<String, Object> m = new HashMap<>();
-				if (fine.getStatus() == 1 && fine.getDate() != null) {
-					m.put("id", fine.getId());
-					m.put("dateFine", sdf.format(fine.getDate()));
-					m.put("address", fine.getParking().getAddress());
-					m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
-					m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
-					if (fine.getType() == 0) {
-						m.put("objectFine", "Lái xe");
-					} else {
-						m.put("objectFine", "Bãi xe");
+				if (statusSelection.equals("1")) {
+					if (fine.getStatus() == 1 && fine.getDate() != null) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+						System.out.println("sizeFineList:" + arrayListFine.size());
 					}
-					revenueFine = revenueFine + fine.getPrice();
-					m.put("priceFine", currencyVN.format(fine.getPrice()));
-					arrayListFine.add(m);
-					System.out.println("sizeFineList:" + arrayListFine.size());
+				}else {
+					if (fine.getStatus() == 0 && fine.getDate() != null) {
+						m.put("id", fine.getId());
+						m.put("dateFine", sdf.format(fine.getDate()));
+						m.put("address", fine.getParking().getAddress());
+						m.put("licenseplate", fine.getDrivervehicle().getVehicle().getLicenseplate());
+						m.put("vehicletype", fine.getDrivervehicle().getVehicle().getVehicletype().getType());
+						if (fine.getType() == 0) {
+							m.put("objectFine", "Lái xe");
+						} else {
+							m.put("objectFine", "Bãi xe");
+						}
+						revenueFine = revenueFine + fine.getPrice();
+						m.put("priceFine", currencyVN.format(fine.getPrice()));
+						arrayListFine.add(m);
+						System.out.println("sizeFineList:" + arrayListFine.size());
+					}
 				}
 			}
 			model.put("revenueFine", currencyVN.format(revenueFine));
 			model.put("arrayListFine", arrayListFine);
 			break;
 		}
+		model.put("statusSelection", statusSelection);
 		return "managementrevenuebyfine";
 	}
 
@@ -578,7 +664,7 @@ public class BusinessController {
 			model.put("price", currencyVN.format(bookingDetail.getPrice()));
 			model.put("totalFine", currencyVN.format(bookingDetail.getTotalfine()));
 			if ((bookingDetail.getComission() * 100) % 1 == 0) {
-				model.put("commssion",  (int)(bookingDetail.getComission() * 100));
+				model.put("commssion", (int) (bookingDetail.getComission() * 100));
 			} else {
 				model.put("commssion", bookingDetail.getComission() * 100);
 			}

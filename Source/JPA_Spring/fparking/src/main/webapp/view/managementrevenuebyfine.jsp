@@ -29,26 +29,35 @@
 
 			<div class="row">
 				<div class="col-lg-12">
-					<h1 class="page-header">Doanh Thu Tiền Phạt</h1>
+					<h1 class="page-header">Doanh Thu Từ Tiền Phạt</h1>
 				</div>
 				<!-- /.col-lg-12 -->
 			</div>
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							Doanh thu tiền phạt: <b>${revenueFine }</b>
-						</div>
 						<form action="" method="GET">
 							<div>
 								<br>
 								<div class="col-lg-12">
 									Từ <input type="date" name="dateFrom" value="${dateFrom }">
-									đến <input type="date" name="dateTo" value="${dateTo }">
+									đến <input type="date" name="dateTo" value="${dateTo }"3>
+									
+									<div class="col-lg-1">
+                                            <select class="form-control" name="statusSelection">
+                                                <option value="1" ${statusSelection==1?"selected":""}>Đã thu</option>
+                                                <option value="2" ${statusSelection==2?"selected":""}>Dự kiến</option>
+                                            </select>
+                                        </div>
 									<input type="submit" value="Tìm">
 								</div>
 							</div>
 						</form>
+						<br>
+						<br>
+						<div class="col-lg-12">
+							Tổng doanh thu: <b>${revenueFine }</b>
+						</div>
 						<br>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
