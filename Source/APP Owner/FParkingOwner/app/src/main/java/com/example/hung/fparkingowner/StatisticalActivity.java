@@ -217,7 +217,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                 try {
                     month = month + 1;
                     Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
                     String monthh = month + "";
                     String dayy = day + "";
 
@@ -234,7 +234,7 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
                     }
 
                     String date = dayy + "-" + monthh + "-" + year;
-                    toDate = sdf.parse(dayytemp + "-" + monthh + "-" + year);
+                    toDate = sdf.parse(date+" 24:00:00");
 //                    if(toDate.getTime()>fromDate.getTime())
 
                     tvToDate.setText(date);
@@ -325,6 +325,12 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     @Override
     public void onPostExecute(Object o) {
         ArrayList<BookingDTO> lstBooking = (ArrayList<BookingDTO>) o;
+        for(int i = 0;i<lstBooking.size();i++) {
+            if(lstBooking.get(i).getTimein().equals("null") && lstBooking.get(i).getTimeout().equals("null")) {
+                lstBooking.remove(lstBooking.get(i));
+                i--;
+            }
+        }
         ArrayList<BookingDTO> lstBookingAdapter = new ArrayList<>();
 
 

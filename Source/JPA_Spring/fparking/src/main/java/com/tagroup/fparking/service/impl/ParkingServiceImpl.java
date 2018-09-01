@@ -101,6 +101,7 @@ public class ParkingServiceImpl implements ParkingService {
 		p.setLatitude(parkingDTO.getLatitude());
 		p.setTimeoc(parkingDTO.getTimeoc());
 		p.setTotalspace(parkingDTO.getTotalspace());
+		p.setCurrentspace(parkingDTO.getTotalspace());
 		p.setStatus(3);
 		p.setCurrentspace(0);
 		City c = cityRepository.getOne(parkingDTO.getCity_id());
@@ -108,40 +109,29 @@ public class ParkingServiceImpl implements ParkingService {
 		Owner o = ownerRepository.getOne(token.getId());
 		p.setOwner(o);
 		
-		Tariff t = new Tariff();
 		System.out.println("parking : " + p);
 		p = parkingRepository.save(p);
 		System.out.println("parking = : " + p);
-		Vehicletype vt = new Vehicletype();
-		if(!parkingDTO.getSpace1().equals("")) {
-			t.setPrice(Double.parseDouble(parkingDTO.getSpace1()));
-			vt.setId((long)1);
-			t.setVehicletype(vt);
-			t.setParking(p);
-			tariffRepository.save(t);
-			System.out.println("tariff1  = : " + t);
-		}
-		if(!parkingDTO.getSpace2().equals("")) {
-			t = new Tariff();
-			t.setPrice(Double.parseDouble(parkingDTO.getSpace2()));
-			vt.setId((long)2);
-			t.setVehicletype(vt);
-			t.setParking(p);
-			tariffRepository.save(t);
-			System.out.println("tariff2  = : " + t);
-		}
 		
-		if(!parkingDTO.getSpace3().equals("")) {
-			t = new Tariff();
-			t.setPrice(Double.parseDouble(parkingDTO.getSpace3()));
-			vt.setId((long)3);
-			t.setVehicletype(vt);
-			t.setParking(p);
-			tariffRepository.save(t);
-			System.out.println("tariff3  = : " + t);
-		}
-		System.out.println("tariff  = : " + t);
-		
+			List<Vehicletype> vtList = vehicletypeService.getAll();
+			for (Vehicletype vehicletype : vtList) {
+				Tariff t = new Tariff();
+				t.setParking(p);
+				t.setVehicletype(vehicletype);
+				int type = Integer
+						.parseInt(vehicletype.getType().substring(0, vehicletype.getType().length() - 3).trim());
+				if (type <= 9 && Integer.parseInt(parkingDTO.getSpace1().trim()) > 0) {
+					t.setPrice(Double.parseDouble(parkingDTO.getSpace1()));
+					tariffRepository.save(t);
+				} else if (type >= 10 && type <= 29 && Integer.parseInt(parkingDTO.getSpace2().trim()) > 0) {
+					t.setPrice(Double.parseDouble(parkingDTO.getSpace2()));
+					tariffRepository.save(t);
+				} else if (type >= 30 && type <= 45 && Integer.parseInt(parkingDTO.getSpace3().trim()) > 0) {
+					t.setPrice(Double.parseDouble(parkingDTO.getSpace3()));
+					tariffRepository.save(t);
+				}
+				
+			}
 		System.out.println("parking = : " + p);
 		}catch(Exception e) {
 			System.out.println(e);
@@ -386,28 +376,68 @@ public class ParkingServiceImpl implements ParkingService {
 	public Parking updatetariff(Long parkingid, double price9, double price916, double price1629) throws Exception {
 		// TODO Auto-generated method stub
 		List<Tariff> tariffList = tariffRepository.findAll();
+		
 		Parking p = getById(parkingid);
-		for (Tariff tariff : tariffList) {
-			if(tariff.getParking().getId()==parkingid) {
-				if(tariff.getVehicletype().getId()==1 && !(price9+"").equals("")) {
-					
-					tariff.setPrice(price9);
-					tariff = tariffRepository.save(tariff);
-					System.out.println("tariff1  = : " + tariff);
-				}
-				else if(tariff.getVehicletype().getId()==2 && !(price916+"").equals("")) {
-					tariff.setPrice(price916);
-					tariff = tariffRepository.save(tariff);
-					System.out.println("tariff2  = : " + tariff);
+		List<Vehicletype> vtList = vehicletypeService.getAll();
+		for (Vehicletype vehicletype : vtList) {
+			// cắt chuỗi "4 chỗ" ra để lấy int
+			int type = Integer
+					.parseInt(vehicletype.getType().substring(0, vehicletype.getType().length() - 3).trim());
+			
+			// nếu số chỗ nằm trong khoảng ....
+			if (type <= 9 && !(price9+"").equals("")) {
+				for (Tariff tariff : tariffList) {
+					if(tariff.getParking()==p && tariff.getVehicletype() == vehicletype) {
+						tariff.setPrice(price9);
+						tariffRepository.save(tariff);
+						break;
+					}
 				}
 				
-				else if(tariff.getVehicletype().getId()==3 &&!(price1629+"").equals("")) {
-					tariff.setPrice(price1629);
-					tariff = tariffRepository.save(tariff);
-					System.out.println("tariff3  = : " + tariff);
+			} else if (type >= 10 && type <= 29 && !(price916+"").equals("")) {
+				for (Tariff tariff : tariffList) {
+					if(tariff.getParking()==p && tariff.getVehicletype() == vehicletype) {
+						tariff.setPrice(price916);
+						tariffRepository.save(tariff);
+						break;
+					}
 				}
+				
+			} else if (type >= 30 && type <= 45 && !(price1629+"").equals("")) {
+				for (Tariff tariff : tariffList) {
+					if(tariff.getParking()==p && tariff.getVehicletype() == vehicletype) {
+						tariff.setPrice(price1629);
+						tariffRepository.save(tariff);
+						break;
+					}
+				}
+				
 			}
+			
 		}
+		
+//		
+//		for (Tariff tariff : tariffList) {
+//			if(tariff.getParking().getId()==parkingid) {
+//				if(tariff.getVehicletype().getId()==1 && !(price9+"").equals("")) {
+//					
+//					tariff.setPrice(price9);
+//					tariff = tariffRepository.save(tariff);
+//					System.out.println("tariff1  = : " + tariff);
+//				}
+//				else if(tariff.getVehicletype().getId()==2 && !(price916+"").equals("")) {
+//					tariff.setPrice(price916);
+//					tariff = tariffRepository.save(tariff);
+//					System.out.println("tariff2  = : " + tariff);
+//				}
+//				
+//				else if(tariff.getVehicletype().getId()==3 &&!(price1629+"").equals("")) {
+//					tariff.setPrice(price1629);
+//					tariff = tariffRepository.save(tariff);
+//					System.out.println("tariff3  = : " + tariff);
+//				}
+//			}
+//		}
 		
 		return p;
 	}

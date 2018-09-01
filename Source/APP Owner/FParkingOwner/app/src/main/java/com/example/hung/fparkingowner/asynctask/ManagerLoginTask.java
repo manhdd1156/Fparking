@@ -252,7 +252,7 @@ this.password = password;
             formData.put("password", password);
 
 
-            String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "owners", formData.toString(), "PUT");
+            String jsonUpdate = httpHandler.requestMethod(Constants.API_URL + "owners", formData.toString(), "POST");
             JSONObject jsonObj = new JSONObject(jsonUpdate);
             if (jsonObj != null) {
                 return true;

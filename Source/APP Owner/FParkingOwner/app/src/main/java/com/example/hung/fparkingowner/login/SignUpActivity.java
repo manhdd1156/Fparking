@@ -67,7 +67,7 @@ public class SignUpActivity extends AppCompatActivity implements IAsyncTaskHandl
         already_user.setOnClickListener(new OnClickListener() {
             @Override
             public void onClick(View v) {
-                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
+//                startActivity(new Intent(SignUpActivity.this, LoginActivity.class));
                 overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 finish();
 
@@ -138,7 +138,7 @@ public class SignUpActivity extends AppCompatActivity implements IAsyncTaskHandl
                 if (phone.getText().toString().contains("+84")) {
                     paramPhone = paramPhone.replace("+84", "0");
                 }
-                new ManagerLoginTask("create", getMD5Hex(paramPhone), newPass, new IAsyncTaskHandler() {
+                new ManagerLoginTask("create", paramPhone, getMD5Hex(newPass), new IAsyncTaskHandler() {
                     @Override
                     public void onPostExecute(Object o) {
                         if ((boolean) o) {

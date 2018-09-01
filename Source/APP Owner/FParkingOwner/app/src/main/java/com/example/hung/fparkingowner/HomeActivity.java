@@ -236,7 +236,7 @@ public class HomeActivity extends AppCompatActivity
                 plist = (ArrayList<ParkingDTO>) o;
                 int totalSpace = 0;
                 for (int i = 0; i < plist.size(); i++) {
-                    totalSpace += plist.get(i).getTotalspace() - plist.get(i).getCurrentspace();
+                    totalSpace += plist.get(i).getTotalspace();
                 }
                 tvTotalSpace.setText(totalSpace + "");
                 tvTotalParking.setText(plist.size() + "");

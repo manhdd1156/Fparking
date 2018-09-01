@@ -53,16 +53,19 @@ IAsyncTaskHandler container;
             int totalspace = jsonObj.getJSONObject("parking").getInt("totalspace");
             int city_id = jsonObj.getJSONObject("parking").getJSONObject("city").getInt("id");
 
-
-            JSONArray jsonArray =jsonObj.getJSONArray("tariffList");
-            double price9 = jsonArray.getJSONObject(0).getDouble("price");
+            double price9 = 0;
             double price16 = 0;
             double price29 = 0;
-            if(jsonArray.length()>1) {
-                price16 = jsonArray.getJSONObject(1).getDouble("price");
-            }
-            if(jsonArray.length()>2) {
-                price29 = jsonArray.getJSONObject(2).getDouble("price");
+            JSONArray jsonArray =jsonObj.getJSONArray("tariffList");
+            for(int i =jsonArray.length()-1;i>=0;i--) {
+                int type = Integer.parseInt(jsonArray.getJSONObject(i).getJSONObject("vehicletype").getString("type").substring(0,jsonArray.getJSONObject(i).getJSONObject("vehicletype").getString("type").length()-3).trim());
+                if(type<=9) {
+                    price9 = jsonArray.getJSONObject(i).getDouble("price");
+                }else if(type>=10 && type <=29) {
+                    price16 = jsonArray.getJSONObject(i).getDouble("price");
+                }else if(type>=30 && type <=45) {
+                    price29 = jsonArray.getJSONObject(i).getDouble("price");
+                }
             }
                parkingDTO = new ParkingDTO(id, address, currentspace, deposits, image, latitude, longitude, status, timeoc, totalspace, city_id, price9, price16, price29);
 

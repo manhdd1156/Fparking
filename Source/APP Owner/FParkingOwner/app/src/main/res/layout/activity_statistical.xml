@@ -68,7 +68,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/spinnerStatistic"
-        android:layout_marginTop="-15dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:text="Lượt thanh toán:" />
 
@@ -208,11 +208,10 @@
 
     <Spinner
         android:id="@+id/spinnerStatistic"
-        android:layout_width="wrap_content"
+        android:layout_width="150dp"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tvFromD"
 
-        android:layout_marginTop="-15dp"
+        android:layout_below="@id/tvFromD"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:layoutMode="opticalBounds"
         android:persistentDrawingCache="none" />

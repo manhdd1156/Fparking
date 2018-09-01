@@ -48,25 +48,14 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
 
         switch (v.getId()) {
             case R.id.ok_btn_id:
-
-//                showToastMessage("Ok Button Clicked");
                 this.finish();
-
                 break;
 
             case R.id.cancel_btn_id:
-
-//                showToastMessage("Cancel Button Clicked");
                 this.finish();
-
                 break;
         }
 
-    }
-
-    void showToastMessage(String message) {
-        Toast.makeText(getApplicationContext(), message, Toast.LENGTH_SHORT)
-                .show();
     }
 
     public void handleMessage(String eventName, String data) {
@@ -85,17 +74,10 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         new ManagerBookingTask("updatebystatus", b, new IAsyncTaskHandler() {
                             @Override
                             public void onPostExecute(Object o) {
-//                                Session.homeActivity.finish();
-//                                Intent intent = new Intent(DialogActivity.this, HomeActivity.class);
-//                                finish();
-//                                startActivity(intent);
-//                                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
                                 Session.homeActivity.recreate();
                                 finish();
                             }
                         });
-
-                        // TODO Auto-generated method stub
                     }
                 });
                 cancel_btn.setOnClickListener(new View.OnClickListener() {
@@ -161,15 +143,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                         b.setDriverID(Integer.parseInt(tvDriverid.getText().toString()));
                         b.setStatus(3);
                         new ManagerBookingTask("cancel", b, DialogActivity.this);
-                        showToastMessage("Cancel Button Clicked");
-//                        Intent myIntent = new Intent(DialogActivity.this, HomeActivity.class);
-//                        myIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
                         finish();
-//                        startActivity(myIntent);
-//                        Session.homeActivity.recreate();
-//                        finish();
-
-                        // TODO Auto-generated method stub
                     }
                 });
             } else if(eventName.toLowerCase().contains("cancel")) {

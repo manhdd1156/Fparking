@@ -75,7 +75,17 @@ public class BookingController {
 //		return new ResponseEntity<>(respone, HttpStatus.OK);
 //
 //	}
+	
+	
+	//delete booking
+	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF','DRIVER')")
+	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deleteBooking(@PathVariable Long id) throws Exception {
+		bookingService.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 
+	}
+	
 	// cancel booking from driver.
 	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/drivers/cancel", method = RequestMethod.PUT)
