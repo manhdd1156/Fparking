@@ -302,16 +302,28 @@ public class HomeController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/home/addmoney/{id}", method = RequestMethod.POST)
 	public String acceptNewParking(Map<String, Object> model, @PathVariable("id") Long id,
-			@RequestParam("deposit") Double deposit) {
+			@RequestParam("deposit") String deposit) {
 		Parking parking = new Parking();
+		double depositTrue = 0;
 		try {
 			parking = parkingService.getById(id);
+			depositTrue = Double.parseDouble(deposit);
+			if(depositTrue <0 || depositTrue >2000000000) {
+				model.put("deposit", deposit);
+				model.put("address", parking.getAddress());
+				model.put("messError", "Số tiền nạp phải là lớn hơn 110.000 và nhỏ hơn 2.000.000.000!");
+				return "acceptnewparking";
+			}
+		}catch (NumberFormatException e) {
+			model.put("address", parking.getAddress());
+			model.put("messError", "Số tiền nạp phải là số!");
+			return "acceptnewparking";
 		} catch (Exception e) {
 			return "404";
 		}
 		try {
 			parking.setStatus(1);
-			parking.setDeposits(parking.getDeposits() + deposit);
+			parking.setDeposits(parking.getDeposits() + depositTrue);
 			parking = parkingService.update(parking);
 			model.put("deposit", currencyVN.format(parking.getDeposits()));
 			model.put("address", parking.getAddress());
@@ -319,7 +331,7 @@ public class HomeController {
 			model.put("deposit", deposit);
 			model.put("address", parking.getAddress());
 			model.put("messError", "Nạp tiền không thành công!");
-			return "addmoneytoparking";
+			return "acceptnewparking";
 		}
 		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
 		return "acceptnewparking";

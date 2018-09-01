@@ -882,11 +882,54 @@ public class AccountController {
 	@PreAuthorize("hasAnyAuthority('ADMIN')")
 	@RequestMapping(path = "/parking/edit/{id}", method = RequestMethod.POST)
 	public String editAccountParking(Map<String, Object> model, @PathVariable Long id,
-			@RequestParam("address") String address, @RequestParam("longitude") Double longitude,
-			@RequestParam("latitude") Double latitude, @RequestParam("timeoc") String timeoc,
-			@RequestParam("totalSpace") Integer totalSpace, @RequestParam("deposits") Double deposits)
+			@RequestParam("address") String address, @RequestParam("longitude") String longitude,
+			@RequestParam("latitude") String latitude, @RequestParam("timeoc") String timeoc,
+			@RequestParam("totalSpace") String totalSpace, @RequestParam("deposits") String deposits)
 			throws Exception {
 		Parking parking;
+		double longitudeTrue = 0;
+		double latitudeTrue = 0;
+		double depositTrue = 0;
+		int totalSpaceTrue=0;
+		String messError ="";
+		if(address.isEmpty()) {
+			messError+="Không để trống địa chỉ!<br>";
+		}
+		
+		if(timeoc.isEmpty()) {
+			messError+="Không để trống thời gian!<br>";
+		}
+		try {
+			longitudeTrue = Double.parseDouble(longitude);
+			latitudeTrue = Double.parseDouble(latitude);
+			depositTrue = Double.parseDouble(deposits);
+		} catch (NumberFormatException e) {
+			messError+="Kinh độ, vĩ độ phải là số!<br>";
+		}
+		try {
+			totalSpaceTrue = Integer.parseInt(totalSpace);
+		} catch (Exception e) {
+			messError+="Tổng số chỗ phải là số nguyên!<br>";
+		}
+		
+		if(latitudeTrue>180 || latitudeTrue <-180) {
+			messError+="Vĩ độ nằm trong khoảng -180 dến 180!<br>";
+		}
+		
+		if(longitudeTrue >180 || longitudeTrue <-180) {
+			messError+="Kinh độ nằm trong khoảng -180 dến 180!<br>";
+		}
+		
+		if(messError.length()>0) {
+			model.put("address", address);
+			model.put("longitude", longitude + "");
+			model.put("latitude", latitude + "");
+			model.put("timeoc", timeoc);
+			model.put("totalSpace", totalSpace);
+			model.put("deposits", deposits);
+			model.put("messError", messError);
+			return "editparking";
+		}
 		try {
 			parking = parkingService.getById(id);
 		} catch (Exception e) {
@@ -894,11 +937,11 @@ public class AccountController {
 		}
 
 		parking.setAddress(address);
-		parking.setLatitude(latitude + "");
+		parking.setLatitude(latitudeTrue + "");
 		parking.setLongitude(longitude + "");
 		parking.setTimeoc(timeoc);
-		parking.setTotalspace(totalSpace);
-		parking.setDeposits(deposits);
+		parking.setTotalspace(totalSpaceTrue);
+		parking.setDeposits(depositTrue);
 		try {
 			parking = parkingService.update(parking);
 		} catch (Exception e) {
