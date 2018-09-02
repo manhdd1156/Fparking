@@ -106,6 +106,12 @@ public class ParkingServiceImpl implements ParkingService {
 		p.setCurrentspace(0);
 		City c = cityRepository.getOne(parkingDTO.getCity_id());
 		p.setCity(c);
+		if(token.getType().equals("ADMIN")) {
+			Owner o = ownerRepository.getOne(parkingDTO.getOwner_id());
+			p.setOwner(o);
+			p = parkingRepository.save(p);
+			return p;
+		}
 		Owner o = ownerRepository.getOne(token.getId());
 		p.setOwner(o);
 		
@@ -135,7 +141,7 @@ public class ParkingServiceImpl implements ParkingService {
 		System.out.println("parking = : " + p);
 		}catch(Exception e) {
 			System.out.println(e);
-			throw new APIException(HttpStatus.BAD_REQUEST, "Error");
+			throw new APIException(HttpStatus.CONFLICT, "Something went wrong!");
 		}
 		return p;
 

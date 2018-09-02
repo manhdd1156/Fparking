@@ -128,9 +128,15 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public Booking update(Booking booking) throws Exception {
+		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
 			if (booking == null) {
 				throw new APIException(HttpStatus.NO_CONTENT, "The Booking was not content");
+			}
+			if(t.getType().equals("ADMIN")) {
+				Booking b = bookingRepository.save(booking);
+				System.out.println(b);
+				return b;
 			}
 			Booking b = bookingRepository.getOne(booking.getId());
 			Notification n = new Notification();
@@ -367,7 +373,7 @@ public class BookingServiceImpl implements BookingService {
 
 	@Override
 	public List<Booking> findByParking(Parking parking) throws Exception {
-		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		
 		try {
 			return bookingRepository.findByParking(parking);
 		} catch (Exception e) {

@@ -138,7 +138,7 @@ public class BookingController {
 	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
 	@RequestMapping(path = "/update", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody Booking booking) throws Exception {
-
+		System.out.println("===== : " + booking);
 		Booking respone = bookingService.update(booking);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 

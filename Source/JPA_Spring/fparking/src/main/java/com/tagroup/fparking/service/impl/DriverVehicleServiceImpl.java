@@ -55,7 +55,7 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 		try {
 			return driverVehicleRepository.getOne(id);
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The Drivervehicle was not found");
 		}
 	}
 
@@ -67,12 +67,14 @@ public class DriverVehicleServiceImpl implements DriverVehicleService {
 	}
 
 	@Override
-	public DriverVehicle updateStatus(Long id) {
-
-		// TODO Auto-generated method stub
+	public DriverVehicle updateStatus(Long id) throws Exception{
+try {
 		DriverVehicle dv = driverVehicleRepository.getOne(id);
 		dv.setStatus(0);
 		return driverVehicleRepository.save(dv);
+}catch (Exception e) {
+	throw new APIException(HttpStatus.CONFLICT, "Something went wrong!");
+}
 
 	}
 

@@ -32,11 +32,20 @@ public class VehicleController {
 	@Autowired
 	private DriverVehicleService drivervehicleService;
 
+	
 	// get vehicle by drivervehicle_id
 	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
 	@RequestMapping(path = "/drivervehicles/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getVehicleByDrivervehicle(@PathVariable Long id) throws Exception {
 		Vehicle respone = vehicleService.getVehicleByDriverVehicle(id);
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+
+	// get all vehicles
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER','STAFF')")
+	@RequestMapping(path = "", method = RequestMethod.GET)
+	public ResponseEntity<?> getAllVehicle() throws Exception {
+		List<Vehicle> respone = vehicleService.getAll();
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
@@ -48,24 +57,24 @@ public class VehicleController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
-	// get drivervehicles by driverid
+	// get vehicle by id
+		@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN','STAFF')")
+		@RequestMapping(path = "/{id}", method = RequestMethod.GET)
+		public ResponseEntity<?> getById(@PathVariable Long id) throws Exception {
+			Vehicle respone = vehicleService.getById(id);
+			return new ResponseEntity<>(respone, HttpStatus.OK);
+		}
+		
+	// get drivervehicle by driverid
 	@PreAuthorize("hasAnyAuthority('DRIVER','ADMIN','STAFF')")
 	@RequestMapping(path = "/drivers/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getTypesByDriver(@PathVariable Long id) throws Exception {
 		List<DriverVehicle> respone = drivervehicleService.getDriverVehicleByDriver(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
-//
-//	// get rating by vehicle
-//	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
-//	@RequestMapping(path = "/ratings/{id}", method = RequestMethod.GET)
-//	public ResponseEntity<?> getbyid(@PathVariable Long id) throws Exception {
-//		double respone = vehicleService.getRatingByVehicle(vehicleService.getById(id));
-//		return new ResponseEntity<>(respone, HttpStatus.OK);
-//	}
-
+	
 	// get driverVehicle by parking_id and check notification
-	@PreAuthorize("hasAnyAuthority('STAFF')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
 	@RequestMapping(path = "/notifications", method = RequestMethod.GET)
 	public ResponseEntity<?> getbydParkingid(@RequestParam("parkingid") Long parkingID,
 			@RequestParam("event") String event) throws Exception {
@@ -75,7 +84,7 @@ public class VehicleController {
 	}
 
 	// update status = 0 drivervehicle by drivervehicleid
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/drivervehicles/{id}", method = RequestMethod.DELETE)
 	public ResponseEntity<?> updateDriverVehicle(@PathVariable Long id) throws Exception {
 		DriverVehicle respone = drivervehicleService.updateStatus(id);
@@ -83,8 +92,8 @@ public class VehicleController {
 
 	}
 
-	// create DriverVehicle by licenseplate, type,color, driverid
-	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+	// create Vehicle and DriverVehicle by licenseplate, type,color, driverid
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
 		DriverVehicle respone = vehicleService.create(drivervehicle);
@@ -93,7 +102,7 @@ public class VehicleController {
 	}
 
 	// change car of Driver when checkin
-	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER','STAFF')")
 	@RequestMapping(path = "", method = RequestMethod.PUT)
 	public ResponseEntity<?> update(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
 		System.out.println("drivervehicle = " + drivervehicle);
@@ -102,11 +111,11 @@ public class VehicleController {
 
 	}
 
-	// delete DriverVehicle by licenseplate, type, driverid
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	// delete Vehicle and DriverVehicle by licenseplate, type, driverid
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "", method = RequestMethod.DELETE)
 	public ResponseEntity<?> delete(@RequestBody DriverVehicleDTO drivervehicle) throws Exception {
-		// System.out.println("=======");
+		 System.out.println("=======1111");
 		vehicleService.delete(drivervehicle);
 		return new ResponseEntity<>("ok", HttpStatus.OK);
 
