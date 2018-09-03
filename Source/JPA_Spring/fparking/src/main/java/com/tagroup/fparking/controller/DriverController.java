@@ -17,6 +17,7 @@ import com.tagroup.fparking.service.DriverService;
 import com.tagroup.fparking.service.FeedbackService;
 import com.tagroup.fparking.service.FineService;
 import com.tagroup.fparking.service.VehicleService;
+import com.tagroup.fparking.service.domain.Booking;
 import com.tagroup.fparking.service.domain.Driver;
 import com.tagroup.fparking.service.domain.Feedback;
 import com.tagroup.fparking.service.domain.Fine;
@@ -35,8 +36,17 @@ public class DriverController {
 	@Autowired
 	private FineService fineService;
 
+	// get all drivers
+	@PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER')")
+	@RequestMapping(path = "/", method = RequestMethod.GET)
+	public ResponseEntity<?> getall() throws Exception {
+		List<Driver> respone = driverService.getAll();
+
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+
 	// get driver by id
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getTypesByDrivers(@PathVariable Long id) throws Exception {
 
@@ -45,7 +55,7 @@ public class DriverController {
 	}
 
 	// get fine by driverID
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/{id}/fines", method = RequestMethod.GET)
 	public ResponseEntity<?> getFinesByDriverID(@PathVariable Long id) throws Exception {
 
@@ -53,13 +63,33 @@ public class DriverController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 
+	// get profile
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
+	@RequestMapping(path = "/profile", method = RequestMethod.GET)
+	public ResponseEntity<?> getProfile() throws Exception {
+		Driver respone = driverService.getProfile();
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+
 	// get fine by fineID
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(path = "/fines/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getFinesByID(@PathVariable Long id) throws Exception {
 
 		Fine respone = fineService.getById(id);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
+	}
+
+	// create driver
+	@RequestMapping(path = "", method = RequestMethod.POST)
+	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
+
+		Driver respone = driverService.create(driver);
+		if (respone == null) {
+			return new ResponseEntity<>("phone exist", HttpStatus.CONFLICT);
+		}
+		return new ResponseEntity<>(respone, HttpStatus.OK);
+
 	}
 
 	// update driver
@@ -91,18 +121,6 @@ public class DriverController {
 
 	}
 
-	// create driver
-	@RequestMapping(path = "", method = RequestMethod.POST)
-	public ResponseEntity<?> create(@RequestBody Driver driver) throws Exception {
-
-		Driver respone = driverService.create(driver);
-		if (respone == null) {
-			return new ResponseEntity<>("phone exist", HttpStatus.OK);
-		}
-		return new ResponseEntity<>(respone, HttpStatus.OK);
-
-	}
-
 	// create feedback from driver
 	@RequestMapping(path = "/feedbacks", method = RequestMethod.POST)
 	public ResponseEntity<?> createFeedback(@RequestBody Feedback feedback) throws Exception {
@@ -115,11 +133,13 @@ public class DriverController {
 
 	}
 
-	// get profile
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
-	@RequestMapping(path = "/profile", method = RequestMethod.GET)
-	public ResponseEntity<?> getProfile() throws Exception {
-		Driver respone = driverService.getProfile();
-		return new ResponseEntity<>(respone, HttpStatus.OK);
+	// delete driver by id
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
+	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deletebyid(@PathVariable Long id) throws Exception {
+
+		driverService.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 	}
+
 }

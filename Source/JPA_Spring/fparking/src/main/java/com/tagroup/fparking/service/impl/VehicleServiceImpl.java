@@ -33,7 +33,7 @@ public class VehicleServiceImpl implements VehicleService {
 	private DriverRepository driverRepository;
 	@Autowired
 	private BookingRepository bookingRepository;
-	
+
 	@Override
 	public List<Vehicle> getAll() {
 		// TODO Auto-generated method stub
@@ -48,7 +48,7 @@ public class VehicleServiceImpl implements VehicleService {
 		try {
 			return vehicleRepository.getOne(id);
 		} catch (Exception e) {
-			throw new APIException(HttpStatus.NOT_FOUND, "The food was not found");
+			throw new APIException(HttpStatus.NOT_FOUND, "The vehicle was not found");
 		}
 	}
 
@@ -58,7 +58,6 @@ public class VehicleServiceImpl implements VehicleService {
 		try {
 			Vehicle v = new Vehicle();
 			DriverVehicle dv = new DriverVehicle();
-			System.out.println(drivervehicle);
 			dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
 			Vehicle v1 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
 			Vehicle v2 = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 0);
@@ -67,15 +66,16 @@ public class VehicleServiceImpl implements VehicleService {
 				dv.setVehicle(v1);
 				dv.setStatus(1);
 				dv = drivervehicleRepository.save(dv);
-				if(t.getType().equals("STAFF")) {
-				Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
-				bookingUpdate.setDrivervehicle(dv);
-				bookingUpdate = bookingRepository.save(bookingUpdate);
+				if (t.getType().equals("STAFF")) {
+					Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+					bookingUpdate.setDrivervehicle(dv);
+					bookingUpdate = bookingRepository.save(bookingUpdate);
 				}
 				return dv;
 			} else if (v1 == null && v2 != null) { // TH 1
-
-				v2.setColor(drivervehicle.getColor());
+				if (drivervehicle.getColor() != null) {
+					v2.setColor(drivervehicle.getColor());
+				}
 				v2.setStatus(1);
 				v2.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
 				v2 = update(v2);
@@ -83,12 +83,13 @@ public class VehicleServiceImpl implements VehicleService {
 				dv = drivervehicleRepository
 						.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v2);
 				if (dv != null) { // TH4
+					System.out.println("VehicleServiceImpl/create/TH4");
 					dv.setStatus(1);
 					dv = drivervehicleRepository.save(dv);
-					if(t.getType().equals("STAFF")) {
-					Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
-					bookingUpdate.setDrivervehicle(dv);
-					bookingUpdate = bookingRepository.save(bookingUpdate);
+					if (t.getType().equals("STAFF")) {
+						Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+						bookingUpdate.setDrivervehicle(dv);
+						bookingUpdate = bookingRepository.save(bookingUpdate);
 					}
 					return dv;
 				} else if (dv == null) { // TH5
@@ -99,34 +100,38 @@ public class VehicleServiceImpl implements VehicleService {
 					dvtemp.setStatus(1);
 					System.out.println("VehicleServiceImpl/create/TH5 : dv = " + dvtemp.toString());
 					dvtemp = drivervehicleRepository.save(dvtemp);
-					if(t.getType().equals("STAFF")) {
-					Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
-					bookingUpdate.setDrivervehicle(dvtemp);
-					bookingUpdate = bookingRepository.save(bookingUpdate);
+					if (t.getType().equals("STAFF")) {
+						Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+						bookingUpdate.setDrivervehicle(dvtemp);
+						bookingUpdate = bookingRepository.save(bookingUpdate);
 					}
 					return dvtemp;
 				}
 			} else if (v1 == null && v2 == null) { // TH3
 				// else v1== null và v2 == null
 				v.setLicenseplate(drivervehicle.getLicenseplate());
-				v.setColor(drivervehicle.getColor());
+				if (drivervehicle.getColor() != null) {
+					v.setColor(drivervehicle.getColor());
+				}
 				v.setVehicletype(vehicletypeService.findByType(drivervehicle.getType()));
 				v.setStatus(1);
 				update(v);
-				System.out.println("VehicleServiceImpl/create/TH5 : v = " + v.toString());
+
+				System.out.println("VehicleServiceImpl/create/TH3 : v = " + v.toString());
 				dv.setVehicle(v);
 				dv.setDriver(driverRepository.getOne(drivervehicle.getDriverid()));
 				dv.setStatus(1);
 				dv = drivervehicleRepository.save(dv);
-				if(t.getType().equals("STAFF")) {
-				Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
-				bookingUpdate.setDrivervehicle(dv);
-				bookingUpdate = bookingRepository.save(bookingUpdate);
+				if (t.getType().equals("STAFF")) {
+					Booking bookingUpdate = bookingRepository.getOne(drivervehicle.getId());
+					bookingUpdate.setDrivervehicle(dv);
+					bookingUpdate = bookingRepository.save(bookingUpdate);
 				}
 				return dv;
 			}
 		} catch (Exception e) {
 			System.out.println(e);
+			throw new APIException(HttpStatus.CONFLICT, "Something went wrong!");
 		}
 		return null;
 
@@ -164,36 +169,43 @@ public class VehicleServiceImpl implements VehicleService {
 		return listVT;
 	}
 
-	
-
 	@Override
 	public Vehicle findByLicenseplateAndStatus(String licenseplate, int status) throws Exception {
 		// TODO Auto-generated method stub
-
-		return vehicleRepository.findByLicenseplateAndStatus(licenseplate, status);
+		try {
+			return vehicleRepository.findByLicenseplateAndStatus(licenseplate, status);
+		} catch (Exception e) {
+			// TODO: handle exception\
+			System.out.println(e);
+		}
+		return null;
 	}
 
 	@Override
 	public void delete(DriverVehicleDTO drivervehicle) throws Exception {
 		// TODO Auto-generated method stub
-		Vehicle v = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
-		System.out.println("VehicleServiceIml/delete : " + v);
+		try {
+			Vehicle v = findByLicenseplateAndStatus(drivervehicle.getLicenseplate(), 1);
+			System.out.println("VehicleServiceIml/delete : " + v);
 
-		DriverVehicle dv = drivervehicleRepository
-				.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v);
-		System.out.println("DriverVehicleServiceIml/delete : " + dv);
-		dv.setStatus(0);
-		drivervehicleRepository.save(dv);
-		int vehicleExistCount = 0;
-		List<DriverVehicle> dvByvehicleList = drivervehicleRepository.findByVehicle(v);
-		for (DriverVehicle dv2 : dvByvehicleList) {
-			if (dv2.getStatus() == 1) {
-				vehicleExistCount++;
+			DriverVehicle dv = drivervehicleRepository
+					.findByDriverAndVehicle(driverRepository.getOne(drivervehicle.getDriverid()), v);
+			System.out.println("DriverVehicleServiceIml/delete : " + dv);
+			dv.setStatus(0);
+			drivervehicleRepository.save(dv);
+			int vehicleExistCount = 0;
+			List<DriverVehicle> dvByvehicleList = drivervehicleRepository.findByVehicle(v);
+			for (DriverVehicle dv2 : dvByvehicleList) {
+				if (dv2.getStatus() == 1) {
+					vehicleExistCount++;
+				}
 			}
-		}
-		if (vehicleExistCount == 0) {
-			v.setStatus(0);
-			update(v);
+			if (vehicleExistCount == 0) {
+				v.setStatus(0);
+				update(v);
+			}
+		} catch (Exception e) {
+			throw new APIException(HttpStatus.CONFLICT, "Something went wrong!");
 		}
 	}
 

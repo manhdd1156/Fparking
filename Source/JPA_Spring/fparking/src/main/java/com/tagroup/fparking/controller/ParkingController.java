@@ -39,7 +39,7 @@ public class ParkingController {
 	}
 
 	// get parking by id
-	@PreAuthorize("hasAnyAuthority('DRIVER','STAFF')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER','STAFF')")
 	@RequestMapping(path = "/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getbyid(@PathVariable Long id) throws Exception {
 		Parking respone = parkingService.getById(id);
@@ -48,7 +48,7 @@ public class ParkingController {
 	}
 
 	// get parking by owner id
-	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
 	@RequestMapping(path = "/owners", method = RequestMethod.GET)
 	public ResponseEntity<?> getbyOid() throws Exception {
 		List<Parking> respone = parkingService.getByOId();
@@ -57,7 +57,7 @@ public class ParkingController {
 	}
 
 	// get parkings by latitude and longitude
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(value = "", params = { "latitude", "longitude" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getBarBySimplePathWithExplicitRequestParams(@RequestParam("latitude") String latitude,
@@ -69,7 +69,7 @@ public class ParkingController {
 	}
 
 	// get parkings sort by latitude and longitude
-	@PreAuthorize("hasAnyAuthority('DRIVER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")
 	@RequestMapping(value = "/sort", params = { "latitude", "longitude" }, method = RequestMethod.GET)
 	@ResponseBody
 	public ResponseEntity<?> getBySortLocation(@RequestParam("latitude") String latitude,
@@ -81,7 +81,7 @@ public class ParkingController {
 	}
 
 	// get fines of parkings by time
-	@PreAuthorize("hasAnyAuthority('STAFF','OWNER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF','OWNER')")
 	@RequestMapping(path = "/time", method = RequestMethod.GET)
 	public ResponseEntity<?> getFineParkingByTime(@RequestParam("parkingid") Long parkingid,
 			@RequestParam("fromtime") String fromtime, @RequestParam("totime") String totime,
@@ -103,7 +103,7 @@ public class ParkingController {
 //	}
 
 	// get tariff by parking id = ?
-	@PreAuthorize("hasAnyAuthority('DRIVER','OWNER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER','OWNER')")
 	@RequestMapping(path = "/{id}/tariffs", method = RequestMethod.GET)
 	public ResponseEntity<?> getTariffByBId(@PathVariable Long id) throws Exception {
 
@@ -113,7 +113,7 @@ public class ParkingController {
 	}
 
 	// get parking by owner id = ?
-	@PreAuthorize("hasAnyAuthority('STAFF','ADMIN')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF','ADMIN')")
 	@RequestMapping(path = "/owner/{id}", method = RequestMethod.GET)
 	public ResponseEntity<?> getByOwnerId(@PathVariable Long id) throws Exception {
 
@@ -123,7 +123,7 @@ public class ParkingController {
 	}
 
 	// get All city
-	@PreAuthorize("hasAnyAuthority('OWNER','ADMIN')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','OWNER','ADMIN')")
 	@RequestMapping(path = "/citys", method = RequestMethod.GET)
 	public ResponseEntity<?> getAllCity() throws Exception {
 
@@ -143,7 +143,7 @@ public class ParkingController {
 //	}
 
 	// create parking
-	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
 	@RequestMapping(path = "", method = RequestMethod.POST)
 	public ResponseEntity<?> create(@RequestBody ParkingDTO parkingDTO) throws Exception {
 
@@ -153,7 +153,7 @@ public class ParkingController {
 	}
 
 	// update tariff by parking
-	@PreAuthorize("hasAnyAuthority('OWNER')")
+	@PreAuthorize("hasAnyAuthority('ADMIN','OWNER')")
 	@RequestMapping(path = "/tariff/update", method = RequestMethod.GET)
 	public ResponseEntity<?> updatetariff(@RequestParam("parkingid") Long parkingid,
 			@RequestParam("price9") double price9, @RequestParam("price916") double price916,
@@ -171,6 +171,14 @@ public class ParkingController {
 
 		Parking respone = parkingService.update(parking);
 		return new ResponseEntity<>(respone, HttpStatus.OK);
+
+	}
+	//delete parking
+	@PreAuthorize("hasAnyAuthority('ADMIN')")
+	@RequestMapping(path = "/{id}", method = RequestMethod.DELETE)
+	public ResponseEntity<?> deletebyid(@PathVariable Long id) throws Exception {
+		parkingService.delete(id);
+		return new ResponseEntity<>(HttpStatus.OK);
 
 	}
 }

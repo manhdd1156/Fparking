@@ -39,7 +39,7 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Driver create(Driver driver) {
+	public Driver create(Driver driver) throws Exception {
 		try {
 			System.out.println("driver = " + driver);
 			List<Driver> dlist = getAll();
@@ -61,8 +61,9 @@ public class DriverServiceImpl implements DriverService {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
-			// throw new APIException(HttpStatus.CONFLICT, "Phone is exist!");
+//			e.printStackTrace();
+			System.out.println(e);
+			 throw new APIException(HttpStatus.CONFLICT, "Phone is exist!");
 		}
 		return null;
 
@@ -89,7 +90,7 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Driver update(Driver driver) {
+	public Driver update(Driver driver) throws Exception{
 		// TODO Auto-generated method stub
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
@@ -120,15 +121,20 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Long id) throws Exception  {
 		// TODO Auto-generated method stub
+		try {
 		Driver driver = driverRepository.getOne(id);
 		driver.setStatus(0);
 		driverRepository.save(driver);
+		}catch (Exception e) {
+			// TODO: handle exception
+			throw new APIException(HttpStatus.NOT_FOUND, "Cannot delete driver");
+		}
 	}
 
 	@Override
-	public List<Driver> getByStatus(int status) {
+	public List<Driver> getByStatus(int status) throws Exception {
 		// TODO Auto-generated method stub
 
 		try {
@@ -141,7 +147,7 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Driver findByPhoneAndPassword(String phone, String password) {
+	public Driver findByPhoneAndPassword(String phone, String password) throws Exception {
 		// TODO Auto-generated method stub
 		try {
 			return driverRepository.findByPhoneAndPassword(phone, password);
@@ -192,7 +198,7 @@ public class DriverServiceImpl implements DriverService {
 	}
 
 	@Override
-	public Boolean validateDriver(Driver driver) {
+	public Boolean validateDriver(Driver driver)  {
 		try {
 			Driver d1 = getById(driver.getId());
 			if (d1.getPhone().equals(driver.getPhone())) {
