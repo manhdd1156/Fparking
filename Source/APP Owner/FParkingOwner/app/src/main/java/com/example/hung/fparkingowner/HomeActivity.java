@@ -57,75 +57,84 @@ public class HomeActivity extends AppCompatActivity
 
     AlertDialog dialog;
     private SharedPreferences.Editor editor;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
-        Session.homeActivity = HomeActivity.this;
-        //Ánh xạ
-        Session.spref = getSharedPreferences("intro", 0);
-        editor = Session.spref.edit();
-        addParking = findViewById(R.id.imageViewAddParking);
-        addParking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentDK = new Intent(HomeActivity.this, AddParkingInformation.class);
-                startActivity(intentDK);
-                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-            }
-        });
-        tvTotalParking = (TextView) findViewById(R.id.tvTotalParking);
-        tvTotalSpace = (TextView) findViewById(R.id.tvTotalCar);
-        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
-        Session.homeActivity = HomeActivity.this;
+        try {
+            setContentView(R.layout.activity_home);
+            Session.homeActivity = HomeActivity.this;
+            //Ánh xạ
+            Session.spref = getSharedPreferences("intro", 0);
+            editor = Session.spref.edit();
+            addParking = findViewById(R.id.imageViewAddParking);
+            addParking.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentDK = new Intent(HomeActivity.this, AddParkingInformation.class);
+                    startActivity(intentDK);
+                    overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+                }
+            });
+            tvTotalParking = (TextView) findViewById(R.id.tvTotalParking);
+            tvTotalSpace = (TextView) findViewById(R.id.tvTotalCar);
+            registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+            Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+            setSupportActionBar(toolbar);
+            Session.homeActivity = HomeActivity.this;
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.addDrawerListener(toggle);
-        toggle.syncState();
-        Session.container = this;
-        NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        mRecyclerView = (RecyclerView) findViewById(R.id.parking_list_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        new ManagerParkingTask("getbyowner", null,null, this);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+                    this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+            drawer.addDrawerListener(toggle);
+            toggle.syncState();
+            Session.container = this;
+            NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+            navigationView.setNavigationItemSelectedListener(this);
+            mRecyclerView = (RecyclerView) findViewById(R.id.parking_list_view);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            new ManagerParkingTask("getbyowner", null, null, this);
 
-        navigationView = (NavigationView) findViewById(R.id.nav_view);
-        headerView = navigationView.getHeaderView(0);
-        textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
+            navigationView = (NavigationView) findViewById(R.id.nav_view);
+            headerView = navigationView.getHeaderView(0);
+            textViewMPhone = headerView.findViewById(R.id.textViewMPhone);
 //        textViewMPhone.setText(Se);
-        textViewMPhone.setText(Session.currentOwner.getPhone());
-        textViewMPhone.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentDriverInfo = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(intentDriverInfo);
-            }
-        });
-        imageViewFParking = headerView.findViewById(R.id.imageViewFParking);
-        imageViewFParking.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intentDriverInfo = new Intent(getApplicationContext(), ProfileActivity.class);
-                startActivity(intentDriverInfo);
-            }
-        });
+            textViewMPhone.setText(Session.currentOwner.getPhone());
+            textViewMPhone.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentDriverInfo = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intentDriverInfo);
+                }
+            });
+            imageViewFParking = headerView.findViewById(R.id.imageViewFParking);
+            imageViewFParking.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Intent intentDriverInfo = new Intent(getApplicationContext(), ProfileActivity.class);
+                    startActivity(intentDriverInfo);
+                }
+            });
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            CheckNetwork checkNetwork = new CheckNetwork(HomeActivity.this, getApplicationContext());
-            if (!checkNetwork.isNetworkConnected()) {
-                checkNetwork.createDialog();
-            } else {
-                System.out.println("đã có mạng");
+            try {
+                CheckNetwork checkNetwork = new CheckNetwork(HomeActivity.this, getApplicationContext());
+                if (!checkNetwork.isNetworkConnected()) {
+                    checkNetwork.createDialog();
+                } else {
+                    System.out.println("đã có mạng");
 //                recreate();
+                }
+            } catch (Exception e) {
+                System.out.println(e);
             }
         }
     };
@@ -140,12 +149,16 @@ public class HomeActivity extends AppCompatActivity
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
-        if (requestCode == PICK_CONTACT_REQUEST) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                System.out.println("ở trong activityressult");
-                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+        try {
+            if (requestCode == PICK_CONTACT_REQUEST) {
+                // Make sure the request was successful
+                if (resultCode == RESULT_OK) {
+                    System.out.println("ở trong activityressult");
+                    setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
+                }
             }
+        } catch (Exception e) {
+
         }
     }
 
@@ -157,12 +170,16 @@ public class HomeActivity extends AppCompatActivity
     }
 
     private void setText(final TextView text, final String value) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                text.setText(value);
-            }
-        });
+        try {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    text.setText(value);
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
@@ -173,13 +190,16 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void onBackPressed() {
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        if (drawer.isDrawerOpen(GravityCompat.START)) {
-            drawer.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
-        }
+        try {
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            if (drawer.isDrawerOpen(GravityCompat.START)) {
+                drawer.closeDrawer(GravityCompat.START);
+            } else {
+                super.onBackPressed();
+            }
+        } catch (Exception e) {
 
+        }
 
     }
 
@@ -188,42 +208,46 @@ public class HomeActivity extends AppCompatActivity
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
-        int id = item.getItemId();
+        try {
+            int id = item.getItemId();
 
 
-        if (id == R.id.nav_members) {
-            Intent intentStaff = new Intent(HomeActivity.this, StaffManagement.class);
-            startActivity(intentStaff);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        } else if (id == R.id.nav_statistic) {
-            Intent intentStatistic = new Intent(HomeActivity.this, StatisticalActivity.class);
-            startActivity(intentStatistic);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        }
-        else if (id == R.id.nav_contact) {
-            Intent intentContact = new Intent(HomeActivity.this, Contact.class);
-            startActivity(intentContact);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        }  else if (id == R.id.nav_DK) {
-            Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
-            startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        }else if (id == R.id.nav_guide) {
+            if (id == R.id.nav_members) {
+                Intent intentStaff = new Intent(HomeActivity.this, StaffManagement.class);
+                startActivity(intentStaff);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            } else if (id == R.id.nav_statistic) {
+                Intent intentStatistic = new Intent(HomeActivity.this, StatisticalActivity.class);
+                startActivity(intentStatistic);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            } else if (id == R.id.nav_contact) {
+                Intent intentContact = new Intent(HomeActivity.this, Contact.class);
+                startActivity(intentContact);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            } else if (id == R.id.nav_DK) {
+                Intent intent = new Intent(HomeActivity.this, TermsAndConditions.class);
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            } else if (id == R.id.nav_guide) {
                 Intent intentGuide = new Intent(HomeActivity.this, Guide.class);
                 startActivity(intentGuide);
                 overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-        }else if(id == R.id.Logout) {
-             editor.putBoolean("first_time",true);
-             editor.commit();
-             Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
-             finish();
-             startActivity(intent);
-            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
-         }
+            } else if (id == R.id.Logout) {
+                editor.putBoolean("first_time", true);
+                editor.commit();
+                Intent intent = new Intent(HomeActivity.this, LoginActivity.class);
+                finish();
+                startActivity(intent);
+                overridePendingTransition(R.anim.slide_in_right, R.anim.slide_out_left);
+            }
 
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
+            DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
+            drawer.closeDrawer(GravityCompat.START);
+
+        } catch (Exception e) {
+
+        }
         return true;
     }
 
@@ -246,11 +270,13 @@ public class HomeActivity extends AppCompatActivity
                         .MyClickListener() {
                     @Override
                     public void onItemClick(int position, View v) {
-
+                        finish();
                         Intent intentDetail = new Intent(HomeActivity.this, DetailParkingActivity.class);
+
                         intentDetail.putExtra("parkingid", plist.get(position).getId() + "");
                         Session.currentParking = plist.get(position);
                         startActivity(intentDetail);
+                        overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                     }
                 });
             } else if (o instanceof String) {
@@ -282,11 +308,15 @@ class MyRecyclerViewAdapter extends RecyclerView
 
         public DataObjectHolder(View itemView) {
             super(itemView);
-            address = (TextView) itemView.findViewById(R.id.tvAdreesPL);
-            slot = (TextView) itemView.findViewById(R.id.tvSpacee);
-            imgCancel = (ImageView) itemView.findViewById(R.id.imgCancel);
-            Log.i(LOG_TAG, "Adding Listener");
-            itemView.setOnClickListener(this);
+            try {
+                address = (TextView) itemView.findViewById(R.id.tvAdreesPL);
+                slot = (TextView) itemView.findViewById(R.id.tvSpacee);
+                imgCancel = (ImageView) itemView.findViewById(R.id.imgCancel);
+                Log.i(LOG_TAG, "Adding Listener");
+                itemView.setOnClickListener(this);
+            } catch (Exception e) {
+
+            }
         }
 
         @Override
@@ -315,24 +345,28 @@ class MyRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(DataObjectHolder holder, int position) {
-        holder.address.setText(mDataset.get(position).getAddress());
-        holder.slot.setText(mDataset.get(position).getTotalspace() + "");
-        if(mDataset.get(position).getStatus()==2) {
-            holder.imgCancel.setBackgroundResource(R.drawable.warning);
-            holder.imgCancel.setVisibility(View.VISIBLE);
-            System.out.println("2" +mDataset.get(position).getAddress());
-        }else if(mDataset.get(position).getStatus()==3) {
-            holder.imgCancel.setBackgroundResource(R.drawable.clock);
-            holder.imgCancel.setVisibility(View.VISIBLE);
-            System.out.println("3"+mDataset.get(position).getAddress());
-        }else if(mDataset.get(position).getStatus()==5) {
-            holder.imgCancel.setBackgroundResource(R.drawable.close);
-            holder.imgCancel.setVisibility(View.VISIBLE);
-            System.out.println("5"+mDataset.get(position).getAddress());
-        }else if(mDataset.get(position).getStatus()==6) {
-            holder.imgCancel.setBackgroundResource(R.drawable.delete);
-            holder.imgCancel.setVisibility(View.VISIBLE);
-            System.out.println("6"+mDataset.get(position).getAddress());
+        try {
+            holder.address.setText(mDataset.get(position).getAddress());
+            holder.slot.setText(mDataset.get(position).getTotalspace() + "");
+            if (mDataset.get(position).getStatus() == 2) {
+                holder.imgCancel.setBackgroundResource(R.drawable.warning);
+                holder.imgCancel.setVisibility(View.VISIBLE);
+                System.out.println("2" + mDataset.get(position).getAddress());
+            } else if (mDataset.get(position).getStatus() == 3) {
+                holder.imgCancel.setBackgroundResource(R.drawable.clock);
+                holder.imgCancel.setVisibility(View.VISIBLE);
+                System.out.println("3" + mDataset.get(position).getAddress());
+            } else if (mDataset.get(position).getStatus() == 5) {
+                holder.imgCancel.setBackgroundResource(R.drawable.close);
+                holder.imgCancel.setVisibility(View.VISIBLE);
+                System.out.println("5" + mDataset.get(position).getAddress());
+            } else if (mDataset.get(position).getStatus() == 6) {
+                holder.imgCancel.setBackgroundResource(R.drawable.delete);
+                holder.imgCancel.setVisibility(View.VISIBLE);
+                System.out.println("6" + mDataset.get(position).getAddress());
+            }
+        }catch (Exception e) {
+
         }
     }
 

@@ -71,190 +71,197 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_statistical);
-        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+        try {
+            setContentView(R.layout.activity_statistical);
+            registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
 //        lv = (ListView) findViewById(R.id.cars_list2);
-        tvFromDate = (TextView) findViewById(R.id.tvFromD);
-        tvToDate = (TextView) findViewById(R.id.tvToD);
-        tvTotalCar = (TextView) findViewById(R.id.tvTotalCar);
-        tvTotalMoney = (TextView) findViewById(R.id.tvMoney);
-        tvParkingFines = (TextView) findViewById(R.id.tvParkingFines);
-        chooseFromDate = (LinearLayout) findViewById(R.id.chooseFromDate);
-        chooseToDate = findViewById(R.id.chooseToDate);
-        btnShow = (Button) findViewById(R.id.btnStat);
-        backStatistical = findViewById(R.id.imageViewBackStatistical);
-        sprinerParking = (Spinner) findViewById(R.id.spinnerStatistic);
-        listParkingString = new ArrayList<>();
-        //recycleView
-        mRecyclerView = (RecyclerView) findViewById(R.id.statistic_list_view);
-        mRecyclerView.setHasFixedSize(true);
-        mLayoutManager = new LinearLayoutManager(this);
-        mRecyclerView.setLayoutManager(mLayoutManager);
-        positionSpinner = 0;
-        new ManagerParkingTask("getbyowner", null, null, new IAsyncTaskHandler() {
-            @Override
-            public void onPostExecute(Object o) {
-                System.out.println("oooooooooooooooooo = " + o);
-                listParkingDTO = (ArrayList<ParkingDTO>) o;
-                if (listParkingDTO.size() > 0) {
-                    listParkingString.add("Tất cả");  // add index 0 = select all parking
-                    for (int i = 0; i < listParkingDTO.size(); i++) {
-                        listParkingString.add(listParkingDTO.get(i).getAddress());
+            tvFromDate = (TextView) findViewById(R.id.tvFromD);
+            tvToDate = (TextView) findViewById(R.id.tvToD);
+            tvTotalCar = (TextView) findViewById(R.id.tvTotalCar);
+            tvTotalMoney = (TextView) findViewById(R.id.tvMoney);
+            tvParkingFines = (TextView) findViewById(R.id.tvParkingFines);
+            chooseFromDate = (LinearLayout) findViewById(R.id.chooseFromDate);
+            chooseToDate = findViewById(R.id.chooseToDate);
+            btnShow = (Button) findViewById(R.id.btnStat);
+            backStatistical = findViewById(R.id.imageViewBackStatistical);
+            sprinerParking = (Spinner) findViewById(R.id.spinnerStatistic);
+            listParkingString = new ArrayList<>();
+            //recycleView
+            mRecyclerView = (RecyclerView) findViewById(R.id.statistic_list_view);
+            mRecyclerView.setHasFixedSize(true);
+            mLayoutManager = new LinearLayoutManager(this);
+            mRecyclerView.setLayoutManager(mLayoutManager);
+            positionSpinner = 0;
+            new ManagerParkingTask("getbyowner", null, null, new IAsyncTaskHandler() {
+                @Override
+                public void onPostExecute(Object o) {
+                    System.out.println("oooooooooooooooooo = " + o);
+                    listParkingDTO = (ArrayList<ParkingDTO>) o;
+                    if (listParkingDTO.size() > 0) {
+                        listParkingString.add("Tất cả");  // add index 0 = select all parking
+                        for (int i = 0; i < listParkingDTO.size(); i++) {
+                            listParkingString.add(listParkingDTO.get(i).getAddress());
 //                        System.out.println("dia chỉ : " + listParkingDTO.get(i).getId() + ";" + listParkingDTO.get(i).getAddress());
-                    }
+                        }
 //                    System.out.println("========================= " + listParkingString);
-                    ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_spinner_item, listParkingString);
-                    adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
-                    sprinerParking.setAdapter(adapter);
-                    sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-                        @Override
-                        public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                            if (i == 0) {
-                                parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition()).getId();  // chọn index của combobox parking
-                            } else if (i > 0) {
-                                parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition() - 1).getId();
+                        ArrayAdapter<String> adapter = new ArrayAdapter(StatisticalActivity.this, android.R.layout.simple_spinner_item, listParkingString);
+                        adapter.setDropDownViewResource(android.R.layout.simple_list_item_single_choice);
+                        sprinerParking.setAdapter(adapter);
+                        sprinerParking.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                                if (i == 0) {
+                                    parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition()).getId();  // chọn index của combobox parking
+                                } else if (i > 0) {
+                                    parkingidSelected = listParkingDTO.get(sprinerParking.getSelectedItemPosition() - 1).getId();
+                                }
+                                positionSpinner = i;
                             }
-                            positionSpinner = i;
-                        }
 
-                        @Override
-                        public void onNothingSelected(AdapterView<?> adapterView) {
+                            @Override
+                            public void onNothingSelected(AdapterView<?> adapterView) {
 
-                        }
-                    });
-                    new GetBookingTask(StatisticalActivity.this).execute((Void) null);
+                            }
+                        });
+                        new GetBookingTask(StatisticalActivity.this).execute((Void) null);
+                    }
                 }
-            }
-        });
+            });
 
-        backStatistical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Session.homeActivity.recreate();
-                finish();
-                overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
-            }
-        });
+            backStatistical.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Session.homeActivity.recreate();
+                    finish();
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
+                }
+            });
 
 
-        chooseFromDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener1, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
-            }
-        });
-        chooseToDate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar calendar = Calendar.getInstance();
-                int year = calendar.get(Calendar.YEAR);
-                int month = calendar.get(Calendar.MONTH);
-                int day = calendar.get(Calendar.DAY_OF_MONTH);
-                DatePickerDialog dialog = new DatePickerDialog(
-                        StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener2, year, month, day);
-                dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-                dialog.show();
+            chooseFromDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    DatePickerDialog dialog = new DatePickerDialog(
+                            StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener1, year, month, day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
+                }
+            });
+            chooseToDate.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    Calendar calendar = Calendar.getInstance();
+                    int year = calendar.get(Calendar.YEAR);
+                    int month = calendar.get(Calendar.MONTH);
+                    int day = calendar.get(Calendar.DAY_OF_MONTH);
+                    DatePickerDialog dialog = new DatePickerDialog(
+                            StatisticalActivity.this, android.R.style.Theme_Holo_Light_Dialog_MinWidth, mDateSetListener2, year, month, day);
+                    dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                    dialog.show();
 
-            }
-        });
-        btnShow.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                }
+            });
+            btnShow.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
 
-                if (toDate != null && fromDate != null && toDate.getTime() <= fromDate.getTime()) {
-                    System.out.println("từ ngày : " + dateFormatter.format(fromDate) + " ; đến ngày :" + dateFormatter.format(toDate));
-                    showDialog("Hãy chọn thời gian kết thúc muộn hơn");
-                } else {
-                    BookingDTO b = new BookingDTO();
+                    if (toDate != null && fromDate != null && toDate.getTime() <= fromDate.getTime()) {
+                        System.out.println("từ ngày : " + dateFormatter.format(fromDate) + " ; đến ngày :" + dateFormatter.format(toDate));
+                        showDialog("Hãy chọn thời gian kết thúc muộn hơn");
+                    } else {
+                        BookingDTO b = new BookingDTO();
 //                    b.setParkingID(Session.currentStaff.getParking_id());
-                    new GetBookingTask(StatisticalActivity.this).execute((Void) null);
+                        new GetBookingTask(StatisticalActivity.this).execute((Void) null);
+
+                    }
 
                 }
+            });
+            mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int day) {
+                    try {
+                        month = month + 1;
+                        Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 
-            }
-        });
-        mDateSetListener1 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                try {
-                    month = month + 1;
-                    Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+                        String monthh = month + "";
+                        String dayy = day + "";
 
-                    String monthh = month + "";
-                    String dayy = day + "";
+                        if (month < 10) {
 
-                    if (month < 10) {
+                            monthh = "0" + month;
+                        }
+                        if (day < 10) {
+                            dayy = "0" + day;
+                        }
 
-                        monthh = "0" + month;
+                        String date = dayy + "-" + monthh + "-" + year;
+
+                        fromDate = sdf.parse(date);
+
+
+                        tvFromDate.setText(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
                     }
-                    if (day < 10) {
-                        dayy = "0" + day;
-                    }
-
-                    String date = dayy + "-" + monthh + "-" + year;
-
-                    fromDate = sdf.parse(date);
-
-
-                    tvFromDate.setText(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
                 }
-            }
-        };
-        mDateSetListener2 = new DatePickerDialog.OnDateSetListener() {
-            @Override
-            public void onDateSet(DatePicker view, int year, int month, int day) {
-                try {
-                    month = month + 1;
-                    Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
-                    SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
-                    String monthh = month + "";
-                    String dayy = day + "";
+            };
+            mDateSetListener2 = new DatePickerDialog.OnDateSetListener() {
+                @Override
+                public void onDateSet(DatePicker view, int year, int month, int day) {
+                    try {
+                        month = month + 1;
+                        Log.d(TAG, "onDateSet: yyy/mm/dd: " + year + "-" + month + "-" + day);
+                        SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+                        String monthh = month + "";
+                        String dayy = day + "";
 
-                    if (month < 10) {
+                        if (month < 10) {
 
-                        monthh = "0" + month;
-                    }
-                    int daytemp = day + 1;
-                    String dayytemp = daytemp + "";
-                    if (day < 10) {
-                        dayy = "0" + day;
-                        dayytemp = "0" + daytemp;
+                            monthh = "0" + month;
+                        }
+                        int daytemp = day + 1;
+                        String dayytemp = daytemp + "";
+                        if (day < 10) {
+                            dayy = "0" + day;
+                            dayytemp = "0" + daytemp;
 
-                    }
+                        }
 
-                    String date = dayy + "-" + monthh + "-" + year;
-                    toDate = sdf.parse(date+" 24:00:00");
+                        String date = dayy + "-" + monthh + "-" + year;
+                        toDate = sdf.parse(date + " 24:00:00");
 //                    if(toDate.getTime()>fromDate.getTime())
 
-                    tvToDate.setText(date);
-                } catch (ParseException e) {
-                    e.printStackTrace();
+                        tvToDate.setText(date);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        };
+            };
 
+        } catch (Exception e) {
 
+        }
     }
 
     private BroadcastReceiver receiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
-            CheckNetwork checkNetwork = new CheckNetwork(StatisticalActivity.this, getApplicationContext());
-            if (!checkNetwork.isNetworkConnected()) {
-                checkNetwork.createDialog();
-            } else {
+            try {
+                CheckNetwork checkNetwork = new CheckNetwork(StatisticalActivity.this, getApplicationContext());
+                if (!checkNetwork.isNetworkConnected()) {
+                    checkNetwork.createDialog();
+                } else {
 //                recreate();
+                }
+            } catch (Exception e) {
+
             }
         }
     };
@@ -273,33 +280,41 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
     }
 
     public void setAdapterView(ArrayList<BookingDTO> blist) {
-        mAdapter = new StatisticRecyclerViewAdapter(blist, StatisticalActivity.this, this);
-        mRecyclerView.setAdapter(mAdapter);
-        ((StatisticRecyclerViewAdapter) mAdapter).setOnItemClickListener(new StatisticRecyclerViewAdapter
-                .MyClickListener() {
-            @Override
-            public void onItemClick(final int position, View v) {
+        try {
+            mAdapter = new StatisticRecyclerViewAdapter(blist, StatisticalActivity.this, this);
+            mRecyclerView.setAdapter(mAdapter);
+            ((StatisticRecyclerViewAdapter) mAdapter).setOnItemClickListener(new StatisticRecyclerViewAdapter
+                    .MyClickListener() {
+                @Override
+                public void onItemClick(final int position, View v) {
 
-            }
+                }
 
-        });
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     public void showDialog(String text) {
-        AlertDialog.Builder mBuilder = new AlertDialog.Builder(StatisticalActivity.this);
-        View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
-        mBuilder.setView(mView);
-        final AlertDialog dialog = mBuilder.create();
-        dialog.show();
-        error = (TextView) mView.findViewById(R.id.tvAlert);
-        btnOK = (Button) mView.findViewById(R.id.btnOK);
-        error.setText(text);
-        btnOK.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.cancel();
-            }
-        });
+        try {
+            AlertDialog.Builder mBuilder = new AlertDialog.Builder(StatisticalActivity.this);
+            View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);
+            mBuilder.setView(mView);
+            final AlertDialog dialog = mBuilder.create();
+            dialog.show();
+            error = (TextView) mView.findViewById(R.id.tvAlert);
+            btnOK = (Button) mView.findViewById(R.id.btnOK);
+            error.setText(text);
+            btnOK.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.cancel();
+                }
+            });
+        } catch (Exception e) {
+
+        }
     }
 
     public String formatMoney(double money) {
@@ -307,15 +322,15 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
         int temp = (int) money;
         String returnMoney = formatter.format(temp);
         if (temp > 1000000 && temp < 1000000000) {
-            if(temp %1000000 <999)  {
+            if (temp % 1000000 < 999) {
                 returnMoney = temp / 1000000 + "tr";
-            }else {
+            } else {
                 returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
             }
         } else if (temp > 1000000000) {
-            if(temp %1000000000 <999999)  {
+            if (temp % 1000000000 < 999999) {
                 returnMoney = temp / 1000000000 + "tỷ";
-            }else {
+            } else {
                 returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
             }
         }
@@ -324,261 +339,265 @@ public class StatisticalActivity extends AppCompatActivity implements IAsyncTask
 
     @Override
     public void onPostExecute(Object o) {
-        ArrayList<BookingDTO> lstBooking = (ArrayList<BookingDTO>) o;
-        for(int i = 0;i<lstBooking.size();i++) {
-            if(lstBooking.get(i).getTimein().equals("null") && lstBooking.get(i).getTimeout().equals("null")) {
-                lstBooking.remove(lstBooking.get(i));
-                i--;
-            }
-        }
-        ArrayList<BookingDTO> lstBookingAdapter = new ArrayList<>();
-
-
-        double money = 0;
-        final NumberFormat formatter = new DecimalFormat("###,###");
         try {
+            ArrayList<BookingDTO> lstBooking = (ArrayList<BookingDTO>) o;
+            for (int i = 0; i < lstBooking.size(); i++) {
+                if (lstBooking.get(i).getTimein().equals("null") && lstBooking.get(i).getTimeout().equals("null")) {
+                    lstBooking.remove(lstBooking.get(i));
+                    i--;
+                }
+            }
+            ArrayList<BookingDTO> lstBookingAdapter = new ArrayList<>();
 
-            if (fromDate == null && toDate == null && positionSpinner == 0) {         // khi không chọn gì cả, thì select all
-                System.out.println("không chọn gì cả");
-                ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < listParkingDTO.size(); i++) {
+
+            double money = 0;
+            final NumberFormat formatter = new DecimalFormat("###,###");
+            try {
+
+                if (fromDate == null && toDate == null && positionSpinner == 0) {         // khi không chọn gì cả, thì select all
+                    System.out.println("không chọn gì cả");
+                    ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
+                    for (int i = 0; i < listParkingDTO.size(); i++) {
+                        ParkingDTO p = new ParkingDTO();
+                        p.setId(listParkingDTO.get(i).getId());
+                        p.setTimeoc("");
+                        p.setAddress("");
+                        p.setStatus(0);
+                        plistTemp.add(p);
+
+                    }
+                    new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString())) + " vnđ");
+                        }
+                    });
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
+                            continue;
+                        lstBookingAdapter.add(lstBooking.get(i));
+                        money += lstBooking.get(i).getAmount();
+                    }
+
+                } else if (fromDate != null && toDate == null && positionSpinner == 0) {            // khi chọn ngày mà k chọn bãi xe
+                    System.out.println("từ ngày khác null còn lại null");
+                    ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
+                    for (int i = 0; i < listParkingDTO.size(); i++) {
+                        ParkingDTO p = new ParkingDTO();
+                        p.setId(listParkingDTO.get(i).getId());
+                        p.setTimeoc(fromDate.getTime() + "");
+                        p.setAddress("");
+                        p.setStatus(1);
+                        plistTemp.add(p);
+                    }
+                    new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(o.toString());
+                        }
+                    });
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        System.out.println("<" + lstBooking.get(i).getTimeout() + ">");
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
+                            continue;
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        if (datein.getTime() >= fromDate.getTime()) {
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+
+                        }
+
+                    }
+                } else if (fromDate == null && toDate != null && positionSpinner == 0) {                // khi chọn ngày mà k chọn bãi xe
+                    System.out.println("đến ngày khác null còn lại null");
+                    ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
+                    for (int i = 0; i < listParkingDTO.size(); i++) {
+                        ParkingDTO p = new ParkingDTO();
+                        p.setId(listParkingDTO.get(i).getId());
+                        p.setTimeoc("");
+                        p.setAddress(toDate.getTime() + "");
+                        p.setStatus(1);
+                        plistTemp.add(p);
+                    }
+                    new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(o.toString());
+                        }
+                    });
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        if (lstBooking.get(i).getTimeout() == null)
+                            continue;
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        if (datein.getTime() <= toDate.getTime()) {
+                            System.out.println("chọn");
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+
+                        }
+
+                    }
+                } else if (fromDate != null && toDate != null && positionSpinner == 0) {                // khi chọn ngày mà k chọn bãi xe
+                    System.out.println("từ ngày và đến ngày khác null parking null");
+                    ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
+                    for (int i = 0; i < listParkingDTO.size(); i++) {
+                        ParkingDTO p = new ParkingDTO();
+                        p.setId(listParkingDTO.get(i).getId());
+                        p.setTimeoc(fromDate.getTime() + "");
+                        p.setAddress(toDate.getTime() + "");
+                        p.setStatus(1);
+                        plistTemp.add(p);
+                    }
+                    new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(o.toString());
+                        }
+                    });
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        if (lstBooking.get(i).getTimeout() == null)
+                            continue;
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+//                        System.out.println("timeOut3 = " +datein.toString());
+                        if (fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+                        }
+                    }
+                } else if (toDate == null && fromDate == null && positionSpinner != 0) {                  // khi k chọn ngày mà chọn bãi xe
+                    System.out.println("parking khác null còn lại null");
+
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(listParkingDTO.get(i).getId());
+                    p.setId(parkingidSelected);
                     p.setTimeoc("");
                     p.setAddress("");
                     p.setStatus(0);
-                    plistTemp.add(p);
 
-                }
-                new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString())) + " vnđ");
+                    new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString())) + " vnđ");
+                        }
+                    });
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
+                            continue;
+                        if (lstBooking.get(i).getParkingID() == parkingidSelected) {
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+                        }
+
                     }
-                });
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
-                        continue;
-                    lstBookingAdapter.add(lstBooking.get(i));
-                    money += lstBooking.get(i).getAmount();
-                }
 
-            } else if (fromDate != null && toDate == null && positionSpinner == 0) {            // khi chọn ngày mà k chọn bãi xe
-                System.out.println("từ ngày khác null còn lại null");
-                ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < listParkingDTO.size(); i++) {
+                } else if (fromDate != null && toDate == null && positionSpinner != 0) {                 // khi  chọn cả ngày và bãi xe
+                    System.out.println("từ ngày và bãi xe khác null đến ngày null");
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(listParkingDTO.get(i).getId());
+                    p.setId(parkingidSelected);
                     p.setTimeoc(fromDate.getTime() + "");
                     p.setAddress("");
                     p.setStatus(1);
-                    plistTemp.add(p);
-                }
-                new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(o.toString());
-                    }
-                });
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    System.out.println("<" + lstBooking.get(i).getTimeout() + ">");
-                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                    if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
-                        continue;
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    if (datein.getTime() >= fromDate.getTime()) {
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
+                    new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(o.toString());
+                        }
+                    });
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        System.out.println("<" + lstBooking.get(i).getTimeout() + ">");
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
+                            continue;
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        System.out.println("ngày dbi       = " + dateFormatter.format(datein));
+                        System.out.println("từ ngày = " + dateFormatter.format(fromDate));
+                        if (lstBooking.get(i).getParkingID() == parkingidSelected && datein.getTime() >= fromDate.getTime()) {
+                            System.out.println("chọn");
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+
+                        }
 
                     }
 
-                }
-            } else if (fromDate == null && toDate != null && positionSpinner == 0) {                // khi chọn ngày mà k chọn bãi xe
-                System.out.println("đến ngày khác null còn lại null");
-                ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < listParkingDTO.size(); i++) {
+                } else if (fromDate == null && toDate != null && positionSpinner != 0) {
+                    System.out.println("đến ngày và bãi xe khác null từ ngày null");
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(listParkingDTO.get(i).getId());
+                    p.setId(parkingidSelected);
                     p.setTimeoc("");
                     p.setAddress(toDate.getTime() + "");
                     p.setStatus(1);
-                    plistTemp.add(p);
-                }
-                new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(o.toString());
-                    }
-                });
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    if (lstBooking.get(i).getTimeout() == null)
-                        continue;
-                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    if (datein.getTime() <= toDate.getTime()) {
-                        System.out.println("chọn");
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
+                    new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(o.toString());
+                        }
+                    });
+                    System.out.println("toDate2 = " + toDate.getTime());
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        if (lstBooking.get(i).getTimeout() == null)
+                            continue;
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                        System.out.println("ngày dbi       = " + dateFormatter.format(datein));
+                        System.out.println("đến ngày = " + dateFormatter.format(toDate));
+                        if (lstBooking.get(i).getParkingID() == parkingidSelected && datein.getTime() <= toDate.getTime()) {
+                            System.out.println("chọn");
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+
+                        }
 
                     }
-
-                }
-            } else if (fromDate != null && toDate != null && positionSpinner == 0) {                // khi chọn ngày mà k chọn bãi xe
-                System.out.println("từ ngày và đến ngày khác null parking null");
-                ArrayList<ParkingDTO> plistTemp = new ArrayList<>();
-                for (int i = 0; i < listParkingDTO.size(); i++) {
+                } else if (fromDate != null && toDate != null && positionSpinner != 0) {
+                    System.out.println("tất cả không null");
                     ParkingDTO p = new ParkingDTO();
-                    p.setId(listParkingDTO.get(i).getId());
+                    p.setId(parkingidSelected);
                     p.setTimeoc(fromDate.getTime() + "");
                     p.setAddress(toDate.getTime() + "");
                     p.setStatus(1);
-                    plistTemp.add(p);
-                }
-                new ManagerParkingTask("getFines", null, plistTemp, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(o.toString());
-                    }
-                });
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    if (lstBooking.get(i).getTimeout() == null)
-                        continue;
-                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-//                        System.out.println("timeOut3 = " +datein.toString());
-                    if (fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
-                    }
-                }
-            } else if (toDate == null && fromDate == null && positionSpinner != 0) {                  // khi k chọn ngày mà chọn bãi xe
-                System.out.println("parking khác null còn lại null");
-
-                ParkingDTO p = new ParkingDTO();
-                p.setId(parkingidSelected);
-                p.setTimeoc("");
-                p.setAddress("");
-                p.setStatus(0);
-
-                new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(formatMoney(Double.parseDouble(o.toString())) + " vnđ");
-                    }
-                });
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
-                        continue;
-                    if (lstBooking.get(i).getParkingID() == parkingidSelected) {
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
-                    }
-
-                }
-
-            } else if (fromDate != null && toDate == null && positionSpinner != 0) {                 // khi  chọn cả ngày và bãi xe
-                System.out.println("từ ngày và bãi xe khác null đến ngày null");
-                ParkingDTO p = new ParkingDTO();
-                p.setId(parkingidSelected);
-                p.setTimeoc(fromDate.getTime() + "");
-                p.setAddress("");
-                p.setStatus(1);
-                new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(o.toString());
-                    }
-                });
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    System.out.println("<" + lstBooking.get(i).getTimeout() + ">");
-                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                    if (lstBooking.get(i).getTimeout().equals("null") || lstBooking.get(i).getTimeout().isEmpty())
-                        continue;
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    System.out.println("ngày dbi       = " + dateFormatter.format(datein));
-                    System.out.println("từ ngày = " + dateFormatter.format(fromDate));
-                    if (lstBooking.get(i).getParkingID() == parkingidSelected && datein.getTime() >= fromDate.getTime()) {
-                        System.out.println("chọn");
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
-
-                    }
-
-                }
-
-            } else if (fromDate == null && toDate != null && positionSpinner != 0) {
-                System.out.println("đến ngày và bãi xe khác null từ ngày null");
-                ParkingDTO p = new ParkingDTO();
-                p.setId(parkingidSelected);
-                p.setTimeoc("");
-                p.setAddress(toDate.getTime() + "");
-                p.setStatus(1);
-                new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(o.toString());
-                    }
-                });
-                System.out.println("toDate2 = " + toDate.getTime());
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    if (lstBooking.get(i).getTimeout() == null)
-                        continue;
-                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
-                    System.out.println("ngày dbi       = " + dateFormatter.format(datein));
-                    System.out.println("đến ngày = " + dateFormatter.format(toDate));
-                    if (lstBooking.get(i).getParkingID() == parkingidSelected && datein.getTime() <= toDate.getTime()) {
-                        System.out.println("chọn");
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
-
-                    }
-
-                }
-            } else if (fromDate != null && toDate != null && positionSpinner != 0) {
-                System.out.println("tất cả không null");
-                ParkingDTO p = new ParkingDTO();
-                p.setId(parkingidSelected);
-                p.setTimeoc(fromDate.getTime() + "");
-                p.setAddress(toDate.getTime() + "");
-                p.setStatus(1);
-                new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
-                    @Override
-                    public void onPostExecute(Object o) {
-                        tvParkingFines.setText(o.toString());
-                    }
-                });
-                System.out.println("fromDate3 =" + fromDate.getTime() + " ;;;  toDate3 = " + toDate.getTime());
-                for (int i = 0; i < lstBooking.size(); i++) {
-                    if (lstBooking.get(i).getTimeout() == null)
-                        continue;
-                    final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-                    Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
+                    new ManagerParkingTask("getFines", p, null, new IAsyncTaskHandler() {
+                        @Override
+                        public void onPostExecute(Object o) {
+                            tvParkingFines.setText(o.toString());
+                        }
+                    });
+                    System.out.println("fromDate3 =" + fromDate.getTime() + " ;;;  toDate3 = " + toDate.getTime());
+                    for (int i = 0; i < lstBooking.size(); i++) {
+                        if (lstBooking.get(i).getTimeout() == null)
+                            continue;
+                        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+                        Date datein = dateFormatter.parse(lstBooking.get(i).getTimeout());
 //                        System.out.println("timeOut3 = " +datein.toString());
 //                    System.out.println(" ====A :" + dateFormatter.format(fromDate));
 //                    System.out.println(" ====B :" + dateFormatter.format(datein));
 //                    System.out.println(" ====C :" + dateFormatter.format(toDate));
-                    if (lstBooking.get(i).getParkingID() == parkingidSelected && fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
+                        if (lstBooking.get(i).getParkingID() == parkingidSelected && fromDate != null && toDate != null && datein.getTime() >= fromDate.getTime() && datein.getTime() <= toDate.getTime()) {
 //                        System.out.println("chọn");
-                        lstBookingAdapter.add(lstBooking.get(i));
-                        money += lstBooking.get(i).getAmount();
+                            lstBookingAdapter.add(lstBooking.get(i));
+                            money += lstBooking.get(i).getAmount();
+                        }
                     }
                 }
-            }
-            tvTotalCar.setText(lstBookingAdapter.size() + "");
+                tvTotalCar.setText(lstBookingAdapter.size() + "");
 
-            tvTotalMoney.setText(formatMoney(money) + " vnđ");
-            setAdapterView(lstBookingAdapter);
+                tvTotalMoney.setText(formatMoney(money) + " vnđ");
+                setAdapterView(lstBookingAdapter);
 
 //                ListBookingStatisticAdapter arrayAdapter = new ListBookingStatisticAdapter(this, lstBookingAdapter, this);
 //                lv.setAdapter(arrayAdapter);
 
-        } catch (ParseException e) {
-            System.out.println("lỗi in onPost StatisticalActivity : " + e);
-        }
-        Log.d("Statistical_onPost: ", lstBooking.toString());
+            } catch (ParseException e) {
+                System.out.println("lỗi in onPost StatisticalActivity : " + e);
+            }
+            Log.d("Statistical_onPost: ", lstBooking.toString());
+        } catch (Exception e) {
 
+        }
     }
+
 }
 
 class StatisticRecyclerViewAdapter extends RecyclerView
@@ -604,15 +623,18 @@ class StatisticRecyclerViewAdapter extends RecyclerView
         public DataObjectHolder(View itemView) {
             super(itemView);
 
+            try {
+                licenseplate = (TextView) itemView.findViewById(R.id.tvItemLicense);
+                typecar = (TextView) itemView.findViewById(R.id.tvItemTypeCar);
+                parkingfines = (TextView) itemView.findViewById(R.id.tvItemFines);
+                amount = (TextView) itemView.findViewById(R.id.tvItemAmount);
+                time = (TextView) itemView.findViewById(R.id.tvItemTime);
 
-            licenseplate = (TextView) itemView.findViewById(R.id.tvItemLicense);
-            typecar = (TextView) itemView.findViewById(R.id.tvItemTypeCar);
-            parkingfines = (TextView) itemView.findViewById(R.id.tvItemFines);
-            amount = (TextView) itemView.findViewById(R.id.tvItemAmount);
-            time = (TextView) itemView.findViewById(R.id.tvItemTime);
+                Log.i(LOG_TAG, "Adding Listener");
+                itemView.setOnClickListener(this);
+            } catch (Exception e) {
 
-            Log.i(LOG_TAG, "Adding Listener");
-            itemView.setOnClickListener(this);
+            }
         }
 
         @Override
@@ -630,7 +652,7 @@ class StatisticRecyclerViewAdapter extends RecyclerView
         this.container = container;
         this.activity = (Activity) container;
         mDataset = myDataset;
-        formatMoney(5.2322151);
+//        formatMoney(5.2322151);
     }
 
     @Override
@@ -648,15 +670,15 @@ class StatisticRecyclerViewAdapter extends RecyclerView
         int temp = (int) money;
         String returnMoney = formatter.format(temp);
         if (temp > 1000000 && temp < 1000000000) {
-            if(temp %1000000 <999)  {
+            if (temp % 1000000 < 999) {
                 returnMoney = temp / 1000000 + "tr";
-            }else {
+            } else {
                 returnMoney = temp / 1000000 + "," + (temp % 1000000) / 1000 + "tr";
             }
         } else if (temp > 1000000000) {
-            if(temp %1000000000 <999999)  {
+            if (temp % 1000000000 < 999999) {
                 returnMoney = temp / 1000000000 + "tỷ";
-            }else {
+            } else {
                 returnMoney = temp / 1000000000 + "," + (temp % 1000000000) / 1000000 + "tỷ";
             }
         }
@@ -665,19 +687,22 @@ class StatisticRecyclerViewAdapter extends RecyclerView
 
     @Override
     public void onBindViewHolder(final DataObjectHolder holder, final int position) {
-        NumberFormat formatter = new DecimalFormat("###,###");
-        final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
-        holder.licenseplate.setText(mDataset.get(position).getLicensePlate());
-        holder.typecar.setText(mDataset.get(position).getTypeCar());
-
-        holder.parkingfines.setText(formatMoney(mDataset.get(position).getTotalfine()) + " vnđ");
-        holder.amount.setText(formatMoney(mDataset.get(position).getAmount()) + " vnđ");
         try {
-            holder.time.setText(dateFormatter.format(dateFormatter.parse(mDataset.get(position).getTimeout())));
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+            NumberFormat formatter = new DecimalFormat("###,###");
+            final DateFormat dateFormatter = new SimpleDateFormat("HH:mm:ss dd-MM-yyyy");
+            holder.licenseplate.setText(mDataset.get(position).getLicensePlate());
+            holder.typecar.setText(mDataset.get(position).getTypeCar());
 
+            holder.parkingfines.setText(formatMoney(mDataset.get(position).getTotalfine()) + " vnđ");
+            holder.amount.setText(formatMoney(mDataset.get(position).getAmount()) + " vnđ");
+            try {
+                holder.time.setText(dateFormatter.format(dateFormatter.parse(mDataset.get(position).getTimeout())));
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+        }catch (Exception e) {
+
+        }
     }
 
 

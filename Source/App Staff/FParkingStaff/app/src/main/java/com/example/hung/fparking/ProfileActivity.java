@@ -1,8 +1,12 @@
 package com.example.hung.fparking;
 
 import android.annotation.SuppressLint;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,6 +20,7 @@ import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerLoginTask;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.model.CheckNetwork;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -45,6 +50,7 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         tvSuccess = (TextView) findViewById(R.id.tvSuccess);
         changePassStatistic = findViewById(R.id.tbPassStatistic);
         changePassStatistic.setFocusable(false);
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         changePassStatistic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -164,11 +170,31 @@ public class ProfileActivity extends AppCompatActivity implements IAsyncTaskHand
         name.setText(Session.currentStaff.getName());
         phone.setText(Session.currentStaff.getPhone());
         address.setText(Session.currentStaff.getAddress());
-//        name.setHint(Session.currentStaff.getName());
-//        phone.setHint(Session.currentStaff.getPhone());
-//        address.setHint(Session.currentStaff.getAddress());
+    }
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            CheckNetwork checkNetwork = new CheckNetwork(ProfileActivity.this, getApplicationContext());
+            if (!checkNetwork.isNetworkConnected()) {
+                checkNetwork.createDialog();
+            } else {
+//                recreate();
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
     }
 
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
+    }
     public void showDialog(String text) {
         AlertDialog.Builder mBuilder = new AlertDialog.Builder(ProfileActivity.this);
         View mView = getLayoutInflater().inflate(R.layout.activity_alert_dialog, null);

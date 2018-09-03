@@ -206,10 +206,15 @@ public class ParkingServiceImpl implements ParkingService {
 	}
 
 	@Override
-	public void delete(Long id) {
+	public void delete(Long id) throws Exception {
 		// TODO Auto-generated method stub
+		try {
 		Parking parking = parkingRepository.getOne(id);
 		parkingRepository.delete(parking);
+		}catch (Exception e) {
+			throw new APIException(HttpStatus.NOT_FOUND, "Parking was not found");
+			// TODO: handle exception
+		}
 	}
 
 	@Override

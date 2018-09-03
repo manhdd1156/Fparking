@@ -321,7 +321,7 @@ ScrollView scrollviewAddparking;
                 || (Integer.parseInt(tbCloseHourAddParking.getText().toString())== 24 &&Integer.parseInt(tbCloseMinAddParking.getText().toString())>0)) {
             showDialog("Thời gian không hợp lệ", 0);
         } else if ( Integer.parseInt(tbOpenHourAddParking.getText().toString())>Integer.parseInt(tbCloseHourAddParking.getText().toString())
-                || (Integer.parseInt(tbOpenHourAddParking.getText().toString())<Integer.parseInt(tbCloseHourAddParking.getText().toString()) &&
+                || (Integer.parseInt(tbOpenHourAddParking.getText().toString())==Integer.parseInt(tbCloseHourAddParking.getText().toString()) &&
                 Integer.parseInt(tbOpenMinAddParking.getText().toString())>Integer.parseInt(tbCloseMinAddParking.getText().toString()))) {
             showDialog("Giờ đóng cửa phải muộn hơn giờ mở cửa", 0);
         } else if ( tbSpace.getText().length()>3 || Integer.parseInt(tbSpace.getText().toString()) < 1 || Integer.parseInt(tbSpace.getText().toString()) > 200) {

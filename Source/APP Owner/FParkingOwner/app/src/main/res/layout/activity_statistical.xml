@@ -146,6 +146,7 @@
             android:id="@+id/imageView8"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginLeft="-90dp"
             android:layout_weight="1"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
     </LinearLayout>
@@ -175,6 +176,7 @@
             android:id="@+id/imageView10"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
+            android:layout_marginLeft="-80dp"
             android:layout_weight="1"
             app:srcCompat="@android:drawable/ic_menu_my_calendar" />
 
@@ -208,10 +210,12 @@
 
     <Spinner
         android:id="@+id/spinnerStatistic"
-        android:layout_width="150dp"
+        android:layout_width="292dp"
         android:layout_height="wrap_content"
 
         android:layout_below="@id/tvFromD"
+        android:layout_marginLeft="-10dp"
+        android:layout_marginTop="5dp"
         android:layout_toEndOf="@+id/imageViewBackStatistical"
         android:layoutMode="opticalBounds"
         android:persistentDrawingCache="none" />

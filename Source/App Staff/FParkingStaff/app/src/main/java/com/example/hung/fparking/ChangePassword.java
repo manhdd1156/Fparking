@@ -1,6 +1,10 @@
 package com.example.hung.fparking;
 
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
+import android.net.ConnectivityManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,6 +18,7 @@ import com.example.hung.fparking.asynctask.IAsyncTaskHandler;
 import com.example.hung.fparking.asynctask.ManagerLoginTask;
 import com.example.hung.fparking.config.Constants;
 import com.example.hung.fparking.config.Session;
+import com.example.hung.fparking.model.CheckNetwork;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -31,7 +36,7 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
         tbNewPass = (EditText) findViewById(R.id.tbNewPass);
         tbConfirmPass = (EditText) findViewById(R.id.tbConfirmNewPass);
         btnUpdate = (Button) findViewById(R.id.btnUpdate);
-
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
         backChangePass = findViewById(R.id.imageViewBackChangePass);
         backChangePass.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -100,6 +105,30 @@ public class ChangePassword extends AppCompatActivity implements IAsyncTaskHandl
                 }
             }
         });
+    }
+    private BroadcastReceiver receiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            CheckNetwork checkNetwork = new CheckNetwork(ChangePassword.this, getApplicationContext());
+            if (!checkNetwork.isNetworkConnected()) {
+                checkNetwork.createDialog();
+            } else {
+//                recreate();
+            }
+        }
+    };
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        unregisterReceiver(receiver);
     }
     public static String getMD5Hex(final String inputString) throws NoSuchAlgorithmException {
 
