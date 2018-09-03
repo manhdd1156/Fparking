@@ -36,24 +36,27 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-primary">
-						<form action="" method="GET">
-							<div>
-								<br>
-								<div class="col-lg-12">
-									Từ <input type="date" name="dateFrom" value="${dateFrom }">
-									đến <input type="date" name="dateTo" value="${dateTo }"3>
-									
-									<div class="col-lg-1">
-                                            <select class="form-control" name="statusSelection">
-                                                <option value="1" ${statusSelection==1?"selected":""}>Đã thu</option>
-                                                <option value="2" ${statusSelection==2?"selected":""}>Dự kiến</option>
-                                            </select>
-                                        </div>
-									<input type="submit" value="Tìm">
+						<div class="row">
+							<form action="" method="GET">
+								<div>
+									<br>
+									<div class="col-lg-12">
+										Từ <input type="date" name="dateFrom" value="${dateFrom }">
+										đến <input type="date" name="dateTo" value="${dateTo }"3>
+
+										<div class="col-lg-2">
+											<select class="form-control" name="statusSelection">
+												<option value="1" ${statusSelection==1?"selected":""}>Đã
+													thu</option>
+												<option value="2" ${statusSelection==2?"selected":""}>Dự
+													kiến</option>
+											</select>
+										</div>
+										<input type="submit" value="Tìm">
+									</div>
 								</div>
-							</div>
-						</form>
-						<br>
+							</form>
+						</div>
 						<br>
 						<div class="col-lg-12">
 							Tổng doanh thu: <b>${revenueFine }</b>

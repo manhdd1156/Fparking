@@ -333,7 +333,7 @@ public class HomeController {
 			model.put("messError", "Nạp tiền không thành công!");
 			return "acceptnewparking";
 		}
-		model.put("messSuss", "Nạp thành công " + currencyVN.format(deposit));
+		model.put("messSuss", "Nạp thành công " + currencyVN.format(depositTrue));
 		return "acceptnewparking";
 	}
 

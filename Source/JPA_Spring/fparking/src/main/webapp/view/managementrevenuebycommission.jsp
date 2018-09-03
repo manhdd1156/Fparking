@@ -36,9 +36,6 @@
 			<div class="row">
 				<div class="col-lg-12">
 					<div class="panel panel-primary">
-						<div class="panel-heading">
-							Tổng doanh thu chiết khấu: <b>${revenueCommission }</b>
-						</div>
 						<form action="" method="GET">
 							<div>
 								<br>
@@ -49,6 +46,11 @@
 								</div>
 							</div>
 						</form>
+						<br>
+						<br>
+						<div class="col-lg-12">
+							Tổng doanh thu: <b>${revenueCommission }</b>
+						</div>
 						<br>
 						<!-- /.panel-heading -->
 						<div class="panel-body">
