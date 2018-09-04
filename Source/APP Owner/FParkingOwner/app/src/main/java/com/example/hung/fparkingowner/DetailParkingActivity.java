@@ -277,7 +277,7 @@ public class DetailParkingActivity extends AppCompatActivity implements IAsyncTa
                                     Session.currentParking.setPrice3445(Double.parseDouble(price1648.getText().toString()));
                                 }
 
-                                Session.currentParking.setStatus(4);
+                                Session.currentParking.setStatus(1);
                             } else if (type.equals("close")) { // button is "tạm đóng"
                                 Session.currentParking.setStatus(5);
                             } else if (type.equals("delete")) { // button is "Xóa"

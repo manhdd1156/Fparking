@@ -189,6 +189,7 @@ public class HomeActivity extends AppCompatActivity
 
     @Override
     public void recreate() {
+        try {
 //       super.recreate();
 //        lv = (ListView) findViewById(R.id.cars_list);
 //            if (Session.currentParking == null) {
@@ -200,11 +201,19 @@ public class HomeActivity extends AppCompatActivity
 //                setText(tvSpace, Session.currentParking.getCurrentspace() + "/" + Session.currentParking.getTotalspace());
 //
 //            }
-        new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
-        BookingDTO b = new BookingDTO();
-        b.setParkingID(Session.currentStaff.getParking_id());
-        new ManagerBookingTask("homeget", b, this);
+            new ManagerParkingTask("get", Session.currentParking, HomeActivity.this);
+            BookingDTO b = new BookingDTO();
+            b.setParkingID(Session.currentStaff.getParking_id());
+            new ManagerBookingTask("homeget", b, this);
+            new ManagerNotiTask("get", new IAsyncTaskHandler() {
+                @Override
+                public void onPostExecute(Object o) {
 
+                }
+            });
+        }catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
 

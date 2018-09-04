@@ -247,51 +247,55 @@ ScrollView scrollviewAddparking;
             @Override
             public void onClick(View v) {
                 if (checkValidate()) {
-                    LatLng cameraLatLng = mMap.getCameraPosition().target;
+                    try {
+                        LatLng cameraLatLng = mMap.getCameraPosition().target;
 
-                    double lat = cameraLatLng.latitude;
-                    double lng = cameraLatLng.longitude;
-                    double price9 = 0;
-                    double price1629 = 0;
-                    double price3445 = 0;
-                    if (!tbPrice9AddParking.getText().toString().isEmpty()) {
-                        price9 = Double.parseDouble(tbPrice9AddParking.getText().toString());
-                    }
-                    if (!tbPrice16to29AddParking.getText().toString().isEmpty()) {
-                        price1629 = Double.parseDouble(tbPrice16to29AddParking.getText().toString());
-                    }
-                    if (!tbPrice34to45AddParking.getText().toString().isEmpty()) {
-                        price3445 = Double.parseDouble(tbPrice34to45AddParking.getText().toString());
-                    }
-
-                    String openhour = tbOpenHourAddParking.getText().toString();
-                    if (openhour.length() < 2) {
-                        openhour = "0" + openhour;
-                    }
-                    String openmin = tbOpenMinAddParking.getText().toString();
-                    if (openmin.length() < 2) {
-                        openmin = "0" + openhour;
-                    }
-                    String closehour = tbCloseHourAddParking.getText().toString();
-                    if (closehour.length() < 2) {
-                        closehour = "0" + closehour;
-                    }
-                    String closemin = tbCloseMinAddParking.getText().toString();
-                    if (closemin.length() < 2) {
-                        closemin = "0" + closemin;
-                    }
-                    String timeoc = openhour + ":" + openmin + "-" + closehour + ":" + closemin + "h";
-                    ParkingDTO parkingDTO = new ParkingDTO(0, tbAddressAddParking.getText().toString(), Integer.parseInt(tbcurrentspace.getText().toString()), 0, "", lat + "", lng + "", 3, timeoc, Integer.parseInt(tbSpace.getText().toString()), Integer.parseInt(cityID), price9, price1629, price3445);
-                    new ManagerParkingTask("add", parkingDTO, null, new IAsyncTaskHandler() {
-                        @Override
-                        public void onPostExecute(Object o) {
-                            if ((boolean) o) {
-                                showDialog("Thêm mới thành công, yêu cầu của bạn sẽ được xử lý trong 24h", 1);
-                            } else {
-                                showDialog("Thêm không thành công", 0);
-                            }
+                        double lat = cameraLatLng.latitude;
+                        double lng = cameraLatLng.longitude;
+                        double price9 = 0;
+                        double price1629 = 0;
+                        double price3445 = 0;
+                        if (!tbPrice9AddParking.getText().toString().isEmpty()) {
+                            price9 = Double.parseDouble(tbPrice9AddParking.getText().toString());
                         }
-                    });
+                        if (!tbPrice16to29AddParking.getText().toString().isEmpty()) {
+                            price1629 = Double.parseDouble(tbPrice16to29AddParking.getText().toString());
+                        }
+                        if (!tbPrice34to45AddParking.getText().toString().isEmpty()) {
+                            price3445 = Double.parseDouble(tbPrice34to45AddParking.getText().toString());
+                        }
+
+                        String openhour = tbOpenHourAddParking.getText().toString();
+                        if (openhour.length() < 2) {
+                            openhour = "0" + openhour;
+                        }
+                        String openmin = tbOpenMinAddParking.getText().toString();
+                        if (openmin.length() < 2) {
+                            openmin = "0" + openhour;
+                        }
+                        String closehour = tbCloseHourAddParking.getText().toString();
+                        if (closehour.length() < 2) {
+                            closehour = "0" + closehour;
+                        }
+                        String closemin = tbCloseMinAddParking.getText().toString();
+                        if (closemin.length() < 2) {
+                            closemin = "0" + closemin;
+                        }
+                        String timeoc = openhour + ":" + openmin + "-" + closehour + ":" + closemin + "h";
+                        ParkingDTO parkingDTO = new ParkingDTO(0, tbAddressAddParking.getText().toString(), Integer.parseInt(tbcurrentspace.getText().toString()), 0, "", lat + "", lng + "", 3, timeoc, Integer.parseInt(tbSpace.getText().toString()), Integer.parseInt(cityID), price9, price1629, price3445);
+                        new ManagerParkingTask("add", parkingDTO, null, new IAsyncTaskHandler() {
+                            @Override
+                            public void onPostExecute(Object o) {
+                                if ((boolean) o) {
+                                    showDialog("Thêm mới thành công, yêu cầu của bạn sẽ được xử lý trong 24h", 1);
+                                } else {
+                                    showDialog("Thêm không thành công", 0);
+                                }
+                            }
+                        });
+                    }catch (Exception e) {
+                        System.out.println(e);
+                    }
                 }
             }
         });

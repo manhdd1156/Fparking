@@ -147,7 +147,7 @@ public class DialogActivity extends Activity  implements OnClickListener,IAsyncT
                     }
                 });
             } else if(eventName.toLowerCase().contains("cancel")) {
-                cancel_btn.setVisibility(View.INVISIBLE);
+                cancel_btn.setVisibility(View.GONE);
                 ok_btn.setText("Xác nhận");
                 new GetVehicleTask(Session.currentParking.getId(), "cancel", this).execute((Void) null);
                 ok_btn.setOnClickListener(new View.OnClickListener() {

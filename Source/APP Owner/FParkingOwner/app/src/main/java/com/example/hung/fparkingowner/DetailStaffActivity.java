@@ -43,7 +43,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
     EditText name;
     EditText phone;
     EditText address;
-    EditText password;
+    EditText passwordO;
     EditText changePass;
     TextView tvError, tvTitle;
     TextView tvSuccess, error;
@@ -78,6 +78,8 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                 @Override
                 public void onClick(View v) {
                     finish();
+                    startActivity(new Intent(DetailStaffActivity.this, StaffManagement.class));
+                    overridePendingTransition(R.anim.slide_in_left, R.anim.slide_out_right);
                 }
             });
             registerReceiver(receiver, new IntentFilter(ConnectivityManager.CONNECTIVITY_ACTION));
@@ -92,7 +94,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                     tvTitle = (TextView) mView.findViewById(R.id.textView2);
                     tvTitle.setText("Đặt lại mật khẩu của nhân viên");
                     tvError = (TextView) mView.findViewById(R.id.tvError);
-                    password = (EditText) mView.findViewById(R.id.tbPassword);
+                    passwordO = (EditText) mView.findViewById(R.id.tbPassword);
                     btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
                     btnConfirm.setOnClickListener(
                             new View.OnClickListener() {
@@ -100,8 +102,8 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                 public void onClick(View v) {
 
                                     try {
-                                        String passMD5 = getMD5Hex(password.getText().toString());
-                                        if (password.getText().toString().isEmpty() || password.getText().toString().equals("")) {
+                                        String passMD5 = getMD5Hex(passwordO.getText().toString());
+                                        if (passwordO.getText().toString().isEmpty() || passwordO.getText().toString().equals("")) {
                                             tvError.setText("Hãy nhập mật khẩu");
                                             tvError.setVisibility(View.VISIBLE);
                                         } else if (!passMD5.equals(Session.currentOwner.getPass())) {
@@ -132,6 +134,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                             final String resetPass = Long.toString(r.nextLong() & Long.MAX_VALUE, 36);
                                             staffDTO.setPass(getMD5Hex(resetPass));
                                             staffDTO.setParking_id(parkingidSelected);
+                                            System.out.println("staffDTO ===== " + staffDTO);
                                             new ManagerStaffTask("update", staffDTO, new IAsyncTaskHandler() {
                                                 @Override
                                                 public void onPostExecute(Object o) {
@@ -212,7 +215,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                         dialog = mBuilder.create();
                         dialog.show();
                         tvError = (TextView) mView.findViewById(R.id.tvError);
-                        password = (EditText) mView.findViewById(R.id.tbPassword);
+                        passwordO = (EditText) mView.findViewById(R.id.tbPassword);
                         btnConfirm = (Button) mView.findViewById(R.id.btnConfirm);
                         btnConfirm.setOnClickListener(
                                 new View.OnClickListener() {
@@ -220,8 +223,8 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                     public void onClick(View v) {
 
                                         try {
-                                            String passMD5 = getMD5Hex(password.getText().toString());
-                                            if (password.getText().toString().isEmpty() || password.getText().toString().equals("")) {
+                                            String passMD5 = getMD5Hex(passwordO.getText().toString());
+                                            if (passwordO.getText().toString().isEmpty() || passwordO.getText().toString().equals("")) {
                                                 showDialog("Hãy nhập mật khẩu", 0);
 //                                            tvError.setText("Hãy nhập mật khẩu");
 //                                            tvError.setVisibility(View.VISIBLE);
@@ -250,8 +253,9 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                                                 if (staffDTO.getPhone().contains("+84")) {
                                                     staffDTO.setPhone(staffDTO.getPhone().replace("+84", "0"));
                                                 }
-                                                staffDTO.setPass(getMD5Hex(changePass.getText().toString()));
+                                                staffDTO.setPass(changePass.getText().toString());
                                                 staffDTO.setParking_id(parkingidSelected);
+                                                System.out.println("StaffDTO ==== " + staffDTO);
                                                 new ManagerStaffTask("update", staffDTO, new IAsyncTaskHandler() {
                                                     @Override
                                                     public void onPostExecute(Object o) {
@@ -383,7 +387,7 @@ public class DetailStaffActivity extends AppCompatActivity implements IAsyncTask
                     name.setText(slist.get(i).getName());
                     phone.setText(slist.get(i).getPhone());
                     address.setText(slist.get(i).getAddress());
-
+                    changePass.setText(slist.get(i).getPass());
                     for (int j = 0; j < dropdownList.size(); j++) {
                         if (dropdownList.get(j).equals(slist.get(i).getParking_address())) {
                             sprinerParking.setSelection(j);

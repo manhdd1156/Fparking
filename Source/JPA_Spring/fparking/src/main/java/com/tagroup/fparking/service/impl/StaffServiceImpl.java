@@ -73,7 +73,9 @@ public class StaffServiceImpl implements StaffService {
 				List<Staff> slist = getAll();
 				for (Staff s : slist) {
 					if (s.getId() == staff.getId()) {
-						staff.setParking(s.getParking());
+						if(staff.getParking().getId()!=null)
+						staff.setParking(parkingService.getById(staff.getParking().getId()));
+						System.out.println("staffServiceimp/update staff = " + staff);
 						if (staff.getPassword() == null && t.getType().equals("STAFF"))
 							staff.setPassword(s.getPassword());
 						boolean flag = false;
@@ -83,7 +85,6 @@ public class StaffServiceImpl implements StaffService {
 							}
 						}
 						if (!flag) {
-
 							return staffRepository.save(staff);
 						}
 

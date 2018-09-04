@@ -74,6 +74,16 @@ public class NotificationServiceImpl implements NotificationService {
 		// TODO Auto-generated method stub
 		try {
 			Notification notification = notificationRepository.getOne(id);
+			List<Notification> notitemp = notificationRepository.findAll();
+			int count=0;
+			for (Notification notification2 : notitemp) {
+				if(notification2 == notification) {
+					count++;
+				}
+				if(count>=2) {
+					notificationRepository.delete(notification2);
+				}
+			}
 			notificationRepository.delete(notification);
 		} catch (Exception e) {
 			throw new APIException(HttpStatus.NOT_FOUND, "The Notification was not found");
@@ -108,6 +118,16 @@ public class NotificationServiceImpl implements NotificationService {
 			noti.setType(2);
 			noti.setData("cancel");
 			Notification n = update(noti);
+			List<Notification> notitemp = notificationRepository.findAll();
+			int count = 0;
+			for (Notification notification2 : notitemp) {
+				if(notification2 == n) {
+					count++;
+				}
+				if(count >=2) {
+					notificationRepository.delete(notification2);
+				}
+			}
 			if (notification.getEvent().equals("order")) {
 				List<Booking> blist = bookingService.getAll();
 				for (Booking booking : blist) {
@@ -135,7 +155,6 @@ public class NotificationServiceImpl implements NotificationService {
 	public void deleteByNoti(Notification notification) throws Exception {
 		Token t = (Token) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 		try {
-			
 			System.out.println("NotificationServiceIml/DeleteByNoti :" + t.getType() + "  : "  + notification.toString());
 			List<Notification> notilst = notificationRepository.findAll();
 			for (Notification noti : notilst) {
