@@ -425,7 +425,7 @@ public class AccountController {
 		NumberFormat currencyVN = NumberFormat.getCurrencyInstance(new Locale("vi", "VN"));
 		List<Parking> listParking;
 		try {
-			listParking = parkingService.getByStatus(0);
+			listParking = parkingService.getByStatus(2);
 		} catch (Exception e) {
 			return "404";
 		}
@@ -435,13 +435,15 @@ public class AccountController {
 		if (listParking != null && listParking.size() > 0) {
 			for (Parking parking : listParking) {
 				HashMap<String, Object> m = new HashMap<>();
-				m.put("id", parking.getId());
-				m.put("address", parking.getAddress());
-				m.put("currentspace", parking.getCurrentspace());
-				m.put("totalspace", parking.getTotalspace());
-				m.put("deposits", currencyVN.format(parking.getDeposits()));
-				totalDeposit += parking.getDeposits();
-				arrayListParking.add(m);
+				if(parking.getDeposits()>100000) {
+					m.put("id", parking.getId());
+					m.put("address", parking.getAddress());
+					m.put("currentspace", parking.getCurrentspace());
+					m.put("totalspace", parking.getTotalspace());
+					m.put("deposits", currencyVN.format(parking.getDeposits()));
+					totalDeposit += parking.getDeposits();
+					arrayListParking.add(m);
+				}
 			}
 			model.put("listParking", arrayListParking);
 			model.put("totalAccount", listParking.size());

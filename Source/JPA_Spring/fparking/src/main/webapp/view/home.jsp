@@ -203,6 +203,7 @@
 														<th>Chủ bãi</th>
 														<th>Số điện thoại</th>
 														<th>Số dư tài khoản</th>
+														<th></th>
 													</tr>
 												</thead>
 												<tbody>
@@ -213,6 +214,8 @@
 															<td>${listParking.nameOwner }</td>
 															<td>${listParking.phoneOwner }</td>
 															<td>${listParking.deposits }</td>
+															<td class="center"><a
+																href="/home/addmoney/${listParking.id }">Sửa</a></td>
 														</tr>
 													</c:forEach>
 												</tbody>
