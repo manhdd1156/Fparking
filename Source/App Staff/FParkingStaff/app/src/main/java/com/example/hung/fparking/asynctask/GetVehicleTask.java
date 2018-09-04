@@ -59,8 +59,8 @@ private int parkingID;
             final JSONObject jsonDriver= new JSONObject(jsonObj.getString("driver"));
             final JSONObject jsonVehicle= new JSONObject(jsonObj.getString("vehicle"));
             final JSONObject jsonVehicleType = new JSONObject(jsonVehicle.getString("vehicletype"));
-            final String jsonRating = httpHandler.get(Constants.API_URL + "vehicles/ratings/" + jsonObj.getString("id"));
-            System.out.println("json Rate <" + jsonRating +">");
+//            final String jsonRating = httpHandler.get(Constants.API_URL + "vehicles/ratings/" + jsonObj.getString("id"));
+//            System.out.println("json Rate <" + jsonRating +">");
 
 
             activity.runOnUiThread(new Runnable() {

@@ -67,6 +67,7 @@ public class ParkingController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 
 	}
+ 
 
 	// get parkings sort by latitude and longitude
 	@PreAuthorize("hasAnyAuthority('ADMIN','DRIVER')")

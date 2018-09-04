@@ -163,7 +163,7 @@ try {
 		if (noti != null) {
 
 			if (event.equals("cancel")) {
-				notificationService.deleteByNoti(new Notification());
+				notificationService.delete(noti.getId());
 			}
 			List<DriverVehicle> dvList = getAll();
 			for (DriverVehicle driverVehicle : dvList) {

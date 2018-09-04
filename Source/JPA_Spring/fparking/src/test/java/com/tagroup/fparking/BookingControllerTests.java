@@ -114,6 +114,12 @@ public class BookingControllerTests {
 
 		bookingRepository.deleteById(BookingForTest.getId());
 	}
+	public void whenGetBookingIdIsNegative_thenReturnNotFound() throws Exception {
+		mockMvc.perform(get("/api/bookings/-1").header("Authorization", "Bearer " + token))
+				.andExpect(status().is(404));
+
+		bookingRepository.deleteById(BookingForTest.getId());
+	}
 	@Test
 	public void whenGetInvalidBookingId_thenReturnBadRequest() throws Exception {
 		mockMvc.perform(get("/api/bookings/1L").header("Authorization", "Bearer " + token)).andExpect(status().is(400));

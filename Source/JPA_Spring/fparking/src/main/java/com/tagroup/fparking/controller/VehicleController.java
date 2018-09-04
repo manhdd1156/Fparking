@@ -73,6 +73,14 @@ public class VehicleController {
 		return new ResponseEntity<>(respone, HttpStatus.OK);
 	}
 	
+	 // get rating by vehicle
+//	  @PreAuthorize("hasAnyAuthority('ADMIN', 'DRIVER', 'OWNER','STAFF')")
+//	  @RequestMapping(path = "/ratings/{id}", method = RequestMethod.GET)
+//	  public ResponseEntity<?> getbyid(@PathVariable Long id) throws Exception {
+//	  double respone = vehicleService.getRatingByVehicle(vehicleService.getById(id));
+//	  return new ResponseEntity<>(respone, HttpStatus.OK);
+//	  }
+	  
 	// get driverVehicle by parking_id and check notification
 	@PreAuthorize("hasAnyAuthority('ADMIN','STAFF')")
 	@RequestMapping(path = "/notifications", method = RequestMethod.GET)
